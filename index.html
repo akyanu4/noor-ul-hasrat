@@ -86,6 +86,19 @@ h2.section-title:first-child{margin-top:2px;}
 .prayer-row .p.active{background:var(--teal); border-color:var(--teal); color:#e7d4a3;}
 .prayer-row .p.active b{color:#fff;}
 
+/* ---- More: sectioned icon tiles ---- */
+.fsec{margin:0 0 22px;}
+.fsec h2{margin:2px 2px 12px;}
+.ftiles{display:grid; grid-template-columns:repeat(4,1fr); gap:14px 6px;}
+.ftile{display:flex; flex-direction:column; align-items:center; text-align:center; cursor:pointer; min-width:0; background:none; border:0; padding:0; font:inherit; color:inherit;}
+.ftile .fi{width:58px; height:58px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:27px; transition:transform .12s;}
+.ftile:active .fi{transform:scale(.92);}
+.ftile .fl{font-size:11.5px; margin-top:6px; line-height:1.25; color:var(--ink); max-width:100%; overflow-wrap:break-word;}
+.ftiles.t-prac .fi{background:rgba(28,107,108,.16);}
+.ftiles.t-lit .fi{background:rgba(150,90,170,.17);}
+.ftiles.t-res .fi{background:rgba(60,120,200,.16);}
+.ftiles.t-soc .fi{background:rgba(201,162,75,.22);}
+
 /* ---- grid of quick cards ---- */
 .grid{display:grid; grid-template-columns:repeat(5,1fr); gap:8px;}
 .qcard{
@@ -397,16 +410,7 @@ h2.section-title:first-child{margin-top:2px;}
 
     <!-- MORE (Resources + Social + subviews) -->
     <div class="screen" id="screen-more">
-      <h2 class="section-title" style="margin-top:2px">Resources</h2>
-      <div class="rowlist" id="resourceList"></div>
-      <h2 class="section-title">Follow</h2>
-      <div class="rowlist" id="socialList"></div>
-      <h2 class="section-title">Account</h2>
-      <div class="rowlist">
-        <div class="rowitem"><div class="ic">⭐</div><div class="tx">Favorites</div><div class="chev">›</div></div>
-        <div class="rowitem"><div class="ic">📊</div><div class="tx">Reading statistics</div><div class="chev">›</div></div>
-        <div class="rowitem"><div class="ic">🔔</div><div class="tx">Notifications</div><div class="chev">›</div></div>
-      </div>
+      <div id="moreSections"></div>
     </div>
 
     <!-- HALQA & COMMUNITY -->
@@ -629,6 +633,25 @@ if(!self.NOOR_CONFIG){
     ["🎧","Soundtracks","Nasheeds & recitation"]
   ];
 
+  // ---------- the More screen: sectioned icon tiles ----------
+  function soon(t, sub){ return 'detail:'+t+':'+sub+' — coming soon, in shaa Allah.'; }
+  var moreSections = [
+    {id:'practiceTiles', title:'Prayers & Practices', cls:'t-prac', items:[
+      {ic:'🕌', lb:'Prayer Times', go:'prayers'}, {ic:'🕋', lb:'Qibla', go:'qibla'}, {ic:'📖', lb:"Qur'an", go:'quran'}, {ic:'📅', lb:'Calendar', go:'calendar'},
+      {ic:'🤲', lb:'Duas', go:'duas'}, {ic:'🌙', lb:'Islamic Months', go:'months'}, {ic:'🕯️', lb:'Halqa', go:'halqa'}, {ic:'🌅', lb:'Daily Awrad', go:soon('Daily Awrad','Morning & evening litanies')},
+      {ic:'📜', lb:'Khatam', go:soon('Khatam','Communal recitation tracker')}, {ic:'📿', lb:'Tasbeeh', go:'tasbeeh'}]},
+    {id:'literatureTiles', title:'Literature', cls:'t-lit', items:[
+      {ic:'🕌', lb:'Dalail ul Khairat', go:soon('Dalail ul Khairat','Daily wird & progress')}, {ic:'🎥', lb:'Classes', go:'classes'}, {ic:'🎵', lb:'Poetry & Naat', go:'family'}, {ic:'📚', lb:'Dars & Tafseer', go:'family:dars'},
+      {ic:'📜', lb:'Hadith', go:'hadith'}, {ic:'📰', lb:'Articles', go:soon('Articles','Reflections & teachings')}, {ic:'⬇️', lb:'Downloads', go:soon('Downloads','Offline content')}, {ic:'🔖', lb:'My Bookmarks', go:'quran'},
+      {ic:'⭐', lb:'My Favorites', go:soon('My Favorites','Your saved items')}, {ic:'📊', lb:'Reading Stats', go:'quran'}]},
+    {id:'resourceList', title:'Resources', cls:'t-res', items:[
+      {ic:'🕊️', lb:'Shaykhs', go:'classes:speakers'}, {ic:'🤝', lb:'Donate', go:'donate'}, {ic:'🫱', lb:"Bay'ah", go:soon("Bay'ah",'Spiritual allegiance')}, {ic:'🔗', lb:'Golden Chain', go:soon('Golden Chain','Silsila lineage')},
+      {ic:'🤖', lb:'Shaykh AI', go:soon('Shaykh AI','Ask a guided question')}, {ic:'🔔', lb:'Notifications', go:'halqa'}]},
+    {id:'socialTiles', title:'Social Media', cls:'t-soc', items:[
+      {ic:'▶️', lb:'YouTube', go:'url:'+channels.darulilm.url}, {ic:'📷', lb:'Instagram', go:soon('Instagram','Daily reminders')}, {ic:'📘', lb:'Facebook', go:soon('Facebook','Community updates')},
+      {ic:'🛒', lb:'Amazon', go:soon('Amazon','Recommended reading')}, {ic:'🎧', lb:'Soundtracks', go:soon('Soundtracks','Nasheeds & recitation')}]}
+  ];
+
   // ---------- render ----------
   function el(tag, cls, html){var e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e;}
   // Titles now come from YouTube, so never insert them as raw HTML.
@@ -765,8 +788,22 @@ if(!self.NOOR_CONFIG){
   renderLatest();
   renderList('worshipList', worship);
   renderList('libraryList', library);
-  renderList('resourceList', resources);
-  renderList('socialList', social);
+  (function renderMore(){
+    var box = document.getElementById('moreSections'); box.innerHTML = '';
+    moreSections.forEach(function(sec){
+      var w = el('div','fsec','<h2 class="section-title">'+esc(sec.title)+'</h2>');
+      var g = el('div','ftiles '+sec.cls,''); g.id = sec.id;
+      sec.items.forEach(function(it){
+        var t = el('button','ftile','<div class="fi" aria-hidden="true">'+it.ic+'</div><div class="fl">'+esc(it.lb)+'</div>');
+        t.type = 'button';
+        t.addEventListener('click', function(){
+          if(it.go.indexOf('url:') === 0){ window.open(it.go.slice(4), '_blank', 'noopener'); } else { route(it.go); }
+        });
+        g.appendChild(t);
+      });
+      w.appendChild(g); box.appendChild(w);
+    });
+  })();
 
   // bind static home row-items with data-go
   document.querySelectorAll('[data-go]').forEach(function(elm){

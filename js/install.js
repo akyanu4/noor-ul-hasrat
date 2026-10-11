@@ -68,8 +68,9 @@
     }
     var more = doc.getElementById('resourceList');
     if (more && !doc.getElementById('installRow')) {
-      var r = doc.createElement('div'); r.className = 'rowitem'; r.id = 'installRow';
-      r.innerHTML = '<div class="ic">📲</div><div class="tx">Install the app<div class="sub">Add Noor to your home screen</div></div><div class="chev">›</div>';
+      var r = doc.createElement(more.classList.contains('ftiles') ? 'button' : 'div'); r.id = 'installRow';
+      if (more.classList.contains('ftiles')) { r.type = 'button'; r.className = 'ftile'; r.innerHTML = '<div class="fi" aria-hidden="true">📲</div><div class="fl">Install App</div>'; }
+      else { r.className = 'rowitem'; r.innerHTML = '<div class="ic">📲</div><div class="tx">Install the app<div class="sub">Add Noor to your home screen</div></div><div class="chev">›</div>'; }
       r.onclick = install; more.insertBefore(r, more.firstChild);
     }
   }
