@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Noor — Islamic Companion</title>
+<meta name="theme-color" content="#0a2b2c">
+<meta name="description" content="Prayer times, Qur'an, duas, classes and a weekly halqa in one place.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/favicon-48.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a2421; --cream:#faf7f0; --panel:#ffffff;
+  --teal:#0f3d3e; --teal-deep:#0a2b2c; --gold:#c9a24b; --gold-soft:#e7d4a3;
+  --line:#e4ddc9; --muted:#6b7570;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#f2ede0; --cream:#0d1413; --panel:#132322;
+    --teal:#1c6b6c; --teal-deep:#0a1f1f; --gold:#d9b968; --gold-soft:#7a6636;
+    --line:#264443; --muted:#8fa19c;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#f2ede0; --cream:#0d1413; --panel:#132322;
+  --teal:#1c6b6c; --teal-deep:#0a1f1f; --gold:#d9b968; --gold-soft:#7a6636;
+  --line:#264443; --muted:#8fa19c;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html{scroll-padding-top:env(safe-area-inset-top,0px); height:100%;}
+body{
+  margin:0; height:100%; background:var(--teal-deep);
+  font-family:'Inter',sans-serif; color:var(--ink);
+  display:flex; justify-content:center;
+}
+.shell{
+  width:100%; max-width:460px; height:100%; background:var(--cream);
+  display:flex; flex-direction:column; position:relative; overflow:hidden;
+}
+/* ---- header ---- */
+.topbar{
+  background:linear-gradient(160deg,var(--teal),var(--teal-deep));
+  color:#f5f1e2; padding:18px 20px calc(16px + env(safe-area-inset-top,0px));
+  padding-top:calc(18px + env(safe-area-inset-top,0px));
+  flex-shrink:0;
+}
+.topbar{display:flex; align-items:center; justify-content:space-between;}
+.menubtn{background:none; border:1px solid rgba(255,255,255,.25); color:inherit; width:38px; height:38px; border-radius:11px; font-size:19px; cursor:pointer;}
+.brand{display:flex; align-items:center; gap:10px;}
+.brand .mark{
+  width:38px; height:38px; border-radius:10px; overflow:hidden;
+  display:flex; align-items:center; justify-content:center; background:var(--gold);
+  flex-shrink:0;
+}
+.mark img{width:100%; height:100%; object-fit:cover;}
+.brand .name{font-family:'Amiri',serif; font-size:22px; font-weight:700; letter-spacing:.3px;}
+.hijri{font-size:12.5px; color:var(--gold-soft); margin-top:2px;}
+
+/* ---- scroll area ---- */
+.screens{flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;}
+.screen{display:none; padding:18px 18px 28px;}
+.screen.active{display:block;}
+h2.section-title{
+  font-family:'Amiri',serif; font-size:19px; margin:22px 0 12px; font-weight:700;
+}
+h2.section-title:first-child{margin-top:2px;}
+
+/* ---- prayer card ---- */
+.prayer-card{
+  background:linear-gradient(135deg,var(--teal),#155452);
+  color:#f5f1e2; border-radius:18px; padding:20px; margin-top:8px;
+}
+.prayer-card .next-label{font-size:12px; letter-spacing:.5px; color:var(--gold-soft);}
+.prayer-card .next-name{font-family:'Amiri',serif; font-size:28px; font-weight:700; margin:2px 0;}
+.prayer-card .next-time{font-size:15px; color:#d7e4e0;}
+.prayer-row{
+  display:flex; justify-content:space-between; margin-top:16px; padding-top:14px;
+  border-top:1px solid rgba(245,241,226,.18);
+}
+.prayer-row .p{text-align:center; font-size:12.5px; opacity:.85;}
+.prayer-row .p.active{opacity:1; color:var(--gold);}
+.prayer-row .p b{display:block; font-size:13.5px; font-weight:600; margin-top:3px;}
+
+/* ---- grid of quick cards ---- */
+.grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+.qcard{
+  background:var(--panel); border:1px solid var(--line); border-radius:14px;
+  padding:12px 6px; text-align:center; cursor:pointer; transition:transform .12s;
+}
+.qcard:active{transform:scale(.94);}
+.qcard .ic{font-size:22px;}
+.qcard .lb{font-size:11px; margin-top:6px; color:var(--muted); line-height:1.25;}
+
+/* ---- feature rows (List) ---- */
+.rowlist{background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden;}
+.rowitem{
+  display:flex; align-items:center; gap:12px; padding:13px 15px;
+  border-bottom:1px solid var(--line); cursor:pointer;
+}
+.rowitem:last-child{border-bottom:none;}
+.rowitem .ic{font-size:18px; width:22px; text-align:center;}
+.rowitem .tx{flex:1; font-size:14.5px; font-weight:500;}
+.rowitem .sub{font-size:12px; color:var(--muted); margin-top:1px;}
+.rowitem .chev{color:var(--muted); font-size:14px;}
+
+/* ---- ulema card strip ---- */
+.strip{display:flex; gap:12px; overflow-x:auto; padding-bottom:4px; margin:0 -18px; padding-left:18px; padding-right:18px;}
+.ucard{
+  flex:0 0 118px; background:var(--panel); border:1px solid var(--line); border-radius:14px;
+  padding:12px 10px; text-align:center;
+}
+.ucard .av{
+  width:52px; height:52px; border-radius:50%; margin:0 auto 8px;
+  background:linear-gradient(135deg,var(--gold-soft),var(--gold));
+  display:flex; align-items:center; justify-content:center; font-family:'Amiri',serif; font-weight:700; color:var(--teal-deep);
+}
+.ucard .un{font-size:12.5px; font-weight:600;}
+.ucard .ut{font-size:10.5px; color:var(--muted); margin-top:2px;}
+
+/* ---- tasbeeh screen ---- */
+.tasbeeh-wrap{display:flex; flex-direction:column; align-items:center; padding:8px 0 0;}
+.dhikr-pill{
+  background:var(--panel); border:1px solid var(--line); padding:8px 16px; border-radius:999px;
+  font-family:'Amiri',serif; font-size:16px; margin-bottom:26px;
+}
+.counter-ring{
+  width:220px; height:220px; border-radius:50%; background:var(--panel); border:3px solid var(--gold);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  cursor:pointer; user-select:none; box-shadow:0 8px 24px rgba(15,61,62,.15);
+}
+.counter-ring:active{transform:scale(.97);}
+.counter-ring .num{font-size:56px; font-weight:700; color:var(--teal); font-family:'Amiri',serif;}
+.counter-ring .of{font-size:13px; color:var(--muted); margin-top:2px;}
+.tasbeeh-actions{display:flex; gap:12px; margin-top:22px;}
+.tbtn{
+  background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px 18px;
+  font-size:13px; font-weight:600; color:var(--ink); cursor:pointer;
+}
+.tbtn.reset{color:#b3543f;}
+.set-picker{display:flex; gap:8px; margin-top:18px;}
+.setbtn{
+  border:1px solid var(--line); background:var(--panel); border-radius:999px; padding:7px 14px;
+  font-size:12.5px; cursor:pointer; color:var(--muted);
+}
+.setbtn.on{background:var(--teal); color:#f5f1e2; border-color:var(--teal);}
+
+/* ---- bottom nav ---- */
+.navbar{
+  display:flex; background:var(--panel); border-top:1px solid var(--line); flex-shrink:0;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.navitem{
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
+  padding:10px 4px 9px; cursor:pointer; color:var(--muted); font-size:10.5px; font-weight:500;
+}
+.navitem .nic{font-size:19px;}
+.navitem.active{color:var(--teal);}
+.navitem.home .nic{
+  width:34px; height:34px; border-radius:50%; overflow:hidden;
+  display:flex; align-items:center; justify-content:center; margin-bottom:1px;
+  border:2px solid var(--teal);
+}
+.navitem.home .nic img{width:100%; height:100%; object-fit:cover;}
+.navitem.home.active .nic{border-color:var(--gold);}
+
+/* ---- halqa / community ---- */
+.halqa-hero{
+  background:linear-gradient(135deg,var(--teal),#155452); color:#f5f1e2;
+  border-radius:18px; padding:20px; margin-top:-8px;
+}
+.halqa-hero .hname{font-family:'Amiri',serif; font-size:22px; font-weight:700;}
+.halqa-hero .hwhen{font-size:14px; color:#d7e4e0; margin-top:4px;}
+.halqa-hero .hmeta{display:flex; gap:14px; margin-top:14px; flex-wrap:wrap;}
+.halqa-hero .hchip{
+  background:rgba(245,241,226,.12); border:1px solid rgba(245,241,226,.25);
+  border-radius:999px; padding:5px 12px; font-size:12px;
+}
+.rsvp-row{display:flex; gap:10px; margin-top:16px;}
+.rsvp-btn{
+  flex:1; text-align:center; padding:12px; border-radius:12px; font-weight:600; font-size:14px;
+  cursor:pointer; border:1px solid transparent; transition:transform .1s;
+}
+.rsvp-btn:active{transform:scale(.97);}
+.rsvp-btn.primary{background:var(--gold); color:var(--teal-deep);}
+.rsvp-btn.joined{background:rgba(245,241,226,.15); color:#f5f1e2; border-color:rgba(245,241,226,.4);}
+.rsvp-btn.ghost{background:transparent; color:#f5f1e2; border-color:rgba(245,241,226,.4);}
+.attend-note{font-size:12px; color:var(--gold-soft); margin-top:10px;}
+.etiquette-box{
+  background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 16px;
+  font-size:13px; color:var(--muted); line-height:1.55; margin-top:16px;
+}
+.etiquette-box b{color:var(--ink); display:block; margin-bottom:4px; font-size:13.5px;}
+.campaign-card{
+  background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px;
+}
+.campaign-card .ctitle{font-weight:600; font-size:14.5px;}
+.campaign-card .csub{font-size:12px; color:var(--muted); margin-top:2px;}
+.progress-track{
+  height:8px; background:var(--line); border-radius:999px; margin-top:12px; overflow:hidden;
+}
+.progress-fill{height:100%; background:var(--gold); border-radius:999px; transition:width .3s;}
+.campaign-card .cfoot{display:flex; justify-content:space-between; margin-top:8px; font-size:11.5px; color:var(--muted);}
+.add-tally{
+  display:flex; align-items:center; gap:10px; margin-top:14px;
+}
+.tallybtn{
+  width:34px; height:34px; border-radius:9px; background:var(--teal); color:#f5f1e2;
+  display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; cursor:pointer;
+}
+
+/* ---- classes & channels ---- */
+.class-card{
+  background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden; margin-bottom:12px;
+}
+.class-head{padding:14px 15px; cursor:pointer;}
+.class-series{font-size:11px; letter-spacing:.3px; color:var(--teal); font-weight:700; text-transform:uppercase;}
+.class-title{font-size:14.5px; font-weight:600; margin-top:3px; line-height:1.3;}
+.class-meta{font-size:12px; color:var(--muted); margin-top:4px;}
+.class-video{display:none;}
+.class-video.open{display:block;}
+.class-video-wrap{position:relative; width:100%; padding-top:56.25%; background:#000;}
+.class-video-wrap iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+.vcard{flex:0 0 190px; text-decoration:none; color:inherit; display:block;}
+.vthumb{width:190px; height:107px; border-radius:12px; overflow:hidden; background:var(--line);}
+.vthumb img{width:100%; height:100%; object-fit:cover; display:block;}
+.vtitle{font-size:12.5px; font-weight:600; margin-top:7px; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+.vmeta{font-size:11px; color:var(--muted); margin-top:2px;}
+.play-card{cursor:pointer;}
+.play-card:active{background:var(--cream);}
+.class-row{display:flex; gap:12px; align-items:center; padding:12px;}
+.class-row .class-head{padding:0; flex:1; min-width:0; cursor:pointer;}
+.cthumb{position:relative; flex:0 0 112px; height:63px; border-radius:10px; overflow:hidden; background:var(--line);}
+.cthumb.small{flex-basis:84px; height:47px; border-radius:8px;}
+.cthumb img{width:100%; height:100%; object-fit:cover; display:block;}
+.playbadge{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px; background:rgba(0,0,0,.28);}
+.player{position:absolute; inset:0; z-index:50; display:none; flex-direction:column; background:var(--cream); overflow-y:auto;}
+.player.open{display:flex;}
+.player-bar{display:flex; align-items:center; gap:10px; padding:14px 16px; padding-top:calc(14px + env(safe-area-inset-top,0px)); background:var(--teal-deep); color:#f5f1e2; flex-shrink:0;}
+.player-bar .backbtn{background:rgba(245,241,226,.12); border-color:rgba(245,241,226,.25); color:#f5f1e2;}
+.player-stage{background:#000; flex-shrink:0;}
+.player-info{padding:14px 18px 6px;}
+.player-fallback{font-size:12px; color:var(--muted); margin-top:10px;}
+.player-fallback a{color:var(--teal); font-weight:600;}
+.player-next{padding:10px 18px 28px;}
+.nextitem{display:flex; gap:10px; align-items:center; padding:8px 0; border-bottom:1px solid var(--line); cursor:pointer;}
+.nextitem:last-child{border-bottom:none;}
+.nexttx{flex:1; min-width:0;}
+.group-head{margin:20px 0 10px;}
+.group-name{font-family:'Amiri',serif; font-size:17px; font-weight:700; line-height:1.3;}
+.group-sub{font-size:12px; color:var(--muted); margin-top:2px;}
+.channel-card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:15px; margin-bottom:12px;}
+.channel-about{font-size:13px; color:var(--muted); line-height:1.5; margin-top:8px;}
+.class-link{display:block; text-align:center; padding:10px; font-size:12.5px; color:var(--teal); font-weight:600; border-top:1px solid var(--line);}
+
+/* subview (More menu detail) */
+.subhead{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+.backbtn{
+  width:32px; height:32px; border-radius:9px; background:var(--panel); border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:15px;
+}
+.subtitle{font-family:'Amiri',serif; font-size:19px; font-weight:700;}
+.placeholder-note{
+  font-size:12.5px; color:var(--muted); background:var(--panel); border:1px dashed var(--line);
+  border-radius:12px; padding:14px; margin-top:12px; line-height:1.5;
+}
+
+/* ---- live features ---- */
+.newtag{display:inline-block; background:var(--gold); color:var(--teal-deep); font-size:9px; font-weight:700; letter-spacing:.4px; padding:1px 5px; border-radius:6px; vertical-align:1px;}
+.feed-note{font-size:12px; color:var(--muted); margin:0 0 10px;}
+.feed-note a{color:var(--teal); font-weight:700; text-decoration:none;}
+.halqa-hero .hlocal{font-size:12.5px; color:var(--gold-soft); margin-top:2px;}
+.halqa-hero .hcount{font-size:20px; font-weight:700; margin-top:10px; color:#fff;}
+.rsvp-btn.wide{flex:1;}
+.rsvp-btn.disabled{opacity:.45;}
+.rsvp-btn.pulse{box-shadow:0 0 0 0 rgba(201,162,75,.7); animation:pulse 1.6s infinite;}
+@keyframes pulse{70%{box-shadow:0 0 0 12px rgba(201,162,75,0);}100%{box-shadow:0 0 0 0 rgba(201,162,75,0);}}
+.notice-box{background:var(--panel); border:1px solid var(--gold); border-left-width:4px; border-radius:12px; padding:12px 14px; font-size:13.5px; margin:12px 0;}
+.carabic{font-family:'Amiri',serif; font-size:22px; color:var(--teal); margin:2px 0 4px; direction:rtl;}
+.tallybtn.off{opacity:.4; pointer-events:none;}
+.toast{position:absolute; left:14px; right:14px; bottom:76px; background:var(--teal-deep); color:#f5f1e2; border:1px solid var(--gold); border-radius:12px; padding:11px 14px; font-size:13px; z-index:60; box-shadow:0 6px 20px rgba(0,0,0,.3); cursor:pointer;}
+.qibla-wrap{display:flex; flex-direction:column; align-items:center; padding-top:4px;}
+.qibla-place{font-size:13px; color:var(--muted); display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:center;}
+.qibla-place select{font:inherit; font-size:13px; background:var(--panel); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:5px 8px;}
+.qibla-dial{position:relative; width:260px; height:260px; margin:18px 0 12px;}
+.qibla-rose{position:absolute; inset:0; border-radius:50%; background:var(--panel); border:3px solid var(--gold); transition:transform .12s linear;}
+.qibla-dial.aligned .qibla-rose{border-color:#3bb273; box-shadow:0 0 0 6px rgba(59,178,115,.25);}
+.qibla-rose span{position:absolute; font-size:13px; font-weight:700; color:var(--muted);}
+.qibla-rose .qn{top:6px; left:50%; transform:translateX(-50%); color:#c0392b;}
+.qibla-rose .qs{bottom:6px; left:50%; transform:translateX(-50%);}
+.qibla-rose .qe{right:10px; top:50%; transform:translateY(-50%);}
+.qibla-rose .qw{left:10px; top:50%; transform:translateY(-50%);}
+.qibla-arm{position:absolute; inset:0;}
+.qibla-arm::before{content:''; position:absolute; left:50%; top:34px; bottom:50%; width:3px; margin-left:-1.5px; background:var(--gold); border-radius:2px;}
+.qibla-kaaba{position:absolute; top:8px; left:50%; transform:translateX(-50%); font-size:28px; line-height:1;}
+.qibla-top{position:absolute; top:-12px; left:50%; margin-left:-9px; border:9px solid transparent; border-top:0; border-bottom:14px solid var(--teal);}
+.qibla-read{font-size:20px; font-weight:700; color:var(--teal); text-align:center;}
+.qibla-sub{font-size:12.5px; color:var(--muted); margin-top:2px; text-align:center;}
+.qibla-actions{display:flex; gap:10px; margin:14px 0; flex-wrap:wrap; justify-content:center;}
+.call{position:absolute; inset:0; background:var(--cream); z-index:70; display:none; flex-direction:column;}
+.call.open{display:flex;}
+.call iframe{flex:1; width:100%; border:0; background:#000;}
+.pplace{font-size:12px; color:var(--gold-soft); margin-top:2px; cursor:pointer;}
+.prayer-card{cursor:pointer;}
+.pset-row{display:flex; gap:8px; align-items:center; margin:8px 0; flex-wrap:wrap;}
+.pset-row label{font-size:12.5px; color:var(--muted); min-width:64px;}
+.pset-row select{font:inherit; font-size:13px; background:var(--panel); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:6px 8px; flex:1; min-width:140px;}
+.ptimes{background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden; margin:12px 0;}
+.ptime{display:flex; justify-content:space-between; padding:13px 16px; border-bottom:1px solid var(--line); font-size:15px;}
+.ptime:last-child{border-bottom:none;}
+.ptime.dim{color:var(--muted); font-size:13.5px;}
+.ptime.next{background:rgba(201,162,75,.18); font-weight:700;}
+.ptime b{font-variant-numeric:tabular-nums;}
+.ucard.photo{padding:0; overflow:hidden; flex:0 0 132px; display:flex; flex-direction:column;}
+.ucard.photo .pimg{width:100%; aspect-ratio:4/5; background:var(--line);}
+.ucard.photo .pimg img{width:100%; height:100%; object-fit:cover; object-position:center 20%; display:block;}
+.ucard.photo .un{margin:8px 8px 0;}
+.ucard.photo .ut{margin:2px 8px 10px;}
+.ucard.photo:not(:has(.un)){padding-bottom:0;}
+.sec-head{display:flex; align-items:flex-end; justify-content:space-between; gap:10px;}
+.autobtn{font:inherit; font-size:12px; color:var(--muted); background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:5px 11px; margin-bottom:8px; cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark"><img src="data:image/png;base64,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" alt="Noor logo"></div>
+      <div>
+        <div class="name">Noor</div>
+        <div class="hijri" id="hijriDate">Loading date…</div>
+      </div>
+    </div>
+    <button class="menubtn" id="menuBtn" type="button" aria-label="More: resources, follow, account">☰</button>
+  </div>
+
+  <div class="screens">
+
+    <!-- HOME -->
+    <div class="screen active" id="screen-home">
+      <h2 class="section-title" style="margin-top:2px">Latest classes</h2>
+      <div class="strip" id="latestStrip"></div>
+      <div style="height:14px"></div>
+      <div class="prayer-card">
+        <div class="next-label">NEXT PRAYER</div>
+        <div class="next-name" id="nextPrayerName">—</div>
+        <div class="next-time" id="nextPrayerTime">Calculating…</div>
+        <div class="pplace" id="prayerPlace"></div>
+        <div class="prayer-row" id="prayerRow"></div>
+      </div>
+
+      <h2 class="section-title">Quick access</h2>
+      <div class="grid" id="quickGrid"></div>
+
+      <div class="sec-head"><h2 class="section-title">Featured shaykhs</h2><button class="autobtn" id="autoToggle" type="button" aria-label="Pause or play the scrolling"></button></div>
+      <div class="strip" id="ulemaStrip"></div>
+
+      <h2 class="section-title">Continue reading</h2>
+      <div class="rowlist">
+        <div class="rowitem" id="homeContinue" data-go="quran">
+          <div class="ic">📖</div>
+          <div class="tx"><span id="hcTitle">Qur'an</span><div class="sub" id="hcSub">Start reading</div></div>
+          <div class="chev">›</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRACTICE (Worship + Library) -->
+    <div class="screen" id="screen-practice">
+      <h2 class="section-title" style="margin-top:2px">Practices</h2>
+      <div class="rowlist" id="worshipList"></div>
+    </div>
+
+    <!-- BOOKS -->
+    <div class="screen" id="screen-books">
+      <h2 class="section-title" style="margin-top:2px">Books &amp; Library</h2>
+      <div class="rowlist" id="libraryList"></div>
+    </div>
+
+    <!-- QURAN -->
+    <div class="screen" id="screen-quran">
+      <h2 class="section-title" style="margin-top:2px">Qur'an</h2>
+      <div class="rowlist">
+        <div class="rowitem"><div class="ic">📖</div><div class="tx">Continue — Al-Kahf<div class="sub">Page 12 of 24</div></div><div class="chev">›</div></div>
+        <div class="rowitem"><div class="ic">🔎</div><div class="tx">Browse by Surah<div class="sub">114 chapters</div></div><div class="chev">›</div></div>
+        <div class="rowitem"><div class="ic">🎧</div><div class="tx">Listen — recitation<div class="sub">Choose a reciter</div></div><div class="chev">›</div></div>
+        <div class="rowitem"><div class="ic">🔖</div><div class="tx">My Bookmarks<div class="sub">4 saved</div></div><div class="chev">›</div></div>
+      </div>
+    </div>
+
+    <!-- HADITH -->
+    <div class="screen" id="screen-hadith">
+      <h2 class="section-title" style="margin-top:2px">Hadith</h2>
+      <div class="placeholder-note">The hadith library is coming soon, in shaa Allah. Until then, the Duas section (Practices) names the source of each supplication.</div>
+    </div>
+
+    <!-- MORE (Resources + Social + subviews) -->
+    <div class="screen" id="screen-more">
+      <h2 class="section-title" style="margin-top:2px">Resources</h2>
+      <div class="rowlist" id="resourceList"></div>
+      <h2 class="section-title">Follow</h2>
+      <div class="rowlist" id="socialList"></div>
+      <h2 class="section-title">Account</h2>
+      <div class="rowlist">
+        <div class="rowitem"><div class="ic">⭐</div><div class="tx">Favorites</div><div class="chev">›</div></div>
+        <div class="rowitem"><div class="ic">📊</div><div class="tx">Reading statistics</div><div class="chev">›</div></div>
+        <div class="rowitem"><div class="ic">🔔</div><div class="tx">Notifications</div><div class="chev">›</div></div>
+      </div>
+    </div>
+
+    <!-- HALQA & COMMUNITY -->
+    <div class="screen" id="screen-halqa">
+      <div class="subhead">
+        <div class="backbtn" id="halqaBack">←</div>
+        <div class="subtitle">Halqa &amp; Community</div>
+      </div>
+
+      <div class="halqa-hero">
+        <div class="hname">Halqa-e-Zikr</div>
+        <div class="hwhen">Every Saturday · 8:30 – 9:30 PM (India time)</div>
+        <div class="hlocal" id="halqaLocal"></div>
+        <div class="hcount" id="halqaCountdown"></div>
+        <div class="hmeta">
+          <div class="hchip">📍 Offline circle</div>
+          <div class="hchip">💻 Online via video call</div>
+        </div>
+        <div class="rsvp-row">
+          <div class="rsvp-btn primary" id="rsvpOnline">I'll join online</div>
+          <div class="rsvp-btn ghost" id="rsvpOffline">I'll attend in person</div>
+        </div>
+        <div class="attend-note" id="attendNote"></div>
+        <div class="rsvp-row">
+          <div class="rsvp-btn primary wide" id="joinNow">Join the halqa</div>
+        </div>
+        <div class="rsvp-row">
+          <div class="rsvp-btn ghost" id="addCal">📅 Add to calendar</div>
+          <div class="rsvp-btn ghost" id="remindBtn" hidden>🔔 Remind me</div>
+        </div>
+      </div>
+
+      <div class="notice-box" id="halqaNotice" hidden></div>
+
+      <div class="etiquette-box">
+        <b>Before you join</b>
+        Please keep your audio and video off during the circle. The room opens 15 minutes before the start — latecomers are welcome to join quietly.
+      </div>
+
+      <h2 class="section-title">Collective dhikr</h2>
+      <div class="campaign-card">
+        <div class="ctitle" id="campaignTitle">Collective dhikr</div>
+        <div class="carabic" id="campaignArabic" hidden></div>
+        <div class="csub" id="campaignSub"></div>
+        <div class="progress-track"><div class="progress-fill" id="campaignFill" style="width:0%"></div></div>
+        <div class="cfoot"><span id="campaignCount">0</span><span id="campaignPct"></span></div>
+        <div class="add-tally">
+          <div class="tallybtn" data-add="1">+1</div>
+          <div class="tallybtn" data-add="33">+33</div>
+          <div class="tallybtn" data-add="100">+100</div>
+        </div>
+        <div class="csub" id="myTally" style="margin-top:10px"></div>
+      </div>
+
+      <h2 class="section-title">Recent updates</h2>
+      <div class="rowlist">
+        <div class="rowitem"><div class="ic">✅</div><div class="tx">Previous dua completed<div class="sub">Alhamdulillah — accepted, in sha Allah</div></div></div>
+        <div class="rowitem"><div class="ic">🕯️</div><div class="tx">This week's circle confirmed<div class="sub">Offline + online, as usual</div></div></div>
+      </div>
+    </div>
+
+    <!-- CLASSES & CHANNELS -->
+    <div class="screen" id="screen-classes">
+      <div class="subhead">
+        <div class="backbtn" id="classesBack">←</div>
+        <div class="subtitle">Classes &amp; Channels</div>
+      </div>
+      <div class="placeholder-note" style="margin-top:0; margin-bottom:14px;">
+        Daily dars and weekly lectures shared from partner channels. Tap a class to watch.
+      </div>
+      <div class="feed-note" id="feedNote" hidden></div>
+      <div class="set-picker" id="classTabs" style="margin-top:0; margin-bottom:6px;">
+        <div class="setbtn on" data-v="series">Series</div>
+        <div class="setbtn" data-v="speakers">Shaykhs</div>
+        <div class="setbtn" data-v="channels">Channels</div>
+      </div>
+      <div id="classList"></div>
+    </div>
+
+    <!-- generic sub-detail screen -->
+    <div class="screen" id="screen-detail">
+      <div class="subhead">
+        <div class="backbtn" id="detailBack">←</div>
+        <div class="subtitle" id="detailTitle">Section</div>
+      </div>
+      <div id="detailBody"></div>
+    </div>
+
+  </div>
+
+  <div class="navbar">
+    <div class="navitem" data-tab="practice"><div class="nic">🕌</div>Practices</div>
+    <div class="navitem" data-tab="books"><div class="nic">📚</div>Books</div>
+    <div class="navitem home active" data-tab="home"><div class="nic"><img src="data:image/png;base64,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" alt="Home"></div>Home</div>
+    <div class="navitem" data-tab="quran"><div class="nic">📖</div>Qur'an</div>
+    <div class="navitem" data-tab="hadith"><div class="nic">📜</div>Hadith</div>
+  </div>
+
+  <div class="player" id="player">
+    <div class="player-bar">
+      <div class="backbtn" id="playerClose" aria-label="Close player">✕</div>
+      <div class="subtitle">Now playing</div>
+    </div>
+    <div class="player-stage">
+      <div class="class-video-wrap">
+        <iframe id="playerFrame" referrerpolicy="strict-origin-when-cross-origin" src="about:blank" title="Class video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="player-info">
+      <div class="class-series" id="pSeries"></div>
+      <div class="class-title" id="pTitle" style="font-size:16px"></div>
+      <div class="class-meta" id="pMeta"></div>
+      <div class="player-fallback">Video not loading? <a id="pYT" href="#" target="_blank" rel="noopener">Open on YouTube</a></div>
+    </div>
+    <div class="player-next">
+      <div class="group-name" style="margin-bottom:10px">Up next</div>
+      <div id="pNext"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script>
+/* If js/config.js has a typo the browser drops the whole file and every online feature silently switches off. Say so. */
+if(!self.NOOR_CONFIG){
+  self.NOOR_CONFIG = {};
+  document.addEventListener('DOMContentLoaded', function(){
+    var b = document.createElement('div');
+    b.style.cssText = 'position:fixed;left:0;right:0;top:0;z-index:99;background:#8a1c1c;color:#fff;padding:8px 12px;font:12px/1.4 sans-serif;text-align:center';
+    b.textContent = 'Settings file (js/config.js) has a typo, so online features are off. Check for a missing comma, quote or bracket.';
+    document.body.appendChild(b);
+  });
+}
+</script>
+<script src="js/core.js"></script>
+<script src="js/backend.js"></script>
+<script>
+(function(){
+  // ---------- data ----------
+  var quick = [
+    {ic:"🕋", lb:"Qibla", go:"qibla"},
+    {ic:"📿", lb:"Tasbeeh", go:"tasbeeh"},
+    {ic:"🤲", lb:"Duas", go:"duas"},
+    {ic:"📅", lb:"Calendar", go:"calendar"},
+    {ic:"🕯️", lb:"Halqa", go:"halqa"}
+  ];
+
+
+
+  var worship = [
+    ["🕌","Prayer Times","Today's schedule & notifications"],
+    ["🕋","Qibla","Direction finder"],
+    ["📅","Islamic Calendar","Hijri dates & events"],
+    ["🤲","Duas","Daily supplications"],
+    ["🌙","Islamic Months","Significance & virtues"],
+    ["🌅","Daily Awrad","Morning & evening litanies"],
+    ["📜","Khatam","Communal recitation tracker"],
+    ["📿","Tasbeeh","Digital dhikr counter"]
+  ];
+
+  var library = [
+    ["🕌","Dalail ul Khairat","Daily wird & progress"],
+    ["🎥","Classes & Channels","Daily dars & weekly lecture series"],
+    ["🎵","Poetry & Naat","Videos from the family channel"],
+    ["📰","Articles","Reflections & teachings"],
+    ["⬇️","Downloads","Offline content"],
+    ["🔖","My Bookmarks","Saved passages"],
+    ["⭐","Favorites","Your saved items"],
+    ["📊","Reading Statistics","Track your progress"]
+  ];
+
+  var channels = {
+    darulilm:{
+      name:"DAR UL ILM", handle:"@Darulilm1",
+      url:"https://www.youtube.com/@Darulilm1",
+      about:"Daily dars, weekly lecture series and special programs shared across the community groups."
+    }
+  };
+
+  // Credentials are exactly as given in the shared lecture announcements.
+  var speakers = {
+    shahbaz:{name:"Moulana Hafiz Syed Shahbaz Anwari", short:"Shahbaz Anwari", ini:"SA", role:"Daily 5-minute dars"},
+    khaleel:{name:"Khateeb-ul-Hijāz Moulana Dr. Hafiz Syed Shah Khaleelullah Basheer Owais Bukhari Naqshbandi", short:"Khaleelullah Bukhari", ini:"KB", role:"Director, AFIRC"},
+    muzaffer:{name:"Moulana Syed Muzaffer Ali Soofi Ash'ari Hanafi Qadri", short:"Muzaffer Ali Soofi", ini:"MS", role:"Dar ul Ilm, Jeddah"},
+    shakir:{name:"Peerzaadah Mohammed Shakir Siddiqui Naqshbandi Qhadri Mujaddidi", short:"Shakir Siddiqui", ini:"SS", role:"Kamil, Jamia Nizamia"},
+    irfan:{name:"Moulana Hafiz Mohammed Irfan Khan Qadri", short:"Irfan Khan", ini:"IK", role:"Kamil, Jamia Nizamia"},
+    mujahid:{name:"Moulana Hafiz Syed Mujahid Naqshbandi", short:"Mujahid Naqshbandi", ini:"MN", role:"Fazil, Jamia Nizamia"}
+  };
+
+  var MAHFIL = "32nd Year's 7 Days Mahafile Zikre Aal-o-Ashaabe Rasul ﷺ";
+  var classes = [
+    {series:"5 Minutes Madrasa", ep:"Day 261", title:"Ahl-e-Sunnat ka Daily 5-Min Islamic Dars", spk:"shahbaz", ch:"darulilm", cadence:"Daily", yt:"Vc0NivmvgG0"},
+    {series:"5 Minutes Madrasa", ep:"Day 158", title:"Ahl-e-Sunnat ka Daily 5-Min Islamic Dars", spk:"shahbaz", ch:"darulilm", cadence:"Daily", yt:"uU5E28DFgJE"},
+    {series:"5 Minutes Madrasa", ep:"Day 157", title:"Ahl-e-Sunnat ka Daily 5-Min Islamic Dars", spk:"shahbaz", ch:"darulilm", cadence:"Daily", yt:"Rux9SZxd144"},
+    {series:"5 Minutes Madrasa", ep:"Day 156", title:"Ahl-e-Sunnat ka Daily 5-Min Islamic Dars", spk:"shahbaz", ch:"darulilm", cadence:"Daily", yt:"PKAZGu3Zppc"},
+    {series:"Weekly Islaahe Aqaayed-o-A'maal", ep:"Lecture 238", title:"Tazkira Muhaddis-e-Dakkan — Syed Abdul Shah Naqshbandi Qadri", spk:"khaleel", ch:"darulilm", cadence:"Weekly", yt:"M3Hj2ENrK5Y"},
+    {series:"Dars-e-Imaniyat wa Aqaayid", ep:"Dars 22", title:"Completion of Beliefs in Prophethood", note:"Text: Maraqi as-Sa'adaat — Imam Hasan Shurunbulali", spk:"muzaffer", ch:"darulilm", cadence:"Course", yt:"1JLZa4Kwudw"},
+    {series:"Sunnat-wo-Masayil", ep:"", title:"Tayammum — Tarika Aur Ahkaam", spk:"shakir", ch:"darulilm", cadence:"Lecture series", yt:"s8qr17g2s20"},
+    {series:MAHFIL, ep:"Day 5", title:"Khasaayese Ahle Bait (Rz) — Quran, Hadees aur Mustanad Tareekh se", spk:"irfan", ch:"darulilm", cadence:"Special series", yt:"m8MQdfIxwYY"},
+    {series:MAHFIL, ep:"Day 4", title:"Manaaqib-e-Ahle Bait (Rz) — Fazail, Muhabbat aur Aqeedah-e-Ahle Sunnat", spk:"mujahid", ch:"darulilm", cadence:"Special series", yt:"pB4AwP36P68"}
+  ];
+
+  var resources = [
+    ["🧕","Ulema","Scholars & teachers"],
+    ["🕊️","Shaykhs","Living teachers directory"],
+    ["🤝","Donate","Support the mission"],
+    ["🫱","Bay'ah","Spiritual allegiance"],
+    ["🔗","Golden Chain","Silsila lineage"],
+    ["🤖","Shaykh AI","Ask a guided question"],
+    ["🔔","Notifications","Reminders & alerts"],
+    ["🕯️","Halqa & Community","Weekly zikr circle — join online or in person"]
+  ];
+
+  var social = [
+    ["▶️","YouTube","DAR UL ILM channel"],
+    ["📷","Instagram","Daily reminders"],
+    ["📘","Facebook","Community updates"],
+    ["🛒","Amazon","Recommended reading"],
+    ["🎧","Soundtracks","Nasheeds & recitation"]
+  ];
+
+  // ---------- render ----------
+  function el(tag, cls, html){var e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e;}
+  // Titles now come from YouTube, so never insert them as raw HTML.
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
+  var OTHER = {name:"DAR UL ILM", short:"Dar ul Ilm", ini:"DI", role:"More from the channel"};
+  function spOf(c){ return speakers[c.spk] || OTHER; }
+  function isNew(c){ var t = Date.parse(c.publishedAt || ''); return !isNaN(t) && Date.now() - t < 7*86400000; }
+
+  function renderPrayerRow(){ document.getElementById('prayerRow').innerHTML = ''; }   // filled in by js/features.js (real times)
+
+  function renderQuick(){
+    var g = document.getElementById('quickGrid');
+    g.innerHTML = '';
+    quick.forEach(function(q){
+      var c = el('div','qcard','<div class="ic">'+q.ic+'</div><div class="lb">'+q.lb+'</div>');
+      c.addEventListener('click', function(){ route(q.go); });
+      g.appendChild(c);
+    });
+  }
+
+  function renderUlema(){
+    var s = document.getElementById('ulemaStrip');
+    s.innerHTML = '';
+    // Photos come from js/config.js (shaykhPhotos), so names and captions can be added without touching this file.
+    // If an older config.js has no shaykhPhotos at all, fall back to the bundled photos. An empty list [] still means "show none".
+    var cfgP = window.NOOR_CONFIG && window.NOOR_CONFIG.shaykhPhotos;
+    var photos = Array.isArray(cfgP) ? cfgP : [1,2,3].map(function(n){ return {src:'photos/shaykh-'+n+'.jpg', name:'', note:''}; });
+    photos.forEach(function(ph){
+      var c = el('div','ucard photo','<div class="pimg"><img loading="lazy" alt="'+esc(ph.name || 'Shaykh')+'" src="'+esc(ph.src)+'"></div>'+
+        (ph.name ? '<div class="un">'+esc(ph.name)+'</div>' : '')+(ph.note ? '<div class="ut">'+esc(ph.note)+'</div>' : ''));
+      if(ph.profile){ c.setAttribute('data-profile', ph.profile); c.setAttribute('data-src', ph.src); c.style.cursor = 'pointer'; }
+      s.appendChild(c);
+    });
+    Object.keys(speakers).forEach(function(k){
+      var u = speakers[k];
+      s.appendChild(el('div','ucard','<div class="av">'+u.ini+'</div><div class="un">'+u.short+'</div><div class="ut">'+u.role+'</div>')).setAttribute('data-k', k);
+    });
+    startAutoScroll(s);
+  }
+
+  // Gentle continuous scroll for the shaykh strip. Pauses while a finger/mouse is on it, resumes a moment later,
+  // loops seamlessly (the cards are repeated once) and is switched off for people who prefer reduced motion.
+  function startAutoScroll(s){
+    if(!s.__wired){
+      s.__wired = true;
+      s.addEventListener('click', function(e){
+        var pc = e.target.closest ? e.target.closest('[data-profile]') : null;
+        if(pc && window.NoorScholar){ window.NoorScholar.open(pc.getAttribute('data-profile'), pc.getAttribute('data-src')); return; }
+        var c = e.target.closest ? e.target.closest('[data-k]') : null; if(c) openSpeaker(c.getAttribute('data-k'));
+      });
+      var btn = document.getElementById('autoToggle');
+      btn.addEventListener('click', function(){ autoOn = !autoOn; try{ localStorage.setItem('noor_autoscroll', autoOn ? '1' : '0'); }catch(e){} startAutoScroll(s); });
+    }
+    if(s.__stop){ s.__stop(); }
+    Array.prototype.slice.call(s.querySelectorAll('[data-clone]')).forEach(function(n){ n.remove(); });
+    var btn2 = document.getElementById('autoToggle');
+    btn2.textContent = autoOn ? '⏸ Pause' : '▶ Play';
+    if(!autoOn) return;
+    var originals = Array.prototype.slice.call(s.children);
+    originals.forEach(function(n){ var c = n.cloneNode(true); c.setAttribute('data-clone','1'); c.setAttribute('aria-hidden','true'); s.appendChild(c); });
+    var pos = s.scrollLeft, paused = false, resumeTimer = null, raf = 0, last = 0, SPEED = 28;   // pixels per second
+    function pause(){ paused = true; clearTimeout(resumeTimer); }
+    function resumeSoon(ms){ clearTimeout(resumeTimer); resumeTimer = setTimeout(function(){ pos = s.scrollLeft; paused = false; }, ms); }
+    var onEnd = function(){ resumeSoon(2500); };
+    var listeners = [['touchstart',pause],['pointerdown',pause],['wheel',pause],['mouseenter',pause],['focusin',pause],
+                     ['touchend',onEnd],['touchcancel',onEnd],['pointerup',onEnd],['mouseleave',onEnd],['focusout',onEnd],['wheel',onEnd]];
+    listeners.forEach(function(l){ s.addEventListener(l[0], l[1], {passive:true}); });
+    function tick(t){
+      raf = requestAnimationFrame(tick);
+      var dt = last ? Math.min(100, t - last) : 16; last = t;
+      if(paused || s.offsetParent === null) return;           // not shown (another screen is open) or being touched
+      var loop = s.children[originals.length].offsetLeft - s.children[0].offsetLeft;
+      if(loop <= 0) return;
+      pos += SPEED * dt / 1000;
+      if(pos >= loop) pos -= loop;
+      s.scrollLeft = pos;
+    }
+    raf = requestAnimationFrame(tick);
+    s.__stop = function(){ cancelAnimationFrame(raf); clearTimeout(resumeTimer); listeners.forEach(function(l){ s.removeEventListener(l[0], l[1]); }); };
+  }
+  // On by default. Phones with "reduce motion" / "remove animations" turned on start paused, and the button lets people start it.
+  var autoOn = true;
+  try{
+    var savedAuto = localStorage.getItem('noor_autoscroll');
+    if(savedAuto === '1' || savedAuto === '0') autoOn = savedAuto === '1';
+    else if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) autoOn = false;
+  }catch(e){}
+
+  function renderLatest(){
+    var s = document.getElementById('latestStrip');
+    s.innerHTML = '';
+    classes.slice().forEach(function(c){
+      var a = el('div','vcard','');
+      a.addEventListener('click', function(){ openPlayer(classes.indexOf(c)); });
+      a.innerHTML =
+        '<div class="vthumb"><img loading="lazy" alt="" src="https://img.youtube.com/vi/'+c.yt+'/mqdefault.jpg" onerror="this.style.display=\'none\'"></div>'+
+        '<div class="vtitle">'+esc(c.title)+'</div>'+
+        '<div class="vmeta">'+esc(spOf(c).short)+(c.ep ? ' · '+esc(c.ep) : '')+(isNew(c) ? ' <span class="newtag">NEW</span>' : '')+'</div>';
+      s.appendChild(a);
+    });
+  }
+
+  function renderList(containerId, items){
+    var box = document.getElementById(containerId);
+    box.innerHTML = '';
+    items.forEach(function(it){
+      var row = el('div','rowitem','<div class="ic">'+it[0]+'</div><div class="tx">'+it[1]+'<div class="sub">'+it[2]+'</div></div><div class="chev">›</div>');
+      row.addEventListener('click', function(){
+        if(it[1] === 'Tasbeeh'){ route('tasbeeh'); }
+        else if(it[1] === 'Prayer Times'){ route('prayers'); }
+        else if(it[1] === 'Qibla'){ route('qibla'); }
+        else if(it[1] === 'Qur\'an' || it[1] === 'My Bookmarks' || it[1] === 'Reading Statistics'){ route('quran'); }
+        else if(it[1] === 'Hadith'){ route('hadith'); }
+        else if(it[1] === 'Islamic Calendar'){ route('calendar'); }
+        else if(it[1] === 'Islamic Months'){ route('months'); }
+        else if(it[1] === 'Duas'){ route('duas'); }
+        else if(it[1] === 'Donate'){ route('donate'); }
+        else if(it[1] === 'Notifications'){ route('halqa'); }
+        else if(it[1] === 'Halqa & Community'){ route('halqa'); }
+        else if(it[1] === 'Classes & Channels'){ route('classes'); }
+        else if(it[1] === 'Poetry & Naat'){ route('family'); }
+        else if(it[1] === 'Ulema' || it[1] === 'Shaykhs'){ route('classes:speakers'); }
+        else if(it[1] === 'YouTube'){ window.open(channels.darulilm.url, '_blank', 'noopener'); }
+        else { route('detail:'+it[1]+':'+it[2]+' — coming soon, in shaa Allah.'); }
+      });
+      box.appendChild(row);
+    });
+  }
+
+  renderPrayerRow();
+  renderQuick();
+  renderUlema();
+  renderLatest();
+  renderList('worshipList', worship);
+  renderList('libraryList', library);
+  renderList('resourceList', resources);
+  renderList('socialList', social);
+
+  // bind static home row-items with data-go
+  document.querySelectorAll('[data-go]').forEach(function(elm){
+    elm.addEventListener('click', function(){ route(elm.getAttribute('data-go')); });
+  });
+
+  // ---------- hijri date (approximation, offline) ----------
+  (function(){
+    try{
+      var d = new Date();
+      var g = document.getElementById('hijriDate');
+      var f = new Intl.DateTimeFormat('en-u-ca-islamic', {day:'numeric', month:'long', year:'numeric'});
+      var t = f.format(d);
+      g.textContent = /AH/.test(t) ? t : t + ' AH';
+    }catch(e){
+      document.getElementById('hijriDate').textContent = new Date().toDateString();
+    }
+  })();
+
+  // ---------- tab routing ----------
+  var tabs = ['home','practice','books','quran','hadith','more'], lastTab = 'home';
+  var screenHooks = [];
+  function showScreen(id){
+    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('screen-'+id).classList.add('active');
+    document.querySelectorAll('.screens')[0].scrollTop = 0;
+    screenHooks.forEach(function(fn){ try{ fn(id); }catch(e){} });
+  }
+  function setNav(tab){
+    if(tabs.indexOf(tab) !== -1) lastTab = tab;
+    document.querySelectorAll('.navitem').forEach(function(n){
+      n.classList.toggle('active', n.getAttribute('data-tab')===tab);
+    });
+  }
+  document.querySelectorAll('.navitem').forEach(function(n){
+    n.addEventListener('click', function(){
+      var t = n.getAttribute('data-tab');
+      setNav(t);
+      showScreen(t);
+    });
+  });
+  document.getElementById('menuBtn').addEventListener('click', function(){ setNav('more'); showScreen('more'); });
+  function backTab(){ setNav(lastTab); showScreen(lastTab); }
+
+  // route(): "home" | "practice" | "quran" | "more" | "tasbeeh" | "detail:Title:Body"
+  function route(target){
+    if(target === 'tasbeeh'){ showScreen('tasbeeh-full'); return; }
+    if(target === 'halqa'){ showScreen('halqa'); return; }
+    if(target === 'qibla'){ showScreen('qibla'); return; }
+    if(target === 'prayers'){ showScreen('prayers'); return; }
+    if(['calendar','months','duas','donate'].indexOf(target) !== -1){ showScreen(target); return; }
+    if(target === 'family'){ if(window.NoorFamily){ window.NoorFamily.open('poetry'); } return; }
+    if(target === 'classes'){ showScreen('classes'); return; }
+    if(target === 'classes:speakers'){ setClassView('speakers'); showScreen('classes'); return; }
+    if(target.indexOf('detail:') === 0){
+      var parts = target.split(':');
+      var title = parts[1], body = parts.slice(2).join(':');
+      document.getElementById('detailTitle').textContent = title;
+      document.getElementById('detailBody').innerHTML = '<div class="placeholder-note">'+body+'</div>';
+      showScreen('detail');
+      return;
+    }
+    if(tabs.indexOf(target) !== -1){ setNav(target); showScreen(target); }
+  }
+  document.getElementById('detailBack').addEventListener('click', function(){
+    backTab();
+  });
+  document.getElementById('halqaBack').addEventListener('click', function(){
+    showScreen('home'); setNav('home');
+  });
+
+  // ---------- Classes & Channels ----------
+  document.getElementById('classesBack').addEventListener('click', function(){
+    backTab();
+  });
+
+  var classView = 'series';
+  var classFilter = null;
+
+  function lectureCard(c){
+    var sp = spOf(c);
+    var card = el('div','class-card play-card','');
+    var top = classView === 'series' ? (c.ep || c.cadence) : c.series + (c.ep ? ' · ' + c.ep : '');
+    var meta = (classView === 'speakers' ? '' : sp.short) + (c.note ? (classView === 'speakers' ? '' : ' · ') + c.note : '');
+    card.innerHTML =
+      '<div class="class-row">'+
+        '<div class="cthumb"><img loading="lazy" alt="" src="https://img.youtube.com/vi/'+c.yt+'/mqdefault.jpg" onerror="this.style.display=\'none\'"><span class="playbadge">▶</span></div>'+
+        '<div class="class-head">'+
+          '<div class="class-series">'+esc(top)+(isNew(c) ? ' <span class="newtag">NEW</span>' : '')+'</div>'+
+          '<div class="class-title">'+esc(c.title)+'</div>'+
+          (meta ? '<div class="class-meta">'+esc(meta)+'</div>' : '')+
+        '</div>'+
+      '</div>';
+    card.addEventListener('click', function(){ openPlayer(classes.indexOf(c)); });
+    return card;
+  }
+
+  function groupHead(name, sub){
+    return el('div','group-head','<div class="group-name">'+name+'</div>'+(sub ? '<div class="group-sub">'+sub+'</div>' : ''));
+  }
+
+  function renderClasses(){
+    var box = document.getElementById('classList');
+    box.innerHTML = '';
+    var seen = [], order = [];
+    function groupBy(keyFn){
+      var map = {}; order = [];
+      classes.forEach(function(c){
+        var k = keyFn(c);
+        if(!map[k]){ map[k] = []; order.push(k); }
+        map[k].push(c);
+      });
+      return map;
+    }
+    var map;
+    if(classView === 'series'){
+      map = groupBy(function(c){ return c.series; });
+      order.forEach(function(k){
+        var list = map[k];
+        var names = [];
+        list.forEach(function(c){ var n = spOf(c).name; if(names.indexOf(n) === -1) names.push(n); });
+        box.appendChild(groupHead(k, list.length + (list.length === 1 ? ' class' : ' classes') + ' · ' + list[0].cadence));
+        list.forEach(function(c){ box.appendChild(lectureCard(c)); });
+      });
+    } else if(classView === 'speakers'){
+      map = groupBy(function(c){ return c.spk || 'other'; });
+      if(classFilter){
+        var back = el('div','tbtn','← All shaykhs');
+        back.style.display = 'inline-block'; back.style.marginBottom = '4px';
+        back.addEventListener('click', function(){ classFilter = null; renderClasses(); });
+        box.appendChild(back);
+      }
+      order.forEach(function(k){
+        if(classFilter && k !== classFilter) return;
+        var sp = speakers[k] || OTHER, list = map[k];
+        box.appendChild(groupHead(sp.name, sp.role + ' · ' + list.length + (list.length === 1 ? ' class' : ' classes')));
+        list.forEach(function(c){ box.appendChild(lectureCard(c)); });
+      });
+    } else {
+      map = groupBy(function(c){ return c.ch; });
+      order.forEach(function(k){
+        var ch = channels[k], list = map[k];
+        var head = el('div','channel-card',
+          '<div class="group-name">'+ch.name+'</div>'+
+          '<div class="group-sub">'+ch.handle+' · '+list.length+' classes saved</div>'+
+          '<div class="channel-about">'+ch.about+'</div>'+
+          '<a class="class-link" style="border-top:none; padding:8px 0 0; text-align:left;" href="'+ch.url+'" target="_blank" rel="noopener">Open channel on YouTube ↗</a>');
+        box.appendChild(head);
+        list.forEach(function(c){ box.appendChild(lectureCard(c)); });
+      });
+    }
+  }
+
+  document.querySelectorAll('#classTabs .setbtn').forEach(function(b){
+    b.addEventListener('click', function(){
+      classView = b.getAttribute('data-v'); classFilter = null;
+      document.querySelectorAll('#classTabs .setbtn').forEach(function(x){
+        x.classList.toggle('on', x === b);
+      });
+      renderClasses();
+    });
+  });
+  renderClasses();
+
+  // ---------- In-app video player ----------
+  var playerEl = document.getElementById('player');
+  var playerFrame = document.getElementById('playerFrame');
+  function openPlayer(i){
+    var c = classes[i], sp = spOf(c);
+    document.getElementById('pSeries').textContent = c.series + (c.ep ? ' · ' + c.ep : '');
+    document.getElementById('pTitle').textContent = c.title;
+    document.getElementById('pMeta').textContent = sp.name;
+    document.getElementById('pYT').href = 'https://youtu.be/' + c.yt;
+    playerFrame.src = 'https://www.youtube.com/embed/' + c.yt + '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+    var next = document.getElementById('pNext');
+    next.innerHTML = '';
+    var rest = classes.map(function(x, k){ return k; }).filter(function(k){ return k !== i; });
+    rest.sort(function(a, b){ return (classes[b].series === c.series) - (classes[a].series === c.series); });
+    rest.forEach(function(k){
+      var x = classes[k];
+      var row = el('div','nextitem',
+        '<div class="cthumb small"><img loading="lazy" alt="" src="https://img.youtube.com/vi/'+x.yt+'/default.jpg" onerror="this.style.display=\'none\'"><span class="playbadge">▶</span></div>'+
+        '<div class="nexttx"><div class="class-title" style="font-size:13px">'+esc(x.title)+'</div>'+
+        '<div class="class-meta">'+esc(spOf(x).short)+(x.ep ? ' · '+esc(x.ep) : '')+'</div></div>');
+      row.addEventListener('click', function(){ openPlayer(k); });
+      next.appendChild(row);
+    });
+    playerEl.classList.add('open');
+    playerEl.scrollTop = 0;
+  }
+  function closePlayer(){
+    playerFrame.src = 'about:blank';   // stops playback
+    playerEl.classList.remove('open');
+  }
+  document.getElementById('playerClose').addEventListener('click', closePlayer);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closePlayer(); });
+
+  function setClassView(v, spk){
+    classView = v; classFilter = spk || null;
+    document.querySelectorAll('#classTabs .setbtn').forEach(function(x){
+      x.classList.toggle('on', x.getAttribute('data-v') === v);
+    });
+    renderClasses();
+  }
+  function openSpeaker(k){ setClassView('speakers', k); showScreen('classes'); }
+
+  // ---------- Tasbeeh screen (built + inserted) ----------
+  var tScreen = el('div','screen','');
+  tScreen.id = 'screen-tasbeeh-full';
+  tScreen.innerHTML =
+    '<div class="subhead"><div class="backbtn" id="tasbeehBack">←</div><div class="subtitle">Tasbeeh</div></div>'+
+    '<div class="tasbeeh-wrap">'+
+      '<div class="dhikr-pill" id="dhikrLabel">سُبْحَانَ اللّٰه</div>'+
+      '<div class="counter-ring" id="ring"><div class="num" id="count">0</div><div class="of" id="ofTarget">of 33</div></div>'+
+      '<div class="set-picker">'+
+        '<div class="setbtn on" data-t="33">33</div>'+
+        '<div class="setbtn" data-t="99">99</div>'+
+        '<div class="setbtn" data-t="100">100</div>'+
+      '</div>'+
+      '<div class="tasbeeh-actions"><div class="tbtn reset" id="resetT">Reset</div><div class="tbtn" id="cycleDhikr">Change dhikr</div></div>'+
+      '<div class="tasbeeh-actions"><div class="tbtn" id="shareT">🤝 Add my count to the community</div></div>'+
+    '</div>';
+  document.querySelector('.screens').appendChild(tScreen);
+
+  var dhikrs = ['سُبْحَانَ اللّٰه', 'الْحَمْدُ لِلّٰه', 'اللّٰهُ أَكْبَر', 'لَا إِلَٰهَ إِلَّا اللّٰه'];
+  var dIdx = 0, count = 0, target = 33;
+
+  try{
+    var saved = JSON.parse(localStorage.getItem('noor_tasbeeh') || 'null');
+    if(saved){ count = saved.count||0; target = saved.target||33; dIdx = saved.dIdx||0; }
+  }catch(e){}
+
+  function persist(){
+    try{ localStorage.setItem('noor_tasbeeh', JSON.stringify({count:count, target:target, dIdx:dIdx})); }catch(e){}
+  }
+  function renderT(){
+    document.getElementById('count').textContent = count;
+    document.getElementById('ofTarget').textContent = 'of ' + target;
+    document.getElementById('dhikrLabel').textContent = dhikrs[dIdx];
+    document.querySelectorAll('.tasbeeh-wrap .setbtn').forEach(function(b){
+      b.classList.toggle('on', parseInt(b.getAttribute('data-t'),10) === target);
+    });
+  }
+  renderT();
+
+  document.getElementById('ring').addEventListener('click', function(){
+    count++;
+    if(count >= target){
+      if(navigator.vibrate){ try{ navigator.vibrate(40); }catch(e){} }
+    }
+    renderT(); persist();
+  });
+  document.getElementById('resetT').addEventListener('click', function(e){
+    e.stopPropagation(); count = 0; renderT(); persist();
+  });
+  document.getElementById('cycleDhikr').addEventListener('click', function(e){
+    e.stopPropagation(); dIdx = (dIdx+1) % dhikrs.length; renderT(); persist();
+  });
+  document.querySelectorAll('.tasbeeh-wrap .setbtn').forEach(function(b){
+    b.addEventListener('click', function(){ target = parseInt(b.getAttribute('data-t'),10); renderT(); persist(); });
+  });
+  document.getElementById('tasbeehBack').addEventListener('click', function(){
+    backTab();
+  });
+
+  // ---------- hooks for js/features.js ----------
+  var curatedClasses = classes.slice();
+  window.Noor = {backTab: function(){ backTab(); }, 
+    el: el, esc: esc, showScreen: showScreen, setNav: setNav, route: route,
+    onScreen: function(fn){ screenHooks.push(fn); },
+    curated: curatedClasses,
+    setClasses: function(list){ classes = list; renderLatest(); renderClasses(); },
+    playById: function(id){ for(var k = 0; k < classes.length; k++){ if(classes[k].yt === id){ openPlayer(k); return true; } } return false; },
+    tasbeeh: { get: function(){ return count; }, reset: function(){ count = 0; renderT(); persist(); } }
+  };
+
+})();
+
+if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
+  window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+}
+</script>
+<script src="js/features.js"></script>
+<script src="js/quran-data.js"></script>
+<script src="js/quran.js"></script>
+<script src="js/faith.js"></script>
+<script src="js/scholar.js"></script>
+<script src="js/family.js"></script>
+<script src="js/install.js"></script>
+</body>
+</html>
