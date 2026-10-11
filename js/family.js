@@ -34,7 +34,7 @@
   var N = root.Noor, doc = root.document;
   if (!N || !doc) return;
   var cfg = root.NOOR_CONFIG || {}, fam = Object.assign({}, DEFAULTS, cfg.familyChannel || {});
-  var tab = 'poetry', who = 0, oldest = sget('noor_family_order') === 'old', state = { items: null, error: '', loading: false };
+  var tab = 'poetry', who = 0, state = { items: null, error: '', loading: false };
   function sget(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function sset(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 
@@ -78,6 +78,8 @@
     })('', 1);
   }
 
+  // Dars & Tafseer opens oldest first (a series reads from Part 1 onward); Poetry opens newest first. A choice made on a screen is remembered for that screen.
+  function isOldest() { var v = sget('noor_family_order_' + tab); return v ? v === 'old' : tab === 'dars'; }
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   function dateLabel(iso) { var d = new Date(iso || ''); return isNaN(d) ? '' : d.getDate() + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear(); }
   function ago(iso) {
@@ -119,8 +121,8 @@
     else if (state.error === 'unconfigured') h += '<div class="fm-note">The live list is not connected yet (add <b>youtubeApiKey</b> in js/config.js).</div>';
     else if (state.error && state.error !== 'stale') h += '<div class="fm-note">Could not load the videos (' + esc(state.error) + '). <a href="#" id="fmRetry">Try again</a></div>';
     else if (!list.length) h += '<div class="fm-note">' + (tab === 'poetry' ? 'No poetry or naat videos yet. A video is placed here when its title has a word like Naat, Nazm, Kalam, Manqabat or Poetry.' : 'No videos found' + (who ? ' for this shaykh' : ' yet') + '.') + '</div>';
-    list = list.slice().sort(function (a, b) { var d = (Date.parse(b.at || 0) || 0) - (Date.parse(a.at || 0) || 0); return oldest ? -d : d; });
-    if (list.length > 1) h += '<div class="fm-order">Sort by upload date <span data-o="new" class="' + (oldest ? '' : 'on') + '">Newest</span><span data-o="old" class="' + (oldest ? 'on' : '') + '">Oldest</span></div>';
+    list = list.slice().sort(function (a, b) { var d = (Date.parse(b.at || 0) || 0) - (Date.parse(a.at || 0) || 0); return isOldest() ? -d : d; });
+    if (list.length > 1) h += '<div class="fm-order">Sort by upload date <span data-o="new" class="' + (isOldest() ? '' : 'on') + '">Newest</span><span data-o="old" class="' + (isOldest() ? 'on' : '') + '">Oldest</span></div>';
     list.forEach(function (v) {
       h += '<div class="fm-card"><div class="fm-th" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg"><div class="fm-play">▶</div></div>' +
         '<div class="fm-t">' + esc(v.title) + '</div><div class="fm-m"><span>' + esc(dateLabel(v.at)) + (ago(v.at) ? ' · ' + esc(ago(v.at)) : '') + '</span><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=' + v.id + '">Open on YouTube ↗</a></div></div>';
@@ -131,7 +133,7 @@
   }
 
   body.addEventListener('click', function (e) {
-    var o = e.target.closest && e.target.closest('.fm-order span'); if (o) { oldest = o.getAttribute('data-o') === 'old'; sset('noor_family_order', oldest ? 'old' : 'new'); paint(); return; }
+    var o = e.target.closest && e.target.closest('.fm-order span'); if (o) { sset('noor_family_order_' + tab, o.getAttribute('data-o') === 'old' ? 'old' : 'new'); paint(); return; }
     var c = e.target.closest && e.target.closest('.fm-chip'); if (c) { who = +c.getAttribute('data-w') || 0; paint(); return; }
     var th = e.target.closest && e.target.closest('.fm-th');
     if (th && !th.querySelector('iframe') && validId(th.getAttribute('data-id'))) {
