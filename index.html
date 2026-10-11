@@ -75,6 +75,7 @@ h2.section-title{
 h2.section-title:first-child{margin-top:2px;}
 
 /* ---- prayer times: a compact row of tiles under Quick access ---- */
+#latestStrip{margin-bottom:18px;}
 .prayer-card{margin:10px 0 16px; color:var(--ink); cursor:pointer;}
 .prayer-card .pc-head{display:flex; justify-content:space-between; align-items:baseline; gap:8px; font-size:12.5px; color:var(--muted); margin:0 2px 6px;}
 .prayer-card .pc-head .pplace{max-width:42%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:none;}
@@ -356,9 +357,7 @@ h2.section-title:first-child{margin-top:2px;}
 
     <!-- HOME -->
     <div class="screen active" id="screen-home">
-      <h2 class="section-title" style="margin-top:2px">Latest classes</h2>
-      <div class="strip" id="latestStrip"></div>
-      <h2 class="section-title">Quick access</h2>
+      <h2 class="section-title" style="margin-top:2px">Quick access</h2>
       <div class="grid" id="quickGrid"></div>
 
       <div class="prayer-card" role="button" aria-label="Open prayer times">
@@ -366,6 +365,8 @@ h2.section-title:first-child{margin-top:2px;}
         <div class="prayer-row" id="prayerRow"></div>
       </div>
 
+      <h2 class="section-title">Latest classes</h2>
+      <div class="strip" id="latestStrip"></div>
       <div class="sec-head"><h2 class="section-title">Featured shaykhs</h2><button class="autobtn" id="autoToggle" type="button" aria-label="Pause or play the scrolling"></button></div>
       <div class="strip" id="ulemaStrip"></div>
 
