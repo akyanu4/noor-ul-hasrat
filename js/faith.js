@@ -20,11 +20,11 @@
       'The month of the Prophet\'s ﷺ birth (a Monday) and of his arrival in Madina on the Hijra. The 12th is the date most commonly cited, and scholars differ on the exact day.',
       'A good time to study the Seerah and to send abundant salawat upon him ﷺ.',
       'He ﷺ fasted on Mondays and said it was the day he was born (Muslim).'] },
-    { n: 'Rabi al-Thani', ar: 'ربيع الآخر', pts: [
+    { n: 'Rabi ath-Thani', ar: 'ربيع الآخر', pts: [
       'No special acts are prescribed for this month. Stay steady in your daily dhikr, Qur\'an and prayer.'] },
     { n: 'Jumada al-Ula', ar: 'جمادى الأولى', pts: [
       'No special acts are prescribed. Keep the regular sunnah fasts: Mondays, Thursdays and the White Days (13th, 14th, 15th of each month).'] },
-    { n: 'Jumada al-Thani', ar: 'جمادى الآخرة', pts: [
+    { n: 'Jumada ath-Thani', ar: 'جمادى الآخرة', pts: [
       'No special acts are prescribed. Use it to build habits before Rajab, Sha\'ban and Ramadan.'] },
     { n: 'Rajab', ar: 'رجب', sacred: true, pts: [
       'One of the four sacred months (Qur\'an 9:36): avoid wrongdoing in it especially.',
@@ -180,6 +180,14 @@
 
     /* ----- calendar ----- */
     var adj = parseInt(sget('noor_hijri_adj'), 10) || 0; if (adj < -2 || adj > 2) adj = 0;
+    // The date under "Noor" at the top uses the same calculation and the same moon-sighting adjustment as the calendar, so they always agree.
+    function paintHeader() {
+      var hd = doc.getElementById('hijriDate'); if (!hd || !api.supported()) return;
+      var h = hijriAt(dayStart(Date.now(), new Date().getTimezoneOffset()), adj);
+      if (h) hd.textContent = h.d + ' ' + MONTHS[h.m - 1].n + ' ' + h.y + ' AH';
+    }
+    paintHeader();
+    doc.addEventListener('visibilitychange', function () { if (doc.visibilityState === 'visible') paintHeader(); });
     var WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     var MON3 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     function paintCal() {
@@ -201,8 +209,8 @@
       html += '</div><div class="fnote">Also recurring: the White Days (13th, 14th, 15th of each Hijri month), Mondays and Thursdays, and Jumu\'ah every Friday.</div>' +
         '<button class="fbtn" id="goMonths" style="background:var(--panel);color:var(--ink);border:1px solid var(--line)">Importance of each month ›</button>';
       calBox.innerHTML = html;
-      calBox.querySelector('#hMinus').onclick = function () { adj = Math.max(-2, adj - 1); sset('noor_hijri_adj', String(adj)); paintCal(); };
-      calBox.querySelector('#hPlus').onclick = function () { adj = Math.min(2, adj + 1); sset('noor_hijri_adj', String(adj)); paintCal(); };
+      calBox.querySelector('#hMinus').onclick = function () { adj = Math.max(-2, adj - 1); sset('noor_hijri_adj', String(adj)); paintHeader(); paintCal(); };
+      calBox.querySelector('#hPlus').onclick = function () { adj = Math.min(2, adj + 1); sset('noor_hijri_adj', String(adj)); paintHeader(); paintCal(); };
       calBox.querySelector('#goMonths').onclick = function () { N.showScreen('months'); };
     }
 
