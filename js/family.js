@@ -86,9 +86,15 @@
     return d < 1 ? 'today' : d < 31 ? d + (d === 1 ? ' day ago' : ' days ago') : d < 365 ? Math.floor(d / 30) + ' mo ago' : Math.floor(d / 365) + ' yr ago';
   }
 
+  // Built-in filters for Dars & Tafseer. A video is matched by words in its title (English spellings and Urdu script).
+  // Replace them from config.js (familyShaykhs) if the titles use other words.
+  var DEFAULT_SHAYKHS = [
+    { name: 'Hazrat Abdul Qadeer Siddiqui (R.A.)', match: 'abdul\\s*qa?u?a?d[ie]e?r|qa?u?a?deer|hasrat|hasrath|bahr[\\s-]*ul|\u0639\u0628\u062F\u0627?\u0644?\u0642\u062F\u06CC\u0631|\u062D\u0633\u0631\u062A' },
+    { name: 'Azam Siddiqui (R.A.)', match: 'a[\'\u2019]?z+am|\u0627\u0639\u0638\u0645' }
+  ];
   function shaykhs() {
-    var out = [];
-    (Array.isArray(cfg.familyShaykhs) ? cfg.familyShaykhs : []).forEach(function (x) {
+    var out = [], src = Array.isArray(cfg.familyShaykhs) && cfg.familyShaykhs.length ? cfg.familyShaykhs : DEFAULT_SHAYKHS;
+    src.forEach(function (x) {
       if (!x || !x.name || !x.match) return;
       try { out.push({ name: String(x.name), re: new RegExp(String(x.match), 'i') }); } catch (e) {}
     });
@@ -102,10 +108,11 @@
         '<div class="fm-note" style="margin-top:-4px">His poems are on Sufinama (7 poems; the site may limit how many pages you can open for free). We link to it instead of copying the text.</div>';
     } else {
       var sh = shaykhs();
-      if (who > sh.length) who = 0;
+      if (who > sh.length + 1) who = 0;
       if (sh.length) {
-        h += '<div class="fm-chips"><div class="fm-chip' + (who === 0 ? ' on' : '') + '" data-w="0">All shaykhs</div>' + sh.map(function (x, i) { return '<div class="fm-chip' + (who === i + 1 ? ' on' : '') + '" data-w="' + (i + 1) + '">' + esc(x.name) + '</div>'; }).join('') + '</div>';
-        if (who > 0) list = list.filter(function (v) { return sh[who - 1].re.test(v.title); });
+        h += '<div class="fm-chips"><div class="fm-chip' + (who === 0 ? ' on' : '') + '" data-w="0">All</div>' + sh.map(function (x, i) { return '<div class="fm-chip' + (who === i + 1 ? ' on' : '') + '" data-w="' + (i + 1) + '">' + esc(x.name) + '</div>'; }).join('') + '<div class="fm-chip' + (who === sh.length + 1 ? ' on' : '') + '" data-w="' + (sh.length + 1) + '">Other</div></div>';
+        if (who > 0 && who <= sh.length) list = list.filter(function (v) { return sh[who - 1].re.test(v.title); });
+        else if (who === sh.length + 1) list = list.filter(function (v) { return !sh.some(function (x) { return x.re.test(v.title); }); });
       }
     }
     if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest videos…</div>';
@@ -118,7 +125,7 @@
       h += '<div class="fm-card"><div class="fm-th" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg"><div class="fm-play">▶</div></div>' +
         '<div class="fm-t">' + esc(v.title) + '</div><div class="fm-m"><span>' + esc(dateLabel(v.at)) + (ago(v.at) ? ' · ' + esc(ago(v.at)) : '') + '</span><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=' + v.id + '">Open on YouTube ↗</a></div></div>';
     });
-    if (tab === 'dars') h += '<div class="fm-note">Videos from several shaykhs, newest first.' + (shaykhs().length ? '' : ' Shaykh filters appear here once their names are added.') + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
+    if (tab === 'dars') h += '<div class="fm-note">Videos from several shaykhs, newest first.' + '' + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
     else h += '<div class="fm-note">' + (state.error === 'stale' ? '(Showing the saved list: you appear to be offline.) ' : '') + '<a href="#" id="fmRefresh">Refresh ↻</a></div>';
     body.innerHTML = h;
   }
