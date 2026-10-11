@@ -1041,12 +1041,14 @@ if(!self.NOOR_CONFIG){
   });
 
   // ---------- hooks for js/features.js ----------
-  var curatedClasses = classes.slice();
+  var curatedClasses = classes.slice(), classListeners = [];
   window.Noor = {backTab: function(){ backTab(); }, 
     el: el, esc: esc, showScreen: showScreen, setNav: setNav, route: route,
     onScreen: function(fn){ screenHooks.push(fn); },
     curated: curatedClasses,
-    setClasses: function(list){ classes = list; renderLatest(); renderClasses(); },
+    setClasses: function(list){ classes = list; renderLatest(); renderClasses(); classListeners.forEach(function(fn){ try{ fn(); }catch(e){} }); },
+    getClasses: function(){ return classes; },
+    onClasses: function(fn){ classListeners.push(fn); },
     playById: function(id){ for(var k = 0; k < classes.length; k++){ if(classes[k].yt === id){ openPlayer(k); return true; } } return false; },
     tasbeeh: { get: function(){ return count; }, reset: function(){ count = 0; renderT(); persist(); } }
   };
@@ -1063,6 +1065,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
 <script src="js/faith.js"></script>
 <script src="js/scholar.js"></script>
 <script src="js/family.js"></script>
+<script src="js/events.js"></script>
 <script src="js/install.js"></script>
 </body>
 </html>
