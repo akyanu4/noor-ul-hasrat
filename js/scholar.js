@@ -35,7 +35,7 @@
           'The path of tasawwuf: Haqiqat-e-Bay\'at (the reality of the pledge), Nizamul Amal-e-Fuqara (the schedule of deeds of the seekers), Sama\'.',
           'The Ascension: Haqiqat-e-Mi\'raj.',
           'Questions of daily life: the issues of usury (Sud ka Mas\'alah), divorce, and wills and inheritance, and poetry recital in Islam.',
-          'His poems (kalaam) can be read on Sufinama, and naat and poetry videos are under "Poetry & Naat" in the app (buttons below).',
+          'His kalaam and naat videos are under "Poetry & Naat" in the app (button below).',
           'Some of his works have been translated and explained in English by Shaikh Mir Asedullah Quadri, for example "Islamic Wisdom" (Hikmat-e-Islamiyyah).'
         ]],
         ['His resting place and Urs', [
@@ -51,8 +51,7 @@
       sources: [
         ['Siddiq Gulshan (family site)', 'https://siddiqgulshan.com/index.php/family-members/prof-mohammed-abdul-qadeer-siddiqui/'],
         ['Hasrat Chicago, scholar profile', 'https://hasratchicago.com/scholars/hazrat-muhammad-abdul-qadeer-siddiqui-hasrat/'],
-        ['Sahih Iman, books and translations', 'https://sahihiman.com/tasawwuf/shaikh-abdul-qadeer-siddiqui/'],
-        ['Sufinama profile', 'https://sufinama.org/poets/maulana-abdul-qadeer-siddiqui/profile']
+        ['Sahih Iman, books and translations', 'https://sahihiman.com/tasawwuf/shaikh-abdul-qadeer-siddiqui/']
       ]
     }
   };

@@ -4,7 +4,6 @@
   'use strict';
 
   var DEFAULTS = { id: 'UCi1Sn0S3O29-Hw87RT_fOXw', name: 'Shadman', url: 'https://www.youtube.com/@Shadman-ob4wf' };
-  var KALAAM = 'https://sufinama.org/poets/maulana-abdul-qadeer-siddiqui/kalaam';
   var TTL = 30 * 60 * 1000, PAGES = 3;
 
   // Poetry and naat are told apart by words in the title or description (English, Roman Urdu and Urdu script).
@@ -120,8 +119,6 @@
     s.querySelector('#fmTitle').textContent = tab === 'poetry' ? 'Poetry & Naat' : 'Dars & Tafseer';
     if (tab === 'poetry') {
       if (kalaam && kalaam.length) h += poemsHtml();
-      else h += '<a class="fm-btn" style="margin-top:0" target="_blank" rel="noopener" href="' + esc(KALAAM) + '">Read the kalaam of Maulana Abdul Qadeer Siddiqui ›</a>' +
-        '<div class="fm-note" style="margin-top:-4px">His poems are on Sufinama (the site may limit how many pages you can open for free).</div>';
     } else {
       var sh = shaykhs();
       if (who > sh.length + 1) who = 0;
