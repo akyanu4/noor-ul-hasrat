@@ -1,0 +1,4 @@
+{
+  "about": "Add poems here. Each poem needs a title and text. Use \\n for a new line. lang is \"ur\" (Urdu or Arabic script, shown right to left) or \"en\" (Roman Urdu or English). Optional: source (for example the book name). Save, upload to GitHub, and it appears under Books > Poetry & Naat.",
+  "poems": []
+}

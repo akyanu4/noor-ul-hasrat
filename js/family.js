@@ -34,7 +34,7 @@
   var N = root.Noor, doc = root.document;
   if (!N || !doc) return;
   var cfg = root.NOOR_CONFIG || {}, fam = Object.assign({}, DEFAULTS, cfg.familyChannel || {});
-  var tab = 'poetry', who = 0, state = { items: null, error: '', loading: false };
+  var kalaam = null, tab = 'poetry', who = 0, state = { items: null, error: '', loading: false };
   function sget(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function sset(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 
@@ -46,6 +46,8 @@
     '.fm-play{position:absolute;inset:0;margin:auto;width:54px;height:54px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;padding-left:4px;box-sizing:border-box}' +
     '.fm-t{padding:10px 12px 4px;font-size:14px;font-weight:600;line-height:1.35}.fm-m{display:flex;justify-content:space-between;align-items:center;padding:0 12px 10px;font-size:11.5px;color:var(--muted)}.fm-m a{color:var(--teal)}' +
     '.fm-note{font-size:12px;color:var(--muted);line-height:1.55;margin:6px 2px 12px}.fm-note a{color:var(--teal)}' +
+    '.fm-poem{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden}.fm-poem summary{padding:12px 14px;font-size:14.5px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px}.fm-poem summary::after{content:"›";color:var(--muted);transition:transform .2s}.fm-poem[open] summary::after{transform:rotate(90deg)}' +
+    '.fm-pt{padding:2px 16px 14px;white-space:pre-wrap;line-height:2;font-size:15px}.fm-pt.ur{direction:rtl;text-align:right;font-family:Amiri,serif;font-size:21px;line-height:2.3}.fm-ps{padding:0 16px 12px;font-size:11.5px;color:var(--muted)}' +
     '.fm-order{display:flex;justify-content:flex-end;gap:6px;margin:0 0 10px;font-size:12px;color:var(--muted);align-items:center}.fm-order span{padding:4px 10px;border:1px solid var(--line);border-radius:14px;cursor:pointer;background:var(--panel)}.fm-order span.on{background:var(--teal);color:#fff;border-color:var(--teal)}' +
     '.fm-chips{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}.fm-chip{flex:none;padding:7px 12px;border:1px solid var(--line);border-radius:18px;font-size:12.5px;background:var(--panel);cursor:pointer;color:var(--muted);white-space:nowrap}.fm-chip.on{background:var(--teal);color:#fff;border-color:var(--teal)}' +
     '.fm-btn{display:block;text-align:center;background:var(--gold);color:#1a2421;font-weight:700;border-radius:12px;padding:13px;font-size:15px;text-decoration:none;margin:12px 0}';
@@ -56,6 +58,17 @@
   var body = s.querySelector('#fmBody');
   s.querySelector('#fmBack').addEventListener('click', function () { N.backTab(); });
 
+  function loadKalaam() {
+    fetch('data/kalaam.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (d) {
+      kalaam = (d && Array.isArray(d.poems) ? d.poems : []).filter(function (x) { return x && x.title && x.text; }); paint();
+    }).catch(function () { kalaam = []; paint(); });
+  }
+  function poemsHtml() {
+    if (!kalaam || !kalaam.length) return '';
+    return '<h2 class="section-title" style="margin-top:0">Kalaam</h2>' + kalaam.map(function (x) {
+      return '<details class="fm-poem"><summary>' + esc(x.title) + '</summary><div class="fm-pt' + (x.lang === 'ur' ? ' ur' : '') + '">' + esc(x.text) + '</div>' + (x.source ? '<div class="fm-ps">' + esc(x.source) + '</div>' : '') + '</details>';
+    }).join('') + '<h2 class="section-title" style="margin-top:14px">Videos</h2>';
+  }
   function load(force) {
     var key = cfg.youtubeApiKey, pl = uploads(fam.id);
     if (!key || !pl) { state.items = []; state.error = 'unconfigured'; paint(); return; }
@@ -106,8 +119,9 @@
     var h = '', list = (state.items || []).filter(function (v) { return v.kind === tab; });
     s.querySelector('#fmTitle').textContent = tab === 'poetry' ? 'Poetry & Naat' : 'Dars & Tafseer';
     if (tab === 'poetry') {
-      h += '<a class="fm-btn" style="margin-top:0" target="_blank" rel="noopener" href="' + esc(KALAAM) + '">Read the kalaam of Maulana Abdul Qadeer Siddiqui ›</a>' +
-        '<div class="fm-note" style="margin-top:-4px">His poems are on Sufinama (7 poems; the site may limit how many pages you can open for free). We link to it instead of copying the text.</div>';
+      if (kalaam && kalaam.length) h += poemsHtml();
+      else h += '<a class="fm-btn" style="margin-top:0" target="_blank" rel="noopener" href="' + esc(KALAAM) + '">Read the kalaam of Maulana Abdul Qadeer Siddiqui ›</a>' +
+        '<div class="fm-note" style="margin-top:-4px">His poems are on Sufinama (the site may limit how many pages you can open for free).</div>';
     } else {
       var sh = shaykhs();
       if (who > sh.length + 1) who = 0;
@@ -142,7 +156,7 @@
     if (e.target.id === 'fmRetry' || e.target.id === 'fmRefresh') { e.preventDefault(); load(true); }
   });
 
-  api.open = function (which) { if (which === 'poetry' || which === 'dars') { if (tab !== which) who = 0; tab = which; } paint(); N.showScreen('family'); if (state.items === null) load(false); };
+  api.open = function (which) { if (kalaam === null) loadKalaam(); if (which === 'poetry' || which === 'dars') { if (tab !== which) who = 0; tab = which; } paint(); N.showScreen('family'); if (state.items === null) load(false); };
   N.onScreen(function (id) { if (id === 'family' && state.items !== null && !state.loading) load(false); });
   paint();
 })(typeof self !== 'undefined' ? self : this);
