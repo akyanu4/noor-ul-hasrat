@@ -4,7 +4,7 @@
   'use strict';
 
   var DEFAULTS = { id: 'UCi1Sn0S3O29-Hw87RT_fOXw', name: 'Shadman', url: 'https://www.youtube.com/@Shadman-ob4wf' };
-  var TTL = 30 * 60 * 1000, PAGES = 3;
+  var TTL = 30 * 60 * 1000, PAGES = 10, SHOW = 30;   // up to 10 x 50 = 500 uploads are read; the list shows 30 at a time
 
   // Poetry and naat are told apart by words in the title or description (English, Roman Urdu and Urdu script).
   var POETRY = /\bna['’]?a?t\b|\bnaa?t\b|nasheed|naasheed|\bnazm\b|\bnazam\b|poetry|poem|\bkalaa?m\b|ghazal|manqabat|manqibat|\bhamd\b|qasee?da|shayari|kulliy+at|diwan|نعت|نظم|کلام|غزل|منقبت|حمد|قصیدہ|شاعری|کلیات/i;
@@ -33,7 +33,7 @@
   var N = root.Noor, doc = root.document;
   if (!N || !doc) return;
   var cfg = root.NOOR_CONFIG || {}, fam = Object.assign({}, DEFAULTS, cfg.familyChannel || {});
-  var kalaam = null, tab = 'poetry', who = 0, state = { items: null, error: '', loading: false };
+  var kalaam = null, tab = 'poetry', who = 0, topic = 0, limit = SHOW, state = { items: null, error: '', loading: false };
   function sget(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function sset(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 
@@ -106,6 +106,18 @@
     { name: 'Hazrat Abdul Qadeer Siddiqui (R.A.)', match: 'abdul\\s*qa?u?a?d[ie]e?r|qa?u?a?deer|hasrat|hasrath|bahr[\\s-]*ul|\u0639\u0628\u062F\u0627?\u0644?\u0642\u062F\u06CC\u0631|\u062D\u0633\u0631\u062A' },
     { name: 'Azam Siddiqui (R.A.)', match: 'a[\'\u2019]?z+am|\u0627\u0639\u0638\u0645' }
   ];
+  // Topic filters for Dars & Tafseer (combine with the shaykh filter). Replace from config.js (familyTopics) if needed.
+  var DEFAULT_TOPICS = [
+    { name: 'Tafseer-e-Siddiqui', match: 'tafs[ie]+r[\\s-]*(e|-e)?[\\s-]*siddiq|تفسیر\\s*(صدیقی|صدیق)' }
+  ];
+  function topics() {
+    var out = [], src = Array.isArray(cfg.familyTopics) && cfg.familyTopics.length ? cfg.familyTopics : DEFAULT_TOPICS;
+    src.forEach(function (x) {
+      if (!x || !x.name || !x.match) return;
+      try { out.push({ name: String(x.name), re: new RegExp(String(x.match), 'i') }); } catch (e) {}
+    });
+    return out;
+  }
   function shaykhs() {
     var out = [], src = Array.isArray(cfg.familyShaykhs) && cfg.familyShaykhs.length ? cfg.familyShaykhs : DEFAULT_SHAYKHS;
     src.forEach(function (x) {
@@ -127,6 +139,12 @@
         if (who > 0 && who <= sh.length) list = list.filter(function (v) { return sh[who - 1].re.test(v.title); });
         else if (who === sh.length + 1) list = list.filter(function (v) { return !sh.some(function (x) { return x.re.test(v.title); }); });
       }
+      var tp = topics();
+      if (topic > tp.length) topic = 0;
+      if (tp.length) {
+        h += '<div class="fm-chips"><div class="fm-chip' + (topic === 0 ? ' on' : '') + '" data-tp="0">All topics</div>' + tp.map(function (x, i) { return '<div class="fm-chip' + (topic === i + 1 ? ' on' : '') + '" data-tp="' + (i + 1) + '">' + esc(x.name) + '</div>'; }).join('') + '</div>';
+        if (topic > 0) list = list.filter(function (v) { return tp[topic - 1].re.test(v.title); });
+      }
     }
     if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest videos…</div>';
     else if (state.error === 'unconfigured') h += '<div class="fm-note">The live list is not connected yet (add <b>youtubeApiKey</b> in js/config.js).</div>';
@@ -134,18 +152,22 @@
     else if (!list.length) h += '<div class="fm-note">' + (tab === 'poetry' ? 'No poetry or naat videos yet. A video is placed here when its title has a word like Naat, Nazm, Kalam, Manqabat or Poetry.' : 'No videos found' + (who ? ' for this shaykh' : ' yet') + '.') + '</div>';
     list = list.slice().sort(function (a, b) { var d = (Date.parse(b.at || 0) || 0) - (Date.parse(a.at || 0) || 0); return isOldest() ? -d : d; });
     if (list.length > 1) h += '<div class="fm-order">Sort by upload date <span data-o="new" class="' + (isOldest() ? '' : 'on') + '">Newest</span><span data-o="old" class="' + (isOldest() ? 'on' : '') + '">Oldest</span></div>';
+    var total = list.length; list = list.slice(0, limit);
     list.forEach(function (v) {
       h += '<div class="fm-card"><div class="fm-th" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg"><div class="fm-play">▶</div></div>' +
         '<div class="fm-t">' + esc(v.title) + '</div><div class="fm-m"><span>' + esc(dateLabel(v.at)) + (ago(v.at) ? ' · ' + esc(ago(v.at)) : '') + '</span><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=' + v.id + '">Open on YouTube ↗</a></div></div>';
     });
-    if (tab === 'dars') h += '<div class="fm-note">Videos from several shaykhs, newest first.' + '' + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
+    if (total > list.length) h += '<button class="fm-btn fm-more" type="button" style="border:0;cursor:pointer">Show more (' + (total - list.length) + ' left)</button>';
+    if (tab === 'dars') h += '<div class="fm-note">' + total + ' video' + (total === 1 ? '' : 's') + ' · from several shaykhs.' + '' + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
     else h += '<div class="fm-note">' + (state.error === 'stale' ? '(Showing the saved list: you appear to be offline.) ' : '') + '<a href="#" id="fmRefresh">Refresh ↻</a></div>';
     body.innerHTML = h;
   }
 
   body.addEventListener('click', function (e) {
-    var o = e.target.closest && e.target.closest('.fm-order span'); if (o) { sset('noor_family_order_' + tab, o.getAttribute('data-o') === 'old' ? 'old' : 'new'); paint(); return; }
-    var c = e.target.closest && e.target.closest('.fm-chip'); if (c) { who = +c.getAttribute('data-w') || 0; paint(); return; }
+    var o = e.target.closest && e.target.closest('.fm-order span'); if (o) { sset('noor_family_order_' + tab, o.getAttribute('data-o') === 'old' ? 'old' : 'new'); limit = SHOW; paint(); return; }
+    if (e.target.closest && e.target.closest('.fm-more')) { limit += SHOW; paint(); return; }
+    var tpc = e.target.closest && e.target.closest('[data-tp]'); if (tpc) { topic = +tpc.getAttribute('data-tp') || 0; limit = SHOW; paint(); return; }
+    var c = e.target.closest && e.target.closest('.fm-chip'); if (c && c.hasAttribute('data-w')) { who = +c.getAttribute('data-w') || 0; limit = SHOW; paint(); return; }
     var th = e.target.closest && e.target.closest('.fm-th');
     if (th && !th.querySelector('iframe') && validId(th.getAttribute('data-id'))) {
       th.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + th.getAttribute('data-id') + '?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Video"></iframe>'; return;
@@ -153,7 +175,7 @@
     if (e.target.id === 'fmRetry' || e.target.id === 'fmRefresh') { e.preventDefault(); load(true); }
   });
 
-  api.open = function (which) { if (kalaam === null) loadKalaam(); if (which === 'poetry' || which === 'dars') { if (tab !== which) who = 0; tab = which; } paint(); N.showScreen('family'); if (state.items === null) load(false); };
+  api.open = function (which) { if (kalaam === null) loadKalaam(); if (which === 'poetry' || which === 'dars') { if (tab !== which) { who = 0; topic = 0; limit = SHOW; } tab = which; } paint(); N.showScreen('family'); if (state.items === null) load(false); };
   N.onScreen(function (id) { if (id === 'family' && state.items !== null && !state.loading) load(false); });
   paint();
 })(typeof self !== 'undefined' ? self : this);
