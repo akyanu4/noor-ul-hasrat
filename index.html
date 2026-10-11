@@ -578,7 +578,8 @@ if(!self.NOOR_CONFIG){
   var library = [
     ["🕌","Dalail ul Khairat","Daily wird & progress"],
     ["🎥","Classes & Channels","Daily dars & weekly lecture series"],
-    ["🎵","Poetry & Naat","Videos from the family channel"],
+    ["🎵","Poetry & Naat","Kalaam and naat videos"],
+    ["📖","Dars & Tafseer","Videos from several shaykhs"],
     ["📰","Articles","Reflections & teachings"],
     ["⬇️","Downloads","Offline content"],
     ["🔖","My Bookmarks","Saved passages"],
@@ -757,6 +758,7 @@ if(!self.NOOR_CONFIG){
         else if(it[1] === 'Halqa & Community'){ route('halqa'); }
         else if(it[1] === 'Classes & Channels'){ route('classes'); }
         else if(it[1] === 'Poetry & Naat'){ route('family'); }
+        else if(it[1] === 'Dars & Tafseer'){ route('family:dars'); }
         else if(it[1] === 'Ulema' || it[1] === 'Shaykhs'){ route('classes:speakers'); }
         else if(it[1] === 'YouTube'){ window.open(channels.darulilm.url, '_blank', 'noopener'); }
         else { route('detail:'+it[1]+':'+it[2]+' — coming soon, in shaa Allah.'); }
@@ -824,7 +826,7 @@ if(!self.NOOR_CONFIG){
     if(target === 'qibla'){ showScreen('qibla'); return; }
     if(target === 'prayers'){ showScreen('prayers'); return; }
     if(['calendar','months','duas','donate'].indexOf(target) !== -1){ showScreen(target); return; }
-    if(target === 'family'){ if(window.NoorFamily){ window.NoorFamily.open('poetry'); } return; }
+    if(target === 'family' || target === 'family:dars'){ if(window.NoorFamily){ window.NoorFamily.open(target === 'family' ? 'poetry' : 'dars'); } return; }
     if(target === 'classes'){ showScreen('classes'); return; }
     if(target === 'classes:speakers'){ setClassView('speakers'); showScreen('classes'); return; }
     if(target.indexOf('detail:') === 0){

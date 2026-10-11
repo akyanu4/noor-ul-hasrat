@@ -18,6 +18,10 @@
   // Family YouTube channel for "Poetry & Naat" and "Dars & Tafseer" (uses youtubeApiKey).
   familyChannel: { id: "UCi1Sn0S3O29-Hw87RT_fOXw", name: "Shadman", url: "https://www.youtube.com/@Shadman-ob4wf" },
 
+  // Shaykh filters on the Dars & Tafseer screen. "match" is a word (or words separated by |) that appears in that shaykh's video titles.
+  // Example: familyShaykhs: [ { name: "Shaykh Name", match: "Shaykh Name|short name" } ],
+  familyShaykhs: [],
+
   shaykhPhotos: [
     { src: "photos/shaykh-1.jpg", name: "", note: "" },
     { src: "photos/shaykh-2.jpg", name: "Hazrat Mohammed Abdul Qadeer Siddiqui (Hasrat)", note: "Bahr ul-Uloom, Hyderabad. Tap to read more.", profile: "hasrat" },

@@ -4,6 +4,7 @@
   'use strict';
 
   var DEFAULTS = { id: 'UCi1Sn0S3O29-Hw87RT_fOXw', name: 'Shadman', url: 'https://www.youtube.com/@Shadman-ob4wf' };
+  var KALAAM = 'https://sufinama.org/poets/maulana-abdul-qadeer-siddiqui/kalaam';
   var TTL = 30 * 60 * 1000, PAGES = 3;
 
   // Poetry and naat are told apart by words in the title or description (English, Roman Urdu and Urdu script).
@@ -33,7 +34,7 @@
   var N = root.Noor, doc = root.document;
   if (!N || !doc) return;
   var cfg = root.NOOR_CONFIG || {}, fam = Object.assign({}, DEFAULTS, cfg.familyChannel || {});
-  var tab = 'poetry', state = { items: null, error: '', loading: false };
+  var tab = 'poetry', who = 0, oldest = sget('noor_family_order') === 'old', state = { items: null, error: '', loading: false };
   function sget(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function sset(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 
@@ -45,10 +46,12 @@
     '.fm-play{position:absolute;inset:0;margin:auto;width:54px;height:54px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;padding-left:4px;box-sizing:border-box}' +
     '.fm-t{padding:10px 12px 4px;font-size:14px;font-weight:600;line-height:1.35}.fm-m{display:flex;justify-content:space-between;align-items:center;padding:0 12px 10px;font-size:11.5px;color:var(--muted)}.fm-m a{color:var(--teal)}' +
     '.fm-note{font-size:12px;color:var(--muted);line-height:1.55;margin:6px 2px 12px}.fm-note a{color:var(--teal)}' +
+    '.fm-order{display:flex;justify-content:flex-end;gap:6px;margin:0 0 10px;font-size:12px;color:var(--muted);align-items:center}.fm-order span{padding:4px 10px;border:1px solid var(--line);border-radius:14px;cursor:pointer;background:var(--panel)}.fm-order span.on{background:var(--teal);color:#fff;border-color:var(--teal)}' +
+    '.fm-chips{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}.fm-chip{flex:none;padding:7px 12px;border:1px solid var(--line);border-radius:18px;font-size:12.5px;background:var(--panel);cursor:pointer;color:var(--muted);white-space:nowrap}.fm-chip.on{background:var(--teal);color:#fff;border-color:var(--teal)}' +
     '.fm-btn{display:block;text-align:center;background:var(--gold);color:#1a2421;font-weight:700;border-radius:12px;padding:13px;font-size:15px;text-decoration:none;margin:12px 0}';
   doc.head.appendChild(css);
 
-  var s = N.el('div', 'screen', '<div class="subhead"><div class="backbtn" id="fmBack">←</div><div class="subtitle">Poetry, Naat &amp; Dars</div></div><div id="fmBody"></div>');
+  var s = N.el('div', 'screen', '<div class="subhead"><div class="backbtn" id="fmBack">←</div><div class="subtitle" id="fmTitle">Poetry &amp; Naat</div></div><div id="fmBody"></div>');
   s.id = 'screen-family'; doc.querySelector('.screens').appendChild(s);
   var body = s.querySelector('#fmBody');
   s.querySelector('#fmBack').addEventListener('click', function () { N.backTab(); });
@@ -75,30 +78,54 @@
     })('', 1);
   }
 
+  var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function dateLabel(iso) { var d = new Date(iso || ''); return isNaN(d) ? '' : d.getDate() + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear(); }
   function ago(iso) {
     var t = Date.parse(iso || ''); if (!t) return '';
     var d = Math.floor((Date.now() - t) / 86400000);
     return d < 1 ? 'today' : d < 31 ? d + (d === 1 ? ' day ago' : ' days ago') : d < 365 ? Math.floor(d / 30) + ' mo ago' : Math.floor(d / 365) + ' yr ago';
   }
 
+  function shaykhs() {
+    var out = [];
+    (Array.isArray(cfg.familyShaykhs) ? cfg.familyShaykhs : []).forEach(function (x) {
+      if (!x || !x.name || !x.match) return;
+      try { out.push({ name: String(x.name), re: new RegExp(String(x.match), 'i') }); } catch (e) {}
+    });
+    return out;
+  }
   function paint() {
-    var h = '<div class="fm-tabs"><div class="fm-tab' + (tab === 'poetry' ? ' on' : '') + '" data-t="poetry">Poetry &amp; Naat</div><div class="fm-tab' + (tab === 'dars' ? ' on' : '') + '" data-t="dars">Dars &amp; Tafseer</div></div>';
-    var list = (state.items || []).filter(function (v) { return v.kind === tab; });
+    var h = '', list = (state.items || []).filter(function (v) { return v.kind === tab; });
+    s.querySelector('#fmTitle').textContent = tab === 'poetry' ? 'Poetry & Naat' : 'Dars & Tafseer';
+    if (tab === 'poetry') {
+      h += '<a class="fm-btn" style="margin-top:0" target="_blank" rel="noopener" href="' + esc(KALAAM) + '">Read the kalaam of Maulana Abdul Qadeer Siddiqui ›</a>' +
+        '<div class="fm-note" style="margin-top:-4px">His poems are on Sufinama (7 poems; the site may limit how many pages you can open for free). We link to it instead of copying the text.</div>';
+    } else {
+      var sh = shaykhs();
+      if (who > sh.length) who = 0;
+      if (sh.length) {
+        h += '<div class="fm-chips"><div class="fm-chip' + (who === 0 ? ' on' : '') + '" data-w="0">All shaykhs</div>' + sh.map(function (x, i) { return '<div class="fm-chip' + (who === i + 1 ? ' on' : '') + '" data-w="' + (i + 1) + '">' + esc(x.name) + '</div>'; }).join('') + '</div>';
+        if (who > 0) list = list.filter(function (v) { return sh[who - 1].re.test(v.title); });
+      }
+    }
     if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest videos…</div>';
-    else if (state.error === 'unconfigured') h += '<div class="fm-note">The live list is not connected yet (add <b>youtubeApiKey</b> in js/config.js). You can still watch on the channel below.</div>';
+    else if (state.error === 'unconfigured') h += '<div class="fm-note">The live list is not connected yet (add <b>youtubeApiKey</b> in js/config.js).</div>';
     else if (state.error && state.error !== 'stale') h += '<div class="fm-note">Could not load the videos (' + esc(state.error) + '). <a href="#" id="fmRetry">Try again</a></div>';
-    else if (!list.length) h += '<div class="fm-note">' + (tab === 'poetry' ? 'No poetry or naat videos found yet. They are sorted by the words in each title, so a video titled without words like Naat, Nazm, Kalam, Manqabat or Poetry shows under Dars &amp; Tafseer. Everything is on the channel below.' : 'No videos found yet.') + '</div>';
+    else if (!list.length) h += '<div class="fm-note">' + (tab === 'poetry' ? 'No poetry or naat videos yet. A video is placed here when its title has a word like Naat, Nazm, Kalam, Manqabat or Poetry.' : 'No videos found' + (who ? ' for this shaykh' : ' yet') + '.') + '</div>';
+    list = list.slice().sort(function (a, b) { var d = (Date.parse(b.at || 0) || 0) - (Date.parse(a.at || 0) || 0); return oldest ? -d : d; });
+    if (list.length > 1) h += '<div class="fm-order">Sort by upload date <span data-o="new" class="' + (oldest ? '' : 'on') + '">Newest</span><span data-o="old" class="' + (oldest ? 'on' : '') + '">Oldest</span></div>';
     list.forEach(function (v) {
       h += '<div class="fm-card"><div class="fm-th" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg"><div class="fm-play">▶</div></div>' +
-        '<div class="fm-t">' + esc(v.title) + '</div><div class="fm-m"><span>' + esc(ago(v.at)) + '</span><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=' + v.id + '">Open on YouTube ↗</a></div></div>';
+        '<div class="fm-t">' + esc(v.title) + '</div><div class="fm-m"><span>' + esc(dateLabel(v.at)) + (ago(v.at) ? ' · ' + esc(ago(v.at)) : '') + '</span><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=' + v.id + '">Open on YouTube ↗</a></div></div>';
     });
-    h += '<a class="fm-btn" target="_blank" rel="noopener" href="' + esc(/^https:\/\//.test(fam.url) ? fam.url : DEFAULTS.url) + '">Open the ' + esc(fam.name) + ' channel on YouTube ›</a>' +
-      '<div class="fm-note">Videos are from the family\'s own channel and play from YouTube. They are sorted into Poetry &amp; Naat and Dars &amp; Tafseer automatically, by the words in each title.' + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
+    if (tab === 'dars') h += '<div class="fm-note">Videos from several shaykhs, newest first.' + (shaykhs().length ? '' : ' Shaykh filters appear here once their names are added.') + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
+    else h += '<div class="fm-note">' + (state.error === 'stale' ? '(Showing the saved list: you appear to be offline.) ' : '') + '<a href="#" id="fmRefresh">Refresh ↻</a></div>';
     body.innerHTML = h;
   }
 
   body.addEventListener('click', function (e) {
-    var t = e.target.closest && e.target.closest('.fm-tab'); if (t) { tab = t.getAttribute('data-t'); paint(); return; }
+    var o = e.target.closest && e.target.closest('.fm-order span'); if (o) { oldest = o.getAttribute('data-o') === 'old'; sset('noor_family_order', oldest ? 'old' : 'new'); paint(); return; }
+    var c = e.target.closest && e.target.closest('.fm-chip'); if (c) { who = +c.getAttribute('data-w') || 0; paint(); return; }
     var th = e.target.closest && e.target.closest('.fm-th');
     if (th && !th.querySelector('iframe') && validId(th.getAttribute('data-id'))) {
       th.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + th.getAttribute('data-id') + '?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Video"></iframe>'; return;
@@ -106,7 +133,7 @@
     if (e.target.id === 'fmRetry' || e.target.id === 'fmRefresh') { e.preventDefault(); load(true); }
   });
 
-  api.open = function (which) { if (which === 'poetry' || which === 'dars') tab = which; paint(); N.showScreen('family'); if (state.items === null) load(false); };
+  api.open = function (which) { if (which === 'poetry' || which === 'dars') { if (tab !== which) who = 0; tab = which; } paint(); N.showScreen('family'); if (state.items === null) load(false); };
   N.onScreen(function (id) { if (id === 'family' && state.items !== null && !state.loading) load(false); });
   paint();
 })(typeof self !== 'undefined' ? self : this);
