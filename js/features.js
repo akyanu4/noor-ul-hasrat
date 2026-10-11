@@ -162,7 +162,7 @@
   function renderPrayers() {
     var now = Date.now(), r = null;
     try { r = C.nextPrayer(now, loc.lat, loc.lon, loc.tz, pset); } catch (e) {}
-    $('prayerPlace').textContent = '📍 ' + loc.name + ' · ' + C.METHODS[pset.method].name.replace(/ \(.*/, '');
+    $('prayerPlace').textContent = '📍 ' + loc.name;
     var row = $('prayerRow'); row.innerHTML = '';
     if (!r) {
       $('nextPrayerName').textContent = '—'; $('nextPrayerTime').textContent = 'Not available at this latitude';
