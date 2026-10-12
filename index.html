@@ -640,7 +640,7 @@ if(!self.NOOR_CONFIG){
     {id:'practiceTiles', title:'Prayers & Practices', cls:'t-prac', items:[
       {ic:'🕌', lb:'Prayer Times', go:'prayers'}, {ic:'🕋', lb:'Qibla', go:'qibla'}, {ic:'📖', lb:"Qur'an", go:'quran'}, {ic:'📅', lb:'Calendar', go:'calendar'},
       {ic:'🤲', lb:'Duas', go:'duas'}, {ic:'🌙', lb:'Islamic Months', go:'months'}, {ic:'🕯️', lb:'Halqa', go:'halqa'}, {ic:'🌅', lb:'Daily Awrad', go:soon('Daily Awrad','Morning & evening litanies')},
-      {ic:'📜', lb:'Khatam', go:soon('Khatam','Communal recitation tracker')}, {ic:'📿', lb:'Tasbeeh', go:'tasbeeh'}]},
+      {ic:'📜', lb:'Khatam', go:soon('Khatam','Communal recitation tracker')}, {ic:'📿', lb:'Tasbeeh', go:'tasbeeh'}, {ic:'💚', lb:'Iman Health', go:'iman'}]},
     {id:'literatureTiles', title:'Literature', cls:'t-lit', items:[
       {ic:'🕌', lb:'Dalail ul Khairat', go:soon('Dalail ul Khairat','Daily wird & progress')}, {ic:'🎥', lb:'Classes', go:'classes'}, {ic:'🎵', lb:'Poetry & Naat', go:'family'}, {ic:'📚', lb:'Dars & Tafseer', go:'family:dars'},
       {ic:'📜', lb:'Hadith', go:'hadith'}, {ic:'📰', lb:'Articles', go:soon('Articles','Reflections & teachings')}, {ic:'⬇️', lb:'Downloads', go:soon('Downloads','Offline content')}, {ic:'🔖', lb:'My Bookmarks', go:'quran:marks'},
@@ -875,7 +875,7 @@ if(!self.NOOR_CONFIG){
     if(target === 'halqa'){ showScreen('halqa'); return; }
     if(target === 'qibla'){ showScreen('qibla'); return; }
     if(target === 'prayers'){ showScreen('prayers'); return; }
-    if(['calendar','months','duas','donate'].indexOf(target) !== -1){ showScreen(target); return; }
+    if(['calendar','months','duas','donate','iman'].indexOf(target) !== -1){ showScreen(target); return; }
     if(target === 'family' || target === 'family:dars'){ if(window.NoorFamily){ window.NoorFamily.open(target === 'family' ? 'poetry' : 'dars'); } return; }
     if(target === 'classes'){ showScreen('classes'); return; }
     if(target === 'classes:speakers'){ setClassView('speakers'); showScreen('classes'); return; }
@@ -1061,8 +1061,10 @@ if(!self.NOOR_CONFIG){
     if(saved){ count = saved.count||0; target = saved.target||33; dIdx = saved.dIdx||0; }
   }catch(e){}
 
+  var tasbeehListeners = [];
   function persist(){
     try{ localStorage.setItem('noor_tasbeeh', JSON.stringify({count:count, target:target, dIdx:dIdx})); }catch(e){}
+    tasbeehListeners.forEach(function(fn){ try{ fn(count); }catch(e){} });
   }
   function renderT(){
     document.getElementById('count').textContent = count;
@@ -1103,6 +1105,7 @@ if(!self.NOOR_CONFIG){
     setClasses: function(list){ classes = list; renderLatest(); renderClasses(); classListeners.forEach(function(fn){ try{ fn(); }catch(e){} }); },
     getClasses: function(){ return classes; },
     onClasses: function(fn){ classListeners.push(fn); },
+    onTasbeeh: function(fn){ tasbeehListeners.push(fn); },
     playById: function(id){ for(var k = 0; k < classes.length; k++){ if(classes[k].yt === id){ openPlayer(k); return true; } } return false; },
     tasbeeh: { get: function(){ return count; }, reset: function(){ count = 0; renderT(); persist(); },
       add: function(n){ var before = count; count = Math.max(0, count + (n||0)); if(n > 0 && target && Math.floor(count/target) > Math.floor(before/target) && navigator.vibrate){ try{ navigator.vibrate(40); }catch(e){} } renderT(); persist(); } }
@@ -1122,6 +1125,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
 <script src="js/family.js"></script>
 <script src="js/events.js"></script>
 <script src="js/voice.js"></script>
+<script src="js/iman.js"></script>
 <script src="js/install.js"></script>
 </body>
 </html>
