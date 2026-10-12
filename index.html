@@ -848,7 +848,17 @@ if(!self.NOOR_CONFIG){
       showScreen(t);
     });
   });
-  document.getElementById('menuBtn').addEventListener('click', function(){ cameFrom = ''; setNav('more'); showScreen('more'); });
+  var moreFrom = {screen:'home', tab:'home'};
+  document.getElementById('menuBtn').addEventListener('click', function(){
+    var cur = document.querySelector('.screen.active'), curId = cur ? cur.id.replace('screen-','') : 'home';
+    cameFrom = '';
+    if(curId === 'more'){                                   // tapped again: close More and go back to where we were
+      setNav(moreFrom.tab); showScreen(moreFrom.screen);
+      return;
+    }
+    moreFrom = {screen: curId, tab: lastTab};
+    setNav('more'); showScreen('more');
+  });
   function backTab(){ setNav(lastTab); showScreen(lastTab); }
   screenHooks.push(function(id){
     ['hadith','quran'].forEach(function(t){
