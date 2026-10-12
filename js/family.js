@@ -33,7 +33,8 @@
   var N = root.Noor, doc = root.document;
   if (!N || !doc) return;
   var cfg = root.NOOR_CONFIG || {}, fam = Object.assign({}, DEFAULTS, cfg.familyChannel || {});
-  var kalaam = null, tab = 'poetry', who = 0, topic = 0, limit = SHOW, state = { items: null, error: '', loading: false };
+  var ZIKR = Object.assign({ id: 'UC5a1qQRHACif9Z1xMgmfFyQ', name: 'Bahr ul-Uloom', url: 'https://www.youtube.com/@bahruloloom' }, cfg.zikrChannel || {});
+  var kalaam = null, tab = 'poetry', who = 0, topic = 0, limit = SHOW, fstate = { items: null, error: '', loading: false }, zstate = { items: null, error: '', loading: false }, state = fstate;
   function sget(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function sset(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 
@@ -77,24 +78,26 @@
       return '<details class="fm-poem"><summary>' + esc(x.title) + '</summary><div class="fm-pt' + (x.lang === 'ur' ? ' ur' : '') + '">' + esc(x.text) + '</div>' + (x.source ? '<div class="fm-ps">' + esc(x.source) + '</div>' : '') + '</details>';
     }).join('') + '<h2 class="section-title" style="margin-top:14px">Videos</h2>';
   }
+  function paintIf(st) { if (st === state) paint(); }
   function load(force) {
-    var key = cfg.youtubeApiKey, pl = uploads(fam.id);
-    if (!key || !pl) { state.items = []; state.error = 'unconfigured'; paint(); return; }
-    var cached = null; try { cached = JSON.parse(sget('noor_family_v1') || 'null'); } catch (e) {}
-    if (!force && cached && cached.id === fam.id && Date.now() - cached.t < TTL) { state.items = cached.items; state.error = ''; paint(); return; }
-    state.loading = true; paint();
+    var st = state, ch = tab === 'zikr' ? ZIKR : fam, ck = tab === 'zikr' ? 'noor_zikr_v1' : 'noor_family_v1';
+    var key = cfg.youtubeApiKey, pl = uploads(ch.id);
+    if (!key || !pl) { st.items = []; st.error = 'unconfigured'; paintIf(st); return; }
+    var cached = null; try { cached = JSON.parse(sget(ck) || 'null'); } catch (e) {}
+    if (!force && cached && cached.id === ch.id && Date.now() - cached.t < TTL) { st.items = cached.items; st.error = ''; paintIf(st); return; }
+    st.loading = true; paintIf(st);
     var pages = [];
     (function next(token, n) {
       var u = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=' + encodeURIComponent(pl) + '&key=' + encodeURIComponent(key) + (token ? '&pageToken=' + encodeURIComponent(token) : '');
       fetch(u).then(function (r) { if (!r.ok) throw new Error('YouTube said ' + r.status); return r.json(); }).then(function (d) {
         pages.push(d);
         if (d.nextPageToken && n < PAGES) return next(d.nextPageToken, n + 1);
-        state.items = toItems(pages); state.error = ''; state.loading = false;
-        sset('noor_family_v1', JSON.stringify({ t: Date.now(), id: fam.id, items: state.items })); paint();
+        st.items = toItems(pages); st.error = ''; st.loading = false;
+        sset(ck, JSON.stringify({ t: Date.now(), id: ch.id, items: st.items })); paintIf(st);
       }).catch(function (err) {
-        state.loading = false;
-        if (cached && cached.items) { state.items = cached.items; state.error = 'stale'; } else { state.items = state.items || []; state.error = String(err && err.message || 'error'); }
-        paint();
+        st.loading = false;
+        if (cached && cached.items) { st.items = cached.items; st.error = 'stale'; } else { st.items = st.items || []; st.error = String(err && err.message || 'error'); }
+        paintIf(st);
       });
     })('', 1);
   }
@@ -136,10 +139,12 @@
     return out;
   }
   function paint() {
-    var h = '', list = (state.items || []).filter(function (v) { return v.kind === tab; }), pn = pins();
+    var h = '', list = (state.items || []).filter(function (v) { return tab === 'zikr' || v.kind === tab; }), pn = pins();
     list = list.filter(function (v) { return !pn.some(function (p) { return p.id === v.id; }); });
-    s.querySelector('#fmTitle').textContent = tab === 'poetry' ? 'Poetry & Naat' : 'Dars & Tafseer';
-    if (tab === 'poetry') {
+    s.querySelector('#fmTitle').textContent = tab === 'poetry' ? 'Poetry & Naat' : tab === 'zikr' ? 'Zikr & Sama' : 'Dars & Tafseer';
+    if (tab === 'zikr') {
+      h += '<div class="fm-note" style="margin-top:0">Zikr, sama and more from the <a target="_blank" rel="noopener" href="' + esc(ZIKR.url) + '">' + esc(ZIKR.name) + ' channel</a>. Tap a video to play it here.</div>';
+    } else if (tab === 'poetry') {
       if (kalaam && kalaam.length) h += poemsHtml();
     } else {
       var sh = shaykhs();
@@ -169,7 +174,8 @@
         '<div class="fm-t">' + esc(v.title) + '</div><div class="fm-m"><span>' + esc(dateLabel(v.at)) + (ago(v.at) ? ' · ' + esc(ago(v.at)) : '') + '</span><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=' + v.id + '">Open on YouTube ↗</a></div></div>';
     });
     if (total > list.length) h += '<button class="fm-btn fm-more" type="button" style="border:0;cursor:pointer">Show more (' + (total - list.length) + ' left)</button>';
-    if (tab === 'dars') h += '<div class="fm-note">' + total + ' video' + (total === 1 ? '' : 's') + ' · from several shaykhs.' + '' + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
+    if (tab === 'zikr') h += '<div class="fm-note">' + total + ' video' + (total === 1 ? '' : 's') + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
+    else if (tab === 'dars') h += '<div class="fm-note">' + total + ' video' + (total === 1 ? '' : 's') + ' · from several shaykhs.' + '' + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
     else h += '<div class="fm-note">' + (state.error === 'stale' ? '(Showing the saved list: you appear to be offline.) ' : '') + '<a href="#" id="fmRefresh">Refresh ↻</a></div>';
     body.innerHTML = h;
   }
@@ -186,7 +192,7 @@
     if (e.target.id === 'fmRetry' || e.target.id === 'fmRefresh') { e.preventDefault(); load(true); }
   });
 
-  api.open = function (which) { if (kalaam === null) loadKalaam(); if (pinned === null) loadPinned(); if (which === 'poetry' || which === 'dars') { if (tab !== which) { who = 0; topic = 0; limit = SHOW; } tab = which; } paint(); N.showScreen('family'); if (state.items === null) load(false); };
+  api.ZIKR = ZIKR; api.open = function (which) { if (kalaam === null) loadKalaam(); if (pinned === null) loadPinned(); if (which === 'poetry' || which === 'dars' || which === 'zikr') { if (tab !== which) { who = 0; topic = 0; limit = SHOW; } tab = which; } state = tab === 'zikr' ? zstate : fstate; paint(); N.showScreen('family'); if (state.items === null) load(false); };
   N.onScreen(function (id) { if (id === 'family' && state.items !== null && !state.loading) load(false); });
   paint();
 })(typeof self !== 'undefined' ? self : this);

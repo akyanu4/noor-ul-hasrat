@@ -1,5 +1,5 @@
 {
-  "about": "Videos always shown at the top of a section, even before the channel list loads. Add a line for each: { \"id\": \"<YouTube video id>\", \"title\": \"...\" }. The id is the part after v= in the YouTube link. The \"hasrat\" list is shown on Hazrat's profile page.",
+  "about": "Videos always shown at the top of a section, even before the channel list loads. Add a line for each: { \"id\": \"<YouTube video id>\", \"title\": \"...\" }. The id is the part after v= in the YouTube link. Lists named after a profile (\"hasrat\", \"shaykh1\") are shown on that profile page.",
   "poetry": [
     {
       "id": "FBgQGExm_Ys",
@@ -27,6 +27,18 @@
     {
       "id": "f6mAodSgYxg",
       "title": "Hazrat Maulana Muhammad Abdul Qadeer Siddiqui (Hasrat) RA: A Biography"
+    }
+  ],
+  "shaykh1": [
+    {
+      "id": "nAC270dzD9A",
+      "title": "Zikr Part-2"
+    }
+  ],
+  "zikr": [
+    {
+      "id": "nAC270dzD9A",
+      "title": "Zikr Part-2"
     }
   ]
 }
