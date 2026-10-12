@@ -643,7 +643,7 @@ if(!self.NOOR_CONFIG){
       {ic:'📜', lb:'Khatam', go:soon('Khatam','Communal recitation tracker')}, {ic:'📿', lb:'Tasbeeh', go:'tasbeeh'}]},
     {id:'literatureTiles', title:'Literature', cls:'t-lit', items:[
       {ic:'🕌', lb:'Dalail ul Khairat', go:soon('Dalail ul Khairat','Daily wird & progress')}, {ic:'🎥', lb:'Classes', go:'classes'}, {ic:'🎵', lb:'Poetry & Naat', go:'family'}, {ic:'📚', lb:'Dars & Tafseer', go:'family:dars'},
-      {ic:'📜', lb:'Hadith', go:'hadith'}, {ic:'📰', lb:'Articles', go:soon('Articles','Reflections & teachings')}, {ic:'⬇️', lb:'Downloads', go:soon('Downloads','Offline content')}, {ic:'🔖', lb:'My Bookmarks', go:'quran'},
+      {ic:'📜', lb:'Hadith', go:'hadith'}, {ic:'📰', lb:'Articles', go:soon('Articles','Reflections & teachings')}, {ic:'⬇️', lb:'Downloads', go:soon('Downloads','Offline content')}, {ic:'🔖', lb:'My Bookmarks', go:'quran:marks'},
       {ic:'⭐', lb:'My Favorites', go:soon('My Favorites','Your saved items')}, {ic:'📊', lb:'Reading Stats', go:'quran'}]},
     {id:'resourceList', title:'Resources', cls:'t-res', items:[
       {ic:'🕊️', lb:'Shaykhs', go:'classes:speakers'}, {ic:'🤝', lb:'Donate', go:'donate'}, {ic:'🫱', lb:"Bay'ah", go:soon("Bay'ah",'Spiritual allegiance')}, {ic:'🔗', lb:'Golden Chain', go:soon('Golden Chain','Silsila lineage')},
@@ -764,7 +764,8 @@ if(!self.NOOR_CONFIG){
         if(it[1] === 'Tasbeeh'){ route('tasbeeh'); }
         else if(it[1] === 'Prayer Times'){ route('prayers'); }
         else if(it[1] === 'Qibla'){ route('qibla'); }
-        else if(it[1] === 'Qur\'an' || it[1] === 'My Bookmarks' || it[1] === 'Reading Statistics'){ route('quran'); }
+        else if(it[1] === 'My Bookmarks'){ route('quran:marks'); }
+        else if(it[1] === 'Qur\'an' || it[1] === 'Reading Statistics'){ route('quran'); }
         else if(it[1] === 'Hadith'){ route('hadith'); }
         else if(it[1] === 'Islamic Calendar'){ route('calendar'); }
         else if(it[1] === 'Islamic Months'){ route('months'); }
@@ -826,7 +827,7 @@ if(!self.NOOR_CONFIG){
 
   // ---------- tab routing ----------
   var tabs = ['home','practice','books','quran','hadith','more'], lastTab = 'home';
-  var screenHooks = [];
+  var screenHooks = [], cameFrom = '';
   function showScreen(id){
     document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
     document.getElementById('screen-'+id).classList.add('active');
@@ -842,15 +843,34 @@ if(!self.NOOR_CONFIG){
   document.querySelectorAll('.navitem').forEach(function(n){
     n.addEventListener('click', function(){
       var t = n.getAttribute('data-tab');
+      cameFrom = '';
       setNav(t);
       showScreen(t);
     });
   });
-  document.getElementById('menuBtn').addEventListener('click', function(){ setNav('more'); showScreen('more'); });
+  document.getElementById('menuBtn').addEventListener('click', function(){ cameFrom = ''; setNav('more'); showScreen('more'); });
   function backTab(){ setNav(lastTab); showScreen(lastTab); }
+  screenHooks.push(function(id){
+    ['hadith','quran'].forEach(function(t){
+      var sc = document.getElementById('screen-'+t), bar = sc.querySelector('.fromBar');
+      if(id === t && cameFrom){
+        if(!bar){
+          bar = el('div','subhead fromBar','<div class="backbtn">←</div><div class="subtitle"></div>');
+          bar.querySelector('.backbtn').addEventListener('click', function(){
+            var to = cameFrom || 'more'; cameFrom = '';
+            if(tabs.indexOf(to) !== -1) setNav(to);
+            showScreen(to);
+          });
+          sc.insertBefore(bar, sc.firstChild);
+        }
+        bar.querySelector('.subtitle').textContent = cameFrom === 'home' ? 'Home' : 'Back to More';
+      } else if(bar){ bar.remove(); }
+    });
+  });
 
   // route(): "home" | "practice" | "quran" | "more" | "tasbeeh" | "detail:Title:Body"
   function route(target){
+    if(target === 'quran:marks'){ route('quran'); var mt = document.querySelector('#screen-quran .qtab[data-t="marks"]'); if(mt) mt.click(); return; }
     if(target === 'tasbeeh'){ showScreen('tasbeeh-full'); return; }
     if(target === 'halqa'){ showScreen('halqa'); return; }
     if(target === 'qibla'){ showScreen('qibla'); return; }
@@ -867,7 +887,11 @@ if(!self.NOOR_CONFIG){
       showScreen('detail');
       return;
     }
-    if(tabs.indexOf(target) !== -1){ setNav(target); showScreen(target); }
+    if(tabs.indexOf(target) !== -1){
+      var cur = document.querySelector('.screen.active'), curId = cur ? cur.id.replace('screen-','') : '';
+      cameFrom = (target === 'hadith' || target === 'quran') && curId && curId !== target ? curId : '';   // so Hadith and Qur'an (bookmarks) get a back arrow when opened from More or Home
+      setNav(target); showScreen(target);
+    }
   }
   document.getElementById('detailBack').addEventListener('click', function(){
     backTab();
