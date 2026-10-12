@@ -5,7 +5,7 @@
 
   var PROFILES = {
     shaykh1: {
-      name: 'Zikr and teachings', pen: '', ar: 'ذكر', sub: 'Tap a video below to watch',
+      name: 'Azam Pasha', pen: '', ar: 'ذكر', sub: 'Zikr and teachings · tap a video to watch',
       facts: [], sections: [], map: '', sources: [], plain: true
     },
     hasrat: {

@@ -23,7 +23,7 @@
   familyShaykhs: [],
 
   shaykhPhotos: [
-    { src: "photos/shaykh-1.jpg", name: "", note: "Tap to watch zikr.", profile: "shaykh1" },
+    { src: "photos/shaykh-1.jpg", name: "Azam Pasha", note: "Tap to watch zikr.", profile: "shaykh1" },
     { src: "photos/shaykh-2.jpg", name: "Hazrat Mohammed Abdul Qadeer Siddiqui (Hasrat)", note: "Bahr ul-Uloom, Hyderabad. Tap to read more.", profile: "hasrat" },
     { src: "photos/shaykh-3.jpg", name: "", note: "" }
   ]
