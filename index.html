@@ -1080,7 +1080,8 @@ if(!self.NOOR_CONFIG){
     getClasses: function(){ return classes; },
     onClasses: function(fn){ classListeners.push(fn); },
     playById: function(id){ for(var k = 0; k < classes.length; k++){ if(classes[k].yt === id){ openPlayer(k); return true; } } return false; },
-    tasbeeh: { get: function(){ return count; }, reset: function(){ count = 0; renderT(); persist(); } }
+    tasbeeh: { get: function(){ return count; }, reset: function(){ count = 0; renderT(); persist(); },
+      add: function(n){ var before = count; count = Math.max(0, count + (n||0)); if(n > 0 && target && Math.floor(count/target) > Math.floor(before/target) && navigator.vibrate){ try{ navigator.vibrate(40); }catch(e){} } renderT(); persist(); } }
   };
 
 })();
@@ -1096,6 +1097,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
 <script src="js/scholar.js"></script>
 <script src="js/family.js"></script>
 <script src="js/events.js"></script>
+<script src="js/voice.js"></script>
 <script src="js/install.js"></script>
 </body>
 </html>
