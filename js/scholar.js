@@ -74,6 +74,7 @@
     if (!p.plain) {
     h += '<button class="sch-btn" id="schVideos" type="button" style="width:100%;border:0;cursor:pointer">Poetry &amp; Naat ›</button>';
     h += '<button class="sch-btn" id="schDars" type="button" style="width:100%;border:1px solid var(--line);cursor:pointer;background:var(--panel);color:var(--ink)">Dars &amp; Tafseer videos ›</button>';
+    h += '<button class="sch-btn" id="schZikr" type="button" style="width:100%;border:1px solid var(--line);cursor:pointer;background:var(--panel);color:var(--ink)">Zikr &amp; Sama videos ›</button>';
     h += '<a class="sch-btn" style="background:var(--panel);color:var(--ink);border:1px solid var(--line)" target="_blank" rel="noopener" href="' + esc(safeUrl(p.map)) + '">Open the Dargah on Google Maps ›</a>';
     h += '<div class="sch-note">Compiled from the pages below. Where sources differ (for example on his exact title or his age at passing) we have left the detail out. Please check anything important with the family, the khanqah or your teachers.</div>';
     h += '<div class="sch-src">Sources: ' + p.sources.map(function (s) { return '<a target="_blank" rel="noopener" href="' + esc(safeUrl(s[1])) + '">' + esc(s[0]) + '</a>'; }).join(' · ') + '</div>';
@@ -146,6 +147,7 @@
     s.querySelector('#schBody').innerHTML = html(p, photo);
     var db = s.querySelector('#schDars'); if (db) db.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('dars'); };
     loadGallery(id); loadWatch(id);
+    var zb = s.querySelector('#schZikr'); if (zb) zb.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('zikr'); };
     var vb = s.querySelector('#schVideos'); if (vb) vb.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('poetry'); };
     N.showScreen('scholar');
     return true;
