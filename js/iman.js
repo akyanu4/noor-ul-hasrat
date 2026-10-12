@@ -4,6 +4,8 @@
   'use strict';
 
   var PRAYERS = [['fajr', 'Fajr'], ['dhuhr', 'Dhuhr'], ['asr', 'Asr'], ['maghrib', 'Maghrib'], ['isha', 'Isha']];
+  var DEEDS = [['sadaqa', '🤲', 'Gave sadaqa'], ['neighbor', '🏘️', 'Helped a neighbour'], ['help', '🤝', 'Helped someone in need'], ['kind', '💛', 'Was kind and patient'], ['family', '👪', 'Was good to family']];
+  function hijriYear(date) { try { var y = 0; new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { year: 'numeric' }).formatToParts(date).forEach(function (p) { if (p.type === 'year') y = parseInt(p.value, 10); }); return y || 0; } catch (e) { return 0; } }
   var MARKS = { m: ['🕌', 'On time, at the masjid'], h: ['🏠', 'On time, at home'], l: ['⏰', 'Late or made up'] };
   var KEY = 'noor_iman_v1';
 
@@ -14,29 +16,31 @@
 
   // Add up a set of days: { marked, onTime, masjid, late, fasts, dhikr, days }
   function summarize(data, keys) {
-    var s = { marked: 0, onTime: 0, masjid: 0, late: 0, fasts: 0, dhikr: 0, days: keys.length };
+    var s = { marked: 0, onTime: 0, masjid: 0, late: 0, fasts: 0, dhikr: 0, deeds: 0, days: keys.length };
     keys.forEach(function (k) {
       var d = data[k]; if (!d) return;
       PRAYERS.forEach(function (p) { var v = d.p && d.p[p[0]]; if (!v) return; s.marked++; if (v === 'm') { s.onTime++; s.masjid++; } else if (v === 'h') s.onTime++; else s.late++; });
       if (d.fast) s.fasts++;
       s.dhikr += d.dhikr || 0;
+      if (d.g) s.deeds += Object.keys(d.g).length;
     });
     return s;
   }
-  // Weekly level, 0-100: prayers 60 (masjid on time counts most), fasting 20, dhikr 20. A private reminder, never a judgment.
+  // Weekly level, 0-100: prayers 50 (masjid on time counts most), fasting 15, dhikr 15, good deeds 20 (charity, helping others, kindness; 5 days of 7 is full). A private reminder, never a judgment.
   var W = { m: 1, h: 0.85, l: 0.5 };
   function score(data, keys, fastTarget) {
-    var n = keys.length || 1, pr = 0, fasts = 0, dhikrDays = 0, any = false;
+    var n = keys.length || 1, pr = 0, fasts = 0, dhikrDays = 0, deedDays = 0, any = false;
     keys.forEach(function (k) {
       var d = data[k]; if (!d) return;
       PRAYERS.forEach(function (p) { var v = d.p && d.p[p[0]]; if (v) { pr += W[v] || 0; any = true; } });
       if (d.fast) { fasts++; any = true; }
       if ((d.dhikr || 0) >= 33) { dhikrDays++; any = true; }
+      if (d.g && Object.keys(d.g).length) { deedDays++; any = true; }
     });
-    var parts = { prayer: Math.min(1, pr / (5 * n)), fast: Math.min(1, fasts / (fastTarget || 2)), dhikr: Math.min(1, dhikrDays / n) };
-    var total = Math.round(parts.prayer * 60 + parts.fast * 20 + parts.dhikr * 20);
+    var parts = { prayer: Math.min(1, pr / (5 * n)), fast: Math.min(1, fasts / (fastTarget || 2)), dhikr: Math.min(1, dhikrDays / n), deeds: Math.min(1, deedDays / 5) };
+    var total = Math.round(parts.prayer * 50 + parts.fast * 15 + parts.dhikr * 15 + parts.deeds * 20);
     var label = !any ? 'Not started yet' : total >= 85 ? 'Flourishing' : total >= 65 ? 'Steady' : total >= 40 ? 'Growing' : 'Just beginning';
-    var tip = !any ? 'Mark today\'s prayers to begin.' : parts.prayer < 0.7 ? 'A small step: aim to pray each prayer on time, starting with one you often miss.' : parts.fast < 1 ? 'A small step: a Monday or Thursday fast this week.' : parts.dhikr < 0.7 ? 'A small step: 33 dhikr each day, after any prayer.' : 'Keep it up, and may Allah accept it.';
+    var tip = !any ? 'Mark today\'s prayers to begin.' : parts.prayer < 0.7 ? 'A small step: aim to pray each prayer on time, starting with one you often miss.' : parts.fast < 1 ? 'A small step: a Monday or Thursday fast this week.' : parts.dhikr < 0.7 ? 'A small step: 33 dhikr each day, after any prayer.' : parts.deeds < 0.7 ? 'A small step: one act of kindness or charity each day, even a smile or a small sadaqa.' : 'Keep it up, and may Allah accept it.';
     return { score: total, label: label, parts: parts, tip: tip };
   }
   // A kind note about the week. Never a score, never guilt.
@@ -75,7 +79,7 @@
     return null;
   }
 
-  var api = { score: score, meters: meters, windowFor: windowFor, PRAYERS: PRAYERS, dayKey: dayKey, lastDays: lastDays, summarize: summarize, note: note, fastHint: fastHint, fmtN: fmtN };
+  var api = { DEEDS: DEEDS, hijriYear: hijriYear, score: score, meters: meters, windowFor: windowFor, PRAYERS: PRAYERS, dayKey: dayKey, lastDays: lastDays, summarize: summarize, note: note, fastHint: fastHint, fmtN: fmtN };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.NoorIman = api;
 
@@ -93,6 +97,8 @@
   var MKEY = 'noor_iman_masjids', AKEY = 'noor_iman_auto', RADIUS = 150, masjids = [], autoOn = true, lastCheck = '', busy = false;
   try { masjids = JSON.parse(localStorage.getItem(MKEY) || '[]') || []; if (!Array.isArray(masjids)) masjids = []; } catch (e) { masjids = []; }
   try { autoOn = localStorage.getItem(AKEY) !== '0'; } catch (e) {}
+  var ZKEY = 'noor_iman_zakat', zakat = {};
+  try { zakat = JSON.parse(localStorage.getItem(ZKEY) || '{}') || {}; } catch (e) { zakat = {}; }
   var NKEY = 'noor_iman_nudge', nudgeOn = false, nudgeMsg = '';
   try { nudgeOn = localStorage.getItem(NKEY) === '1'; } catch (e) {}
   function pushReady() { return !!(root.NOOR_CONFIG && root.NOOR_CONFIG.oneSignalAppId); }
@@ -131,6 +137,7 @@
     '.ih-sum{background:linear-gradient(135deg,var(--teal),#0f3a33);color:#f5f1e2;border-radius:16px;padding:14px 16px;margin-bottom:12px}.ih-sum .k{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-soft);font-weight:700}' +
     '.ih-nums{display:flex;gap:6px;margin:8px 0}.ih-n{flex:1;text-align:center;background:rgba(255,255,255,.1);border-radius:10px;padding:8px 2px}.ih-n b{display:block;font-size:19px}.ih-n span{font-size:10.5px;opacity:.85}.ih-sum .nt{font-size:12.5px;opacity:.92;line-height:1.45}' +
     '.ih-lv{display:flex;align-items:center;gap:14px;margin-bottom:6px}.ih-ring{position:relative;width:76px;height:76px;flex:none}.ih-ring svg{width:76px;height:76px;transform:rotate(-90deg)}.ih-ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:20px}.ih-lv .lb{font-size:20px;font-weight:700}.ih-lv .pt{font-size:11.5px;opacity:.85;margin-top:2px}.ih-dot{display:block;width:6px;height:6px;border-radius:50%;margin:3px auto 0;background:var(--line)}.ih-dot.g{background:#4caf7d}.ih-dot.y{background:var(--gold)}' +
+    '.ih-deeds{display:flex;flex-wrap:wrap;gap:8px;padding:10px 0}.ih-deed{border:1px solid var(--line);background:var(--cream);color:var(--ink);border-radius:20px;padding:8px 12px;font:inherit;font-size:13px;cursor:pointer;opacity:.7}.ih-deed.on{opacity:1;background:var(--gold-soft);border-color:var(--gold);font-weight:600}' +
     '.ih-days{display:flex;gap:5px;margin-bottom:10px}.ih-d{flex:1;text-align:center;padding:7px 0;border-radius:10px;border:1px solid var(--line);background:var(--panel);font-size:11px;color:var(--muted);cursor:pointer}.ih-d b{display:block;font-size:14px;color:var(--ink)}.ih-d.on{background:var(--teal);border-color:var(--teal);color:#e9e4d2}.ih-d.on b{color:#fff}' +
     '.ih-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 12px;margin-bottom:10px}.ih-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)}.ih-row:last-child{border-bottom:0}.ih-row .nm{flex:1;font-size:14.5px;font-weight:600}' +
     '.ih-chip{width:42px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--cream);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:.55}.ih-chip.on{opacity:1;background:var(--gold-soft);border-color:var(--gold)}' +
@@ -152,7 +159,7 @@
     var fastTarget = 2; try { if (fastHint(now) === 'Ramadan') fastTarget = 7; } catch (e) {}
     var lv = score(data, keys, fastTarget), pc = function (x) { return Math.round(x * 100) + '%'; }, C = 2 * Math.PI * 32;
     var h = '<div class="ih-sum"><div class="k">Your Iman Health · last 7 days</div><div class="ih-lv"><div class="ih-ring"><svg viewBox="0 0 76 76"><circle cx="38" cy="38" r="32" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="7"/><circle cx="38" cy="38" r="32" fill="none" stroke="#e7d4a3" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + (C * lv.score / 100).toFixed(1) + ' ' + C.toFixed(1) + '"/></svg><b>' + lv.score + '</b></div>' +
-      '<div><div class="lb">' + esc(lv.label) + '</div><div class="pt">Prayer ' + pc(lv.parts.prayer) + ' · Fasting ' + pc(lv.parts.fast) + ' · Dhikr ' + pc(lv.parts.dhikr) + '</div></div></div><div class="ih-nums">' +
+      '<div><div class="lb">' + esc(lv.label) + '</div><div class="pt">Prayer ' + pc(lv.parts.prayer) + ' · Fasting ' + pc(lv.parts.fast) + ' · Dhikr ' + pc(lv.parts.dhikr) + ' · Good deeds ' + pc(lv.parts.deeds) + '</div></div></div><div class="ih-nums">' +
       '<div class="ih-n"><b>' + sm.onTime + '</b><span>on time</span></div><div class="ih-n"><b>' + sm.masjid + '</b><span>at the masjid</span></div><div class="ih-n"><b>' + sm.fasts + '</b><span>fasts</span></div><div class="ih-n"><b>' + fmtN(sm.dhikr) + '</b><span>dhikr</span></div></div>' +
       '<div class="nt">' + esc(lv.tip) + '</div></div>';
     h += '<div class="ih-days">' + week.map(function (x, i) { return '<div class="ih-d' + (keys[i] === sel ? ' on' : '') + '" data-k="' + keys[i] + '">' + (i === 6 ? 'Today' : names[x.getDay()]) + '<b>' + x.getDate() + '</b><i class="ih-dot ' + dotOf(keys[i]) + '"></i></div>'; }).join('') + '</div>';
@@ -163,6 +170,11 @@
     var hint = fastHint(selDate);
     h += '<h2 class="section-title" style="margin-top:4px">Fasting</h2><div class="ih-card"><div class="ih-fast"><div class="tx"><b>I fasted this day</b>' + (hint ? '<div class="ih-sub">' + esc(hint) + '</div>' : '') + '</div><button type="button" class="ih-sw' + (d.fast ? ' on' : '') + '" id="ihFast" aria-label="I fasted this day" aria-pressed="' + (d.fast ? 'true' : 'false') + '"><i></i></button></div></div>';
     h += '<h2 class="section-title" style="margin-top:4px">Dhikr</h2><div class="ih-card"><div class="ih-fast"><div class="tx"><b>' + (d.dhikr || 0).toLocaleString() + ' counted</b><div class="ih-sub">Counted automatically from your Tasbeeh' + (isToday ? '' : ' on this day') + '.</div></div><div class="tbtn" id="ihTas" style="margin:0">📿 Tasbeeh</div></div></div>';
+    var hy = hijriYear(selDate);
+    h += '<h2 class="section-title" style="margin-top:4px">Giving &amp; good character</h2><div class="ih-card"><div class="ih-deeds">' +
+      DEEDS.map(function (x) { return '<button type="button" class="ih-deed' + (d.g && d.g[x[0]] ? ' on' : '') + '" data-g="' + x[0] + '" aria-pressed="' + (d.g && d.g[x[0]] ? 'true' : 'false') + '">' + x[1] + ' ' + x[2] + '</button>'; }).join('') +
+      '</div><div class="ih-sub" style="padding-bottom:8px">Even a smile is sadaqa. Tap what you did on this day.</div></div>';
+    if (hy) h += '<div class="ih-card"><div class="ih-fast"><div class="tx"><b>Zakat for ' + hy + ' AH</b><div class="ih-sub">' + (zakat[hy] ? 'Paid, alhamdulillah. May Allah accept it.' : 'Due once a year if your savings reach the nisab and a lunar year has passed. Not everyone owes it. Turn this on when you have paid. No amounts are stored.') + '</div></div><button type="button" class="ih-sw' + (zakat[hy] ? ' on' : '') + '" id="ihZakat" data-y="' + hy + '" aria-label="Zakat paid for ' + hy + '" aria-pressed="' + (zakat[hy] ? 'true' : 'false') + '"><i></i></button></div></div>';
     h += '<h2 class="section-title" style="margin-top:4px">Prayer-time nudge</h2><div class="ih-card"><div class="ih-fast"><div class="tx"><b>Nudge me at each prayer time</b><div class="ih-sub">' + esc(nudgeMsg || 'A gentle notification at each adhan. Tap it and Noor opens, then marks your masjid prayer if you are there.') + '</div></div><button type="button" class="ih-sw' + (nudgeOn ? ' on' : '') + '" id="ihNudge" aria-label="Nudge me at each prayer time" aria-pressed="' + (nudgeOn ? 'true' : 'false') + '"><i></i></button></div></div>';
     h += '<h2 class="section-title" style="margin-top:4px">My masjid</h2><div class="ih-card">';
     if (!masjids.length) h += '<div class="ih-fast"><div class="tx"><b>Mark the masjid automatically</b><div class="ih-sub">Stand at your masjid and tap the button once. After that, when Noor is open during a prayer time and you are there, it marks 🕌 for you.</div></div></div>';
@@ -173,18 +185,21 @@
     h += '<h2 class="section-title" style="margin-top:4px">This week at a glance</h2><div class="ih-card" style="padding:8px 8px"><table class="ih-tbl"><tr><th></th>' + week.map(function (x, i) { return '<th class="' + (i === 6 ? 'tod' : '') + '">' + names[x.getDay()].slice(0, 2) + '</th>'; }).join('') + '</tr>' +
       PRAYERS.map(function (p) { return '<tr><td>' + p[1] + '</td>' + keys.map(function (k) { var v = data[k] && data[k].p && data[k].p[p[0]]; return '<td>' + (v ? MARKS[v][0] : '·') + '</td>'; }).join('') + '</tr>'; }).join('') +
       '<tr><td>Fast</td>' + keys.map(function (k) { return '<td>' + (data[k] && data[k].fast ? '🌙' : '·') + '</td>'; }).join('') + '</tr>' +
-      '<tr><td>Dhikr</td>' + keys.map(function (k) { var n = data[k] && data[k].dhikr; return '<td>' + (n ? fmtN(n) : '·') + '</td>'; }).join('') + '</tr></table></div>';
-    h += '<div class="ih-note"><b>How the level is worked out:</b> 60% prayers (at the masjid counts most, then on time at home, then late), 20% fasting (2 days a week, or every day in Ramadan) and 20% dhikr (33 or more on a day). Dots under each day: green means all 5 prayers marked, gold means some.</div>';
+      '<tr><td>Dhikr</td>' + keys.map(function (k) { var n = data[k] && data[k].dhikr; return '<td>' + (n ? fmtN(n) : '·') + '</td>'; }).join('') + '</tr>' +
+      '<tr><td>Good deeds</td>' + keys.map(function (k) { var n = data[k] && data[k].g ? Object.keys(data[k].g).length : 0; return '<td>' + (n ? '💛' + n : '·') + '</td>'; }).join('') + '</tr></table></div>';
+    h += '<div class="ih-note"><b>How the level is worked out:</b> 50% prayers (at the masjid counts most, then on time at home, then late), 15% fasting (2 days a week, or every day in Ramadan), 15% dhikr (33 or more on a day) and 20% good deeds (sadaqa, helping others, kindness: 5 days out of 7 is full). Zakat is not scored, because not everyone owes it. Dots under each day: green means all 5 prayers marked, gold means some.</div>';
     h += '<div class="ih-note">This is between you and your Lord. It is a private reminder, not a score, and it is not a judgment. Everything stays on this phone and nothing is sent anywhere. Your location is used only to see whether you are at the masjid you saved, and it is not stored. You can always correct a mark yourself.</div>' +
       '<button type="button" class="ih-clear" id="ihClear">Erase my Iman Health data from this phone</button>';
     body.innerHTML = h;
   }
 
   body.addEventListener('click', function (e) {
-    var t = e.target.closest ? e.target.closest('[data-k],[data-p],[data-rm],#ihNudge,#ihFast,#ihTas,#ihClear,#ihAuto,#ihAdd') : null; if (!t) return;
+    var t = e.target.closest ? e.target.closest('[data-k],[data-p],[data-rm],[data-g],#ihZakat,#ihNudge,#ihFast,#ihTas,#ihClear,#ihAuto,#ihAdd') : null; if (!t) return;
     if (t.hasAttribute('data-k')) { sel = t.getAttribute('data-k'); paint(); return; }
     if (t.hasAttribute('data-p')) { var d = day(sel), p = t.getAttribute('data-p'), m = t.getAttribute('data-m'); d.p[p] = d.p[p] === m ? '' : m; if (!d.p[p]) delete d.p[p]; if (d.a) delete d.a[p]; save(); paint(); return; }
     if (t.id === 'ihFast') { var f = day(sel); f.fast = !f.fast; if (!f.fast) delete f.fast; save(); paint(); return; }
+    if (t.hasAttribute('data-g')) { var dg = day(sel), gk = t.getAttribute('data-g'); dg.g = dg.g || {}; if (dg.g[gk]) delete dg.g[gk]; else dg.g[gk] = 1; if (!Object.keys(dg.g).length) delete dg.g; save(); paint(); return; }
+    if (t.id === 'ihZakat') { var yy = t.getAttribute('data-y'); if (zakat[yy]) delete zakat[yy]; else zakat[yy] = 1; try { localStorage.setItem(ZKEY, JSON.stringify(zakat)); } catch (er) {} paint(); return; }
     if (t.id === 'ihNudge') { setNudge(!nudgeOn); return; }
     if (t.hasAttribute('data-rm')) { masjids.splice(+t.getAttribute('data-rm'), 1); saveMasjids(); paint(); return; }
     if (t.id === 'ihAuto') { autoOn = !autoOn; try { localStorage.setItem(AKEY, autoOn ? '1' : '0'); } catch (er) {} paint(); if (autoOn) check('toggle'); return; }
@@ -199,7 +214,7 @@
       return;
     }
     if (t.id === 'ihTas') { N.route('tasbeeh'); return; }
-    if (t.id === 'ihClear') { if (root.confirm('Erase all Iman Health entries on this phone? This cannot be undone.')) { data = {}; try { localStorage.removeItem(KEY); } catch (er) {} paint(); } }
+    if (t.id === 'ihClear') { if (root.confirm('Erase all Iman Health entries on this phone? This cannot be undone.')) { data = {}; zakat = {}; try { localStorage.removeItem(KEY); localStorage.removeItem(ZKEY); } catch (er) {} paint(); } }
   });
 
   // While Noor is open: if it is a prayer time and you are at your saved masjid, mark that prayer.
