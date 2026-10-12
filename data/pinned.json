@@ -1,7 +1,14 @@
 {
   "about": "Videos always shown at the top of a section, even before the channel list loads. Add a line for each: { \"id\": \"<YouTube video id>\", \"title\": \"...\" }. The id is the part after v= in the YouTube link.",
   "poetry": [
-    { "id": "FBgQGExm_Ys", "title": "Aji Morey Peer Kuch Aisa Rangna Qawwali | Hazrat Mohammed Abdul Qadeer Siddique \"Hasrat\" R.A" }
+    {
+      "id": "FBgQGExm_Ys",
+      "title": "Aji Morey Peer Kuch Aisa Rangna Qawwali | Hazrat Mohammed Abdul Qadeer Siddique \"Hasrat\" R.A"
+    },
+    {
+      "id": "PA_bQGCjDeo",
+      "title": "Nahi Koi Siva Tere Hamara Ya RasulAllah | Hazrat Shaikh Hussain Shuja Uddin Siddique 'Izzat' R.A"
+    }
   ],
   "dars": []
 }
