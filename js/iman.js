@@ -43,7 +43,23 @@
     return '';
   }
 
-  var api = { PRAYERS: PRAYERS, dayKey: dayKey, lastDays: lastDays, summarize: summarize, note: note, fastHint: fastHint, fmtN: fmtN };
+  function meters(a, b, c, d) {                       // distance between two points on Earth, in metres
+    var R = 6371000, p = Math.PI / 180, dl = (c - a) * p, dn = (d - b) * p;
+    var h = Math.sin(dl / 2) * Math.sin(dl / 2) + Math.cos(a * p) * Math.cos(c * p) * Math.sin(dn / 2) * Math.sin(dn / 2);
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+  // Which prayer is "in its window" right now? From 10 minutes before the adhan until 75 minutes after it (never past the next prayer).
+  function windowFor(t, now) {
+    if (!t) return null;
+    var M = 60000, ends = { fajr: t.sunrise, dhuhr: t.asr, asr: t.maghrib, maghrib: t.isha, isha: t.isha + 90 * M };
+    for (var i = 0; i < PRAYERS.length; i++) {
+      var k = PRAYERS[i][0], from = t[k] - 10 * M, to = Math.min(t[k] + 75 * M, ends[k]);
+      if (now >= from && now <= to) return k;
+    }
+    return null;
+  }
+
+  var api = { meters: meters, windowFor: windowFor, PRAYERS: PRAYERS, dayKey: dayKey, lastDays: lastDays, summarize: summarize, note: note, fastHint: fastHint, fmtN: fmtN };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.NoorIman = api;
 
@@ -56,7 +72,17 @@
     var ks = Object.keys(data).sort(); while (ks.length > 400) delete data[ks.shift()];
     try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
   }
+  function esc(t) { return N.esc(t); }
   function day(k) { return data[k] || (data[k] = { p: {} }); }
+  var MKEY = 'noor_iman_masjids', AKEY = 'noor_iman_auto', RADIUS = 150, masjids = [], autoOn = true, lastCheck = '', busy = false;
+  try { masjids = JSON.parse(localStorage.getItem(MKEY) || '[]') || []; if (!Array.isArray(masjids)) masjids = []; } catch (e) { masjids = []; }
+  try { autoOn = localStorage.getItem(AKEY) !== '0'; } catch (e) {}
+  function saveMasjids() { try { localStorage.setItem(MKEY, JSON.stringify(masjids)); } catch (e) {} }
+  function getPos(ok, bad) {
+    if (!navigator.geolocation) { bad({ code: 0 }); return; }
+    navigator.geolocation.getCurrentPosition(ok, bad, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
+  }
+  function toast(t) { var host = doc.querySelector('.screens').parentNode, old = host.querySelector('.toast'); if (old) old.remove(); var e = N.el('div', 'toast', esc(t)); host.appendChild(e); e.addEventListener('click', function () { e.remove(); }); setTimeout(function () { e.remove(); }, 4500); }
 
   var css = doc.createElement('style');
   css.textContent =
@@ -75,7 +101,6 @@
   s.id = 'screen-iman'; doc.querySelector('.screens').appendChild(s);
   s.querySelector('#ihBack').addEventListener('click', function () { N.backTab(); });
   var body = s.querySelector('#ihBody'), sel = dayKey(new Date());
-  function esc(t) { return N.esc(t); }
 
   function paint() {
     var now = new Date(), week = lastDays(7, now), keys = week.map(dayKey), sm = summarize(data, keys), d = data[sel] || { p: {} }, selDate = week[keys.indexOf(sel)] || now;
@@ -86,31 +111,84 @@
     h += '<div class="ih-days">' + week.map(function (x, i) { return '<div class="ih-d' + (keys[i] === sel ? ' on' : '') + '" data-k="' + keys[i] + '">' + (i === 6 ? 'Today' : names[x.getDay()]) + '<b>' + x.getDate() + '</b></div>'; }).join('') + '</div>';
     h += '<h2 class="section-title" style="margin-top:4px">' + (isToday ? 'Today' : selDate.toLocaleDateString([], { weekday: 'long', day: 'numeric', month: 'short' })) + ' · Prayers</h2><div class="ih-card">' +
       PRAYERS.map(function (p) {
-        return '<div class="ih-row"><div class="nm">' + p[1] + '</div>' + ['m', 'h', 'l'].map(function (m) { return '<button type="button" class="ih-chip' + (d.p && d.p[p[0]] === m ? ' on' : '') + '" data-p="' + p[0] + '" data-m="' + m + '" aria-label="' + p[1] + ': ' + MARKS[m][1] + '" title="' + MARKS[m][1] + '">' + MARKS[m][0] + '</button>'; }).join('') + '</div>';
+        return '<div class="ih-row"><div class="nm">' + p[1] + (d.a && d.a[p[0]] ? ' <span class="ih-sub" style="font-weight:400">· auto</span>' : '') + '</div>' + ['m', 'h', 'l'].map(function (m) { return '<button type="button" class="ih-chip' + (d.p && d.p[p[0]] === m ? ' on' : '') + '" data-p="' + p[0] + '" data-m="' + m + '" aria-label="' + p[1] + ': ' + MARKS[m][1] + '" title="' + MARKS[m][1] + '">' + MARKS[m][0] + '</button>'; }).join('') + '</div>';
       }).join('') + '</div><div class="ih-sub" style="margin:-4px 2px 10px">🕌 on time at the masjid · 🏠 on time at home · ⏰ late or made up. Tap again to clear.</div>';
     var hint = fastHint(selDate);
     h += '<h2 class="section-title" style="margin-top:4px">Fasting</h2><div class="ih-card"><div class="ih-fast"><div class="tx"><b>I fasted this day</b>' + (hint ? '<div class="ih-sub">' + esc(hint) + '</div>' : '') + '</div><button type="button" class="ih-sw' + (d.fast ? ' on' : '') + '" id="ihFast" aria-label="I fasted this day" aria-pressed="' + (d.fast ? 'true' : 'false') + '"><i></i></button></div></div>';
     h += '<h2 class="section-title" style="margin-top:4px">Dhikr</h2><div class="ih-card"><div class="ih-fast"><div class="tx"><b>' + (d.dhikr || 0).toLocaleString() + ' counted</b><div class="ih-sub">Counted automatically from your Tasbeeh' + (isToday ? '' : ' on this day') + '.</div></div><div class="tbtn" id="ihTas" style="margin:0">📿 Tasbeeh</div></div></div>';
+    h += '<h2 class="section-title" style="margin-top:4px">My masjid</h2><div class="ih-card">';
+    if (!masjids.length) h += '<div class="ih-fast"><div class="tx"><b>Mark the masjid automatically</b><div class="ih-sub">Stand at your masjid and tap the button once. After that, when Noor is open during a prayer time and you are there, it marks 🕌 for you.</div></div></div>';
+    else h += masjids.map(function (m, i) { return '<div class="ih-row"><div class="nm">🕌 ' + esc(m.name) + '</div><button type="button" class="ih-clear" data-rm="' + i + '">Remove</button></div>'; }).join('') +
+      '<div class="ih-fast"><div class="tx"><b>Mark it for me</b><div class="ih-sub">' + (lastCheck ? esc(lastCheck) : 'Checks while Noor is open, during a prayer time.') + '</div></div><button type="button" class="ih-sw' + (autoOn ? ' on' : '') + '" id="ihAuto" aria-label="Mark the masjid automatically" aria-pressed="' + (autoOn ? 'true' : 'false') + '"><i></i></button></div>';
+    if (masjids.length < 3) h += '<div style="padding:4px 0 10px"><div class="tbtn" id="ihAdd" style="margin:0">📍 I am at my masjid now: save it</div></div>';
+    h += '</div><div class="ih-sub" style="margin:-4px 2px 10px">Your position is checked on the phone and is never saved or sent: only the masjid you choose is kept. A website can only check while the app is open. It cannot watch in the background.</div>';
     h += '<h2 class="section-title" style="margin-top:4px">This week at a glance</h2><div class="ih-card" style="padding:8px 8px"><table class="ih-tbl"><tr><th></th>' + week.map(function (x, i) { return '<th class="' + (i === 6 ? 'tod' : '') + '">' + names[x.getDay()].slice(0, 2) + '</th>'; }).join('') + '</tr>' +
       PRAYERS.map(function (p) { return '<tr><td>' + p[1] + '</td>' + keys.map(function (k) { var v = data[k] && data[k].p && data[k].p[p[0]]; return '<td>' + (v ? MARKS[v][0] : '·') + '</td>'; }).join('') + '</tr>'; }).join('') +
       '<tr><td>Fast</td>' + keys.map(function (k) { return '<td>' + (data[k] && data[k].fast ? '🌙' : '·') + '</td>'; }).join('') + '</tr>' +
       '<tr><td>Dhikr</td>' + keys.map(function (k) { var n = data[k] && data[k].dhikr; return '<td>' + (n ? fmtN(n) : '·') + '</td>'; }).join('') + '</tr></table></div>';
-    h += '<div class="ih-note">This is between you and your Lord. It is a private reminder, not a score, and it is not a judgment. Everything stays on this phone: nothing is sent anywhere and your location is not used. You mark your own prayers; the app does not check on you.</div>' +
+    h += '<div class="ih-note">This is between you and your Lord. It is a private reminder, not a score, and it is not a judgment. Everything stays on this phone and nothing is sent anywhere. Your location is used only to see whether you are at the masjid you saved, and it is not stored. You can always correct a mark yourself.</div>' +
       '<button type="button" class="ih-clear" id="ihClear">Erase my Iman Health data from this phone</button>';
     body.innerHTML = h;
   }
 
   body.addEventListener('click', function (e) {
-    var t = e.target.closest ? e.target.closest('[data-k],[data-p],#ihFast,#ihTas,#ihClear') : null; if (!t) return;
+    var t = e.target.closest ? e.target.closest('[data-k],[data-p],[data-rm],#ihFast,#ihTas,#ihClear,#ihAuto,#ihAdd') : null; if (!t) return;
     if (t.hasAttribute('data-k')) { sel = t.getAttribute('data-k'); paint(); return; }
-    if (t.hasAttribute('data-p')) { var d = day(sel), p = t.getAttribute('data-p'), m = t.getAttribute('data-m'); d.p[p] = d.p[p] === m ? '' : m; if (!d.p[p]) delete d.p[p]; save(); paint(); return; }
+    if (t.hasAttribute('data-p')) { var d = day(sel), p = t.getAttribute('data-p'), m = t.getAttribute('data-m'); d.p[p] = d.p[p] === m ? '' : m; if (!d.p[p]) delete d.p[p]; if (d.a) delete d.a[p]; save(); paint(); return; }
     if (t.id === 'ihFast') { var f = day(sel); f.fast = !f.fast; if (!f.fast) delete f.fast; save(); paint(); return; }
+    if (t.hasAttribute('data-rm')) { masjids.splice(+t.getAttribute('data-rm'), 1); saveMasjids(); paint(); return; }
+    if (t.id === 'ihAuto') { autoOn = !autoOn; try { localStorage.setItem(AKEY, autoOn ? '1' : '0'); } catch (er) {} paint(); if (autoOn) check('toggle'); return; }
+    if (t.id === 'ihAdd') {
+      t.textContent = 'Finding where you are…';
+      getPos(function (p) {
+        var nm = root.prompt('Name this masjid', 'My masjid'); if (nm === null) { paint(); return; }
+        masjids.push({ name: (nm || 'My masjid').slice(0, 40), lat: p.coords.latitude, lon: p.coords.longitude }); saveMasjids();
+        try { localStorage.setItem('noor_iman_geo_ok', '1'); } catch (er) {}
+        lastCheck = 'Saved. It will check during prayer times while Noor is open.'; paint(); check('saved');
+      }, function (er) { lastCheck = er && er.code === 1 ? 'Location is blocked. Allow it for Noor in your phone or browser settings, then try again.' : 'Could not get your location. Try again outside or near a window.'; paint(); });
+      return;
+    }
     if (t.id === 'ihTas') { N.route('tasbeeh'); return; }
     if (t.id === 'ihClear') { if (root.confirm('Erase all Iman Health entries on this phone? This cannot be undone.')) { data = {}; try { localStorage.removeItem(KEY); } catch (er) {} paint(); } }
   });
 
+  // While Noor is open: if it is a prayer time and you are at your saved masjid, mark that prayer.
+  function check(why) {
+    if (busy || !autoOn || !masjids.length || doc.hidden || !root.NoorCore) return;
+    var now = Date.now(), m0 = masjids[0], ps = { method: 'karachi', asr: 'hanafi' };
+    try { var sv = JSON.parse(localStorage.getItem('noor_prayer') || '{}'); if (sv.method) ps.method = sv.method; if (sv.asr) ps.asr = sv.asr; } catch (e) {}
+    var tz = 'UTC'; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch (e) {}
+    var ymd; try { ymd = root.NoorCore.civilDate ? root.NoorCore.civilDate(now, tz) : null; } catch (e) { ymd = null; }
+    if (!ymd) { var dt = new Date(now); ymd = [dt.getFullYear(), dt.getMonth() + 1, dt.getDate()]; }
+    var times = root.NoorCore.prayerTimes(ymd[0], ymd[1], ymd[2], m0.lat, m0.lon, ps), pk = windowFor(times, now);
+    if (!pk) return;
+    var key = dayKey(new Date(now)), dd = data[key];
+    if (dd && dd.p && dd.p[pk]) return;                                  // already marked: no need to look at the location
+    var okState = true;
+    try { okState = localStorage.getItem('noor_iman_geo_ok') === '1'; } catch (e) {}
+    if (!okState && why !== 'toggle') return;                           // never ask for location unprompted
+    busy = true;
+    getPos(function (p) {
+      busy = false;
+      var near = null; masjids.forEach(function (m) { var d = meters(p.coords.latitude, p.coords.longitude, m.lat, m.lon); if (d <= Math.max(RADIUS, Math.min(p.coords.accuracy || 0, 300)) && (!near || d < near.d)) near = { m: m, d: d }; });
+      var label = PRAYERS.filter(function (x) { return x[0] === pk; })[0][1], clock = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      if (near) {
+        var d2 = day(key); if (!d2.p[pk]) { d2.p[pk] = 'm'; d2.a = d2.a || {}; d2.a[pk] = 1; save(); }
+        lastCheck = clock + ': at ' + near.m.name + ', ' + label + ' marked 🕌'; toast(label + ' marked at ' + near.m.name + ' 🕌');
+      } else lastCheck = clock + ': not at your masjid (' + label + ' time)';
+      if (s.classList.contains('active')) paint();
+    }, function (er) {
+      busy = false;
+      lastCheck = er && er.code === 1 ? 'Location is blocked, so it cannot check. Allow it in your settings.' : '';
+      if (s.classList.contains('active')) paint();
+    });
+  }
+  doc.addEventListener('visibilitychange', function () { if (!doc.hidden) check('open'); });
+  setInterval(function () { check('tick'); }, 180000);
+  setTimeout(function () { check('open'); }, 2500);
+
   // Dhikr is added up from the Tasbeeh counter whenever it goes up.
   var last = N.tasbeeh ? N.tasbeeh.get() : 0;
   if (N.onTasbeeh) N.onTasbeeh(function (c) { var dl = c - last; last = c; if (dl > 0) { var d = day(dayKey(new Date())); d.dhikr = (d.dhikr || 0) + dl; save(); } });
-  N.onScreen(function (id) { if (id === 'iman') { sel = dayKey(new Date()); paint(); } });
+  N.onScreen(function (id) { if (id === 'iman') { sel = dayKey(new Date()); paint(); check('screen'); } });
 })(typeof self !== 'undefined' ? self : this);
