@@ -66,7 +66,7 @@
     p.sections.forEach(function (s) {
       h += '<h2 class="section-title" style="margin-top:14px">' + esc(s[0]) + '</h2><div class="sch-card"><ul>' + s[1].map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>';
     });
-    h += '<div id="schGallery"></div>';
+    h += '<div id="schWatch"></div><div id="schGallery"></div>';
     h += '<button class="sch-btn" id="schVideos" type="button" style="width:100%;border:0;cursor:pointer">Poetry &amp; Naat ›</button>';
     h += '<button class="sch-btn" id="schDars" type="button" style="width:100%;border:1px solid var(--line);cursor:pointer;background:var(--panel);color:var(--ink)">Dars &amp; Tafseer videos ›</button>';
     h += '<a class="sch-btn" style="background:var(--panel);color:var(--ink);border:1px solid var(--line)" target="_blank" rel="noopener" href="' + esc(safeUrl(p.map)) + '">Open the Dargah on Google Maps ›</a>';
@@ -93,6 +93,7 @@
     '.sch-gal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px}.sch-gal button{padding:0;border:0;border-radius:10px;overflow:hidden;aspect-ratio:1/1;background:var(--line);cursor:pointer}.sch-gal img{width:100%;height:100%;object-fit:cover;display:block}' +
     '.sch-lb{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}.sch-lb img{max-width:100%;max-height:78vh;object-fit:contain;border-radius:8px}.sch-lb .cp{color:#f5f1e2;font-size:14px;margin-top:10px;text-align:center;max-width:90%}.sch-lb .ct{color:#aaa;font-size:12px;margin-top:4px}' +
     '.sch-lb button{position:absolute;background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer}.sch-lb .x{top:14px;right:14px}.sch-lb .pv{left:10px;top:50%}.sch-lb .nx{right:10px;top:50%}' +
+    '.sch-vd{margin-bottom:10px;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}.sch-vth{position:relative;aspect-ratio:16/9;background:#000;cursor:pointer}.sch-vth img,.sch-vth iframe{width:100%;height:100%;object-fit:cover;display:block;border:0}.sch-vth .pl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:34px;text-shadow:0 2px 10px rgba(0,0,0,.6)}.sch-vd .t{padding:10px 12px;font-size:13.5px;font-weight:600;line-height:1.4}' +
     '.sch-note,.sch-src{font-size:12px;color:var(--muted);line-height:1.55;margin:8px 2px}.sch-src a{color:var(--teal)}';
   doc.head.appendChild(css);
 
@@ -100,6 +101,20 @@
   var s = N.el('div', 'screen', '<div class="subhead"><div class="backbtn" id="schBack">←</div><div class="subtitle">Shaykh profile</div></div><div id="schBody"></div>');
   s.id = 'screen-scholar'; screens.appendChild(s);
   s.querySelector('#schBack').addEventListener('click', function () { N.backTab(); });
+  function loadWatch(id) {
+    var box = s.querySelector('#schWatch'); if (!box || !root.fetch) return;
+    fetch('data/pinned.json').then(function (r) { return r.ok ? r.json() : null; }).then(function (g) {
+      var list = ((g && g[id]) || []).filter(function (v) { return v && /^[\w-]{11}$/.test(v.id || '') && v.title; });
+      if (!list.length) return;
+      box.innerHTML = '<h2 class="section-title" style="margin-top:14px">Watch</h2>' + list.map(function (v) {
+        return '<div class="sch-vd"><div class="sch-vth" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg"><div class="pl">▶</div></div><div class="t">' + esc(v.title) + '</div></div>';
+      }).join('');
+      box.onclick = function (e) {
+        var t = e.target.closest && e.target.closest('.sch-vth'); if (!t || t.querySelector('iframe')) return;
+        t.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + t.getAttribute('data-id') + '?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Video"></iframe>';
+      };
+    }).catch(function () {});
+  }
   function loadGallery(id) {
     var box = s.querySelector('#schGallery'); if (!box || !root.fetch) return;
     fetch('data/gallery.json').then(function (r) { return r.ok ? r.json() : null; }).then(function (g) {
@@ -124,7 +139,7 @@
     var p = PROFILES[id]; if (!p) return false;
     s.querySelector('#schBody').innerHTML = html(p, photo);
     var db = s.querySelector('#schDars'); if (db) db.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('dars'); };
-    loadGallery(id);
+    loadGallery(id); loadWatch(id);
     var vb = s.querySelector('#schVideos'); if (vb) vb.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('poetry'); };
     N.showScreen('scholar');
     return true;

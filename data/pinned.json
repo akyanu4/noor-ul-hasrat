@@ -1,5 +1,5 @@
 {
-  "about": "Videos always shown at the top of a section, even before the channel list loads. Add a line for each: { \"id\": \"<YouTube video id>\", \"title\": \"...\" }. The id is the part after v= in the YouTube link.",
+  "about": "Videos always shown at the top of a section, even before the channel list loads. Add a line for each: { \"id\": \"<YouTube video id>\", \"title\": \"...\" }. The id is the part after v= in the YouTube link. The \"hasrat\" list is shown on Hazrat's profile page.",
   "poetry": [
     {
       "id": "FBgQGExm_Ys",
@@ -12,7 +12,21 @@
     {
       "id": "MR-VNuurpzM",
       "title": "Chain Tum Se Qaraar Tum Se Hai - Bahr Ul Uloom - Hasrat Qadeer Piya"
+    },
+    {
+      "id": "IBlen572-Xs",
+      "title": "Ya Ali-e-Murtuza | Kalam-e-Hasrat Qadeer Piya by Mohammed Khan Qadri"
+    },
+    {
+      "id": "Oq5S-cKDwX0",
+      "title": "Deklo Shakal Meri Kiska Ayyena Hoon Mai"
     }
   ],
-  "dars": []
+  "dars": [],
+  "hasrat": [
+    {
+      "id": "f6mAodSgYxg",
+      "title": "Hazrat Maulana Muhammad Abdul Qadeer Siddiqui (Hasrat) RA: A Biography"
+    }
+  ]
 }
