@@ -1,0 +1,4 @@
+{
+  "about": "Photos for each profile. Put the image files in photos/gallery/ and add a line for each one: { \"src\": \"photos/gallery/dargah-1.jpg\", \"caption\": \"The Dargah\" }. Keep each photo under about 300 KB so the app stays fast.",
+  "hasrat": []
+}

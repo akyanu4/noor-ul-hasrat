@@ -66,7 +66,9 @@
     p.sections.forEach(function (s) {
       h += '<h2 class="section-title" style="margin-top:14px">' + esc(s[0]) + '</h2><div class="sch-card"><ul>' + s[1].map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>';
     });
+    h += '<div id="schGallery"></div>';
     h += '<button class="sch-btn" id="schVideos" type="button" style="width:100%;border:0;cursor:pointer">Poetry &amp; Naat ›</button>';
+    h += '<button class="sch-btn" id="schDars" type="button" style="width:100%;border:1px solid var(--line);cursor:pointer;background:var(--panel);color:var(--ink)">Dars &amp; Tafseer videos ›</button>';
     h += '<a class="sch-btn" style="background:var(--panel);color:var(--ink);border:1px solid var(--line)" target="_blank" rel="noopener" href="' + esc(safeUrl(p.map)) + '">Open the Dargah on Google Maps ›</a>';
     h += '<div class="sch-note">Compiled from the pages below. Where sources differ (for example on his exact title or his age at passing) we have left the detail out. Please check anything important with the family, the khanqah or your teachers.</div>';
     h += '<div class="sch-src">Sources: ' + p.sources.map(function (s) { return '<a target="_blank" rel="noopener" href="' + esc(safeUrl(s[1])) + '">' + esc(s[0]) + '</a>'; }).join(' · ') + '</div>';
@@ -88,6 +90,9 @@
     '.sch-row{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px;line-height:1.45}.sch-row:last-child{border-bottom:0}.sch-row b{flex:none;width:92px;color:var(--teal)}.sch-row span{flex:1}' +
     '.sch-card ul{margin:0;padding-left:18px;font-size:13.5px;line-height:1.55}.sch-card li{margin:6px 0}' +
     '.sch-btn{display:block;text-align:center;background:var(--gold);color:#1a2421;font-weight:700;border-radius:12px;padding:13px;font-size:15px;text-decoration:none;margin:12px 0}' +
+    '.sch-gal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px}.sch-gal button{padding:0;border:0;border-radius:10px;overflow:hidden;aspect-ratio:1/1;background:var(--line);cursor:pointer}.sch-gal img{width:100%;height:100%;object-fit:cover;display:block}' +
+    '.sch-lb{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}.sch-lb img{max-width:100%;max-height:78vh;object-fit:contain;border-radius:8px}.sch-lb .cp{color:#f5f1e2;font-size:14px;margin-top:10px;text-align:center;max-width:90%}.sch-lb .ct{color:#aaa;font-size:12px;margin-top:4px}' +
+    '.sch-lb button{position:absolute;background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer}.sch-lb .x{top:14px;right:14px}.sch-lb .pv{left:10px;top:50%}.sch-lb .nx{right:10px;top:50%}' +
     '.sch-note,.sch-src{font-size:12px;color:var(--muted);line-height:1.55;margin:8px 2px}.sch-src a{color:var(--teal)}';
   doc.head.appendChild(css);
 
@@ -95,9 +100,31 @@
   var s = N.el('div', 'screen', '<div class="subhead"><div class="backbtn" id="schBack">←</div><div class="subtitle">Shaykh profile</div></div><div id="schBody"></div>');
   s.id = 'screen-scholar'; screens.appendChild(s);
   s.querySelector('#schBack').addEventListener('click', function () { N.backTab(); });
+  function loadGallery(id) {
+    var box = s.querySelector('#schGallery'); if (!box || !root.fetch) return;
+    fetch('data/gallery.json').then(function (r) { return r.ok ? r.json() : null; }).then(function (g) {
+      var list = ((g && g[id]) || []).filter(function (p) { return p && /^(photos\/|https:\/\/)[^"<>\s]+$/.test(p.src || ''); });
+      if (!list.length) return;
+      box.innerHTML = '<h2 class="section-title" style="margin-top:14px">Gallery</h2><div class="sch-gal">' + list.map(function (p, i) { return '<button type="button" data-i="' + i + '" aria-label="' + esc(p.caption || 'Photo ' + (i + 1)) + '"><img loading="lazy" alt="' + esc(p.caption || '') + '" src="' + esc(p.src) + '"></button>'; }).join('') + '</div>';
+      box.querySelector('.sch-gal').addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('button[data-i]'); if (b) lightbox(list, +b.getAttribute('data-i')); });
+    }).catch(function () {});
+  }
+  function lightbox(list, i) {
+    var lb = N.el('div', 'sch-lb', '<button class="x" type="button" aria-label="Close">✕</button><button class="pv" type="button" aria-label="Previous">‹</button><button class="nx" type="button" aria-label="Next">›</button><img alt=""><div class="cp"></div><div class="ct"></div>');
+    function show() { var p = list[i]; lb.querySelector('img').src = p.src; lb.querySelector('img').alt = p.caption || ''; lb.querySelector('.cp').textContent = p.caption || ''; lb.querySelector('.ct').textContent = (i + 1) + ' / ' + list.length; lb.querySelector('.pv').style.display = lb.querySelector('.nx').style.display = list.length > 1 ? '' : 'none'; }
+    function close() { lb.remove(); doc.removeEventListener('keydown', key); }
+    function key(e) { if (e.key === 'Escape') close(); else if (e.key === 'ArrowRight') { i = (i + 1) % list.length; show(); } else if (e.key === 'ArrowLeft') { i = (i - 1 + list.length) % list.length; show(); } }
+    lb.querySelector('.x').onclick = close; lb.querySelector('.pv').onclick = function () { i = (i - 1 + list.length) % list.length; show(); }; lb.querySelector('.nx').onclick = function () { i = (i + 1) % list.length; show(); };
+    lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+    var x0 = null; lb.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 50 && list.length > 1) { i = (i + (dx < 0 ? 1 : -1) + list.length) % list.length; show(); } }, { passive: true });
+    doc.addEventListener('keydown', key); doc.body.appendChild(lb); show();
+  }
   api.open = function (id, photo) {
     var p = PROFILES[id]; if (!p) return false;
     s.querySelector('#schBody').innerHTML = html(p, photo);
+    var db = s.querySelector('#schDars'); if (db) db.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('dars'); };
+    loadGallery(id);
     var vb = s.querySelector('#schVideos'); if (vb) vb.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('poetry'); };
     N.showScreen('scholar');
     return true;
