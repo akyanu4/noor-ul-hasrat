@@ -7,7 +7,7 @@
 
   var STEP = 20;                                   // ms between loudness readings
   var K = [8, 6, 4.5, 3.5, 2.5];                   // how far above the room's noise a sound must rise, by sensitivity 1..5
-  var MIN_HI = 0.012, MIN_GAP = 700, HANG = 100, MAX_BURST = 4000;
+  var MIN_HI = 0.005, MIN_GAP = 700, HANG = 100, MAX_BURST = 4000;
 
   // Pure detector: feed it loudness (0..1) with a timestamp; it says when a new recitation starts.
   function createDetector(sens) {
@@ -16,18 +16,21 @@
     return {
       setSensitivity: function (v) { s = Math.min(5, Math.max(1, Math.round(v || 3))); },
       level: function () { return Math.min(1.5, env / hi); },
+      env: function () { return env; },
+      threshold: function () { return hi; },
+      ready: function () { return floor !== null; },
       push: function (rms, t) {
         if (t0 === null) t0 = t;
         env += (rms > env ? 0.6 : 0.35) * (rms - env);
         if (floor === null) {                        // first half second: just listen to the room
           calib.push(env);
-          if (t - t0 >= 500) { floor = Math.max(0.0015, calib.reduce(function (a, b) { return a + b; }, 0) / calib.length); }
+          if (t - t0 >= 500) { calib.sort(function (a, b) { return a - b; }); floor = Math.max(0.0008, calib[Math.floor(calib.length * 0.2)]); }
           return false;
         }
         hi = Math.max(MIN_HI, floor * K[s - 1]); lo = Math.max(floor * 1.6, hi * 0.55);
         var fired = false;
         if (!active) {
-          if (env < lo) floor = Math.max(0.0015, floor + (env - floor) * (env < floor ? 0.2 : 0.01));    // follow slow changes in room noise, but only while it is quiet (not between recitations)
+          if (env < lo) floor = Math.max(0.0008, floor + (env - floor) * (env < floor ? 0.2 : 0.01));    // follow slow changes in room noise, but only while it is quiet (not between recitations)
           if (env > hi && t - lastCount >= MIN_GAP) { active = true; activeSince = t; belowSince = null; lastCount = t; fired = true; }
         } else {
           if (env < lo) { if (belowSince === null) belowSince = t; if (t - belowSince >= HANG) { active = false; belowSince = null; } }
@@ -58,7 +61,7 @@
 
   var box = doc.createElement('div'); box.className = 'vc';
   box.innerHTML = '<button class="tbtn" id="vcToggle" type="button">🎙️ Count by voice (beta)</button>' +
-    '<div class="vc-meter" id="vcMeterBox" hidden><i id="vcMeter"></i></div><div class="vc-st" id="vcStatus"></div>' +
+    '<div class="vc-meter" id="vcMeterBox" hidden><i id="vcMeter"></i></div><div class="vc-st" id="vcStatus"></div><div class="vc-st" id="vcDebug" style="font-size:11px;opacity:.8"></div>' +
     '<div class="vc-row" id="vcSensRow" hidden><span>Quiet room</span><input id="vcSens" type="range" min="1" max="5" step="1" aria-label="Sensitivity"><span>Noisy room</span></div>' +
     '<div class="vc-fix"><button class="tbtn" id="vcMinus" type="button" aria-label="Take one off the count">− 1</button><button class="tbtn" id="vcPlus" type="button" aria-label="Add one to the count">+ 1</button></div>' +
     '<div class="vc-note">Sound is analysed on your phone only. Nothing is recorded or sent anywhere. It counts sounds, not words, so it is close but not exact: use − 1 / + 1 to correct it, and tap the circle any time.</div>';
@@ -80,30 +83,46 @@
     if (actx) { try { actx.close(); } catch (e) {} actx = null; }
     if (wake) { try { wake.release(); } catch (e) {} wake = null; }
     tog.classList.remove('on'); tog.textContent = '🎙️ Count by voice (beta)';
-    $('vcMeterBox').hidden = true; $('vcSensRow').hidden = true; meter.style.width = '0';
+    $('vcMeterBox').hidden = true; $('vcSensRow').hidden = true; meter.style.width = '0'; $('vcDebug').textContent = '';
     st.textContent = msg || '';
   }
   function start() {
-    var md = navigator.mediaDevices;
-    if (!md || !md.getUserMedia || !(root.AudioContext || root.webkitAudioContext)) { st.textContent = 'This browser cannot use the microphone here. Try Chrome or Safari, and open Noor over https.'; return; }
+    var md = navigator.mediaDevices, AC = root.AudioContext || root.webkitAudioContext;
+    if (!md || !md.getUserMedia || !AC) { st.textContent = 'This browser cannot use the microphone here. Try Chrome or Safari, and open Noor over https.'; return; }
+    // The audio engine must be created and started right here, inside the tap. On iPhone it stays paused if it is started later.
+    try { actx = new AC(); if (actx.resume) actx.resume(); } catch (e) { actx = null; }
     st.textContent = 'Asking for the microphone…';
     md.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } }).then(function (s) {
-      stream = s; var AC = root.AudioContext || root.webkitAudioContext; actx = new AC();
-      if (actx.state === 'suspended') actx.resume();
+      stream = s; if (!actx) actx = new AC();
+      if (actx.state !== 'running' && actx.resume) actx.resume();
       var an = actx.createAnalyser(); an.fftSize = 1024; actx.createMediaStreamSource(s).connect(an);
-      var buf = new Float32Array(an.fftSize); det = createDetector(sens);
+      var fbuf = an.getFloatTimeDomainData ? new Float32Array(an.fftSize) : null, bbuf = new Uint8Array(an.fftSize);
+      det = createDetector(sens);
+      var peak = 0, since = performance.now(), warned = false, shown = 0;
       timer = setInterval(function () {
-        an.getFloatTimeDomainData(buf);
-        var sum = 0, i; for (i = 0; i < buf.length; i++) sum += buf[i] * buf[i];
-        if (det.push(Math.sqrt(sum / buf.length), performance.now())) bump();
+        var sum = 0, i, v;
+        if (fbuf) { an.getFloatTimeDomainData(fbuf); for (i = 0; i < fbuf.length; i++) sum += fbuf[i] * fbuf[i]; }
+        else { an.getByteTimeDomainData(bbuf); for (i = 0; i < bbuf.length; i++) { v = (bbuf[i] - 128) / 128; sum += v * v; } }
+        var rms = Math.sqrt(sum / (fbuf ? fbuf.length : bbuf.length)), now = performance.now();
+        if (rms > peak) peak = rms;
+        if (det.push(rms, now)) bump();
         meter.style.width = Math.min(100, Math.round(det.level() * 100)) + '%';
+        if (now - shown > 250) { shown = now; $('vcDebug').textContent = det.ready() ? 'Hearing ' + Math.round(det.env() * 1000) + ' · needs ' + Math.round(det.threshold() * 1000) : ''; }
+        if (!warned && now - since > 3500 && peak < 0.0004) {
+          warned = true;
+          if (actx && actx.state !== 'running') { st.textContent = 'The audio engine is paused. Tap anywhere on this screen once.'; if (actx.resume) actx.resume(); }
+          else st.textContent = 'The microphone is sending no sound. Check that another app is not using it and that Noor is allowed to use it.';
+        }
       }, STEP);
       tog.classList.add('on'); tog.textContent = '⏹ Stop listening';
       $('vcMeterBox').hidden = false; $('vcSensRow').hidden = false;
       st.textContent = 'Getting used to the room… stay quiet for a moment, then begin.';
-      setTimeout(function () { if (timer) st.textContent = 'Listening. Recite at a steady pace.'; }, 900);
+      setTimeout(function () { if (timer && st.textContent.indexOf('Getting used') === 0) st.textContent = 'Listening. Recite at a steady pace.'; }, 900);
+      var kick = function () { if (actx && actx.state !== 'running' && actx.resume) actx.resume(); doc.removeEventListener('touchend', kick); doc.removeEventListener('click', kick); };
+      doc.addEventListener('touchend', kick); doc.addEventListener('click', kick);
       try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then(function (w) { wake = w; }).catch(function () {}); } catch (e) {}
     }).catch(function (err) {
+      if (actx) { try { actx.close(); } catch (e) {} actx = null; }
       st.textContent = err && (err.name === 'NotAllowedError' || err.name === 'SecurityError') ? 'The microphone is blocked. Allow it for Noor in your browser or phone settings, then try again.' : 'Could not start the microphone' + (err && err.name ? ' (' + err.name + ')' : '') + '.';
     });
   }
