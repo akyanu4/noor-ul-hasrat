@@ -1,0 +1,4 @@
+{
+  "crons": [{ "path": "/api/prayer-nudges", "schedule": "30 11 * * *" }],
+  "functions": { "api/prayer-nudges.js": { "includeFiles": "js/{core,cities}.js", "maxDuration": 60 } }
+}

@@ -77,6 +77,32 @@
   var MKEY = 'noor_iman_masjids', AKEY = 'noor_iman_auto', RADIUS = 150, masjids = [], autoOn = true, lastCheck = '', busy = false;
   try { masjids = JSON.parse(localStorage.getItem(MKEY) || '[]') || []; if (!Array.isArray(masjids)) masjids = []; } catch (e) { masjids = []; }
   try { autoOn = localStorage.getItem(AKEY) !== '0'; } catch (e) {}
+  var NKEY = 'noor_iman_nudge', nudgeOn = false, nudgeMsg = '';
+  try { nudgeOn = localStorage.getItem(NKEY) === '1'; } catch (e) {}
+  function pushReady() { return !!(root.NOOR_CONFIG && root.NOOR_CONFIG.oneSignalAppId); }
+  function withPush(fn) { if (!pushReady()) return; root.OneSignalDeferred = root.OneSignalDeferred || []; root.OneSignalDeferred.push(function (OS) { try { return fn(OS); } catch (e) {} }); }
+  // Tell the push service which listed city is nearest, so the server can send that city's prayer times. Only the city name leaves the phone.
+  function tagCity(OS) {
+    var l = null; try { l = JSON.parse(localStorage.getItem('noor_loc') || 'null'); } catch (e) {}
+    if (!l || typeof l.lat !== 'number') l = { lat: 17.385, lon: 78.4867 };      // the Prayer Times screen starts on Hyderabad until another place is chosen
+    var c = l && typeof l.lat === 'number' && root.NoorCities ? root.NoorCities.nearest(l.lat, l.lon, 100) : null;
+    if (c) { OS.User.addTag('city', c.name); return c.name; }
+    OS.User.addTag('city', ''); return '';
+  }
+  function setNudge(on) {
+    if (!on) { nudgeOn = false; try { localStorage.setItem(NKEY, '0'); } catch (e) {} nudgeMsg = ''; withPush(function (OS) { OS.User.addTag('nudge', '0'); }); paint(); return; }
+    if (!pushReady()) { nudgeMsg = 'Notifications are not switched on for this app yet.'; paint(); return; }
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !(root.matchMedia && root.matchMedia('(display-mode: standalone)').matches)) { nudgeMsg = 'On iPhone, add Noor to your Home Screen first, then turn this on.'; paint(); return; }
+    withPush(function (OS) {
+      return OS.Notifications.requestPermission().then(function () {
+        if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+          var city = tagCity(OS); OS.User.addTag('nudge', '1'); nudgeOn = true; try { localStorage.setItem(NKEY, '1'); } catch (e) {}
+          nudgeMsg = city ? 'On. You will get a nudge at each prayer time in ' + city + '. Times are within a few minutes.' : 'On, but your place is not near a city on our list yet, so no nudges will arrive. Choose the nearest city under Prayer Times.';
+        } else nudgeMsg = 'Notifications are blocked. Allow them in your browser or phone settings.';
+        paint();
+      });
+    });
+  }
   function saveMasjids() { try { localStorage.setItem(MKEY, JSON.stringify(masjids)); } catch (e) {} }
   function getPos(ok, bad) {
     if (!navigator.geolocation) { bad({ code: 0 }); return; }
@@ -116,6 +142,7 @@
     var hint = fastHint(selDate);
     h += '<h2 class="section-title" style="margin-top:4px">Fasting</h2><div class="ih-card"><div class="ih-fast"><div class="tx"><b>I fasted this day</b>' + (hint ? '<div class="ih-sub">' + esc(hint) + '</div>' : '') + '</div><button type="button" class="ih-sw' + (d.fast ? ' on' : '') + '" id="ihFast" aria-label="I fasted this day" aria-pressed="' + (d.fast ? 'true' : 'false') + '"><i></i></button></div></div>';
     h += '<h2 class="section-title" style="margin-top:4px">Dhikr</h2><div class="ih-card"><div class="ih-fast"><div class="tx"><b>' + (d.dhikr || 0).toLocaleString() + ' counted</b><div class="ih-sub">Counted automatically from your Tasbeeh' + (isToday ? '' : ' on this day') + '.</div></div><div class="tbtn" id="ihTas" style="margin:0">📿 Tasbeeh</div></div></div>';
+    h += '<h2 class="section-title" style="margin-top:4px">Prayer-time nudge</h2><div class="ih-card"><div class="ih-fast"><div class="tx"><b>Nudge me at each prayer time</b><div class="ih-sub">' + esc(nudgeMsg || 'A gentle notification at each adhan. Tap it and Noor opens, then marks your masjid prayer if you are there.') + '</div></div><button type="button" class="ih-sw' + (nudgeOn ? ' on' : '') + '" id="ihNudge" aria-label="Nudge me at each prayer time" aria-pressed="' + (nudgeOn ? 'true' : 'false') + '"><i></i></button></div></div>';
     h += '<h2 class="section-title" style="margin-top:4px">My masjid</h2><div class="ih-card">';
     if (!masjids.length) h += '<div class="ih-fast"><div class="tx"><b>Mark the masjid automatically</b><div class="ih-sub">Stand at your masjid and tap the button once. After that, when Noor is open during a prayer time and you are there, it marks 🕌 for you.</div></div></div>';
     else h += masjids.map(function (m, i) { return '<div class="ih-row"><div class="nm">🕌 ' + esc(m.name) + '</div><button type="button" class="ih-clear" data-rm="' + i + '">Remove</button></div>'; }).join('') +
@@ -132,10 +159,11 @@
   }
 
   body.addEventListener('click', function (e) {
-    var t = e.target.closest ? e.target.closest('[data-k],[data-p],[data-rm],#ihFast,#ihTas,#ihClear,#ihAuto,#ihAdd') : null; if (!t) return;
+    var t = e.target.closest ? e.target.closest('[data-k],[data-p],[data-rm],#ihNudge,#ihFast,#ihTas,#ihClear,#ihAuto,#ihAdd') : null; if (!t) return;
     if (t.hasAttribute('data-k')) { sel = t.getAttribute('data-k'); paint(); return; }
     if (t.hasAttribute('data-p')) { var d = day(sel), p = t.getAttribute('data-p'), m = t.getAttribute('data-m'); d.p[p] = d.p[p] === m ? '' : m; if (!d.p[p]) delete d.p[p]; if (d.a) delete d.a[p]; save(); paint(); return; }
     if (t.id === 'ihFast') { var f = day(sel); f.fast = !f.fast; if (!f.fast) delete f.fast; save(); paint(); return; }
+    if (t.id === 'ihNudge') { setNudge(!nudgeOn); return; }
     if (t.hasAttribute('data-rm')) { masjids.splice(+t.getAttribute('data-rm'), 1); saveMasjids(); paint(); return; }
     if (t.id === 'ihAuto') { autoOn = !autoOn; try { localStorage.setItem(AKEY, autoOn ? '1' : '0'); } catch (er) {} paint(); if (autoOn) check('toggle'); return; }
     if (t.id === 'ihAdd') {
@@ -182,6 +210,11 @@
       lastCheck = er && er.code === 1 ? 'Location is blocked, so it cannot check. Allow it in your settings.' : '';
       if (s.classList.contains('active')) paint();
     });
+  }
+  if (nudgeOn) withPush(function (OS) { tagCity(OS); });
+  if (/[?&]nudge=1/.test(root.location.search || '')) {
+    try { root.history.replaceState(null, '', root.location.pathname); } catch (e) {}
+    setTimeout(function () { N.route('iman'); }, 700);
   }
   doc.addEventListener('visibilitychange', function () { if (!doc.hidden) check('open'); });
   setInterval(function () { check('tick'); }, 180000);
