@@ -57,6 +57,15 @@
   var body = s.querySelector('#fmBody');
   s.querySelector('#fmBack').addEventListener('click', function () { N.backTab(); });
 
+  var pinned = null;
+  function loadPinned() {
+    fetch('data/pinned.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) { pinned = d || {}; paint(); }).catch(function () { pinned = {}; paint(); });
+  }
+  function pins() { return ((pinned && pinned[tab]) || []).filter(function (v) { return v && validId(v.id) && v.title; }); }
+  function pinCard(v) {
+    return '<div class="fm-card"><div class="fm-th" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg"><div class="fm-play">▶</div></div>' +
+      '<div class="fm-t">' + esc(v.title) + '</div><div class="fm-m"><span></span><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=' + v.id + '">Open on YouTube ↗</a></div></div>';
+  }
   function loadKalaam() {
     fetch('data/kalaam.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (d) {
       kalaam = (d && Array.isArray(d.poems) ? d.poems : []).filter(function (x) { return x && x.title && x.text; }); paint();
@@ -127,7 +136,8 @@
     return out;
   }
   function paint() {
-    var h = '', list = (state.items || []).filter(function (v) { return v.kind === tab; });
+    var h = '', list = (state.items || []).filter(function (v) { return v.kind === tab; }), pn = pins();
+    list = list.filter(function (v) { return !pn.some(function (p) { return p.id === v.id; }); });
     s.querySelector('#fmTitle').textContent = tab === 'poetry' ? 'Poetry & Naat' : 'Dars & Tafseer';
     if (tab === 'poetry') {
       if (kalaam && kalaam.length) h += poemsHtml();
@@ -146,10 +156,11 @@
         if (topic > 0) list = list.filter(function (v) { return tp[topic - 1].re.test(v.title); });
       }
     }
+    if (pn.length) h += '<h2 class="section-title" style="margin-top:6px">Featured</h2>' + pn.map(pinCard).join('') + (list.length || state.loading ? '<h2 class="section-title" style="margin-top:14px">All videos</h2>' : '');
     if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest videos…</div>';
     else if (state.error === 'unconfigured') h += '<div class="fm-note">The live list is not connected yet (add <b>youtubeApiKey</b> in js/config.js).</div>';
     else if (state.error && state.error !== 'stale') h += '<div class="fm-note">Could not load the videos (' + esc(state.error) + '). <a href="#" id="fmRetry">Try again</a></div>';
-    else if (!list.length) h += '<div class="fm-note">' + (tab === 'poetry' ? 'No poetry or naat videos yet. A video is placed here when its title has a word like Naat, Nazm, Kalam, Manqabat or Poetry.' : 'No videos found' + (who ? ' for this shaykh' : ' yet') + '.') + '</div>';
+    else if (!list.length && !pn.length) h += '<div class="fm-note">' + (tab === 'poetry' ? 'No poetry or naat videos yet. A video is placed here when its title has a word like Naat, Nazm, Kalam, Manqabat or Poetry.' : 'No videos found' + (who ? ' for this shaykh' : ' yet') + '.') + '</div>';
     list = list.slice().sort(function (a, b) { var d = (Date.parse(b.at || 0) || 0) - (Date.parse(a.at || 0) || 0); return isOldest() ? -d : d; });
     if (list.length > 1) h += '<div class="fm-order">Sort by upload date <span data-o="new" class="' + (isOldest() ? '' : 'on') + '">Newest</span><span data-o="old" class="' + (isOldest() ? 'on' : '') + '">Oldest</span></div>';
     var total = list.length; list = list.slice(0, limit);
@@ -175,7 +186,7 @@
     if (e.target.id === 'fmRetry' || e.target.id === 'fmRefresh') { e.preventDefault(); load(true); }
   });
 
-  api.open = function (which) { if (kalaam === null) loadKalaam(); if (which === 'poetry' || which === 'dars') { if (tab !== which) { who = 0; topic = 0; limit = SHOW; } tab = which; } paint(); N.showScreen('family'); if (state.items === null) load(false); };
+  api.open = function (which) { if (kalaam === null) loadKalaam(); if (pinned === null) loadPinned(); if (which === 'poetry' || which === 'dars') { if (tab !== which) { who = 0; topic = 0; limit = SHOW; } tab = which; } paint(); N.showScreen('family'); if (state.items === null) load(false); };
   N.onScreen(function (id) { if (id === 'family' && state.items !== null && !state.loading) load(false); });
   paint();
 })(typeof self !== 'undefined' ? self : this);
