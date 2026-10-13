@@ -262,21 +262,23 @@
   var last = N.tasbeeh ? N.tasbeeh.get() : 0;
   if (N.onTasbeeh) N.onTasbeeh(function (c) { var dl = c - last; last = c; if (dl > 0) { var d = day(dayKey(new Date())); d.dhikr = (d.dhikr || 0) + dl; save(); } });
 
-  // Home page card: this week's level at a glance. Tap it to open Iman Health.
-  var homeCard = null;
+  // A small heart beside the menu button: its colour shows this week's level. Tap it to open Iman Health.
+  var heart = null;
+  function heartColor(lv) { return lv.label === 'Not started yet' ? '#9aa5a1' : lv.score >= 85 ? '#2fbf71' : lv.score >= 65 ? '#8bd450' : lv.score >= 40 ? '#f0b33a' : '#e5594f'; }
   function paintHome() {
     try {
-      var host = doc.querySelector('#screen-home .prayer-card'); if (!host) return;
-      if (!homeCard) {
-        homeCard = N.el('div', 'ih-sum', ''); homeCard.id = 'homeIman'; homeCard.setAttribute('role', 'button'); homeCard.style.cssText = 'cursor:pointer;margin-top:12px';
-        homeCard.addEventListener('click', function () { N.showScreen('iman'); });
-        host.parentNode.insertBefore(homeCard, host.nextSibling);
+      var mb = doc.getElementById('menuBtn'); if (!mb) return;
+      if (!heart) {
+        var wrap = N.el('div', '', ''); wrap.style.cssText = 'display:flex;align-items:center;gap:8px';
+        mb.parentNode.insertBefore(wrap, mb); wrap.appendChild(mb);
+        heart = N.el('button', 'menubtn', '\u2665'); heart.id = 'heartBtn'; heart.type = 'button'; heart.style.fontSize = '21px';
+        heart.addEventListener('click', function () { N.showScreen('iman'); });
+        wrap.insertBefore(heart, mb);
       }
       var now = new Date(), keys = lastDays(7, now).map(dayKey), ft = 2; try { if (fastHint(now) === 'Ramadan') ft = 7; } catch (e) {}
-      var lv = score(data, keys, ft), C = 2 * Math.PI * 32;
-      homeCard.setAttribute('aria-label', 'Iman Health: ' + lv.label);
-      homeCard.innerHTML = '<div class="k">💚 Your Iman Health · last 7 days</div><div class="ih-lv" style="margin:6px 0 2px"><div class="ih-ring"><svg viewBox="0 0 76 76"><circle cx="38" cy="38" r="32" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="7"/><circle cx="38" cy="38" r="32" fill="none" stroke="#e7d4a3" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + (C * lv.score / 100).toFixed(1) + ' ' + C.toFixed(1) + '"/></svg><b>' + lv.score + '</b></div>' +
-        '<div><div class="lb">' + esc(lv.label) + '</div><div class="pt">' + esc(lv.tip) + '</div></div></div>';
+      var lv = score(data, keys, ft);
+      heart.style.color = heartColor(lv); heart.style.borderColor = heartColor(lv);
+      heart.setAttribute('aria-label', 'Iman Health: ' + lv.label + (lv.label === 'Not started yet' ? '' : ', ' + lv.score + ' out of 100')); heart.title = 'Iman Health: ' + lv.label;
     } catch (e) {}
   }
   paintHome();
