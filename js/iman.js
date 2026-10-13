@@ -275,7 +275,7 @@
       var now = new Date(), keys = lastDays(7, now).map(dayKey), ft = 2; try { if (fastHint(now) === 'Ramadan') ft = 7; } catch (e) {}
       var lv = score(data, keys, ft), C = 2 * Math.PI * 32;
       homeCard.setAttribute('aria-label', 'Iman Health: ' + lv.label);
-      homeCard.innerHTML = '<div class="k">Your Iman Health · last 7 days</div><div class="ih-lv" style="margin:6px 0 2px"><div class="ih-ring"><svg viewBox="0 0 76 76"><circle cx="38" cy="38" r="32" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="7"/><circle cx="38" cy="38" r="32" fill="none" stroke="#e7d4a3" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + (C * lv.score / 100).toFixed(1) + ' ' + C.toFixed(1) + '"/></svg><b>' + lv.score + '</b></div>' +
+      homeCard.innerHTML = '<div class="k">💚 Your Iman Health · last 7 days</div><div class="ih-lv" style="margin:6px 0 2px"><div class="ih-ring"><svg viewBox="0 0 76 76"><circle cx="38" cy="38" r="32" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="7"/><circle cx="38" cy="38" r="32" fill="none" stroke="#e7d4a3" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + (C * lv.score / 100).toFixed(1) + ' ' + C.toFixed(1) + '"/></svg><b>' + lv.score + '</b></div>' +
         '<div><div class="lb">' + esc(lv.label) + '</div><div class="pt">' + esc(lv.tip) + '</div></div></div>';
     } catch (e) {}
   }
