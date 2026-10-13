@@ -91,6 +91,7 @@
   function save() {
     var ks = Object.keys(data).sort(); while (ks.length > 400) delete data[ks.shift()];
     try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+    paintHome();
   }
   function esc(t) { return N.esc(t); }
   function day(k) { return data[k] || (data[k] = { p: {} }); }
@@ -260,5 +261,24 @@
   // Dhikr is added up from the Tasbeeh counter whenever it goes up.
   var last = N.tasbeeh ? N.tasbeeh.get() : 0;
   if (N.onTasbeeh) N.onTasbeeh(function (c) { var dl = c - last; last = c; if (dl > 0) { var d = day(dayKey(new Date())); d.dhikr = (d.dhikr || 0) + dl; save(); } });
-  N.onScreen(function (id) { if (id === 'iman') { sel = dayKey(new Date()); paint(); check('screen'); } });
+
+  // Home page card: this week's level at a glance. Tap it to open Iman Health.
+  var homeCard = null;
+  function paintHome() {
+    try {
+      var host = doc.querySelector('#screen-home .prayer-card'); if (!host) return;
+      if (!homeCard) {
+        homeCard = N.el('div', 'ih-sum', ''); homeCard.id = 'homeIman'; homeCard.setAttribute('role', 'button'); homeCard.style.cssText = 'cursor:pointer;margin-top:12px';
+        homeCard.addEventListener('click', function () { N.showScreen('iman'); });
+        host.parentNode.insertBefore(homeCard, host.nextSibling);
+      }
+      var now = new Date(), keys = lastDays(7, now).map(dayKey), ft = 2; try { if (fastHint(now) === 'Ramadan') ft = 7; } catch (e) {}
+      var lv = score(data, keys, ft), C = 2 * Math.PI * 32;
+      homeCard.setAttribute('aria-label', 'Iman Health: ' + lv.label);
+      homeCard.innerHTML = '<div class="k">Your Iman Health · last 7 days</div><div class="ih-lv" style="margin:6px 0 2px"><div class="ih-ring"><svg viewBox="0 0 76 76"><circle cx="38" cy="38" r="32" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="7"/><circle cx="38" cy="38" r="32" fill="none" stroke="#e7d4a3" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + (C * lv.score / 100).toFixed(1) + ' ' + C.toFixed(1) + '"/></svg><b>' + lv.score + '</b></div>' +
+        '<div><div class="lb">' + esc(lv.label) + '</div><div class="pt">' + esc(lv.tip) + '</div></div></div>';
+    } catch (e) {}
+  }
+  paintHome();
+  N.onScreen(function (id) { if (id === 'home') paintHome(); if (id === 'iman') { sel = dayKey(new Date()); paint(); check('screen'); } });
 })(typeof self !== 'undefined' ? self : this);
