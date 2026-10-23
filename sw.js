@@ -1,5 +1,5 @@
 // Caches the app shell so Noor opens offline. Videos, the database and call rooms always use the network.
-const CACHE = 'noor-v53';
+const CACHE = 'noor-v54';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png', 'icons/favicon-48.png',
                'js/config.js', 'js/core.js', 'js/backend.js', 'js/features.js', 'js/quran-data.js', 'js/quran.js', 'js/faith.js', 'js/scholar.js', 'js/family.js', 'js/audio.js', 'js/events.js', 'js/voice.js', 'js/cities.js', 'js/iman.js', 'js/install.js', 'install.html',
                'photos/shaykh-1.jpg', 'photos/shaykh-2.jpg', 'photos/shaykh-3.jpg'];

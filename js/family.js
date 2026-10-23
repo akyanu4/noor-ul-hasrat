@@ -60,6 +60,7 @@
     '.fm-btn{display:block;text-align:center;background:var(--gold);color:#1a2421;font-weight:700;border-radius:12px;padding:13px;font-size:15px;text-decoration:none;margin:12px 0}' +
     '.fm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.fm-sc{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}' +
     '.fm-sth{position:relative;aspect-ratio:9/16;background:#000;cursor:pointer;overflow:hidden}.fm-sth img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02)}.fm-sth iframe{width:100%;height:100%;border:0;display:block}' +
+    '.fm-hs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px 4px;padding:0 18px 6px;scrollbar-width:none}.fm-hs::-webkit-scrollbar{display:none}.fm-hs .fm-sc{flex:none;width:42%;max-width:190px;scroll-snap-align:start}.fm-hs .fm-all{flex:none;width:30%;max-width:140px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--teal);font-weight:700;font-size:13px;cursor:pointer;scroll-snap-align:start;padding:8px}' +
     '.fm-st{padding:8px 10px 10px;font-size:12.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}';
   doc.head.appendChild(css);
 
@@ -243,6 +244,26 @@
     astate.waiters.push(cb); if (!astate.loading) load(false, 'azam');
   };
   api.shortsGrid = shortsGrid; api.playShort = playShort;
+  // Home page: a sideways-scrolling row of the newest Azam Pasha Zikr Shorts. The section stays hidden until there are Shorts.
+  api.homeStrip = function (wrap) {
+    if (!wrap) return;
+    var row = wrap.querySelector('.fm-hs');
+    api.azamShorts(function (st) {
+      var list = (st.items || []).slice(0, 12);
+      if (!list.length) { wrap.hidden = true; return; }
+      row.innerHTML = list.map(shortTile).join('') + '<div class="fm-all" role="button">All Zikr Shorts ›</div>';
+      wrap.hidden = false;
+    });
+    if (!row.__wired) {
+      row.__wired = true;
+      row.addEventListener('click', function (e) {
+        if (e.target.closest && e.target.closest('.fm-all')) { api.open('azam'); return; }
+        var th = e.target.closest && e.target.closest('.fm-sth');
+        if (th) { Array.prototype.forEach.call(row.querySelectorAll('.fm-sth iframe'), function (f) { var t = f.parentNode; if (t !== th) { t.innerHTML = '<img alt="" src="https://i.ytimg.com/vi/' + t.getAttribute('data-id') + '/hqdefault.jpg"><div class="fm-play">▶</div>'; } }); playShort(th); }
+      });
+    }
+  };
+  api.homeStrip(doc.getElementById('homeShorts'));
   N.onScreen(function (id) { if (id === 'family' && state.items !== null && !state.loading) load(false); });
   paint();
 })(typeof self !== 'undefined' ? self : this);
