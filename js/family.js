@@ -159,7 +159,7 @@
   function paint() {
     var h = '', list = (state.items || []).filter(function (v) { return tab === 'zikr' || tab === 'azam' || v.kind === tab; }), pn = pins();
     list = list.filter(function (v) { return !pn.some(function (p) { return p.id === v.id; }); });
-    s.querySelector('#fmTitle').textContent = tab === 'poetry' ? 'Poetry & Naat' : tab === 'zikr' ? 'Zikr & Sama' : tab === 'azam' ? 'Azam Pasha Zikr' : 'Dars & Tafseer';
+    s.querySelector('#fmTitle').textContent = tab === 'poetry' ? 'Poetry & Naat' : tab === 'zikr' ? 'Zikr & Sama' : tab === 'azam' ? 'Azam Pasha Shorts' : 'Dars & Tafseer';
     if (tab === 'azam') return paintShorts(list);
     if (tab === 'zikr') {
       h += '<div class="fm-note" style="margin-top:0">Zikr, sama and more from the <a target="_blank" rel="noopener" href="' + esc(ZIKR.url) + '">' + esc(ZIKR.name) + ' channel</a>. Tap a video to play it here.</div>';
@@ -207,7 +207,7 @@
   }
   function shortsGrid(list) { return '<div class="fm-grid">' + list.map(shortTile).join('') + '</div>'; }
   function paintShorts(list) {
-    var h = '<div class="fm-note" style="margin-top:0">Zikr Shorts of Azam Pasha from the <a target="_blank" rel="noopener" href="' + esc(AZAM.url) + '">' + esc(AZAM.name) + ' channel</a>. New Shorts appear here by themselves. Tap one to play it.</div>';
+    var h = '<div class="fm-note" style="margin-top:0">Dars and zikr Shorts of Azam Pasha from the <a target="_blank" rel="noopener" href="' + esc(AZAM.url) + '">' + esc(AZAM.name) + ' channel</a>. New Shorts appear here by themselves. Tap one to play it.</div>';
     if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest Shorts…</div>';
     else if (state.error === 'unconfigured') h += '<div class="fm-note">The live list is not connected yet (add <b>youtubeApiKey</b> in js/config.js).</div>';
     else if (state.error && state.error !== 'stale') h += '<div class="fm-note">Could not load the Shorts (' + esc(state.error) + '). <a href="#" id="fmRetry">Try again</a></div>';
@@ -251,7 +251,7 @@
     api.azamShorts(function (st) {
       var list = (st.items || []).slice(0, 12);
       if (!list.length) { wrap.hidden = true; return; }
-      row.innerHTML = list.map(shortTile).join('') + '<div class="fm-all" role="button">All Zikr Shorts ›</div>';
+      row.innerHTML = list.map(shortTile).join('') + '<div class="fm-all" role="button">All Shorts ›</div>';
       wrap.hidden = false;
     });
     if (!row.__wired) {
