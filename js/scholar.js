@@ -6,7 +6,7 @@
   var PROFILES = {
     shaykh1: {
       name: 'Azam Pasha', pen: '', ar: 'ذكر', sub: 'Zikr and teachings · tap a video to watch',
-      facts: [], sections: [], map: '', sources: [], plain: true, shorts: true
+      facts: [], sections: [], map: '', sources: [], plain: true, shorts: true, audio: true
     },
     hasrat: {
       name: 'Hazrat Maulana Mohammed Abdul Qadeer Siddiqui',
@@ -70,7 +70,7 @@
     p.sections.forEach(function (s) {
       h += '<h2 class="section-title" style="margin-top:14px">' + esc(s[0]) + '</h2><div class="sch-card"><ul>' + s[1].map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>';
     });
-    h += '<div id="schWatch"></div>' + (p.shorts ? '<div id="schShorts"></div>' : '') + '<div id="schGallery"></div>';
+    h += '<div id="schWatch"></div>' + (p.shorts ? '<div id="schShorts"></div>' : '') + (p.audio ? '<div id="schAudio"></div>' : '') + '<div id="schGallery"></div>';
     if (!p.plain) {
     h += '<button class="sch-btn" id="schVideos" type="button" style="width:100%;border:0;cursor:pointer">Poetry &amp; Naat ›</button>';
     h += '<button class="sch-btn" id="schDars" type="button" style="width:100%;border:1px solid var(--line);cursor:pointer;background:var(--panel);color:var(--ink)">Dars &amp; Tafseer videos ›</button>';
@@ -101,6 +101,7 @@
     '.sch-lb{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}.sch-lb img{max-width:100%;max-height:78vh;object-fit:contain;border-radius:8px}.sch-lb .cp{color:#f5f1e2;font-size:14px;margin-top:10px;text-align:center;max-width:90%}.sch-lb .ct{color:#aaa;font-size:12px;margin-top:4px}' +
     '.sch-lb button{position:absolute;background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer}.sch-lb .x{top:14px;right:14px}.sch-lb .pv{left:10px;top:50%}.sch-lb .nx{right:10px;top:50%}' +
     '.sch-vd{margin-bottom:10px;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}.sch-vth{position:relative;aspect-ratio:16/9;background:#000;cursor:pointer}.sch-vth img,.sch-vth iframe{width:100%;height:100%;object-fit:cover;display:block;border:0}.sch-vth .pl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:34px;text-shadow:0 2px 10px rgba(0,0,0,.6)}.sch-vd .t{padding:10px 12px;font-size:13.5px;font-weight:600;line-height:1.4}' +
+    '.sch-au{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer}.sch-au .ic{flex:none;width:42px;height:42px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px}.sch-au .tx{flex:1;min-width:0}.sch-au .tx b{display:block;font-size:14.5px}.sch-au .tx small{display:block;color:var(--muted);font-size:12px;margin-top:2px}.sch-au .ur{font-family:Amiri,serif;font-size:19px;color:var(--teal);direction:rtl}' +
     '.sch-note,.sch-src{font-size:12px;color:var(--muted);line-height:1.55;margin:8px 2px}.sch-src a{color:var(--teal)}';
   doc.head.appendChild(css);
 
@@ -140,6 +141,18 @@
       };
     });
   }
+  // Audio Dars on the profile: one card per series; tapping opens that series in the Audio Dars screen.
+  function loadAudio() {
+    var box = s.querySelector('#schAudio'), A = root.NoorAudio;
+    if (!box || !A || !A.summary) return;
+    A.summary(function (list) {
+      if (!s.querySelector('#schAudio') || !list.length) return;
+      box.innerHTML = '<h2 class="section-title" style="margin-top:14px">Audio Dars</h2>' + list.map(function (x, i) {
+        return '<div class="sch-au" data-i="' + i + '" role="button"><div class="ic">🎧</div><div class="tx"><b>' + esc(x.title) + '</b><small>' + x.count + ' recording' + (x.count === 1 ? '' : 's') + '</small></div>' + (x.titleUr ? '<div class="ur">' + esc(x.titleUr) + '</div>' : '') + '</div>';
+      }).join('');
+      box.onclick = function (e) { var c = e.target.closest && e.target.closest('.sch-au'); if (c) A.open(list[+c.getAttribute('data-i')].title); };
+    });
+  }
   function loadGallery(id) {
     var box = s.querySelector('#schGallery'); if (!box || !root.fetch) return;
     fetch('data/gallery.json').then(function (r) { return r.ok ? r.json() : null; }).then(function (g) {
@@ -164,7 +177,7 @@
     var p = PROFILES[id]; if (!p) return false;
     s.querySelector('#schBody').innerHTML = html(p, photo);
     var db = s.querySelector('#schDars'); if (db) db.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('dars'); };
-    loadGallery(id); loadWatch(id); if (p.shorts) loadShorts();
+    loadGallery(id); loadWatch(id); if (p.shorts) loadShorts(); if (p.audio) loadAudio();
     var zb = s.querySelector('#schZikr'); if (zb) zb.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('zikr'); };
     var vb = s.querySelector('#schVideos'); if (vb) vb.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('poetry'); };
     N.showScreen('scholar');

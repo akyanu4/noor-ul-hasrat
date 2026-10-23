@@ -117,6 +117,11 @@
     return fetch('data/audio.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : { series: [] }; }).catch(function () { return { series: [] }; })
       .then(function (d) { data = d || { series: [] }; paint(); if (!liveTried) loadLive(false); });
   }
+  // For a profile page: calls back with [{ title, titleUr, count }] for each series.
+  api.summary = function (cb) {
+    function give() { cb(series().map(function (x) { return { title: x.title, titleUr: x.titleUr || '', count: filesOf(x).length }; })); }
+    if (data === null) loadData().then(give); else give();
+  };
   api.open = function (which) {
     if (data === null) loadData().then(function () { pick(which); }); else pick(which);
     paint(); N.showScreen('audio');
