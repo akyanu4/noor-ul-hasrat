@@ -6,7 +6,7 @@
   var PROFILES = {
     shaykh1: {
       name: 'Azam Pasha', pen: '', ar: 'ذكر', sub: 'Zikr and teachings · tap a video to watch',
-      facts: [], sections: [], map: '', sources: [], plain: true
+      facts: [], sections: [], map: '', sources: [], plain: true, shorts: true
     },
     hasrat: {
       name: 'Hazrat Maulana Mohammed Abdul Qadeer Siddiqui',
@@ -70,7 +70,7 @@
     p.sections.forEach(function (s) {
       h += '<h2 class="section-title" style="margin-top:14px">' + esc(s[0]) + '</h2><div class="sch-card"><ul>' + s[1].map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>';
     });
-    h += '<div id="schWatch"></div><div id="schGallery"></div>';
+    h += '<div id="schWatch"></div>' + (p.shorts ? '<div id="schShorts"></div>' : '') + '<div id="schGallery"></div>';
     if (!p.plain) {
     h += '<button class="sch-btn" id="schVideos" type="button" style="width:100%;border:0;cursor:pointer">Poetry &amp; Naat ›</button>';
     h += '<button class="sch-btn" id="schDars" type="button" style="width:100%;border:1px solid var(--line);cursor:pointer;background:var(--panel);color:var(--ink)">Dars &amp; Tafseer videos ›</button>';
@@ -122,6 +122,24 @@
       };
     }).catch(function () {});
   }
+  // "Azam Pasha Zikr" Shorts: the newest six on the profile, and a button to the full list.
+  var SHORTS_ON_PROFILE = 6;
+  function loadShorts() {
+    var box = s.querySelector('#schShorts'), F = root.NoorFamily;
+    if (!box || !F || !F.azamShorts) return;
+    box.innerHTML = '<h2 class="section-title" style="margin-top:14px">Zikr Shorts</h2><div class="sch-note">Loading…</div>';
+    F.azamShorts(function (st) {
+      if (!s.querySelector('#schShorts')) return;
+      var list = st.items || [];
+      if (!list.length) { box.innerHTML = st.error && st.error !== 'stale' ? '' : '<h2 class="section-title" style="margin-top:14px">Zikr Shorts</h2><div class="sch-note">No Shorts yet.</div>'; return; }
+      box.innerHTML = '<h2 class="section-title" style="margin-top:14px">Zikr Shorts</h2>' + F.shortsGrid(list.slice(0, SHORTS_ON_PROFILE)) +
+        '<button class="sch-btn" id="schAllShorts" type="button" style="width:100%;border:0;cursor:pointer">All Azam Pasha Zikr Shorts (' + list.length + ') ›</button>';
+      box.onclick = function (e) {
+        if (e.target.closest && e.target.closest('#schAllShorts')) { F.open('azam'); return; }
+        F.playShort(e.target.closest && e.target.closest('.fm-sth'));
+      };
+    });
+  }
   function loadGallery(id) {
     var box = s.querySelector('#schGallery'); if (!box || !root.fetch) return;
     fetch('data/gallery.json').then(function (r) { return r.ok ? r.json() : null; }).then(function (g) {
@@ -146,7 +164,7 @@
     var p = PROFILES[id]; if (!p) return false;
     s.querySelector('#schBody').innerHTML = html(p, photo);
     var db = s.querySelector('#schDars'); if (db) db.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('dars'); };
-    loadGallery(id); loadWatch(id);
+    loadGallery(id); loadWatch(id); if (p.shorts) loadShorts();
     var zb = s.querySelector('#schZikr'); if (zb) zb.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('zikr'); };
     var vb = s.querySelector('#schVideos'); if (vb) vb.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('poetry'); };
     N.showScreen('scholar');

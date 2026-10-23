@@ -578,7 +578,8 @@ if(!self.NOOR_CONFIG){
     ["🌙","Islamic Months","Significance & virtues"],
     ["🌅","Daily Awrad","Morning & evening litanies"],
     ["📜","Khatam","Communal recitation tracker"],
-    ["📿","Tasbeeh","Digital dhikr counter"]
+    ["📿","Tasbeeh","Digital dhikr counter"],
+    ["🌹","Azam Pasha Zikr","Zikr Shorts — new ones appear by themselves"]
   ];
 
   var library = [
@@ -649,7 +650,7 @@ if(!self.NOOR_CONFIG){
     {id:'practiceTiles', title:'Prayers & Practices', cls:'t-prac', items:[
       {ic:'🕌', lb:'Prayer Times', go:'prayers'}, {ic:'🕋', lb:'Qibla', go:'qibla'}, {ic:'📖', lb:"Qur'an", go:'quran'}, {ic:'📅', lb:'Calendar', go:'calendar'},
       {ic:'🤲', lb:'Duas', go:'duas'}, {ic:'🌙', lb:'Islamic Months', go:'months'}, {ic:'🕯️', lb:'Halqa', go:'halqa'}, {ic:'🌅', lb:'Daily Awrad', go:soon('Daily Awrad','Morning & evening litanies')},
-      {ic:'📜', lb:'Khatam', go:soon('Khatam','Communal recitation tracker')}, {ic:'📿', lb:'Tasbeeh', go:'tasbeeh'}, {ic:'💚', lb:'Iman Health', go:'iman'}]},
+      {ic:'📜', lb:'Khatam', go:soon('Khatam','Communal recitation tracker')}, {ic:'📿', lb:'Tasbeeh', go:'tasbeeh'}, {ic:'💚', lb:'Iman Health', go:'iman'}, {ic:'🌹', lb:'Azam Pasha Zikr', go:'family:azam'}]},
     {id:'literatureTiles', title:'Literature', cls:'t-lit', items:[
       {ic:'🕌', lb:'Dalail ul Khairat', go:soon('Dalail ul Khairat','Daily wird & progress')}, {ic:'🎥', lb:'Classes', go:'classes'}, {ic:'🎵', lb:'Poetry & Naat', go:'family'}, {ic:'📚', lb:'Dars & Tafseer', go:'family:dars'}, {ic:'🌙', lb:'Zikr & Sama', go:'family:zikr'},
       {ic:'📜', lb:'Hadith', go:'hadith'}, {ic:'📰', lb:'Articles', go:soon('Articles','Reflections & teachings')}, {ic:'⬇️', lb:'Downloads', go:soon('Downloads','Offline content')}, {ic:'🔖', lb:'My Bookmarks', go:'quran:marks'},
@@ -786,6 +787,7 @@ if(!self.NOOR_CONFIG){
         else if(it[1] === 'Poetry & Naat'){ route('family'); }
         else if(it[1] === 'Dars & Tafseer'){ route('family:dars'); }
         else if(it[1] === 'Zikr & Sama'){ route('family:zikr'); }
+        else if(it[1] === 'Azam Pasha Zikr'){ route('family:azam'); }
         else if(it[1] === 'Ulema' || it[1] === 'Shaykhs'){ route('classes:speakers'); }
         else if(it[1] === 'YouTube'){ window.open(channels.darulilm.url, '_blank', 'noopener'); }
         else { route('detail:'+it[1]+':'+it[2]+' — coming soon, in shaa Allah.'); }
@@ -896,7 +898,7 @@ if(!self.NOOR_CONFIG){
     if(target === 'qibla'){ showScreen('qibla'); return; }
     if(target === 'prayers'){ showScreen('prayers'); return; }
     if(['calendar','months','duas','donate','iman'].indexOf(target) !== -1){ showScreen(target); return; }
-    if(target === 'family' || target === 'family:dars' || target === 'family:zikr'){ if(window.NoorFamily){ window.NoorFamily.open(target === 'family' ? 'poetry' : target === 'family:zikr' ? 'zikr' : 'dars'); } return; }
+    if(target === 'family' || target === 'family:dars' || target === 'family:zikr' || target === 'family:azam'){ if(window.NoorFamily){ window.NoorFamily.open(target === 'family' ? 'poetry' : target === 'family:zikr' ? 'zikr' : target === 'family:azam' ? 'azam' : 'dars'); } return; }
     if(target === 'classes'){ showScreen('classes'); return; }
     if(target === 'classes:speakers'){ setClassView('speakers'); showScreen('classes'); return; }
     if(target.indexOf('detail:') === 0){

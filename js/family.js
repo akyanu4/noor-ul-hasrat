@@ -12,6 +12,8 @@
 
   function validId(id) { return typeof id === 'string' && /^[A-Za-z0-9_-]{11}$/.test(id); }
   function uploads(ch) { return /^UC/.test(ch || '') ? 'UU' + ch.slice(2) : null; }
+  // A channel's Shorts-only playlist (UC... -> UUSH...). If YouTube does not serve it, the full uploads list is used instead.
+  function shortsList(ch) { return /^UC/.test(ch || '') ? 'UUSH' + ch.slice(2) : null; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 
   function toItems(pages) {
@@ -26,7 +28,7 @@
     return out.sort(function (a, b) { return (Date.parse(b.at || 0) || 0) - (Date.parse(a.at || 0) || 0); });
   }
 
-  var api = { kind: kind, toItems: toItems, validId: validId, uploads: uploads, DEFAULTS: DEFAULTS };
+  var api = { kind: kind, toItems: toItems, validId: validId, uploads: uploads, shortsList: shortsList, DEFAULTS: DEFAULTS };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.NoorFamily = api;
 
@@ -34,7 +36,10 @@
   if (!N || !doc) return;
   var cfg = root.NOOR_CONFIG || {}, fam = Object.assign({}, DEFAULTS, cfg.familyChannel || {});
   var ZIKR = Object.assign({ id: 'UC5a1qQRHACif9Z1xMgmfFyQ', name: 'Bahr ul-Uloom', url: 'https://www.youtube.com/@bahruloloom' }, cfg.zikrChannel || {});
-  var kalaam = null, tab = 'poetry', who = 0, topic = 0, limit = SHOW, fstate = { items: null, error: '', loading: false }, zstate = { items: null, error: '', loading: false }, state = fstate;
+  // Azam Pasha Zikr: Shorts from his zikr channel (shown on his profile page and in Practices).
+  var AZAM = Object.assign({ id: 'UCn5J7zggR3cV4sCYlEjgZJA', name: 'Azam Pasha Zikr', url: 'https://www.youtube.com/channel/UCn5J7zggR3cV4sCYlEjgZJA/shorts' }, cfg.azamChannel || {});
+  var kalaam = null, tab = 'poetry', who = 0, topic = 0, limit = SHOW, fstate = { items: null, error: '', loading: false }, zstate = { items: null, error: '', loading: false }, astate = { items: null, error: '', loading: false, waiters: [] }, state = fstate;
+  function stateFor(t) { return t === 'zikr' ? zstate : t === 'azam' ? astate : fstate; }
   function sget(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function sset(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 
@@ -50,7 +55,10 @@
     '.fm-pt{padding:2px 16px 14px;white-space:pre-wrap;line-height:2;font-size:15px}.fm-pt.ur{direction:rtl;text-align:right;font-family:Amiri,serif;font-size:21px;line-height:2.3}.fm-ps{padding:0 16px 12px;font-size:11.5px;color:var(--muted)}' +
     '.fm-order{display:flex;justify-content:flex-end;gap:6px;margin:0 0 10px;font-size:12px;color:var(--muted);align-items:center}.fm-order span{padding:4px 10px;border:1px solid var(--line);border-radius:14px;cursor:pointer;background:var(--panel)}.fm-order span.on{background:var(--teal);color:#fff;border-color:var(--teal)}' +
     '.fm-chips{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}.fm-chip{flex:none;padding:7px 12px;border:1px solid var(--line);border-radius:18px;font-size:12.5px;background:var(--panel);cursor:pointer;color:var(--muted);white-space:nowrap}.fm-chip.on{background:var(--teal);color:#fff;border-color:var(--teal)}' +
-    '.fm-btn{display:block;text-align:center;background:var(--gold);color:#1a2421;font-weight:700;border-radius:12px;padding:13px;font-size:15px;text-decoration:none;margin:12px 0}';
+    '.fm-btn{display:block;text-align:center;background:var(--gold);color:#1a2421;font-weight:700;border-radius:12px;padding:13px;font-size:15px;text-decoration:none;margin:12px 0}' +
+    '.fm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.fm-sc{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}' +
+    '.fm-sth{position:relative;aspect-ratio:9/16;background:#000;cursor:pointer;overflow:hidden}.fm-sth img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02)}.fm-sth iframe{width:100%;height:100%;border:0;display:block}' +
+    '.fm-st{padding:8px 10px 10px;font-size:12.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}';
   doc.head.appendChild(css);
 
   var s = N.el('div', 'screen', '<div class="subhead"><div class="backbtn" id="fmBack">←</div><div class="subtitle" id="fmTitle">Poetry &amp; Naat</div></div><div id="fmBody"></div>');
@@ -79,12 +87,15 @@
     }).join('') + '<h2 class="section-title" style="margin-top:14px">Videos</h2>';
   }
   function paintIf(st) { if (st === state) paint(); }
-  function load(force) {
-    var st = state, ch = tab === 'zikr' ? ZIKR : fam, ck = tab === 'zikr' ? 'noor_zikr_v1' : 'noor_family_v1';
-    var key = cfg.youtubeApiKey, pl = uploads(ch.id);
-    if (!key || !pl) { st.items = []; st.error = 'unconfigured'; paintIf(st); return; }
+  function done(st) { paintIf(st); var w = st.waiters || []; st.waiters = []; w.forEach(function (f) { try { f(st); } catch (e) {} }); }
+  function load(force, t) {
+    t = t || tab;
+    var st = stateFor(t), ch = t === 'zikr' ? ZIKR : t === 'azam' ? AZAM : fam, ck = t === 'zikr' ? 'noor_zikr_v1' : t === 'azam' ? 'noor_azam_v1' : 'noor_family_v1';
+    var key = cfg.youtubeApiKey, pl = t === 'azam' ? shortsList(ch.id) : uploads(ch.id), fallback = t === 'azam' ? uploads(ch.id) : null;
+    if (!key || !pl) { st.items = []; st.error = 'unconfigured'; done(st); return; }
+    if (st.loading) return;
     var cached = null; try { cached = JSON.parse(sget(ck) || 'null'); } catch (e) {}
-    if (!force && cached && cached.id === ch.id && Date.now() - cached.t < TTL) { st.items = cached.items; st.error = ''; paintIf(st); return; }
+    if (!force && cached && cached.id === ch.id && Date.now() - cached.t < TTL) { st.items = cached.items; st.error = ''; done(st); return; }
     st.loading = true; paintIf(st);
     var pages = [];
     (function next(token, n) {
@@ -93,11 +104,13 @@
         pages.push(d);
         if (d.nextPageToken && n < PAGES) return next(d.nextPageToken, n + 1);
         st.items = toItems(pages); st.error = ''; st.loading = false;
-        sset(ck, JSON.stringify({ t: Date.now(), id: ch.id, items: st.items })); paintIf(st);
+        sset(ck, JSON.stringify({ t: Date.now(), id: ch.id, items: st.items })); done(st);
       }).catch(function (err) {
+        // No Shorts playlist for this channel (or YouTube refused it): read the full uploads list once instead.
+        if (fallback && pl !== fallback && !pages.length) { pl = fallback; return next('', 1); }
         st.loading = false;
         if (cached && cached.items) { st.items = cached.items; st.error = 'stale'; } else { st.items = st.items || []; st.error = String(err && err.message || 'error'); }
-        paintIf(st);
+        done(st);
       });
     })('', 1);
   }
@@ -139,9 +152,10 @@
     return out;
   }
   function paint() {
-    var h = '', list = (state.items || []).filter(function (v) { return tab === 'zikr' || v.kind === tab; }), pn = pins();
+    var h = '', list = (state.items || []).filter(function (v) { return tab === 'zikr' || tab === 'azam' || v.kind === tab; }), pn = pins();
     list = list.filter(function (v) { return !pn.some(function (p) { return p.id === v.id; }); });
-    s.querySelector('#fmTitle').textContent = tab === 'poetry' ? 'Poetry & Naat' : tab === 'zikr' ? 'Zikr & Sama' : 'Dars & Tafseer';
+    s.querySelector('#fmTitle').textContent = tab === 'poetry' ? 'Poetry & Naat' : tab === 'zikr' ? 'Zikr & Sama' : tab === 'azam' ? 'Azam Pasha Zikr' : 'Dars & Tafseer';
+    if (tab === 'azam') return paintShorts(list);
     if (tab === 'zikr') {
       h += '<div class="fm-note" style="margin-top:0">Zikr, sama and more from the <a target="_blank" rel="noopener" href="' + esc(ZIKR.url) + '">' + esc(ZIKR.name) + ' channel</a>. Tap a video to play it here.</div>';
     } else if (tab === 'poetry') {
@@ -180,7 +194,33 @@
     body.innerHTML = h;
   }
 
+  // Shorts are shown as vertical tiles, two per row, and play inside the app.
+  function shortTile(v) {
+    return '<div class="fm-sc"><div class="fm-sth" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '">' +
+      '<img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg\'"><div class="fm-play">▶</div></div>' +
+      '<div class="fm-st">' + esc(v.title) + '</div></div>';
+  }
+  function shortsGrid(list) { return '<div class="fm-grid">' + list.map(shortTile).join('') + '</div>'; }
+  function paintShorts(list) {
+    var h = '<div class="fm-note" style="margin-top:0">Zikr Shorts of Azam Pasha from the <a target="_blank" rel="noopener" href="' + esc(AZAM.url) + '">' + esc(AZAM.name) + ' channel</a>. New Shorts appear here by themselves. Tap one to play it.</div>';
+    if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest Shorts…</div>';
+    else if (state.error === 'unconfigured') h += '<div class="fm-note">The live list is not connected yet (add <b>youtubeApiKey</b> in js/config.js).</div>';
+    else if (state.error && state.error !== 'stale') h += '<div class="fm-note">Could not load the Shorts (' + esc(state.error) + '). <a href="#" id="fmRetry">Try again</a></div>';
+    else if (!list.length) h += '<div class="fm-note">No Shorts yet.</div>';
+    var total = list.length; list = list.slice(0, limit);
+    h += shortsGrid(list);
+    if (total > list.length) h += '<button class="fm-btn fm-more" type="button" style="border:0;cursor:pointer">Show more (' + (total - list.length) + ' left)</button>';
+    h += '<div class="fm-note">' + total + ' Short' + (total === 1 ? '' : 's') + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
+    body.innerHTML = h;
+  }
+  function playShort(th) {
+    if (!th || th.querySelector('iframe') || !validId(th.getAttribute('data-id'))) return false;
+    th.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + th.getAttribute('data-id') + '?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
+    return true;
+  }
+
   body.addEventListener('click', function (e) {
+    if (playShort(e.target.closest && e.target.closest('.fm-sth'))) return;
     var o = e.target.closest && e.target.closest('.fm-order span'); if (o) { sset('noor_family_order_' + tab, o.getAttribute('data-o') === 'old' ? 'old' : 'new'); limit = SHOW; paint(); return; }
     if (e.target.closest && e.target.closest('.fm-more')) { limit += SHOW; paint(); return; }
     var tpc = e.target.closest && e.target.closest('[data-tp]'); if (tpc) { topic = +tpc.getAttribute('data-tp') || 0; limit = SHOW; paint(); return; }
@@ -192,7 +232,13 @@
     if (e.target.id === 'fmRetry' || e.target.id === 'fmRefresh') { e.preventDefault(); load(true); }
   });
 
-  api.ZIKR = ZIKR; api.open = function (which) { if (kalaam === null) loadKalaam(); if (pinned === null) loadPinned(); if (which === 'poetry' || which === 'dars' || which === 'zikr') { if (tab !== which) { who = 0; topic = 0; limit = SHOW; } tab = which; } state = tab === 'zikr' ? zstate : fstate; paint(); N.showScreen('family'); if (state.items === null) load(false); };
+  api.ZIKR = ZIKR; api.AZAM = AZAM; api.open = function (which) { if (kalaam === null) loadKalaam(); if (pinned === null) loadPinned(); if (which === 'poetry' || which === 'dars' || which === 'zikr' || which === 'azam') { if (tab !== which) { who = 0; topic = 0; limit = SHOW; } tab = which; } state = stateFor(tab); paint(); N.showScreen('family'); if (state.items === null) load(false); };
+  // For Azam Pasha's profile page: calls back with the Shorts list (loaded once, then cached for 30 minutes).
+  api.azamShorts = function (cb) {
+    if (astate.items !== null && !astate.loading) { cb(astate); return; }
+    astate.waiters.push(cb); if (!astate.loading) load(false, 'azam');
+  };
+  api.shortsGrid = shortsGrid; api.playShort = playShort;
   N.onScreen(function (id) { if (id === 'family' && state.items !== null && !state.loading) load(false); });
   paint();
 })(typeof self !== 'undefined' ? self : this);
