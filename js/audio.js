@@ -47,7 +47,9 @@
   aud.addEventListener('ended', function () { if (playing) sset(posKey(playing), '0'); });
   aud.addEventListener('waiting', function () { setMsg('Loading…'); });
   aud.addEventListener('playing', function () { setMsg(''); });
-  aud.addEventListener('error', function () { if (aud.getAttribute('src')) setMsg('This recording could not be loaded. Check your connection and tap ▶ to try again.', true); });
+  // If the direct stream is refused, fall back to Google Drive's own player for that recording.
+  var useDrive = {};
+  aud.addEventListener('error', function () { if (aud.getAttribute('src') && playing) { useDrive[playing] = true; aud.removeAttribute('src'); msg = ''; paint(); } });
   function startPlaying(id, title) {
     playing = id; playingTitle = title; aud.src = srcFor(id); setMsg('Loading…');
     var at = parseInt(sget(posKey(id)) || '0', 10);
@@ -67,7 +69,7 @@
     '.au-row{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:8px;overflow:hidden}' +
     '.au-head{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer}.au-num{flex:none;width:38px;height:38px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}.au-row.on .au-num{background:var(--gold);color:#1a2421}' +
     '.au-t{flex:1;min-width:0}.au-t b{display:block;font-size:14.5px}.au-t small{display:block;color:var(--muted);font-size:12px;margin-top:2px}.au-play{flex:none;font-size:18px;color:var(--teal)}' +
-    '.au-player{padding:0 12px 12px}.au-player audio{width:100%;display:block}.au-pmsg{font-size:12px;color:var(--muted);margin-top:6px}.au-pmsg.err{color:#b3261e}.au-skip{display:flex;gap:8px;margin-top:8px}.au-skip button{flex:1;font:inherit;font-size:13px;padding:7px 0;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);cursor:pointer}' +
+    '.au-player{padding:0 12px 12px}.au-player audio{width:100%;display:block}.au-drive{width:100%;height:96px;border:0;border-radius:10px;background:#202124;display:block}.au-pmsg{font-size:12px;color:var(--muted);margin-top:6px}.au-pmsg.err{color:#b3261e}.au-skip{display:flex;gap:8px;margin-top:8px}.au-skip button{flex:1;font:inherit;font-size:13px;padding:7px 0;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);cursor:pointer}' +
     '.au-note{font-size:12px;color:var(--muted);line-height:1.55;margin:8px 2px 12px}.au-note a{color:var(--teal)}';
   doc.head.appendChild(css);
 
@@ -124,7 +126,8 @@
       var dsc = describe(f.name), num = dsc.part != null ? dsc.part : i + 1, on = playing === f.id;
       var sub = [dsc.date, dsc.extra, f.dur ? clock(f.dur) : ''].filter(Boolean).join(' · ');
       h += '<div class="au-row' + (on ? ' on' : '') + '" data-id="' + esc(f.id) + '"><div class="au-head" role="button" aria-label="Play part ' + num + '"><div class="au-num">' + num + '</div><div class="au-t"><b>' + esc(sr.title) + ' · Part ' + num + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : '') + '</div><div class="au-play">' + (on ? '■' : '▶') + '</div></div>' +
-        (on ? '<div class="au-player"><div class="au-slot"></div><div class="au-skip"><button type="button" data-skip="-30">⟲ 30 s</button><button type="button" data-skip="30">30 s ⟳</button></div><div class="au-pmsg' + (msgErr ? ' err' : '') + '">' + esc(msg) + '</div></div>' : '') + '</div>';
+        (on && useDrive[f.id] ? '<div class="au-player"><iframe class="au-drive" src="https://drive.google.com/file/d/' + esc(f.id) + '/preview" allow="autoplay" title="Audio player"></iframe></div>' :
+         on ? '<div class="au-player"><div class="au-slot"></div><div class="au-skip"><button type="button" data-skip="-30">⟲ 30 s</button><button type="button" data-skip="30">30 s ⟳</button></div><div class="au-pmsg' + (msgErr ? ' err' : '') + '">' + esc(msg) + '</div></div>' : '') + '</div>';
     });
     h += '<div class="au-note">Tap a part to play it. It keeps playing with the screen locked, and picks up where you stopped next time. <a href="#" id="auRefresh">Refresh ↻</a></div>';
     body.innerHTML = h;
