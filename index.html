@@ -534,7 +534,6 @@ h2.section-title:first-child{margin-top:2px;}
       <div class="class-series" id="pSeries"></div>
       <div class="class-title" id="pTitle" style="font-size:16px"></div>
       <div class="class-meta" id="pMeta"></div>
-      <div class="player-fallback">Video not loading? <a id="pYT" href="#" target="_blank" rel="noopener">Open on YouTube</a></div>
     </div>
     <div class="player-next">
       <div class="group-name" style="margin-bottom:10px">Up next</div>
@@ -1000,8 +999,7 @@ if(!self.NOOR_CONFIG){
         var head = el('div','channel-card',
           '<div class="group-name">'+ch.name+'</div>'+
           '<div class="group-sub">'+ch.handle+' · '+list.length+' classes saved</div>'+
-          '<div class="channel-about">'+ch.about+'</div>'+
-          '<a class="class-link" style="border-top:none; padding:8px 0 0; text-align:left;" href="'+ch.url+'" target="_blank" rel="noopener">Open channel on YouTube ↗</a>');
+          '<div class="channel-about">'+ch.about+'</div>');
         box.appendChild(head);
         list.forEach(function(c){ box.appendChild(lectureCard(c)); });
       });
@@ -1027,7 +1025,7 @@ if(!self.NOOR_CONFIG){
     document.getElementById('pSeries').textContent = c.series + (c.ep ? ' · ' + c.ep : '');
     document.getElementById('pTitle').textContent = c.title;
     document.getElementById('pMeta').textContent = sp.name;
-    document.getElementById('pYT').href = 'https://youtu.be/' + c.yt;
+    var pyt = document.getElementById('pYT'); if (pyt) pyt.href = 'https://youtu.be/' + c.yt;
     playerFrame.src = 'https://www.youtube.com/embed/' + c.yt + '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
     var next = document.getElementById('pNext');
     next.innerHTML = '';

@@ -76,7 +76,7 @@
   function pins() { return ((pinned && pinned[tab]) || []).filter(function (v) { return v && validId(v.id) && v.title; }); }
   function pinCard(v) {
     return '<div class="fm-card"><div class="fm-th" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg"><div class="fm-play">▶</div></div>' +
-      '<div class="fm-t">' + esc(v.title) + '</div><div class="fm-m"><span></span><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=' + v.id + '">Open on YouTube ↗</a></div></div>';
+      '<div class="fm-t">' + esc(v.title) + '</div><div class="fm-m"><span></span></div></div>';
   }
   function loadKalaam() {
     fetch('data/kalaam.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (d) {
@@ -162,7 +162,7 @@
     s.querySelector('#fmTitle').textContent = tab === 'poetry' ? 'Poetry & Naat' : tab === 'zikr' ? 'Zikr & Sama' : tab === 'azam' ? 'Azam Pasha Shorts' : 'Dars & Tafseer';
     if (tab === 'azam') return paintShorts(list);
     if (tab === 'zikr') {
-      h += '<div class="fm-note" style="margin-top:0">Zikr, sama and more from the <a target="_blank" rel="noopener" href="' + esc(ZIKR.url) + '">' + esc(ZIKR.name) + ' channel</a>. Tap a video to play it here.</div>';
+      h += '<div class="fm-note" style="margin-top:0">Zikr, sama and more from the ' + esc(ZIKR.name) + ' channel. Tap a video to play it here.</div>';
     } else if (tab === 'poetry') {
       if (kalaam && kalaam.length) h += poemsHtml();
     } else {
@@ -190,7 +190,7 @@
     var total = list.length; list = list.slice(0, limit);
     list.forEach(function (v) {
       h += '<div class="fm-card"><div class="fm-th" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg"><div class="fm-play">▶</div></div>' +
-        '<div class="fm-t">' + esc(v.title) + '</div><div class="fm-m"><span>' + esc(dateLabel(v.at)) + (ago(v.at) ? ' · ' + esc(ago(v.at)) : '') + '</span><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=' + v.id + '">Open on YouTube ↗</a></div></div>';
+        '<div class="fm-t">' + esc(v.title) + '</div><div class="fm-m"><span>' + esc(dateLabel(v.at)) + (ago(v.at) ? ' · ' + esc(ago(v.at)) : '') + '</span></div></div>';
     });
     if (total > list.length) h += '<button class="fm-btn fm-more" type="button" style="border:0;cursor:pointer">Show more (' + (total - list.length) + ' left)</button>';
     if (tab === 'zikr') h += '<div class="fm-note">' + total + ' video' + (total === 1 ? '' : 's') + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
@@ -207,7 +207,7 @@
   }
   function shortsGrid(list) { return '<div class="fm-grid">' + list.map(shortTile).join('') + '</div>'; }
   function paintShorts(list) {
-    var h = '<div class="fm-note" style="margin-top:0">Dars and zikr Shorts of Azam Pasha from the <a target="_blank" rel="noopener" href="' + esc(AZAM.url) + '">' + esc(AZAM.name) + ' channel</a>. New Shorts appear here by themselves. Tap one to play it.</div>';
+    var h = '<div class="fm-note" style="margin-top:0">Dars and zikr Shorts of Azam Pasha from the ' + esc(AZAM.name) + ' channel. New Shorts appear here by themselves. Tap one to play it.</div>';
     if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest Shorts…</div>';
     else if (state.error === 'unconfigured') h += '<div class="fm-note">The live list is not connected yet (add <b>youtubeApiKey</b> in js/config.js).</div>';
     else if (state.error && state.error !== 'stale') h += '<div class="fm-note">Could not load the Shorts (' + esc(state.error) + '). <a href="#" id="fmRetry">Try again</a></div>';

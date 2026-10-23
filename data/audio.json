@@ -1,166 +1,201 @@
 {
- "about": "Audio series for the Audio Dars screen. Each series is a public Google Drive folder (folderId). When the Google Drive API is enabled for the app's key, the app reads each folder live, so new files appear by themselves; otherwise it uses the files listed here. A file's name is its title; a number in the name sets its order.",
- "series": [
-  {
-   "title": "Tafheemat-e-Siddiqui",
-   "titleUr": "تفہیماتِ صدیقی",
-   "folderId": "1GspDinekMpDD7K1NG4RbSxY-T3fPFYl2",
-   "files": [
+  "about": "Audio series for the Audio Dars screen. Each series is a public Google Drive folder (folderId). When the Google Drive API is enabled for the app's key, the app reads each folder live, so new files appear by themselves; otherwise it uses the files listed here. A file's name is its title; a number in the name sets its order.",
+  "series": [
     {
-     "id": "1zOJ1YXxkBs8ju6RzMezmP28Lwgos7rUW",
-     "name": "TS -001.mp3"
+      "title": "Tafheemat-e-Siddiqui",
+      "titleUr": "تفہیماتِ صدیقی",
+      "folderId": "1GspDinekMpDD7K1NG4RbSxY-T3fPFYl2",
+      "files": [
+        {
+          "id": "1zOJ1YXxkBs8ju6RzMezmP28Lwgos7rUW",
+          "name": "TS -001.mp3",
+          "dur": 1748
+        },
+        {
+          "id": "1JihLUBITjNuweyXuDVGSyvOnhGFDSn6-",
+          "name": "TS -002.mp3",
+          "dur": 2323
+        },
+        {
+          "id": "1Vg3SNgFZZxbSFnHxnU6r2fbJ-0__YoC-",
+          "name": "TS -003.mp3",
+          "dur": 3352
+        },
+        {
+          "id": "1D9VHnyCNu-XrZ8pDb34QtaGxbl70dkwC",
+          "name": "TS -004.mp3",
+          "dur": 2738
+        },
+        {
+          "id": "1D1P-JxEFKEiL5rNRshkZQ1g53V_dzpbY",
+          "name": "TS -005.mp3",
+          "dur": 2479
+        },
+        {
+          "id": "1fvebpevukqZ4IXd7SDHnuXYs00m6_L-J",
+          "name": "TS -006.mp3",
+          "dur": 79
+        },
+        {
+          "id": "1KaUL3PE2YIc1znKtmTWYbwIdcbBE93DF",
+          "name": "TS -007 09th December 2007.mp3",
+          "dur": 3243
+        },
+        {
+          "id": "1Shq4fWA5yDqprwAPKpLpyNP5PBkg25nu",
+          "name": "TS -008 16th December 2007.mp3",
+          "dur": 3517
+        },
+        {
+          "id": "1WlOhoh-fCYA43zrjdR_TieBzUuoMYvPh",
+          "name": "TS -009 30th December 2007.mp3",
+          "dur": 2029
+        },
+        {
+          "id": "1pZfTCoNqYjBt26u98J4ww9780qjIlyrq",
+          "name": "TS -010 06th January 2008.mp3",
+          "dur": 1871
+        },
+        {
+          "id": "1aGw9qxt2NORKZpo1kXMVFYx03Gdwa97j",
+          "name": "TS -011 13th January 2008.mp3",
+          "dur": 1899
+        },
+        {
+          "id": "1GqylgvBlXIHKhjDSEN_oNLQFnCbsgJ0F",
+          "name": "TS -012 20th January 2008.mp3",
+          "dur": 1822
+        },
+        {
+          "id": "10hS0iQmA2KBZwaLoAEpxPynQDAkH55z9",
+          "name": "TS -013 27th January 2008.mp3",
+          "dur": 3241
+        }
+      ]
     },
     {
-     "id": "1JihLUBITjNuweyXuDVGSyvOnhGFDSn6-",
-     "name": "TS -002.mp3"
+      "title": "Nizam-ul-Amal-e-Fuqara",
+      "titleUr": "نظام العمل فقرا",
+      "folderId": "1UQ5_wyidwsPfAkyq_qb3UgwNp4HocKmD",
+      "files": [
+        {
+          "id": "1_vDjk-y0h9tT46k5uU7GKT2Gsxvv2LNF",
+          "name": "NAF001.mp3",
+          "dur": 3445
+        },
+        {
+          "id": "114lIzzORLo8yUnKo4u0uL2GmWCIzgXYD",
+          "name": "NAF002.mp3",
+          "dur": 2074
+        },
+        {
+          "id": "1TGsBz8I8tydw5Xn3dxqPPU5RA3YLEAAD",
+          "name": "NAF003.mp3",
+          "dur": 3027
+        },
+        {
+          "id": "14ewzngC1_kMl2_lRetfYJ3Hh0qsunpII",
+          "name": "NAF004.mp3",
+          "dur": 2346
+        },
+        {
+          "id": "1RF7sIUt-21FCCVktY7N2jxFfu1t6RHmF",
+          "name": "NAF005.mp3",
+          "dur": 2290
+        },
+        {
+          "id": "1ZpsA5jFOki6iVKZ_nxeOvSztIaSzgj93",
+          "name": "NAF006.mp3",
+          "dur": 2549
+        },
+        {
+          "id": "1tFL5xtfn_9pENt8m1uRSxWnImStB3Goe",
+          "name": "NAF007.mp3",
+          "dur": 2802
+        },
+        {
+          "id": "1XFwzJ1g12MMYfCcZyASp30hQGjrN2QAQ",
+          "name": "NAF008.mp3",
+          "dur": 2465
+        },
+        {
+          "id": "1xRnmDd5wUizm00HDbhQGxrgFDnkZ1Fqg",
+          "name": "NAF009.mp3",
+          "dur": 1662
+        },
+        {
+          "id": "1o1aZyhoBOL6w5BhTYGfO4I4LEh-kzvrS",
+          "name": "NAF010.mp3",
+          "dur": 2174
+        },
+        {
+          "id": "1KQMPcY6hSf-WztKSgfjNhh092TD27Ddc",
+          "name": "NAF011.mp3",
+          "dur": 3688
+        },
+        {
+          "id": "1X6Uv1DHdMyLfcMWMnuvPJmhv4MLT2OnZ",
+          "name": "NAF012.mp3",
+          "dur": 1336
+        },
+        {
+          "id": "1bgHXfMKgtrQfVUM3XybfBcO7KTpOMqp7",
+          "name": "NAF013.mp3",
+          "dur": 2291
+        },
+        {
+          "id": "1fYhCVY-jyhCB5Wk1bySA3yF3UyUVvWIP",
+          "name": "NAF014.mp3",
+          "dur": 2347
+        },
+        {
+          "id": "1AR5HZWebmmsTI3efYdLm7vrLW2UuMD16",
+          "name": "NAF015.mp3",
+          "dur": 1784
+        },
+        {
+          "id": "1OPU1fyuygK1ycCHBnktrfkTOOwx-8S2O",
+          "name": "NAF016.mp3",
+          "dur": 1837
+        },
+        {
+          "id": "1k4WcYNOUKsdl08iJZLJpHL57mz0sGm7u",
+          "name": "NAF017.mp3",
+          "dur": 3512
+        },
+        {
+          "id": "1jg0sBbKnbzfx8JjQGlh_EsswZ-BPaf4V",
+          "name": "NAF018.mp3",
+          "dur": 2758
+        },
+        {
+          "id": "1TbJdGw1ftc_HehsatGfha4pNVLtspmNn",
+          "name": "NAF019.mp3",
+          "dur": 3179
+        },
+        {
+          "id": "1QIzz7IVtRk3hD4Ujm-tjRwCWds0LOVf7",
+          "name": "NAF020.mp3",
+          "dur": 3003
+        }
+      ]
     },
     {
-     "id": "1Vg3SNgFZZxbSFnHxnU6r2fbJ-0__YoC-",
-     "name": "TS -003.mp3"
-    },
-    {
-     "id": "1D9VHnyCNu-XrZ8pDb34QtaGxbl70dkwC",
-     "name": "TS -004.mp3"
-    },
-    {
-     "id": "1D1P-JxEFKEiL5rNRshkZQ1g53V_dzpbY",
-     "name": "TS -005.mp3"
-    },
-    {
-     "id": "1fvebpevukqZ4IXd7SDHnuXYs00m6_L-J",
-     "name": "TS -006.mp3"
-    },
-    {
-     "id": "1KaUL3PE2YIc1znKtmTWYbwIdcbBE93DF",
-     "name": "TS -007 09th December 2007.mp3"
-    },
-    {
-     "id": "1Shq4fWA5yDqprwAPKpLpyNP5PBkg25nu",
-     "name": "TS -008 16th December 2007.mp3"
-    },
-    {
-     "id": "1WlOhoh-fCYA43zrjdR_TieBzUuoMYvPh",
-     "name": "TS -009 30th December 2007.mp3"
-    },
-    {
-     "id": "1pZfTCoNqYjBt26u98J4ww9780qjIlyrq",
-     "name": "TS -010 06th January 2008.mp3"
-    },
-    {
-     "id": "1aGw9qxt2NORKZpo1kXMVFYx03Gdwa97j",
-     "name": "TS -011 13th January 2008.mp3"
-    },
-    {
-     "id": "1GqylgvBlXIHKhjDSEN_oNLQFnCbsgJ0F",
-     "name": "TS -012 20th January 2008.mp3"
-    },
-    {
-     "id": "10hS0iQmA2KBZwaLoAEpxPynQDAkH55z9",
-     "name": "TS -013 27th January 2008.mp3"
+      "title": "Haqeeqat-e-Bai'at",
+      "titleUr": "حقیقتِ بیعت",
+      "folderId": "1Gfqq0YW9ZEzZ7Bsh09KG2rhKYybjvF6W",
+      "files": [
+        {
+          "id": "1mL7nfI4mq_r37tO1JFDHvGbIJ_pOjWMQ",
+          "name": "001-HB.mp3",
+          "dur": 3174
+        },
+        {
+          "id": "1bb2zHxtWyWG4m-Hv6T5LE5kCamGMsntN",
+          "name": "002-HB.mp3",
+          "dur": 1802
+        }
+      ]
     }
-   ]
-  },
-  {
-   "title": "Nizam-ul-Amal-e-Fuqara",
-   "titleUr": "نظام العمل فقرا",
-   "folderId": "1UQ5_wyidwsPfAkyq_qb3UgwNp4HocKmD",
-   "files": [
-    {
-     "id": "1_vDjk-y0h9tT46k5uU7GKT2Gsxvv2LNF",
-     "name": "NAF001.mp3"
-    },
-    {
-     "id": "114lIzzORLo8yUnKo4u0uL2GmWCIzgXYD",
-     "name": "NAF002.mp3"
-    },
-    {
-     "id": "1TGsBz8I8tydw5Xn3dxqPPU5RA3YLEAAD",
-     "name": "NAF003.mp3"
-    },
-    {
-     "id": "14ewzngC1_kMl2_lRetfYJ3Hh0qsunpII",
-     "name": "NAF004.mp3"
-    },
-    {
-     "id": "1RF7sIUt-21FCCVktY7N2jxFfu1t6RHmF",
-     "name": "NAF005.mp3"
-    },
-    {
-     "id": "1ZpsA5jFOki6iVKZ_nxeOvSztIaSzgj93",
-     "name": "NAF006.mp3"
-    },
-    {
-     "id": "1tFL5xtfn_9pENt8m1uRSxWnImStB3Goe",
-     "name": "NAF007.mp3"
-    },
-    {
-     "id": "1XFwzJ1g12MMYfCcZyASp30hQGjrN2QAQ",
-     "name": "NAF008.mp3"
-    },
-    {
-     "id": "1xRnmDd5wUizm00HDbhQGxrgFDnkZ1Fqg",
-     "name": "NAF009.mp3"
-    },
-    {
-     "id": "1o1aZyhoBOL6w5BhTYGfO4I4LEh-kzvrS",
-     "name": "NAF010.mp3"
-    },
-    {
-     "id": "1KQMPcY6hSf-WztKSgfjNhh092TD27Ddc",
-     "name": "NAF011.mp3"
-    },
-    {
-     "id": "1X6Uv1DHdMyLfcMWMnuvPJmhv4MLT2OnZ",
-     "name": "NAF012.mp3"
-    },
-    {
-     "id": "1bgHXfMKgtrQfVUM3XybfBcO7KTpOMqp7",
-     "name": "NAF013.mp3"
-    },
-    {
-     "id": "1fYhCVY-jyhCB5Wk1bySA3yF3UyUVvWIP",
-     "name": "NAF014.mp3"
-    },
-    {
-     "id": "1AR5HZWebmmsTI3efYdLm7vrLW2UuMD16",
-     "name": "NAF015.mp3"
-    },
-    {
-     "id": "1OPU1fyuygK1ycCHBnktrfkTOOwx-8S2O",
-     "name": "NAF016.mp3"
-    },
-    {
-     "id": "1k4WcYNOUKsdl08iJZLJpHL57mz0sGm7u",
-     "name": "NAF017.mp3"
-    },
-    {
-     "id": "1jg0sBbKnbzfx8JjQGlh_EsswZ-BPaf4V",
-     "name": "NAF018.mp3"
-    },
-    {
-     "id": "1TbJdGw1ftc_HehsatGfha4pNVLtspmNn",
-     "name": "NAF019.mp3"
-    },
-    {
-     "id": "1QIzz7IVtRk3hD4Ujm-tjRwCWds0LOVf7",
-     "name": "NAF020.mp3"
-    }
-   ]
-  },
-  {
-   "title": "Haqeeqat-e-Bai'at",
-   "titleUr": "حقیقتِ بیعت",
-   "folderId": "1Gfqq0YW9ZEzZ7Bsh09KG2rhKYybjvF6W",
-   "files": [
-    {
-     "id": "1mL7nfI4mq_r37tO1JFDHvGbIJ_pOjWMQ",
-     "name": "001-HB.mp3"
-    },
-    {
-     "id": "1bb2zHxtWyWG4m-Hv6T5LE5kCamGMsntN",
-     "name": "002-HB.mp3"
-    }
-   ]
-  }
- ]
+  ]
 }

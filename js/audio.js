@@ -1,6 +1,7 @@
 /* Noor: Audio Dars. Series of recordings kept in public Google Drive folders (data/audio.json).
    With the Google Drive API enabled for config.js youtubeApiKey, each folder is read live so new files appear by themselves;
-   otherwise the saved list in data/audio.json is used. Recordings play inside the app with Google Drive's player. */
+   otherwise the saved list in data/audio.json is used. Recordings play in the app's own audio player, streamed straight from Drive
+   (seekable, keeps playing with the screen locked, and remembers where you stopped). */
 (function (root) {
   'use strict';
 
@@ -34,7 +35,28 @@
   var N = root.Noor, doc = root.document;
   if (!N || !doc) return;
   var cfg = root.NOOR_CONFIG || {}, TTL = 30 * 60 * 1000;
-  var data = null, live = {}, liveTried = false, tab = 0, playing = null;
+  var data = null, live = {}, liveTried = false, tab = 0, playing = null, playingTitle = '';
+  // One audio element for the whole screen, so the recording keeps playing while the list is redrawn or another tab is opened.
+  var aud = doc.createElement('audio'); aud.controls = true; aud.preload = 'none'; aud.setAttribute('playsinline', '');
+  var msg = '', msgErr = false;
+  function srcFor(id) { return 'https://drive.usercontent.google.com/download?id=' + encodeURIComponent(id) + '&export=download&confirm=t'; }
+  function posKey(id) { return 'noor_audio_pos_' + id; }
+  function setMsg(t, err) { msg = t; msgErr = !!err; var m = body.querySelector('.au-pmsg'); if (m) { m.textContent = t; m.className = 'au-pmsg' + (err ? ' err' : ''); } }
+  var lastSave = 0;
+  aud.addEventListener('timeupdate', function () { if (!playing || Date.now() - lastSave < 5000) return; lastSave = Date.now(); if (aud.duration && aud.currentTime > aud.duration - 15) sset(posKey(playing), '0'); else sset(posKey(playing), String(Math.floor(aud.currentTime))); });
+  aud.addEventListener('ended', function () { if (playing) sset(posKey(playing), '0'); });
+  aud.addEventListener('waiting', function () { setMsg('Loading…'); });
+  aud.addEventListener('playing', function () { setMsg(''); });
+  aud.addEventListener('error', function () { if (aud.getAttribute('src')) setMsg('This recording could not be loaded. Check your connection and tap ▶ to try again.', true); });
+  function startPlaying(id, title) {
+    playing = id; playingTitle = title; aud.src = srcFor(id); setMsg('Loading…');
+    var at = parseInt(sget(posKey(id)) || '0', 10);
+    if (at > 5) aud.addEventListener('loadedmetadata', function once() { aud.removeEventListener('loadedmetadata', once); if (at < aud.duration - 15) { aud.currentTime = at; setMsg('Continuing from ' + clock(at) + '.'); } }, { once: true });
+    var pr = aud.play(); if (pr && pr.catch) pr.catch(function () {});
+    if ('mediaSession' in navigator && root.MediaMetadata) { try { navigator.mediaSession.metadata = new root.MediaMetadata({ title: title, artist: 'Noor-ul-Hasrat · Audio Dars' }); } catch (e) {} }
+  }
+  function stopPlaying() { try { aud.pause(); } catch (e) {} aud.removeAttribute('src'); try { aud.load(); } catch (e) {} playing = null; setMsg(''); }
+  function clock(t) { t = Math.max(0, Math.floor(t || 0)); var h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), sec = t % 60; return (h ? h + ':' + (m < 10 ? '0' : '') : '') + m + ':' + (sec < 10 ? '0' : '') + sec; }
   function sget(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function sset(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 
@@ -45,7 +67,7 @@
     '.au-row{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:8px;overflow:hidden}' +
     '.au-head{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer}.au-num{flex:none;width:38px;height:38px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}.au-row.on .au-num{background:var(--gold);color:#1a2421}' +
     '.au-t{flex:1;min-width:0}.au-t b{display:block;font-size:14.5px}.au-t small{display:block;color:var(--muted);font-size:12px;margin-top:2px}.au-play{flex:none;font-size:18px;color:var(--teal)}' +
-    '.au-player{padding:0 12px 12px}.au-player iframe{width:100%;height:96px;border:0;border-radius:10px;background:#202124;display:block}.au-player a{display:inline-block;margin-top:8px;font-size:12px;color:var(--teal)}' +
+    '.au-player{padding:0 12px 12px}.au-player audio{width:100%;display:block}.au-pmsg{font-size:12px;color:var(--muted);margin-top:6px}.au-pmsg.err{color:#b3261e}.au-skip{display:flex;gap:8px;margin-top:8px}.au-skip button{flex:1;font:inherit;font-size:13px;padding:7px 0;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);cursor:pointer}' +
     '.au-note{font-size:12px;color:var(--muted);line-height:1.55;margin:8px 2px 12px}.au-note a{color:var(--teal)}';
   doc.head.appendChild(css);
 
@@ -57,7 +79,8 @@
   function series() { return (data && data.series || []).filter(function (x) { return x && x.title; }); }
   function filesOf(sr) {
     var l = live[sr.folderId];
-    var list = (l && l.length ? l : (sr.files || [])).filter(function (f) { return f && validId(f.id) && isAudio(f.name, f.mime || 'audio/'); });
+    var known = {}; (sr.files || []).forEach(function (f) { if (f && f.id) known[f.id] = f.dur; });
+    var list = (l && l.length ? l.map(function (f) { return known[f.id] && !f.dur ? Object.assign({}, f, { dur: known[f.id] }) : f; }) : (sr.files || [])).filter(function (f) { return f && validId(f.id) && isAudio(f.name, f.mime || 'audio/'); });
     return sortFiles(list);
   }
 
@@ -95,22 +118,29 @@
     if (tab >= srs.length) tab = 0;
     if (srs.length > 1) h += '<div class="au-tabs">' + srs.map(function (x, i) { return '<div class="au-tab' + (i === tab ? ' on' : '') + '" data-t="' + i + '">' + esc(x.title) + '</div>'; }).join('') + '</div>';
     var sr = srs[tab], files = filesOf(sr);
+    if (playing && !files.some(function (f) { return f.id === playing; })) h += '<div class="au-row on au-now"><div class="au-head" style="cursor:default"><div class="au-num">♪</div><div class="au-t"><b>' + esc(playingTitle) + '</b><small>Now playing</small></div><div class="au-play" role="button" id="auStop" aria-label="Stop">■</div></div><div class="au-player"><div class="au-slot"></div><div class="au-pmsg' + (msgErr ? ' err' : '') + '">' + esc(msg) + '</div></div></div>';
     h += '<div class="au-hero">' + (sr.titleUr ? '<div class="ur">' + esc(sr.titleUr) + '</div>' : '') + '<div class="en">' + esc(sr.title) + '</div><div class="n">' + files.length + ' recording' + (files.length === 1 ? '' : 's') + '</div></div>';
     files.forEach(function (f, i) {
       var dsc = describe(f.name), num = dsc.part != null ? dsc.part : i + 1, on = playing === f.id;
-      var sub = [dsc.date, dsc.extra].filter(Boolean).join(' · ');
-      h += '<div class="au-row' + (on ? ' on' : '') + '" data-id="' + esc(f.id) + '"><div class="au-head" role="button" aria-label="Play part ' + num + '"><div class="au-num">' + num + '</div><div class="au-t"><b>' + esc(sr.title) + ' · Part ' + num + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : '<small>' + esc(f.name) + '</small>') + '</div><div class="au-play">' + (on ? '■' : '▶') + '</div></div>' +
-        (on ? '<div class="au-player"><iframe src="https://drive.google.com/file/d/' + esc(f.id) + '/preview" allow="autoplay" title="Audio player"></iframe><a target="_blank" rel="noopener" href="https://drive.google.com/file/d/' + esc(f.id) + '/view">Open in Google Drive ↗</a></div>' : '') + '</div>';
+      var sub = [dsc.date, dsc.extra, f.dur ? clock(f.dur) : ''].filter(Boolean).join(' · ');
+      h += '<div class="au-row' + (on ? ' on' : '') + '" data-id="' + esc(f.id) + '"><div class="au-head" role="button" aria-label="Play part ' + num + '"><div class="au-num">' + num + '</div><div class="au-t"><b>' + esc(sr.title) + ' · Part ' + num + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : '') + '</div><div class="au-play">' + (on ? '■' : '▶') + '</div></div>' +
+        (on ? '<div class="au-player"><div class="au-slot"></div><div class="au-skip"><button type="button" data-skip="-30">⟲ 30 s</button><button type="button" data-skip="30">30 s ⟳</button></div><div class="au-pmsg' + (msgErr ? ' err' : '') + '">' + esc(msg) + '</div></div>' : '') + '</div>';
     });
-    h += '<div class="au-note">Tap a part to open its player, then press ▶. ' + (sr.folderId ? '<a target="_blank" rel="noopener" href="https://drive.google.com/drive/folders/' + esc(sr.folderId) + '">Open this folder in Drive ↗</a>' : '') + ' <a href="#" id="auRefresh">Refresh ↻</a></div>';
+    h += '<div class="au-note">Tap a part to play it. It keeps playing with the screen locked, and picks up where you stopped next time. <a href="#" id="auRefresh">Refresh ↻</a></div>';
     body.innerHTML = h;
+    var slot = body.querySelector('.au-slot'); if (slot) slot.appendChild(aud);
   }
 
   body.addEventListener('click', function (e) {
-    var t = e.target.closest && e.target.closest('.au-tab'); if (t) { tab = +t.getAttribute('data-t') || 0; playing = null; paint(); body.scrollTop = 0; return; }
+    var t = e.target.closest && e.target.closest('.au-tab'); if (t) { tab = +t.getAttribute('data-t') || 0; paint(); body.scrollTop = 0; return; }
+    if (e.target.id === 'auStop') { stopPlaying(); paint(); return; }
     if (e.target.id === 'auRefresh') { e.preventDefault(); loadLive(true); return; }
     var hd = e.target.closest && e.target.closest('.au-head');
-    if (hd) { var id = hd.parentNode.getAttribute('data-id'); playing = playing === id ? null : id; paint(); var row = body.querySelector('.au-row.on'); if (row && row.scrollIntoView) row.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+    var sk = e.target.closest && e.target.closest('[data-skip]');
+    if (sk) { var d = +sk.getAttribute('data-skip') || 0; try { aud.currentTime = Math.max(0, Math.min((aud.duration || 1e9) - 1, aud.currentTime + d)); } catch (er) {} return; }
+    if (hd && hd.parentNode.hasAttribute('data-id')) { var id = hd.parentNode.getAttribute('data-id'), t = (hd.querySelector('.au-t b') || {}).textContent || '';
+      if (playing === id) stopPlaying(); else startPlaying(id, t);
+      paint(); var row = body.querySelector('.au-row.on'); if (row && row.scrollIntoView) row.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
   });
 
   function loadData() {
