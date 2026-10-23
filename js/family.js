@@ -39,6 +39,8 @@
   // Azam Pasha Zikr: Shorts from his zikr channel (shown on his profile page and in Practices).
   var AZAM = Object.assign({ id: 'UCn5J7zggR3cV4sCYlEjgZJA', name: 'Azam Pasha Zikr', url: 'https://www.youtube.com/channel/UCn5J7zggR3cV4sCYlEjgZJA/shorts' }, cfg.azamChannel || {});
   var kalaam = null, tab = 'poetry', who = 0, topic = 0, limit = SHOW, fstate = { items: null, error: '', loading: false }, zstate = { items: null, error: '', loading: false }, astate = { items: null, error: '', loading: false, waiters: [] }, state = fstate;
+  var AZAM_MATCH = /a[’']?z+am|zikr|dhikr|zekr|ذکر|ذكر|اعظم/i;
+  try { if (cfg.azamChannel && cfg.azamChannel.match) AZAM_MATCH = new RegExp(cfg.azamChannel.match, 'i'); } catch (e) {}
   function stateFor(t) { return t === 'zikr' ? zstate : t === 'azam' ? astate : fstate; }
   function sget(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function sset(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
@@ -90,7 +92,7 @@
   function done(st) { paintIf(st); var w = st.waiters || []; st.waiters = []; w.forEach(function (f) { try { f(st); } catch (e) {} }); }
   function load(force, t) {
     t = t || tab;
-    var st = stateFor(t), ch = t === 'zikr' ? ZIKR : t === 'azam' ? AZAM : fam, ck = t === 'zikr' ? 'noor_zikr_v1' : t === 'azam' ? 'noor_azam_v1' : 'noor_family_v1';
+    var st = stateFor(t), ch = t === 'zikr' ? ZIKR : t === 'azam' ? AZAM : fam, ck = t === 'zikr' ? 'noor_zikr_v1' : t === 'azam' ? 'noor_azam_v2' : 'noor_family_v1';
     var key = cfg.youtubeApiKey, pl = t === 'azam' ? shortsList(ch.id) : uploads(ch.id), fallback = t === 'azam' ? uploads(ch.id) : null;
     if (!key || !pl) { st.items = []; st.error = 'unconfigured'; done(st); return; }
     if (st.loading) return;
@@ -104,6 +106,8 @@
         pages.push(d);
         if (d.nextPageToken && n < PAGES) return next(d.nextPageToken, n + 1);
         st.items = toItems(pages); st.error = ''; st.loading = false;
+        // Using the full uploads list instead of Shorts: keep only zikr videos (by title), so unrelated uploads stay hidden.
+        if (t === 'azam' && pl === fallback) st.items = st.items.filter(function (v) { return AZAM_MATCH.test(v.title); });
         sset(ck, JSON.stringify({ t: Date.now(), id: ch.id, items: st.items })); done(st);
       }).catch(function (err) {
         // No Shorts playlist for this channel (or YouTube refused it): read the full uploads list once instead.
