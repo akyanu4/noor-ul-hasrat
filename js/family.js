@@ -61,7 +61,8 @@
     '.fm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.fm-sc{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}' +
     '.fm-sth{position:relative;aspect-ratio:9/16;background:#000;cursor:pointer;overflow:hidden}.fm-sth img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02)}.fm-sth iframe{width:100%;height:100%;border:0;display:block}' +
     '.fm-hs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px 4px;padding:0 18px 6px;scrollbar-width:none}.fm-hs::-webkit-scrollbar{display:none}.fm-hs .fm-sc{flex:none;width:42%;max-width:190px;scroll-snap-align:start}.fm-hs .fm-all{flex:none;width:30%;max-width:140px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--teal);font-weight:700;font-size:13px;cursor:pointer;scroll-snap-align:start;padding:8px}' +
-    '.fm-st{padding:8px 10px 10px;font-size:12.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}';
+    '.fm-stat{padding:0 10px;font-size:12px;color:var(--muted);min-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fm-like{display:block;margin:6px 10px 10px;padding:6px 0;text-align:center;font-size:12px;font-weight:600;color:var(--teal);border:1px solid var(--line);border-radius:10px;text-decoration:none}' +
+    '.fm-st{padding:8px 10px 4px;font-size:12.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}';
   doc.head.appendChild(css);
 
   var s = N.el('div', 'screen', '<div class="subhead"><div class="backbtn" id="fmBack">←</div><div class="subtitle" id="fmTitle">Poetry &amp; Naat</div></div><div id="fmBody"></div>');
@@ -200,12 +201,35 @@
   }
 
   // Shorts are shown as vertical tiles, two per row, and play inside the app.
+  // View and like counts for Shorts, read from YouTube (videos.list statistics) and kept for 30 minutes.
+  var STATS = null, statsBusy = false;
+  function nfmt(n) { n = +n || 0; return n >= 1e6 ? (n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace(/\.0$/, '') + 'M' : n >= 1e3 ? (n / 1e3).toFixed(n >= 1e4 ? 0 : 1).replace(/\.0$/, '') + 'K' : String(n); }
+  function statText(id) { var x = STATS && STATS.v[id]; return x ? '👁 ' + nfmt(x.v) + '  ·  👍 ' + nfmt(x.l) : ''; }
+  function fillStats() { Array.prototype.forEach.call(doc.querySelectorAll('.fm-stat[data-sid]'), function (e) { var t = statText(e.getAttribute('data-sid')); if (t) e.textContent = t; }); }
+  function ensureStats(list) {
+    if (STATS === null) { try { STATS = JSON.parse(sget('noor_short_stats_v1') || 'null'); } catch (e) {} if (!STATS || !STATS.v) STATS = { t: 0, v: {} }; }
+    var ids = (list || []).map(function (v) { return v.id; }).filter(validId), fresh = Date.now() - STATS.t < TTL;
+    var missing = ids.filter(function (id) { return !STATS.v[id]; });
+    fillStats();
+    if (statsBusy || !cfg.youtubeApiKey || !ids.length || (fresh && !missing.length)) return;
+    statsBusy = true;
+    var want = fresh ? missing : ids, chunks = [];
+    for (var i = 0; i < want.length; i += 50) chunks.push(want.slice(i, i + 50));
+    Promise.all(chunks.map(function (c) {
+      return fetch('https://www.googleapis.com/youtube/v3/videos?part=statistics&id=' + c.join(',') + '&key=' + encodeURIComponent(cfg.youtubeApiKey))
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (d) { (d.items || []).forEach(function (it) { var st = it.statistics || {}; STATS.v[it.id] = { v: +st.viewCount || 0, l: +st.likeCount || 0 }; }); });
+    })).then(function () { if (!fresh) STATS.t = Date.now(); sset('noor_short_stats_v1', JSON.stringify(STATS)); }, function () {})
+      .then(function () { statsBusy = false; fillStats(); });
+  }
   function shortTile(v) {
     return '<div class="fm-sc"><div class="fm-sth" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '">' +
       '<img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg\'"><div class="fm-play">▶</div></div>' +
-      '<div class="fm-st">' + esc(v.title) + '</div></div>';
+      '<div class="fm-st">' + esc(v.title) + '</div>' +
+      '<div class="fm-stat" data-sid="' + v.id + '">' + esc(statText(v.id)) + '</div>' +
+      '<a class="fm-like" target="_blank" rel="noopener" href="https://www.youtube.com/shorts/' + v.id + '">👍 Like on YouTube</a></div>';
   }
-  function shortsGrid(list) { return '<div class="fm-grid">' + list.map(shortTile).join('') + '</div>'; }
+  function shortsGrid(list) { setTimeout(function () { ensureStats(list); }, 0); return '<div class="fm-grid">' + list.map(shortTile).join('') + '</div>'; }
   function paintShorts(list) {
     var h = '<div class="fm-note" style="margin-top:0">Dars and zikr Shorts of Azam Pasha from the ' + esc(AZAM.name) + ' channel. New Shorts appear here by themselves. Tap one to play it.</div>';
     if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest Shorts…</div>';
@@ -220,7 +244,7 @@
   }
   function playShort(th) {
     if (!th || th.querySelector('iframe') || !validId(th.getAttribute('data-id'))) return false;
-    th.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + th.getAttribute('data-id') + '?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
+    th.innerHTML = '<iframe src="https://www.youtube.com/embed/' + th.getAttribute('data-id') + '?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
     return true;
   }
 
@@ -232,9 +256,9 @@
     var c = e.target.closest && e.target.closest('.fm-chip'); if (c && c.hasAttribute('data-w')) { who = +c.getAttribute('data-w') || 0; limit = SHOW; paint(); return; }
     var th = e.target.closest && e.target.closest('.fm-th');
     if (th && !th.querySelector('iframe') && validId(th.getAttribute('data-id'))) {
-      th.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + th.getAttribute('data-id') + '?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Video"></iframe>'; return;
+      th.innerHTML = '<iframe src="https://www.youtube.com/embed/' + th.getAttribute('data-id') + '?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Video"></iframe>'; return;
     }
-    if (e.target.id === 'fmRetry' || e.target.id === 'fmRefresh') { e.preventDefault(); load(true); }
+    if (e.target.id === 'fmRetry' || e.target.id === 'fmRefresh') { e.preventDefault(); if (STATS) STATS.t = 0; load(true); }
   });
 
   api.ZIKR = ZIKR; api.AZAM = AZAM; api.open = function (which) { if (kalaam === null) loadKalaam(); if (pinned === null) loadPinned(); if (which === 'poetry' || which === 'dars' || which === 'zikr' || which === 'azam') { if (tab !== which) { who = 0; topic = 0; limit = SHOW; } tab = which; } state = stateFor(tab); paint(); N.showScreen('family'); if (state.items === null) load(false); };
@@ -251,7 +275,7 @@
     api.azamShorts(function (st) {
       var list = (st.items || []).slice(0, 12);
       if (!list.length) { wrap.hidden = true; return; }
-      row.innerHTML = list.map(shortTile).join('') + '<div class="fm-all" role="button">All Shorts ›</div>';
+      row.innerHTML = list.map(shortTile).join('') + '<div class="fm-all" role="button">All Shorts ›</div>'; ensureStats(list);
       wrap.hidden = false;
     });
     if (!row.__wired) {

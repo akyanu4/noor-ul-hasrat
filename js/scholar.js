@@ -119,7 +119,7 @@
       }).join('');
       box.onclick = function (e) {
         var t = e.target.closest && e.target.closest('.sch-vth'); if (!t || t.querySelector('iframe')) return;
-        t.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + t.getAttribute('data-id') + '?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Video"></iframe>';
+        t.innerHTML = '<iframe src="https://www.youtube.com/embed/' + t.getAttribute('data-id') + '?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Video"></iframe>';
       };
     }).catch(function () {});
   }
