@@ -61,6 +61,9 @@
     '.fm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.fm-sc{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}' +
     '.fm-sth{position:relative;aspect-ratio:9/16;background:#000;cursor:pointer;overflow:hidden}.fm-sth img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02)}.fm-sth iframe{width:100%;height:100%;border:0;display:block}' +
     '.fm-hs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px 4px;padding:0 18px 6px;scrollbar-width:none}.fm-hs::-webkit-scrollbar{display:none}.fm-hs .fm-sc{flex:none;width:42%;max-width:190px;scroll-snap-align:start}.fm-hs .fm-all{flex:none;width:30%;max-width:140px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--teal);font-weight:700;font-size:13px;cursor:pointer;scroll-snap-align:start;padding:8px}' +
+    '.fm-acts{display:flex;gap:6px;margin:6px 8px 10px}.fm-acts .fm-like{flex:1;margin:0;font:inherit;font-size:12px;font-weight:600;background:transparent;cursor:pointer}' +
+    '.fm-sub{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;color:#fff;background:#c4302b;border-radius:999px;padding:6px 12px;text-decoration:none;white-space:nowrap}' +
+    '.fm-toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);background:#1a2421;color:#fff;font-size:13px;padding:9px 14px;border-radius:999px;z-index:9999;box-shadow:0 4px 14px rgba(0,0,0,.25)}' +
     '.fm-stat{padding:0 10px;font-size:12px;color:var(--muted);min-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fm-like{display:block;margin:6px 10px 10px;padding:6px 0;text-align:center;font-size:12px;font-weight:600;color:var(--teal);border:1px solid var(--line);border-radius:10px;text-decoration:none}' +
     '.fm-st{padding:8px 10px 4px;font-size:12.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}';
   doc.head.appendChild(css);
@@ -227,11 +230,24 @@
       '<img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg\'"><div class="fm-play">▶</div></div>' +
       '<div class="fm-st">' + esc(v.title) + '</div>' +
       '<div class="fm-stat" data-sid="' + v.id + '">' + esc(statText(v.id)) + '</div>' +
-      '<a class="fm-like" target="_blank" rel="noopener" href="https://www.youtube.com/shorts/' + v.id + '">👍 Like on YouTube</a></div>';
+      '<div class="fm-acts"><a class="fm-like" target="_blank" rel="noopener" href="https://www.youtube.com/shorts/' + v.id + '">👍 Like</a>' +
+      '<button type="button" class="fm-like fm-share" data-sid="' + v.id + '" data-t="' + esc(v.title) + '">↗ Share</button></div></div>';
   }
+  // Share a Short: the phone's share sheet (WhatsApp, Messages…), or copy the link where that isn't available.
+  function ftoast(t) { var o = doc.querySelector('.fm-toast'); if (o) o.remove(); var e = doc.createElement('div'); e.className = 'fm-toast'; e.textContent = t; doc.body.appendChild(e); setTimeout(function () { e.remove(); }, 2500); }
+  function shareShort(id, title) {
+    if (!validId(id)) return;
+    var url = 'https://youtube.com/shorts/' + id, text = (title ? title + '\n' : '') + 'Shared from the Noor-ul-Hasrat app';
+    if (navigator.share) { navigator.share({ title: title || 'Short', text: text, url: url }).catch(function () {}); return; }
+    var all = text + '\n' + url;
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(all).then(function () { ftoast('Link copied. Paste it to share.'); }, function () { root.prompt && root.prompt('Copy this link:', url); });
+    else if (root.prompt) root.prompt('Copy this link:', url);
+  }
+  doc.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.fm-share'); if (b) { e.preventDefault(); e.stopPropagation(); shareShort(b.getAttribute('data-sid'), b.getAttribute('data-t')); } }, true);
+  function subscribeLink() { return '<a class="fm-sub" target="_blank" rel="noopener" href="https://www.youtube.com/channel/' + esc(AZAM.id) + '?sub_confirmation=1">🔔 Subscribe</a>'; }
   function shortsGrid(list) { setTimeout(function () { ensureStats(list); }, 0); return '<div class="fm-grid">' + list.map(shortTile).join('') + '</div>'; }
   function paintShorts(list) {
-    var h = '<div class="fm-note" style="margin-top:0">Dars and zikr Shorts of Azam Pasha from the ' + esc(AZAM.name) + ' channel. New Shorts appear here by themselves. Tap one to play it.</div>';
+    var h = '<div style="margin:0 0 8px">' + subscribeLink() + '</div><div class="fm-note" style="margin-top:0">Dars and zikr Shorts of Azam Pasha from the ' + esc(AZAM.name) + ' channel. New Shorts appear here by themselves. Tap one to play it.</div>';
     if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest Shorts…</div>';
     else if (state.error === 'unconfigured') h += '<div class="fm-note">The live list is not connected yet (add <b>youtubeApiKey</b> in js/config.js).</div>';
     else if (state.error && state.error !== 'stale') h += '<div class="fm-note">Could not load the Shorts (' + esc(state.error) + '). <a href="#" id="fmRetry">Try again</a></div>';
@@ -267,7 +283,7 @@
     if (astate.items !== null && !astate.loading) { cb(astate); return; }
     astate.waiters.push(cb); if (!astate.loading) load(false, 'azam');
   };
-  api.shortsGrid = shortsGrid; api.playShort = playShort;
+  api.shortsGrid = shortsGrid; api.playShort = playShort; api.subscribeLink = subscribeLink;
   // Home page: a sideways-scrolling row of the newest Azam Pasha Zikr Shorts. The section stays hidden until there are Shorts.
   api.homeStrip = function (wrap) {
     if (!wrap) return;
@@ -275,6 +291,7 @@
     api.azamShorts(function (st) {
       var list = (st.items || []).slice(0, 12);
       if (!list.length) { wrap.hidden = true; return; }
+      var hs = doc.getElementById('homeSub'); if (hs && !hs.firstChild) hs.innerHTML = subscribeLink();
       row.innerHTML = list.map(shortTile).join('') + '<div class="fm-all" role="button">All Shorts ›</div>'; ensureStats(list);
       wrap.hidden = false;
     });

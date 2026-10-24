@@ -133,7 +133,7 @@
       if (!s.querySelector('#schShorts')) return;
       var list = st.items || [];
       if (!list.length) { box.innerHTML = st.error && st.error !== 'stale' ? '' : '<h2 class="section-title" style="margin-top:14px">Dars &amp; Zikr Shorts</h2><div class="sch-note">No Shorts yet.</div>'; return; }
-      box.innerHTML = '<h2 class="section-title" style="margin-top:14px">Dars &amp; Zikr Shorts</h2>' + F.shortsGrid(list.slice(0, SHORTS_ON_PROFILE)) +
+      box.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px"><h2 class="section-title" style="margin:0">Dars &amp; Zikr Shorts</h2>' + (F.subscribeLink ? F.subscribeLink() : '') + '</div><div style="height:10px"></div>' + F.shortsGrid(list.slice(0, SHORTS_ON_PROFILE)) +
         '<button class="sch-btn" id="schAllShorts" type="button" style="width:100%;border:0;cursor:pointer">All Azam Pasha Shorts (' + list.length + ') ›</button>';
       box.onclick = function (e) {
         if (e.target.closest && e.target.closest('#schAllShorts')) { F.open('azam'); return; }
