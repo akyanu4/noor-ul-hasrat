@@ -38,8 +38,11 @@
   var data = null, live = {}, liveTried = false, tab = 0, playing = null, playingTitle = '';
   // One audio element for the whole screen, so the recording keeps playing while the list is redrawn or another tab is opened.
   var aud = doc.createElement('audio'); aud.controls = true; aud.preload = 'none'; aud.setAttribute('playsinline', '');
-  var msg = '', msgErr = false;
-  function srcFor(id) { return 'https://drive.usercontent.google.com/download?id=' + encodeURIComponent(id) + '&export=download&confirm=t'; }
+  var msg = '', msgErr = false, useDrive = {};
+  // Each recording has a small copy in the app's repository (data/audio.json "src"), served by the free jsDelivr CDN.
+  // Recordings without one (new files added to Drive later) use Google Drive's own player.
+  var srcById = {};
+  function srcFor(id) { var p = srcById[id], base = data && data.audioBase; return p && typeof base === 'string' && /^https:\/\/cdn\.jsdelivr\.net\/gh\/akyanu4\/noor-ul-hasrat@[\w.-]+\/$/.test(base) ? base + p : null; }
   function posKey(id) { return 'noor_audio_pos_' + id; }
   function setMsg(t, err) { msg = t; msgErr = !!err; var m = body.querySelector('.au-pmsg'); if (m) { m.textContent = t; m.className = 'au-pmsg' + (err ? ' err' : ''); } }
   var lastSave = 0;
@@ -48,10 +51,11 @@
   aud.addEventListener('waiting', function () { setMsg('Loading…'); });
   aud.addEventListener('playing', function () { setMsg(''); });
   // If the direct stream is refused, fall back to Google Drive's own player for that recording.
-  var useDrive = {};
   aud.addEventListener('error', function () { if (aud.getAttribute('src') && playing) { useDrive[playing] = true; aud.removeAttribute('src'); msg = ''; paint(); } });
   function startPlaying(id, title) {
-    playing = id; playingTitle = title; aud.src = srcFor(id); setMsg('Loading…');
+    playing = id; playingTitle = title;
+    var src = srcFor(id); if (!src) { useDrive[id] = true; aud.removeAttribute('src'); msg = ''; return; }
+    aud.src = src; setMsg('Loading…');
     var at = parseInt(sget(posKey(id)) || '0', 10);
     if (at > 5) aud.addEventListener('loadedmetadata', function once() { aud.removeEventListener('loadedmetadata', once); if (at < aud.duration - 15) { aud.currentTime = at; setMsg('Continuing from ' + clock(at) + '.'); } }, { once: true });
     var pr = aud.play(); if (pr && pr.catch) pr.catch(function () {});
@@ -81,7 +85,7 @@
   function series() { return (data && data.series || []).filter(function (x) { return x && x.title; }); }
   function filesOf(sr) {
     var l = live[sr.folderId];
-    var known = {}; (sr.files || []).forEach(function (f) { if (f && f.id) known[f.id] = f.dur; });
+    var known = {}; (sr.files || []).forEach(function (f) { if (f && f.id) { known[f.id] = f.dur; if (typeof f.src === 'string' && /^audio\/[\w-]+\.mp3$/.test(f.src)) srcById[f.id] = f.src; } });
     var list = (l && l.length ? l.map(function (f) { return known[f.id] && !f.dur ? Object.assign({}, f, { dur: known[f.id] }) : f; }) : (sr.files || [])).filter(function (f) { return f && validId(f.id) && isAudio(f.name, f.mime || 'audio/'); });
     return sortFiles(list);
   }
