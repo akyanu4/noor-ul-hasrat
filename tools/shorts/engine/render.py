@@ -12,7 +12,7 @@ import lib as L
 MODE = sys.argv[1]
 if MODE == "full" or (MODE == "frames" and sys.argv[2] == "full"): L.setup(1920, 1080); FPS = 25
 else: L.setup(1080, 1920); FPS = 30
-import scenes_a as A, scenes_b as B, scenes_c as C, scenes_d as D, scenes_e as E, scenes_f as F
+import scenes_a as A, scenes_b as B, scenes_c as C, scenes_d as D, scenes_e as E, scenes_f as F, scenes_g as G
 from captions import CAPTIONS
 from timeline import FULL, SHORTS
 
@@ -20,6 +20,7 @@ SCENES = {"soul": A.soul, "arsh": A.arsh, "creation": A.creation, "misal": A.mis
           "death_barzakh": B.death_barzakh, "graves": B.graves, "window": B.window, "sins": B.sins, "hashr": B.hashr, "scales": B.scales,
           "intercession": B.intercession, "grace": B.grace, "masjid": B.masjid_scene, "shahada": B.shahada, "book": B.book,
           "malida_prep": C.malida_prep, "malida_feast": C.malida_feast, "glory": C.glory, "jannah": D.jannah, "iman": E.iman, "sand_body": F.sand_body}
+SCENES.update(G.SCENES)   # project image slideshows (slides.py)
 
 def build(tl):
     segs, T = [], 0.0

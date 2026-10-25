@@ -6,8 +6,31 @@
   "photo": "../../assets/shaykh_azam_pasha.jpg",
   "transcription_split": {
     "note": "TurboScribe takes 30 min at a time, so each recording was cut at a pause. Add the offset to every time in the part B SRT before joining it to part A.",
-    "001-HB.mp3": { "partA": [0, 1597.13], "partB": [1597.13, 3174.40], "partB_offset": 1597.13 },
-    "002-HB.mp3": { "partA": [0, 911.04], "partB": [911.04, 1802.11], "partB_offset": 911.04 }
+    "001-HB.mp3": {
+      "partA": [
+        0,
+        1597.13
+      ],
+      "partB": [
+        1597.13,
+        3174.4
+      ],
+      "partB_offset": 1597.13
+    },
+    "002-HB.mp3": {
+      "partA": [
+        0,
+        911.04
+      ],
+      "partB": [
+        911.04,
+        1802.11
+      ],
+      "partB_offset": 911.04
+    }
   },
-  "youtube": { "channel_id": "UCn5J7zggR3cV4sCYlEjgZJA", "published": {} }
+  "youtube": {
+    "channel_id": "UCn5J7zggR3cV4sCYlEjgZJA",
+    "published": {}
+  }
 }
