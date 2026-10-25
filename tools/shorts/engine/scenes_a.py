@@ -90,7 +90,7 @@ def title_card(t, d, closing=False):
     img = L.paste_center(img, L.serif_text("Hazrat Azam Pasha", 80), tx, ty + 150 * L.U, alpha=fade)
     img = L.paste_center(img, L.serif_text("RAHMATULLAH ALAIH", 32, GOLD, 6), tx, ty + 225 * L.U, alpha=fade)
     img = L.paste_center(img, L.urdu("حضرت اعظم پاشا رحمۃ اللہ علیہ", 54, (225, 212, 182), path=L.URDU_R), tx, ty + 305 * L.U, alpha=fade)
-    sub = "JazakAllah khair for watching" if closing else "The soul's journey · Kun fayakun · the blessed malida"
+    sub = "JazakAllah khair for watching" if closing else cfg.P.get("full_subtitle", "The soul's journey · Kun fayakun · the blessed malida")
     img = L.paste_center(img, L.serif_text(sub, 40, (215, 205, 180)), tx, ty + 390 * L.U, alpha=fade * sm(0.6, 1.4, t))
     return img
 

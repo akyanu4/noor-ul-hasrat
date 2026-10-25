@@ -21,3 +21,11 @@ SLIDES = {
         (1349.0, "PORTRAIT", None),      # "from my gaze into your gaze, a state will pass"
     ],
 }
+
+# ---- the full recording (30 min)
+SQ = (0, 209, 540, 750)
+POOL = [("N-HB0-01", "all", dict(F, glow=[(0.52, 0.21, 0.08)])), ("HB1-01", "all"), ("N-HB7-03", "all", F), ("HB4-01", None),
+        ("N-HB0-02", "all", F), ("HB3-03", SQ), ("HB1-04", "all"), ("N-HB7-02", "all", F), ("HB5-01", None),
+        ("HB4-04", SQ, {"glow": [(0.22, 0.30, 0.09), (0.75, 0.33, 0.09)]}), ("HB1-03", "all"), ("HB2-04", SQ)]
+from slidekit import full_track
+SLIDES["hb_full"] = full_track([(568.4, 633.8, SLIDES["hb_rise"]), (1227.9, 1361.0, SLIDES["hb_zarb"])], POOL, 0.0, 1803.0)

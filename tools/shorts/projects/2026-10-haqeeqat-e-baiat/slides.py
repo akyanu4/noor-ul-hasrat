@@ -59,3 +59,13 @@ SLIDES = {
         (2546.9, "N-HB6-02", "all", dict(F, glow=[(0.25, 0.38, 0.11)])),   # the master's hand: Shaytan cannot touch him
     ],
 }
+
+# ---- the full recording (53 min): the Shorts' pictures in their parts, general pictures in between
+POOL = [("N-HB0-01", "all", dict(F, glow=[(0.52, 0.21, 0.08)])), ("HB1-01", "all"), ("HB4-01", None), ("N-HB0-02", "all", F),
+        ("HB3-03", SQ), ("HB1-04", "all"), ("HB5-01", None), ("HB2-04", SQ), ("N-HB7-03", "all", F),
+        ("HB4-02", SQ, {"glow": [(0.28, 0.42, 0.09)]}), ("HB1-03", "all"), ("HB3-04", SQ, {"glow": [(0.245, 0.25, 0.09)]})]
+from slidekit import full_track
+S = SLIDES
+SLIDES["hb_full"] = full_track([(55.4, 195.0, S["hb_hand"]), (323.3, 378.6, S["hb_rein"]), (450.2, 558.0, S["hb_teacher"]),
+                       (1762.2, 1900.0, S["hb_wali"]), (1900.2, 2051.6, S["hb_stone"]), (2507.4, 2555.8, S["hb_pir"])],
+                      POOL, 0.0, 3175.0)

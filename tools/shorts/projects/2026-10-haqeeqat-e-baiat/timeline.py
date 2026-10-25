@@ -1,5 +1,8 @@
 """Haqeeqat-e-Bai'at, recording 1 (001-HB.mp3). Times are in the original recording."""
-FULL = []
+FULL = [
+    ("title", 7.0),
+    ("voice", 0.00, 3174.40, "hb_full"),
+    ("outro", 8.0)]
 SHORTS = {
     "HB_Short1_The_Hand_of_Allah": ("THE HAND OF ALLAH", [
         ("voice", 55.40, 112.40, "hb_hand"),
