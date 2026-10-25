@@ -22,6 +22,8 @@ FAITH = 545.4
 
 def geo():
     W, H = L.W, L.H
+    if not L.PORTRAIT:   # the full (16:9) video: a smaller dome that fits in the frame
+        return dict(dx=W / 2, dbase=H * 0.40, dw=H * 0.42, bx=W / 2, bbase=H * 0.78, bh=H * 0.30)
     return dict(dx=W / 2, dbase=H * 0.30, dw=W * 0.40, bx=W / 2, bbase=H * 0.655, bh=H * 0.25)
 
 def bg():

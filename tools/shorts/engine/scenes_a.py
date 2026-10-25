@@ -92,6 +92,18 @@ def title_card(t, d, closing=False):
     img = L.paste_center(img, L.urdu("حضرت اعظم پاشا رحمۃ اللہ علیہ", 54, (225, 212, 182), path=L.URDU_R), tx, ty + 305 * L.U, alpha=fade)
     sub = "JazakAllah khair for watching" if closing else cfg.P.get("full_subtitle", "The soul's journey · Kun fayakun · the blessed malida")
     img = L.paste_center(img, L.serif_text(sub, 40, (215, 205, 180)), tx, ty + 390 * L.U, alpha=fade * sm(0.6, 1.4, t))
+    if closing and not L.PORTRAIT:   # credits from project.json under the closing words, producer in the corner
+        y = ty + 460 * L.U; a = fade * sm(1.0, 1.8, t)
+        for line in cfg.P.get("credits", []):
+            txt, sz = (line, 38) if isinstance(line, str) else line
+            big = sz >= 36
+            if not big: y -= 6 * L.U
+            elif y > ty + 461 * L.U: y += 10 * L.U   # a little space before each new credit
+            img = L.paste_center(img, L.serif_text(txt, 30 if big else 25, (215, 200, 165) if big else (190, 176, 140)), tx, y, alpha=a)
+            y += (33 if big else 32) * L.U
+        if cfg.P.get("producer"):
+            pi = L.serif_text(cfg.P["producer"], 26, (200, 185, 150))
+            img = L.paste_center(img, pi, L.W - pi.width / 2 - 36 * L.U, L.H - 30 * L.U, alpha=a)
     return img
 
 # ---------------------------------------------------------------- the soul (your 12 images)

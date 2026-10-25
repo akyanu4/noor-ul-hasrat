@@ -23,9 +23,14 @@ def arch_pts(cx, ybot, w, apex):
 
 def geom():
     W, H = L.W, L.H
-    g = dict(cx=W / 2, w=W * 0.34, apex=H * 0.085, ybot=H * 0.33, fr=W * 0.035)
-    g["ys"] = g["apex"] + 0.866 * g["w"]
-    g["base"] = H * 0.705; g["h"] = H * 0.30          # the Sufi: feet and height
+    if L.PORTRAIT:
+        g = dict(cx=W / 2, w=W * 0.34, apex=H * 0.085, ybot=H * 0.33, fr=W * 0.035)
+        g["ys"] = g["apex"] + 0.866 * g["w"]
+        g["base"] = H * 0.705; g["h"] = H * 0.30          # the Sufi: feet and height
+    else:   # the full (16:9) video: a narrower gate, taller in the frame
+        g = dict(cx=W / 2, w=H * 0.26, apex=H * 0.05, ybot=H * 0.50, fr=H * 0.03)
+        g["ys"] = g["apex"] + 0.866 * g["w"]
+        g["base"] = H * 0.90; g["h"] = H * 0.36
     return g
 
 def door_open(ot): return sm(476.6, 479.9, ot)
