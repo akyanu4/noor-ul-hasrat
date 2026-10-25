@@ -50,6 +50,9 @@ def seg_frame(sg, tl):
             if sz < 36: y -= L.H * 0.008
             img = L.paste_center(img, L.serif_text(txt, sz, (215, 200, 165) if sz >= 36 else (190, 176, 140)), L.W / 2, y, alpha=min(1, max(0, (tl - 0.3) / 0.8)))
             y += L.H * (0.035 if sz < 36 else 0.033)
+        if cfg.P.get("producer"):   # small, bottom-right corner
+            pi = L.serif_text(cfg.P["producer"], 30, (200, 185, 150))
+            img = L.paste_center(img, pi, L.W - pi.width / 2 - 40 * L.U, L.H * 0.965, alpha=min(1, max(0, (tl - 0.3) / 0.8)))
         return img
 
 # ---- captions mapped onto the output timeline
