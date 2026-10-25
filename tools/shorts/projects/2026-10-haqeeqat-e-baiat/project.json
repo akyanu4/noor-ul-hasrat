@@ -31,7 +31,13 @@
   },
   "youtube": {
     "channel_id": "UCn5J7zggR3cV4sCYlEjgZJA",
-    "published": {}
+    "published": {
+      "HB_Short1_The_Hand_of_Allah": "g8-0WIXYjcM",
+      "HB_Short2_The_Camels_Rein": "r3x7LQru71I",
+      "HB_Short3_Two_and_Two_Make_Four": "7wB9EQldsew",
+      "HB_Short4_A_Wali_Recognises_a_Wali": "E7xb4BR6IPQ",
+      "HB_Short5_The_Stone_and_the_Pebble": "kziC4lPGmgU"
+    }
   },
   "photo_crop": [
     255,
