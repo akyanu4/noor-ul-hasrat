@@ -1,0 +1,6 @@
+.fonts/
+projects/*/out/
+projects/*/work/
+projects/*/audio/
+projects/*/music/
+__pycache__/
