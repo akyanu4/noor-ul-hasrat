@@ -60,6 +60,27 @@ SLIDES = {
     ],
 }
 
+SLIDES["hb_what"] = [
+    (0.0, "HB2-01", SQ),                                   # what is bai'at, its aims and purposes
+    (206.2, "HB1-03", "all", {"text": "بیعت"}),             # a covenant: the Arabs struck hand upon hand
+    (220.0, "HB4-01", None),                               # in every kingdom an oath of loyalty
+    (234.1, "HB1-02", "all", {"glow": [(0.31, 0.22, 0.11)]}),   # when someone became Muslim / repented, he gave bai'at
+    (248.0, "HB1-03", "all", {"text": "تقویٰ اور توبہ"}),     # taqwa and tawbah
+    (263.8, "HB1-04", "all"),                              # Hudaybiyyah: the last drop of blood
+    (748.2, "HB1-02", "all", {"glow": [(0.31, 0.22, 0.11)]}),   # how the mashaikh give bai'at: by the hand
+    (762.0, "HB1-05", "all"),                              # live by the command of Allah and His Messenger
+]
+SLIDES["hb_one_guide"] = [
+    (0.0, "HB3-03", SQ),                                   # why stay bound to one shaykh?
+    (600.0, "N-HB0-02", "all", F),                         # Qadri or Chishti: each takes from his own way
+    (611.6, "HB3-03", SQ),                                 # different views leave a person bewildered
+    (628.0, "HB3-04", SQ, {"glow": [(0.245, 0.25, 0.09)]}),     # a trusted guide who shows the way
+    (644.2, "HB4-01", None),                               # a new lawyer every day in an important case
+    (660.0, "HB2-04", SQ),                                 # success could not be hoped for
+    (677.9, "N-HB0-02", "all", F),                         # law books in Urdu: can you run a case by reading them?
+    (694.0, "HB3-04", SQ, {"glow": [(0.245, 0.25, 0.09)]}),     # trust the expert, hand him all your affairs
+]
+
 # ---- the full recording (53 min): the Shorts' pictures in their parts, general pictures in between
 POOL = [("N-HB0-01", "all", dict(F, glow=[(0.52, 0.21, 0.08)])), ("HB1-01", "all"), ("HB4-01", None), ("N-HB0-02", "all", F),
         ("HB3-03", SQ), ("HB1-04", "all"), ("HB5-01", None), ("HB2-04", SQ), ("N-HB7-03", "all", F),

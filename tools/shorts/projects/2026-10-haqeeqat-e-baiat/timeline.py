@@ -4,6 +4,13 @@ FULL = [
     ("voice", 0.00, 3174.40, "hb_full"),
     ("outro", 8.0)]
 SHORTS = {
+    "HB_Short9_What_Is_Baiat": ("WHAT IS BAI'AT?", [
+        ("voice", 197.10, 284.30, "hb_what"),
+        ("voice", 748.10, 776.00, "hb_what"),
+        ("endcard", 5.5)]),
+    "HB_Short10_One_Trusted_Guide": ("WHY ONE TRUSTED GUIDE", [
+        ("voice", 586.20, 710.50, "hb_one_guide"),
+        ("endcard", 5.5)]),
     "HB_Short1_The_Hand_of_Allah": ("THE HAND OF ALLAH", [
         ("voice", 55.40, 112.40, "hb_hand"),
         ("voice", 131.60, 195.00, "hb_hand"),

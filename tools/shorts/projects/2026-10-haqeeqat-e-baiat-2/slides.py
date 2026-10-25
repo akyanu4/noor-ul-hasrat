@@ -22,6 +22,15 @@ SLIDES = {
     ],
 }
 
+SLIDES["hb_formal"] = [
+    (0.0, "N-HB6-01", "all", F),                           # a merely formal discipleship is of no use
+    (795.0, "N-HB5-03", "all", F),                         # "Give me khilafat" - A'udhu billah!
+    (1614.7, "N-HB0-01", "all", dict(F, glow=[(0.52, 0.21, 0.08)])),   # murids served, master trained
+    (1629.6, "N-HB6-01", "all", F),                        # now neither that master nor that murid remains
+    (1647.2, "HB4-01", None),                              # donations for "widows and orphans"
+    (1670.5, "N-HB5-03", "all", F),                        # the pir's own wife and children
+    (1683.2, "N-HB6-03", "all", F),                        # to weep in my heart
+]
 # ---- the full recording (30 min)
 SQ = (0, 209, 540, 750)
 POOL = [("N-HB0-01", "all", dict(F, glow=[(0.52, 0.21, 0.08)])), ("HB1-01", "all"), ("N-HB7-03", "all", F), ("HB4-01", None),
