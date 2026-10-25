@@ -44,7 +44,7 @@ def seg_frame(sg, tl):
         img = L.paste_center(img, L.serif_text("NOOR-UL-HASRAT", 76, L.GOLD, 10), L.W / 2, L.H * 0.50, alpha=min(1, tl / 0.5))
         img = L.paste_center(img, L.serif_text("Full dars on the channel", 52), L.W / 2, L.H * 0.56, alpha=min(1, tl / 0.8))
         import cfg   # credit lines from project.json "credits": shown small under the channel name
-        y = L.H * 0.635
+        y = L.H * 0.615
         for line in cfg.P.get("credits", []):   # "text" or ["text", size]; a size under 36 is a sub-line (dimmer, closer)
             txt, sz = (line, 38) if isinstance(line, str) else line
             if sz < 36: y -= L.H * 0.008
