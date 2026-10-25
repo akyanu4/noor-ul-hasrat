@@ -19,15 +19,16 @@ def portrait(size):
     with small stars, light rays behind and a soft golden bloom."""
     def mk():
         from PIL import ImageEnhance, ImageOps
-        src = Image.open(PHOTO).convert("RGB").crop((70, 8, 292, 388))
+        src = Image.open(PHOTO).convert("RGB").crop(tuple(cfg.P.get("photo_crop", (70, 8, 292, 388))))
         pw, ph = int(size * 0.74), int(size * 0.94)
         src = L.cover(src, pw, ph)
         src = src.filter(ImageFilter.MedianFilter(3)).filter(ImageFilter.UnsharpMask(radius=max(1, size * 0.004), percent=90, threshold=2))
         a = np.asarray(src).astype(float) / 255
-        a = a ** 0.82                                                    # lift the shadows
-        a = 0.5 + (a - 0.5) * 1.08                                       # a little more contrast
-        g = a.mean(axis=2, keepdims=True); a = g + (a - g) * 0.85         # natural colour, slightly softened
-        a = np.clip(a * np.array([1.07, 1.0, 0.88]) + np.array([0.03, 0.015, 0.0]), 0, 1)   # warm, golden light
+        if cfg.P.get("photo_grade", True):                              # an old phone photo: clean it up and warm it
+            a = a ** 0.82                                                # lift the shadows
+            a = 0.5 + (a - 0.5) * 1.08                                   # a little more contrast
+            g = a.mean(axis=2, keepdims=True); a = g + (a - g) * 0.85     # natural colour, slightly softened
+            a = np.clip(a * np.array([1.07, 1.0, 0.88]) + np.array([0.03, 0.015, 0.0]), 0, 1)   # warm, golden light
         yy, xx = np.mgrid[0:ph, 0:pw]
         r0 = np.hypot((xx - pw * 0.5) / (pw * 0.5), (yy - ph * 0.42) / (ph * 0.55))
         a = np.clip(a + (np.clip(1 - r0, 0, 1) ** 2 * 0.10)[..., None] * np.array([1.0, 0.9, 0.6]), 0, 1)   # soft light on his face

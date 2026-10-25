@@ -3,7 +3,7 @@
   "source": "Google Drive folder 1Gfqq0YW9ZEzZ7Bsh09KG2rhKYybjvF6W: 001-HB.mp3 (52:54), 002-HB.mp3 (30:02)",
   "audio": "audio/001-HB.mp3",
   "music": "music/nasheed.mp3",
-  "photo": "../../assets/shaykh_azam_pasha.jpg",
+  "photo": "../../assets/azam_pasha_portrait.png",
   "transcription_split": {
     "note": "TurboScribe takes 30 min at a time, so each recording was cut at a pause. Add the offset to every time in the part B SRT before joining it to part A.",
     "001-HB.mp3": {
@@ -32,5 +32,12 @@
   "youtube": {
     "channel_id": "UCn5J7zggR3cV4sCYlEjgZJA",
     "published": {}
-  }
+  },
+  "photo_crop": [
+    255,
+    120,
+    895,
+    933
+  ],
+  "photo_grade": false
 }
