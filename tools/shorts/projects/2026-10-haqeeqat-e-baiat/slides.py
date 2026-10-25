@@ -75,10 +75,10 @@ SLIDES["hb_one_guide"] = [
     (600.0, "N-HB0-02", "all", F),                         # Qadri or Chishti: each takes from his own way
     (611.6, "HB3-03", SQ),                                 # different views leave a person bewildered
     (628.0, "HB3-04", SQ, {"glow": [(0.245, 0.25, 0.09)]}),     # a trusted guide who shows the way
-    (644.2, "HB4-01", None),                               # a new lawyer every day in an important case
-    (660.0, "HB2-04", SQ),                                 # success could not be hoped for
+    (644.2, "HB10-01", None),                              # a new lawyer every day in an important case
     (677.9, "N-HB0-02", "all", F),                         # law books in Urdu: can you run a case by reading them?
-    (694.0, "HB3-04", SQ, {"glow": [(0.245, 0.25, 0.09)]}),     # trust the expert, hand him all your affairs
+    (686.0, "HB10-02", None),                              # in every work there is an expert: hand him your affairs
+    (704.0, "HB3-04", SQ, {"glow": [(0.245, 0.25, 0.09)]}),     # so too the shaykh on the path
 ]
 
 # ---- the full recording (53 min): the Shorts' pictures in their parts, general pictures in between
