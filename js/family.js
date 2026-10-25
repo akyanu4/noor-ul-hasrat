@@ -205,7 +205,7 @@
 
   // Shorts are shown as vertical tiles, two per row, and play inside the app.
   // View and like counts for Shorts, read from YouTube (videos.list statistics) and kept for 30 minutes.
-  var STATS = null, statsBusy = false;
+  var STATS = null, statsBusy = false, pendingShort = null;
   function nfmt(n) { n = +n || 0; return n >= 1e6 ? (n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace(/\.0$/, '') + 'M' : n >= 1e3 ? (n / 1e3).toFixed(n >= 1e4 ? 0 : 1).replace(/\.0$/, '') + 'K' : String(n); }
   function statText(id) { var x = STATS && STATS.v[id]; return x ? '👁 ' + nfmt(x.v) + '  ·  👍 ' + nfmt(x.l) : ''; }
   function fillStats() { Array.prototype.forEach.call(doc.querySelectorAll('.fm-stat[data-sid]'), function (e) { var t = statText(e.getAttribute('data-sid')); if (t) e.textContent = t; }); }
@@ -247,6 +247,7 @@
   function subscribeLink() { return '<a class="fm-sub" target="_blank" rel="noopener" href="https://www.youtube.com/channel/' + esc(AZAM.id) + '?sub_confirmation=1">🔔 Subscribe</a>'; }
   function shortsGrid(list) { setTimeout(function () { ensureStats(list); }, 0); return '<div class="fm-grid">' + list.map(shortTile).join('') + '</div>'; }
   function paintShorts(list) {
+    var was = body.querySelector('.fm-sth iframe'), keep = was ? was.parentNode.getAttribute('data-id') : null;
     var h = '<div style="margin:0 0 8px">' + subscribeLink() + '</div><div class="fm-note" style="margin-top:0">Dars and zikr Shorts of Azam Pasha from the ' + esc(AZAM.name) + ' channel. New Shorts appear here by themselves. Tap one to play it.</div>';
     if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest Shorts…</div>';
     else if (state.error === 'unconfigured') h += '<div class="fm-note">The live list is not connected yet (add <b>youtubeApiKey</b> in js/config.js).</div>';
@@ -257,6 +258,11 @@
     if (total > list.length) h += '<button class="fm-btn fm-more" type="button" style="border:0;cursor:pointer">Show more (' + (total - list.length) + ' left)</button>';
     h += '<div class="fm-note">' + total + ' Short' + (total === 1 ? '' : 's') + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
     body.innerHTML = h;
+    if (keep) { var kth = body.querySelector('.fm-sth[data-id="' + keep + '"]'); if (kth) playShort(kth); }   // a redraw keeps the Short that is playing
+    if (pendingShort && !state.loading) {   // opened from a notification: play that Short once the list is in
+      var pth = body.querySelector('.fm-sth[data-id="' + pendingShort + '"]');
+      if (pth) { pendingShort = null; if (pth.scrollIntoView) pth.scrollIntoView({ block: 'center' }); playShort(pth); }
+    }
   }
   function playShort(th) {
     if (!th || th.querySelector('iframe') || !validId(th.getAttribute('data-id'))) return false;
@@ -305,6 +311,20 @@
     }
   };
   api.homeStrip(doc.getElementById('homeShorts'));
+  // Opened from a "New Short" notification (?short=<id>): show the Shorts screen and play that Short.
+  (function () {
+    var m = /[?&]short=([\w-]{11})(?:&|$)/.exec(root.location ? root.location.search : '');
+    if (!m) return;
+    pendingShort = m[1];
+    try { root.history.replaceState(null, '', root.location.pathname); } catch (e) {}
+    setTimeout(function () { api.open('azam'); }, 400);
+    setTimeout(function () {   // not in the list (for example just published): play it on its own at the top
+      if (!pendingShort || tab !== 'azam') return;
+      var id = pendingShort; pendingShort = null;
+      var box = doc.createElement('div'); box.innerHTML = shortsGrid([{ id: id, title: 'New Short' }]);
+      body.insertBefore(box, body.firstChild); playShort(box.querySelector('.fm-sth'));
+    }, 12000);
+  })();
   N.onScreen(function (id) { if (id === 'family' && state.items !== null && !state.loading) load(false); });
   paint();
 })(typeof self !== 'undefined' ? self : this);
