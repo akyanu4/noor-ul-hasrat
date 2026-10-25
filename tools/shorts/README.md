@@ -58,7 +58,8 @@ malida_feast, glory, calm (pauses: stars, lanterns, garden, dome).
 - Souls are light in human shape with no features; only a body of soil/sand has a face.
 - A Sufi or saint is shown with his face hidden in light.
 - Music only in pauses, never under his voice.
-- His photo (glowing gold oval) on the opening and closing cards.
+- His photo (glowing gold oval) on the opening and closing cards: `assets/azam_pasha_portrait.png` for every Short from
+  Haqeeqat-e-Bai'at on (the default when project.json gives no `photo`); the first dars keeps its old photo.
 
 ## YouTube description template
 ```

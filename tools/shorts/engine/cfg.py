@@ -14,4 +14,10 @@ def path(key, default=None):
     return v if not v or os.path.isabs(v) else os.path.join(PROJECT, v)
 OUT = os.path.join(PROJECT, "out"); WORK = os.path.join(PROJECT, "work")
 os.makedirs(OUT, exist_ok=True); os.makedirs(WORK, exist_ok=True)
-AUDIO = path("audio"); MUSIC = path("music"); PHOTO = path("photo") or os.path.join(ASSETS, "shaykh_azam_pasha.jpg")
+AUDIO = path("audio"); MUSIC = path("music")
+# Cover photo for the opening/closing cards. Default (from the Haqeeqat-e-Bai'at Shorts on): the glowing portrait.
+# The first dars keeps the old phone photo (its project.json names it), which gets cropped and colour-graded.
+PHOTO = path("photo") or os.path.join(ASSETS, "azam_pasha_portrait.png")
+_new = os.path.basename(PHOTO) == "azam_pasha_portrait.png"
+P.setdefault("photo_crop", [255, 120, 895, 933] if _new else [70, 8, 292, 388])
+P.setdefault("photo_grade", not _new)
