@@ -140,16 +140,23 @@ def main():
     if MODE == "full": r = Renderer(FULL); out = sys.argv[2]; workers = int(sys.argv[3]) if len(sys.argv) > 3 else 2; tag = "full"
     else: nm = sys.argv[2]; r = Renderer(SHORTS[nm][1], SHORTS[nm][0]); out = sys.argv[3]; workers = int(sys.argv[4]) if len(sys.argv) > 4 else 2; tag = nm
     N = int(round(r.total * FPS)); tmp = os.path.join(os.path.dirname(os.path.abspath(out)), "chunks_" + tag); os.makedirs(tmp, exist_ok=True)
-    bounds = [round(N * k / workers) for k in range(workers + 1)]
+    # NOOR_CHUNKS=n splits the work into n pieces; finished pieces are kept (a .ok marker), so a stopped long render
+    # picks up where it left off when the same command is run again.
+    nch = int(os.environ.get("NOOR_CHUNKS", workers))
+    bounds = [round(N * k / nch) for k in range(nch + 1)]
+    todo = [k for k in range(nch) if not os.path.exists(os.path.join(tmp, "c%02d.ok" % k))]
     pids = []
-    for k in range(workers):
+    for w in range(workers):
         pid = os.fork()
         if pid == 0:
-            render_range(r, bounds[k], bounds[k + 1], os.path.join(tmp, "c%02d.mp4" % k)); os._exit(0)
+            for k in todo[w::workers]:
+                render_range(r, bounds[k], bounds[k + 1], os.path.join(tmp, "c%02d.mp4" % k))
+                open(os.path.join(tmp, "c%02d.ok" % k), "w").close()
+            os._exit(0)
         pids.append(pid)
     for pid in pids: os.waitpid(pid, 0)
     with open(os.path.join(tmp, "list.txt"), "w") as f:
-        for k in range(workers): f.write("file 'c%02d.mp4'\n" % k)
+        for k in range(nch): f.write("file 'c%02d.mp4'\n" % k)
     subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", os.path.join(tmp, "list.txt"), "-c", "copy", out], check=True)
     import json
     json.dump({"total": r.total, "segs": r.segs}, open(out + ".json", "w"))
