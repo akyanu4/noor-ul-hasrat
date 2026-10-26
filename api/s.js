@@ -15,7 +15,8 @@ const clean = t => String(t || '').replace(/\s*#\w+/g, '').trim();
 async function info(id) {
   const k = key(); if (!k) return null;
   try {
-    const r = await fetch('https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + id + '&key=' + encodeURIComponent(k));
+    const r = await fetch('https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + id + '&key=' + encodeURIComponent(k),
+      { headers: { Referer: 'https://noor-ul-hasrat.vercel.app/' } });   // the app's key only answers requests from the app's site
     if (!r.ok) return null;
     const sn = (((await r.json()).items || [])[0] || {}).snippet;
     if (!sn) return null;
