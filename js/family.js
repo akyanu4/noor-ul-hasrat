@@ -272,6 +272,9 @@
     var it = vlist[vpos]; if (!it) return;
     viewer.querySelector('.fv-frame').innerHTML = '<iframe src="https://www.youtube.com/embed/' + it.id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
     viewer.querySelector('.fv-t').textContent = clean(it.title || '');
+    viewer.querySelector('.fv-like').href = 'https://www.youtube.com/shorts/' + it.id;   // likes count only when given on YouTube itself
+    viewer.querySelector('.fv-sub').href = 'https://www.youtube.com/channel/' + AZAM.id + '?sub_confirmation=1';
+    viewer.querySelector('.fv-stat').textContent = statText(it.id) || '';
     viewer.querySelector('.fv-prev').disabled = vpos <= 0;
     viewer.querySelector('.fv-next').disabled = vpos >= vlist.length - 1;
   }
@@ -284,15 +287,16 @@
     if (!viewer) {
       var st = doc.createElement('style');
       st.textContent = '.fv[hidden]{display:none!important}.fv{position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center}' +
-        '.fv-frame{position:relative;height:calc(100% - 112px);max-height:calc(100vw * 16 / 9);aspect-ratio:9/16;max-width:100vw;background:#000}.fv-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}' +
+        '.fv-frame{position:relative;height:calc(100% - 168px);max-height:calc(100vw * 16 / 9);aspect-ratio:9/16;max-width:100vw;background:#000}.fv-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}' +
         '.fv-top{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:10px;padding:10px 12px;padding-top:max(10px,env(safe-area-inset-top));color:#f3e7c9;font-size:14px;z-index:2}' +
-        '.fv-t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fv button{background:rgba(255,255,255,.12);color:#f3e7c9;border:0;border-radius:999px;padding:9px 16px;font-size:15px;cursor:pointer}' +
-        '.fv button:disabled{opacity:.35}.fv-bar{display:flex;gap:10px;justify-content:center;padding:10px 0;padding-bottom:max(10px,env(safe-area-inset-bottom))}.fv-x{font-size:18px!important;padding:6px 13px!important}' +
+        '.fv-t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fv button,.fv-bar a{background:rgba(255,255,255,.12);color:#f3e7c9;border:0;border-radius:999px;padding:9px 14px;font-size:15px;cursor:pointer;text-decoration:none;font-family:inherit}.fv-bar a.fv-sub{background:#c4302b;color:#fff}' +
+        '.fv button:disabled{opacity:.35}.fv-bar{display:flex;flex-wrap:wrap;gap:8px 10px;justify-content:center;padding:8px 8px 0}.fv-bar2{padding-bottom:max(10px,env(safe-area-inset-bottom))}.fv-stat{width:100%;text-align:center;color:#cbbf9f;font-size:12px}.fv-x{font-size:18px!important;padding:6px 13px!important}' +
         '.fv-frame{margin-top:52px}';
       doc.head.appendChild(st);
       viewer = doc.createElement('div'); viewer.className = 'fv'; viewer.hidden = true; viewer.setAttribute('role', 'dialog'); viewer.setAttribute('aria-label', 'Short');
       viewer.innerHTML = '<div class="fv-top"><span class="fv-t"></span><button type="button" class="fv-x" aria-label="Close">✕</button></div><div class="fv-frame"></div>' +
-        '<div class="fv-bar"><button type="button" class="fv-prev">‹ Previous</button><button type="button" class="fv-share">↗ Share</button><button type="button" class="fv-next">Next ›</button></div>';
+        '<div class="fv-bar"><span class="fv-stat"></span><a class="fv-like" target="_blank" rel="noopener">👍 Like</a><a class="fv-sub" target="_blank" rel="noopener">🔔 Subscribe</a><button type="button" class="fv-share">↗ Share</button></div>' +
+        '<div class="fv-bar fv-bar2"><button type="button" class="fv-prev">‹ Previous</button><button type="button" class="fv-next">Next ›</button></div>';
       doc.body.appendChild(viewer);
       viewer.addEventListener('click', function (e) {
         var b = e.target.closest && e.target.closest('button'); if (!b) return;
