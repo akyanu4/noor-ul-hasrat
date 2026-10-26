@@ -374,10 +374,8 @@
   var FULLDARS = (cfg.fullDars || [
     { title: "The Soul's Journey, Death, the Scale and the Blessed Malida", match: 'soul|malida|full\\s*dars',
       shorts: ['JfQsTHE7VrU', 'tayZJTuWGkU', 'NSWYCYR-Tlo', 'EQbitUdOKqQ', '2yjNqJo659g', 'eNHL-OsPxgQ', 'ZHg4XMwt3Ok'] },
-    { title: "Haqeeqat-e-Bai'at · Part 1", match: 'haqeeqat|haqiqat',
-      shorts: ['g8-0WIXYjcM', 'r3x7LQru71I', '7wB9EQldsew', 'E7xb4BR6IPQ', 'kziC4lPGmgU', 'Rno3f3mGjyg'] },
-    { title: "Haqeeqat-e-Bai'at · Part 2", match: 'part\\s*2',
-      shorts: ['jRK1SIkPkV0', '3githsE0o6Y', 'ENBkebr3nJI', 'RFLGxcbYBCM'] }
+    { title: "Haqeeqat-e-Bai'at", match: 'haqeeqat|haqiqat',   // both recordings joined into one full dars
+      shorts: ['g8-0WIXYjcM', 'r3x7LQru71I', '7wB9EQldsew', 'E7xb4BR6IPQ', 'kziC4lPGmgU', 'Rno3f3mGjyg', 'jRK1SIkPkV0', '3githsE0o6Y', 'ENBkebr3nJI', 'RFLGxcbYBCM'] }
   ]);
   function fullFor(id) { return FULLDARS.filter(function (f) { return (f.shorts || []).indexOf(id) >= 0; })[0] || null; }
   function fullVideo(f, items) {
