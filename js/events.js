@@ -44,14 +44,28 @@
   var cur = 0, held = false, resume = 0, timer = 0;
 
   function cards() {
-    var out = [], now = Date.now(), h = C.nextHalqa(now), t = halqaText(h, C.formatCountdown(h.msUntilStart));
+    var F0 = root.NoorFaith, out = [], now = Date.now(), h = C.nextHalqa(now), t = halqaText(h, C.formatCountdown(h.msUntilStart));
     var when = new Date(h.start).toLocaleString([], { weekday: 'long', hour: 'numeric', minute: '2-digit' });
-    out.push({ ic: '🕯️', k: t.kick, t: 'Weekly zikr halqa', s: h.state === 'upcoming' || h.state === 'opening' ? when + ' · ' + t.sub : t.sub, go: 'halqa' });
+    out.push({ ic: '🕯️', k: t.kick, t: 'Haftawar halqa-e-zikr', s: h.state === 'upcoming' || h.state === 'opening' ? when + ' · ' + t.sub : t.sub, go: 'halqa' });
 
     var v = pickLatest(N.getClasses ? N.getClasses() : []);
     if (v) {
       var d = Date.parse(v.publishedAt || ''), ds = isNaN(d) ? '' : new Date(d).toLocaleDateString([], { day: 'numeric', month: 'short', year: 'numeric' });
       out.push({ ic: '▶', k: 'Latest from DAR UL ILM', t: v.title, s: (v.ep ? v.ep + ' · ' : '') + (ds || v.series || ''), yt: v.yt, thumb: v.yt });
+    }
+
+    var G = root.NoorGatherings;   // the circle's own gatherings: the next mehfil, and an urs or salgirah within 60 days
+    if (G) {
+      try {
+        var gadj = parseInt(localStorage.getItem('noor_hijri_adj'), 10) || 0; if (gadj < -2 || gadj > 2) gadj = 0;
+        var seen = {};
+        G.upcoming(now, gadj, 60).forEach(function (x) {
+          if (x.g.id === 'halqa' || seen[x.g.id] || (x.g.kind === 'yearly' && x.days > 60)) return; seen[x.g.id] = 1;
+          var ds = new Date(x.day).toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
+          var hd = x.h && F0 ? x.h.d + ' ' + F0.MONTHS[x.h.m - 1].n : '';
+          out.push({ ic: x.g.ic, k: inDays(x.days) + ' · ' + ds + (hd ? ' · ' + hd : ''), t: x.g.name, s: x.g.note, go: 'calendar' });
+        });
+      } catch (e) {}
     }
 
     var F = root.NoorFaith;

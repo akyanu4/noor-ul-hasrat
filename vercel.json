@@ -7,6 +7,10 @@
     {
       "path": "/api/new-shorts",
       "schedule": "0 15 * * *"
+    },
+    {
+      "path": "/api/event-reminders",
+      "schedule": "0 3 * * *"
     }
   ],
   "functions": {
@@ -21,6 +25,10 @@
     "api/s.js": {
       "includeFiles": "js/config.js",
       "maxDuration": 10
+    },
+    "api/event-reminders.js": {
+      "includeFiles": "js/{faith,gatherings}.js",
+      "maxDuration": 30
     }
   },
   "rewrites": [
