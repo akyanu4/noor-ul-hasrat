@@ -257,7 +257,6 @@
     else if (state.error && state.error !== 'stale') h += '<div class="fm-note">Could not load the Shorts (' + esc(state.error) + '). <a href="#" id="fmRetry">Try again</a></div>';
     else if (!list.length) h += '<div class="fm-note">No Shorts yet.</div>';
     var total = list.length; list = list.slice(0, limit);
-    if (tab === 'azam') { if (FULL) h += fullBlock(FULL); else azamFull(function () { if (tab === 'azam') paint(); }); }
     h += shortsGrid(list);
     if (total > list.length) h += '<button class="fm-btn fm-more" type="button" style="border:0;cursor:pointer">Show more (' + (total - list.length) + ' left)</button>';
     h += '<div class="fm-note">' + total + ' Short' + (total === 1 ? '' : 's') + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
@@ -277,6 +276,9 @@
     viewer.querySelector('.fv-like').href = 'https://www.youtube.com/shorts/' + it.id;   // likes count only when given on YouTube itself
     viewer.querySelector('.fv-sub').href = 'https://www.youtube.com/channel/' + AZAM.id + '?sub_confirmation=1';
     viewer.querySelector('.fv-stat').textContent = statText(it.id) || '';
+    var fb = viewer.querySelector('.fv-full'), fd = it.wide ? null : fullFor(it.id);
+    fb.hidden = !fd; fb.textContent = '🎧 Full dars'; fb.__fd = fd;
+    if (fd) azamFull(function (items) { if (fb.__fd === fd && !fullVideo(fd, items)) fb.textContent = '🎧 Full dars · soon'; });
     viewer.querySelector('.fv-prev').disabled = vpos <= 0;
     viewer.querySelector('.fv-next').disabled = vpos >= vlist.length - 1;
   }
@@ -293,11 +295,11 @@
         '.fv-top{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:10px;padding:10px 12px;padding-top:max(10px,env(safe-area-inset-top));color:#f3e7c9;font-size:14px;z-index:2}' +
         '.fv-t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fv button,.fv-bar a{background:rgba(255,255,255,.12);color:#f3e7c9;border:0;border-radius:999px;padding:9px 14px;font-size:15px;cursor:pointer;text-decoration:none;font-family:inherit}.fv-bar a.fv-sub{background:#c4302b;color:#fff}' +
         '.fv button:disabled{opacity:.35}.fv-bar{display:flex;flex-wrap:wrap;gap:8px 10px;justify-content:center;padding:8px 8px 0}.fv-bar2{padding-bottom:max(10px,env(safe-area-inset-bottom))}.fv-stat{width:100%;text-align:center;color:#cbbf9f;font-size:12px}.fv-x{font-size:18px!important;padding:6px 13px!important}' +
-        '.fv-frame{margin-top:52px}.fv.fv-wide .fv-frame{aspect-ratio:16/9;width:100vw;height:auto;max-height:calc(100% - 168px)}';
+        '.fv-full{background:#e8c46b!important;color:#1c1a12!important;font-weight:700}.fv-full[hidden]{display:none}.fv-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#f3e7c9;padding:10px 16px;border-radius:12px;font-size:14px;max-width:86vw;text-align:center;z-index:3}.fv-frame{margin-top:52px}.fv.fv-wide .fv-frame{aspect-ratio:16/9;width:100vw;height:auto;max-height:calc(100% - 168px)}';
       doc.head.appendChild(st);
       viewer = doc.createElement('div'); viewer.className = 'fv'; viewer.hidden = true; viewer.setAttribute('role', 'dialog'); viewer.setAttribute('aria-label', 'Short');
       viewer.innerHTML = '<div class="fv-top"><span class="fv-t"></span><button type="button" class="fv-x" aria-label="Close">✕</button></div><div class="fv-frame"></div>' +
-        '<div class="fv-bar"><span class="fv-stat"></span><a class="fv-like" target="_blank" rel="noopener">👍 Like</a><a class="fv-sub" target="_blank" rel="noopener">🔔 Subscribe</a><button type="button" class="fv-share">↗ Share</button></div>' +
+        '<div class="fv-bar"><span class="fv-stat"></span><a class="fv-like" target="_blank" rel="noopener">👍 Like</a><a class="fv-sub" target="_blank" rel="noopener">🔔 Subscribe</a><button type="button" class="fv-share">↗ Share</button><button type="button" class="fv-full" hidden>🎧 Full dars</button></div>' +
         '<div class="fv-bar fv-bar2"><button type="button" class="fv-prev">‹ Previous</button><button type="button" class="fv-next">Next ›</button></div>';
       doc.body.appendChild(viewer);
       viewer.addEventListener('click', function (e) {
@@ -306,6 +308,14 @@
         else if (b.classList.contains('fv-prev') && vpos > 0) { vpos--; vshow(); }
         else if (b.classList.contains('fv-next') && vpos < vlist.length - 1) { vpos++; vshow(); }
         else if (b.classList.contains('fv-share')) { var it = vlist[vpos]; if (it) shareShort(it.id, it.title); }
+        else if (b.classList.contains('fv-full') && b.__fd) {
+          var fd = b.__fd;
+          azamFull(function (items) {
+            var v = fullVideo(fd, items);
+            if (v) { vlist = [{ id: v.id, title: v.title, wide: true }]; vpos = 0; viewer.classList.add('fv-wide'); vshow(); }
+            else { var t = doc.createElement('div'); t.className = 'fv-toast'; t.textContent = 'The full dars “' + fd.title + '” is coming soon, in sha Allah.'; viewer.appendChild(t); setTimeout(function () { t.remove(); }, 3000); }
+          });
+        }
       });
       doc.addEventListener('keydown', function (e) { if (viewer.hidden) return; if (e.key === 'Escape') vclose(); else if (e.key === 'ArrowRight' && vpos < vlist.length - 1) { vpos++; vshow(); } else if (e.key === 'ArrowLeft' && vpos > 0) { vpos--; vshow(); } });
       root.addEventListener('popstate', function () { vclose(true); });
@@ -358,28 +368,24 @@
       .then(function (d) { var items = toItems([d]).filter(function (v) { return /azam\s*pasha|\u0627\u0639\u0638\u0645\s*\u067E\u0627\u0634\u0627|\bdars\b/i.test(v.title); }); sset('noor_azam_full_v2', JSON.stringify({ t: Date.now(), items: items })); fin(items); },
             function () { fin(c && c.items || []); });
   }
-  function fullTile(v) {
-    return '<div class="fm-sc fm-fsc"><div class="fm-sth fm-wide" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '">' +
-      '<img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg"><div class="fm-play">▶</div></div>' +
-      '<div class="fm-st">' + esc(clean(v.title)) + '</div>' +
-      '<div class="fm-acts"><button type="button" class="fm-like fm-share" data-sid="' + v.id + '" data-t="' + esc(v.title) + '">↗ Share</button></div></div>';
-  }
-  // Full dars being prepared: shown as "Coming soon" cards until the video is on the channel (matched by its words).
-  var SOON = (cfg.fullDarsSoon || [
-    { title: "The Soul's Journey, Death, the Scale and the Blessed Malida", match: 'soul|malida' },
-    { title: "Haqeeqat-e-Bai'at · Part 1", match: 'haqeeqat|haqiqat|bai.?at' },
-    { title: "Haqeeqat-e-Bai'at · Part 2", match: 'part\\s*2' }
+  // Each full dars and the Shorts cut from it (video ids). A Short's viewer shows a "Full dars" button for its dars:
+  // it plays the full video once it is on the channel (found by `match` in the title), and says "coming soon" until then.
+  // New Shorts: add their ids here (or set fullDars in config.js).
+  var FULLDARS = (cfg.fullDars || [
+    { title: "The Soul's Journey, Death, the Scale and the Blessed Malida", match: 'soul|malida|full\\s*dars',
+      shorts: ['JfQsTHE7VrU', 'tayZJTuWGkU', 'NSWYCYR-Tlo', 'EQbitUdOKqQ', '2yjNqJo659g', 'eNHL-OsPxgQ', 'ZHg4XMwt3Ok'] },
+    { title: "Haqeeqat-e-Bai'at · Part 1", match: 'haqeeqat|haqiqat',
+      shorts: ['g8-0WIXYjcM', 'r3x7LQru71I', '7wB9EQldsew', 'E7xb4BR6IPQ', 'kziC4lPGmgU', 'Rno3f3mGjyg'] },
+    { title: "Haqeeqat-e-Bai'at · Part 2", match: 'part\\s*2',
+      shorts: ['jRK1SIkPkV0', '3githsE0o6Y', 'ENBkebr3nJI', 'RFLGxcbYBCM'] }
   ]);
-  function soonTile(x) {
-    return '<div class="fm-sc fm-fsc fm-soon"><div class="fm-sth fm-wide fm-soonth"><div class="fm-soonin"><div style="font-size:26px">🎧</div><b>Coming soon</b></div></div>' +
-      '<div class="fm-st">' + esc(x.title) + '</div><div class="fm-stat">Full dars · in Urdu with English captions</div></div>';
+  function fullFor(id) { return FULLDARS.filter(function (f) { return (f.shorts || []).indexOf(id) >= 0; })[0] || null; }
+  function fullVideo(f, items) {
+    var re; try { re = new RegExp(f.match, 'i'); } catch (e) { return null; }
+    var p2 = /part/i.test(f.title) && /2/.test(f.title);
+    return (items || []).filter(function (v) { return re.test(v.title) && (p2 ? /part\s*2|\b2\b/i.test(v.title) : !/part\s*2/i.test(v.title)); })[0] || null;
   }
-  function fullBlock(items) {
-    var soon = SOON.filter(function (x) { var re; try { re = new RegExp(x.match, 'i'); } catch (e) { return true; } return !items.some(function (v) { return re.test(v.title) && (!/part\s*2/i.test(x.match) || /part\s*2/i.test(v.title)); }); });
-    if (!items.length && !soon.length) return '';
-    return '<div class="fm-fullwrap"><h3 class="fm-fh">🎧 Full dars</h3><div class="fm-full">' + items.map(fullTile).join('') + soon.map(soonTile).join('') + '</div></div>';
-  }
-  api.azamFull = azamFull; api.fullBlock = fullBlock;
+  api.azamFull = azamFull;
   api.shortsGrid = shortsGrid; api.playShort = playShort; api.subscribeLink = subscribeLink;
   // Home page: a sideways-scrolling row of the newest Azam Pasha Zikr Shorts. The section stays hidden until there are Shorts.
   api.homeStrip = function (wrap) {
@@ -402,14 +408,6 @@
     }
   };
   api.homeStrip(doc.getElementById('homeShorts'));
-  (function () {   // home: the full dars row sits under the Shorts row, and appears once a full video is on the channel
-    var hs = doc.getElementById('homeShorts'); if (!hs) return;
-    azamFull(function (items) {
-      var hb = fullBlock(items); if (!hb) return;
-      var w = doc.createElement('div'); w.id = 'homeFull'; w.innerHTML = hb; hs.parentNode.insertBefore(w, hs.nextSibling);
-      w.addEventListener('click', function (e) { var th = e.target.closest && e.target.closest('.fm-sth'); if (th && !th.classList.contains('fm-soonth')) playShort(th); });
-    });
-  })();
   // Opened from a "New Short" notification (?short=<id>): show the Shorts screen and play that Short.
   (function () {
     var m = /[?&]short=([\w-]{11})(?:&|$)/.exec(root.location ? root.location.search : '');
