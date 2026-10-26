@@ -54,13 +54,13 @@
       out.push({ ic: '▶', k: 'Latest from DAR UL ILM', t: v.title, s: (v.ep ? v.ep + ' · ' : '') + (ds || v.series || ''), yt: v.yt, thumb: v.yt });
     }
 
-    var G = root.NoorGatherings;   // the circle's own gatherings: the next mehfil, and an urs or salgirah within 60 days
+    var G = root.NoorGatherings;   // the circle's own gatherings: mehfil, both urs and the salgirah
     if (G) {
       try {
         var gadj = parseInt(localStorage.getItem('noor_hijri_adj'), 10) || 0; if (gadj < -2 || gadj > 2) gadj = 0;
         var seen = {};
-        G.upcoming(now, gadj, 60).forEach(function (x) {
-          if (x.g.id === 'halqa' || seen[x.g.id] || (x.g.kind === 'yearly' && x.days > 60)) return; seen[x.g.id] = 1;
+        G.upcoming(now, gadj, 400).forEach(function (x) {   // the next date of every gathering, soonest first
+          if (x.g.id === 'halqa' || seen[x.g.id]) return; seen[x.g.id] = 1;
           var ds = new Date(x.day).toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
           var hd = x.h && F0 ? x.h.d + ' ' + F0.MONTHS[x.h.m - 1].n : '';
           var ln = new Date(), lday = Date.UTC(ln.getFullYear(), ln.getMonth(), ln.getDate()), dd = Math.round((x.day - lday) / 86400000);   // days from the viewer's own today
