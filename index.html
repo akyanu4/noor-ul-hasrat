@@ -310,7 +310,7 @@ h2.section-title:first-child{margin-top:2px;}
 .qibla-place{font-size:13px; color:var(--muted); display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:center;}
 .qibla-place select{font:inherit; font-size:13px; background:var(--panel); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:5px 8px;}
 .qibla-dial{position:relative; width:260px; height:260px; margin:18px 0 12px;}
-.qibla-rose{position:absolute; inset:0; border-radius:50%; background:var(--panel); border:3px solid var(--gold); transition:transform .12s linear;}
+.qibla-rose{position:absolute; inset:0; border-radius:50%; background:var(--panel); border:3px solid var(--gold); will-change:transform;}
 .qibla-dial.aligned .qibla-rose{border-color:#3bb273; box-shadow:0 0 0 6px rgba(59,178,115,.25);}
 .qibla-rose span{position:absolute; font-size:13px; font-weight:700; color:var(--muted);}
 .qibla-rose .qn{top:6px; left:50%; transform:translateX(-50%); color:#c0392b;}
@@ -323,6 +323,10 @@ h2.section-title:first-child{margin-top:2px;}
 .qibla-top{position:absolute; top:-12px; left:50%; margin-left:-9px; border:9px solid transparent; border-top:0; border-bottom:14px solid var(--teal);}
 .qibla-read{font-size:20px; font-weight:700; color:var(--teal); text-align:center;}
 .qibla-sub{font-size:12.5px; color:var(--muted); margin-top:2px; text-align:center;}
+.qibla-cal{margin-top:10px; background:rgba(232,196,107,.16); color:var(--ink); border:1px solid var(--gold); border-radius:12px; padding:8px 12px; font-size:13px; display:flex; align-items:center; gap:8px; max-width:300px;}
+.qibla-cal[hidden]{display:none;}
+.qibla-8{font-size:26px; color:var(--gold); display:inline-block; animation:q8 1.6s ease-in-out infinite;}
+@keyframes q8{0%,100%{transform:translateX(-6px) rotate(-12deg)}50%{transform:translateX(6px) rotate(12deg)}}
 .qibla-actions{display:flex; gap:10px; margin:14px 0; flex-wrap:wrap; justify-content:center;}
 .call{position:absolute; inset:0; background:var(--cream); z-index:70; display:none; flex-direction:column;}
 .call.open{display:flex;}

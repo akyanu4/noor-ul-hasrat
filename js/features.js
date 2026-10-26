@@ -71,6 +71,7 @@
         '<span class="qn">N</span><span class="qe">E</span><span class="qs">S</span><span class="qw">W</span>' +
         '<div class="qibla-arm" id="qArm"><div class="qibla-kaaba">🕋</div></div></div><div class="qibla-top"></div></div>' +
       '<div class="qibla-read" id="qRead"></div><div class="qibla-sub" id="qSub"></div>' +
+      '<div class="qibla-cal" id="qCal" hidden><span class="qibla-8">∞</span> Wave your phone in a figure 8 to calibrate the compass</div>' +
       '<div class="qibla-actions"><div class="tbtn" id="qLoc">📍 Use my location</div><div class="tbtn" id="qStart">🧭 Start compass</div></div>' +
       '<div class="placeholder-note" id="qHelp">Hold your phone flat. If the compass seems off, move it in a figure-8 to calibrate, and keep it away from magnets and metal. ' +
         'Phone compasses point to magnetic north, so near the edge of the dial treat the bearing number as the reference.</div>' +
@@ -103,30 +104,58 @@
     if (aligned && !wasAligned) buzz(30);
     wasAligned = aligned;
   }
+  // Compass: smooth the readings (no flicker), prefer the absolute (true-north) sensor when the phone has it and ignore
+  // the other stream then, correct for the screen being turned, and redraw at most once per frame.
+  var gotAbs = false, raf = 0, jumps = 0, lastRaw = null, calTimer = 0;
+  function screenAngle() { var o = window.screen && window.screen.orientation; return o && typeof o.angle === 'number' ? o.angle : (typeof window.orientation === 'number' ? window.orientation : 0); }
   function onOrient(e) {
+    if (e.type === 'deviceorientationabsolute') gotAbs = true; else if (gotAbs && !('webkitCompassHeading' in e)) return;
     var h = C.headingFromEvent(e); if (h == null) return;
-    heading = heading == null ? h : (heading + 0.3 * C.angleDiff(heading, h) + 360) % 360;
-    paintHeading();
+    h = (h + screenAngle() + 360) % 360;
+    if (lastRaw != null && Math.abs(C.angleDiff(lastRaw, h)) > 25) jumps++; lastRaw = h;
+    if (typeof e.webkitCompassAccuracy === 'number' && (e.webkitCompassAccuracy < 0 || e.webkitCompassAccuracy > 25)) calibrate(true);
+    if (heading == null) heading = h;
+    else { var d = C.angleDiff(heading, h); if (Math.abs(d) < 0.8) return; heading = (heading + 0.15 * d + 360) % 360; }
+    if (!raf) raf = requestAnimationFrame(function () { raf = 0; paintHeading(); });
+  }
+  function calibrate(show) {
+    var c = $('qCal'); if (!c) return;
+    c.hidden = !show; clearTimeout(calTimer);
+    if (show) calTimer = setTimeout(function () { c.hidden = true; }, 6000);
   }
   function help(msg) { $('qHelp').textContent = msg; }
   function listen() {
-    if (listening) return; listening = true;
+    if (listening) return; listening = true; gotAbs = false; jumps = 0; lastRaw = null;
+    $('qStart').style.display = 'none'; calibrate(true);
     window.addEventListener('deviceorientationabsolute', onOrient, true);
     window.addEventListener('deviceorientation', onOrient, true);
-    setTimeout(function () { if (listening && heading == null) help('No compass signal from this device. Face the bearing shown above, measured clockwise from north.'); }, 2500);
+    setTimeout(function () { if (listening && heading == null) help('No compass signal from this device. Face the bearing shown above, measured clockwise from north.'); }, 3000);
+    if (!listen.iv) listen.iv = setInterval(function () { if (listening && jumps > 4) calibrate(true); jumps = 0; }, 4000);   // an unsteady compass: ask for a figure-8
   }
   function unlisten() {
     listening = false; heading = null; wasAligned = false;
     window.removeEventListener('deviceorientationabsolute', onOrient, true);
     window.removeEventListener('deviceorientation', onOrient, true);
   }
+  function needsTap() { var D = window.DeviceOrientationEvent; return !!(D && typeof D.requestPermission === 'function'); }
   function startCompass() {
     var D = window.DeviceOrientationEvent;
     if (!D) { help('This browser has no compass sensor. Face the bearing shown above, measured clockwise from north.'); return; }
-    if (typeof D.requestPermission === 'function') {     // iPhone / iPad: needs a tap
+    if (needsTap()) {     // iPhone / iPad: the compass needs one tap the first time
       D.requestPermission().then(function (r) { r === 'granted' ? listen() : help('Compass access was declined. You can allow it in the browser settings.'); })
-        .catch(function () { help('Could not start the compass.'); });
+        .catch(function () { help('Tap "Start compass" to turn on the compass.'); $('qStart').style.display = ''; });
     } else listen();
+  }
+  // Opening the Qibla screen starts everything by itself: the compass (Android at once; iPhone after one tap) and the
+  // location (asked once; a city from the list is used meanwhile, and afterwards the saved location).
+  var autoLocated = false;
+  function autoStart() {
+    if (!autoLocated && loc.name !== 'My location' && navigator.geolocation) {
+      autoLocated = true;
+      var ask = function () { $('qLoc').click(); };
+      if (navigator.permissions && navigator.permissions.query) navigator.permissions.query({ name: 'geolocation' }).then(function (p) { if (p.state !== 'denied') ask(); }, ask); else ask();
+    }
+    if (!listening) { if (needsTap()) { $('qStart').style.display = ''; $('qStart').textContent = '🧭 Tap to start the compass'; } else startCompass(); }
   }
   bindPicker($('qCity'), $('qLoc'), function (m) { $('qHelp').textContent = m; });
   $('qStart').addEventListener('click', startCompass);
@@ -365,8 +394,8 @@
     clearInterval(halqaTimer);
     if (id === 'prayers') { renderPrayers(); syncPickers(); }
     if (id === 'halqa') { refreshHalqa(); halqaTimer = setInterval(renderHalqa, 1000); paintRemind(); }
-    if (id === 'qibla') { if (!(window.DeviceOrientationEvent && typeof window.DeviceOrientationEvent.requestPermission === 'function')) listen(); paintStatic(); }
-    else unlisten();
+    if (id === 'qibla') { paintStatic(); autoStart(); }
+    else if (listening) { unlisten(); if (needsTap()) $('qStart').style.display = ''; }
     if (id === 'classes') loadClasses(false);
   });
   B.poll(function () { if (activeScreen === 'halqa') return Promise.all([refreshCollective(), refreshRsvp(), showNotice()]); }, 12000);
