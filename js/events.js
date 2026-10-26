@@ -63,7 +63,8 @@
           if (x.g.id === 'halqa' || seen[x.g.id] || (x.g.kind === 'yearly' && x.days > 60)) return; seen[x.g.id] = 1;
           var ds = new Date(x.day).toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
           var hd = x.h && F0 ? x.h.d + ' ' + F0.MONTHS[x.h.m - 1].n : '';
-          out.push({ ic: x.g.ic, k: inDays(x.days) + ' · ' + ds + (hd ? ' · ' + hd : ''), t: x.g.name, s: x.g.note, go: 'calendar' });
+          var ln = new Date(), lday = Date.UTC(ln.getFullYear(), ln.getMonth(), ln.getDate()), dd = Math.round((x.day - lday) / 86400000);   // days from the viewer's own today
+          out.push({ ic: x.g.ic, k: inDays(dd) + ' · ' + ds + (hd ? ' · ' + hd : ''), t: x.g.name, s: x.g.note, go: 'calendar' });
         });
       } catch (e) {}
     }
