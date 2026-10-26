@@ -60,7 +60,7 @@
     '.fm-btn{display:block;text-align:center;background:var(--gold);color:#1a2421;font-weight:700;border-radius:12px;padding:13px;font-size:15px;text-decoration:none;margin:12px 0}' +
     '.fm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.fm-sc{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}' +
     '.fm-sth{position:relative;aspect-ratio:9/16;background:#000;cursor:pointer;overflow:hidden}.fm-sth img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02)}.fm-sth iframe{width:100%;height:100%;border:0;display:block}' +
-    '.fm-full{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px 12px;padding:0 18px 6px;scrollbar-width:none}.fm-full::-webkit-scrollbar{display:none}.fm-full .fm-sc{flex:none;width:78%;max-width:360px;scroll-snap-align:start}.fm-sth.fm-wide{aspect-ratio:16/9}.fm-fh{margin:6px 0 8px;font-size:15px;color:var(--teal)}' +
+    '.fm-full{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px 12px;padding:0 18px 6px;scrollbar-width:none}.fm-full::-webkit-scrollbar{display:none}.fm-full .fm-sc{flex:none;width:78%;max-width:360px;scroll-snap-align:start}.fm-sth.fm-wide{aspect-ratio:16/9}.fm-fh{margin:6px 0 8px;font-size:15px;color:var(--teal)}.fm-soonth{cursor:default;background:linear-gradient(135deg,#123b33,#2a2410);display:flex;align-items:center;justify-content:center}.fm-soonin{text-align:center;color:#e8c46b;font-size:14px;line-height:1.5}' +
     '.fm-hs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px 4px;padding:0 18px 6px;scrollbar-width:none}.fm-hs::-webkit-scrollbar{display:none}.fm-hs .fm-sc{flex:none;width:42%;max-width:190px;scroll-snap-align:start}.fm-hs .fm-all{flex:none;width:30%;max-width:140px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--teal);font-weight:700;font-size:13px;cursor:pointer;scroll-snap-align:start;padding:8px}' +
     '.fm-acts{display:flex;gap:6px;margin:6px 8px 10px}.fm-acts .fm-like{flex:1;margin:0;font:inherit;font-size:12px;font-weight:600;background:transparent;cursor:pointer}' +
     '.fm-sub{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;color:#fff;background:#c4302b;border-radius:999px;padding:6px 12px;text-decoration:none;white-space:nowrap}' +
@@ -364,7 +364,21 @@
       '<div class="fm-st">' + esc(clean(v.title)) + '</div>' +
       '<div class="fm-acts"><button type="button" class="fm-like fm-share" data-sid="' + v.id + '" data-t="' + esc(v.title) + '">↗ Share</button></div></div>';
   }
-  function fullBlock(items) { return items.length ? '<div class="fm-fullwrap"><h3 class="fm-fh">🎧 Full dars</h3><div class="fm-full">' + items.map(fullTile).join('') + '</div></div>' : ''; }
+  // Full dars being prepared: shown as "Coming soon" cards until the video is on the channel (matched by its words).
+  var SOON = (cfg.fullDarsSoon || [
+    { title: "The Soul's Journey, Death, the Scale and the Blessed Malida", match: 'soul|malida' },
+    { title: "Haqeeqat-e-Bai'at · Part 1", match: 'haqeeqat|haqiqat|bai.?at' },
+    { title: "Haqeeqat-e-Bai'at · Part 2", match: 'part\\s*2' }
+  ]);
+  function soonTile(x) {
+    return '<div class="fm-sc fm-fsc fm-soon"><div class="fm-sth fm-wide fm-soonth"><div class="fm-soonin"><div style="font-size:26px">🎧</div><b>Coming soon</b></div></div>' +
+      '<div class="fm-st">' + esc(x.title) + '</div><div class="fm-stat">Full dars · in Urdu with English captions</div></div>';
+  }
+  function fullBlock(items) {
+    var soon = SOON.filter(function (x) { var re; try { re = new RegExp(x.match, 'i'); } catch (e) { return true; } return !items.some(function (v) { return re.test(v.title) && (!/part\s*2/i.test(x.match) || /part\s*2/i.test(v.title)); }); });
+    if (!items.length && !soon.length) return '';
+    return '<div class="fm-fullwrap"><h3 class="fm-fh">🎧 Full dars</h3><div class="fm-full">' + items.map(fullTile).join('') + soon.map(soonTile).join('') + '</div></div>';
+  }
   api.azamFull = azamFull; api.fullBlock = fullBlock;
   api.shortsGrid = shortsGrid; api.playShort = playShort; api.subscribeLink = subscribeLink;
   // Home page: a sideways-scrolling row of the newest Azam Pasha Zikr Shorts. The section stays hidden until there are Shorts.
@@ -391,9 +405,9 @@
   (function () {   // home: the full dars row sits under the Shorts row, and appears once a full video is on the channel
     var hs = doc.getElementById('homeShorts'); if (!hs) return;
     azamFull(function (items) {
-      if (!items.length) return;
-      var w = doc.createElement('div'); w.id = 'homeFull'; w.innerHTML = fullBlock(items); hs.parentNode.insertBefore(w, hs.nextSibling);
-      w.addEventListener('click', function (e) { var th = e.target.closest && e.target.closest('.fm-sth'); if (th) playShort(th); });
+      var hb = fullBlock(items); if (!hb) return;
+      var w = doc.createElement('div'); w.id = 'homeFull'; w.innerHTML = hb; hs.parentNode.insertBefore(w, hs.nextSibling);
+      w.addEventListener('click', function (e) { var th = e.target.closest && e.target.closest('.fm-sth'); if (th && !th.classList.contains('fm-soonth')) playShort(th); });
     });
   })();
   // Opened from a "New Short" notification (?short=<id>): show the Shorts screen and play that Short.
