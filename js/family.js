@@ -372,7 +372,7 @@
   // it plays the full video once it is on the channel (found by `match` in the title), and says "coming soon" until then.
   // New Shorts: add their ids here (or set fullDars in config.js).
   var FULLDARS = (cfg.fullDars || [
-    { title: "The Soul's Journey, Death, the Scale and the Blessed Malida", match: 'soul|malida|full\\s*dars',
+    { title: "The Soul's Journey, Death, the Scale and the Blessed Malida", match: 'soul|malida',
       shorts: ['JfQsTHE7VrU', 'tayZJTuWGkU', 'NSWYCYR-Tlo', 'EQbitUdOKqQ', '2yjNqJo659g', 'eNHL-OsPxgQ', 'ZHg4XMwt3Ok'] },
     { title: "Haqeeqat-e-Bai'at", match: 'haqeeqat|haqiqat',   // both recordings joined into one full dars
       shorts: ['g8-0WIXYjcM', 'r3x7LQru71I', '7wB9EQldsew', 'E7xb4BR6IPQ', 'kziC4lPGmgU', 'Rno3f3mGjyg', 'jRK1SIkPkV0', '3githsE0o6Y', 'ENBkebr3nJI', 'RFLGxcbYBCM'] }
