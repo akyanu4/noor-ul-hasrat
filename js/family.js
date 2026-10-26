@@ -250,7 +250,6 @@
   function subscribeLink() { return '<a class="fm-sub" target="_blank" rel="noopener" href="https://www.youtube.com/channel/' + esc(AZAM.id) + '?sub_confirmation=1">🔔 Subscribe</a>'; }
   function shortsGrid(list) { setTimeout(function () { ensureStats(list); }, 0); return '<div class="fm-grid">' + list.map(shortTile).join('') + '</div>'; }
   function paintShorts(list) {
-    var was = body.querySelector('.fm-sth iframe'), keep = was ? was.parentNode.getAttribute('data-id') : null;
     var h = '<div style="margin:0 0 8px">' + subscribeLink() + '</div><div class="fm-note" style="margin-top:0">Dars and zikr Shorts of Azam Pasha from the ' + esc(AZAM.name) + ' channel. New Shorts appear here by themselves. Tap one to play it.</div>';
     if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest Shorts…</div>';
     else if (state.error === 'unconfigured') h += '<div class="fm-note">The live list is not connected yet (add <b>youtubeApiKey</b> in js/config.js).</div>';
@@ -261,15 +260,60 @@
     if (total > list.length) h += '<button class="fm-btn fm-more" type="button" style="border:0;cursor:pointer">Show more (' + (total - list.length) + ' left)</button>';
     h += '<div class="fm-note">' + total + ' Short' + (total === 1 ? '' : 's') + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
     body.innerHTML = h;
-    if (keep) { var kth = body.querySelector('.fm-sth[data-id="' + keep + '"]'); if (kth) playShort(kth); }   // a redraw keeps the Short that is playing
     if (pendingShort && !state.loading) {   // opened from a notification: play that Short once the list is in
       var pth = body.querySelector('.fm-sth[data-id="' + pendingShort + '"]');
       if (pth) { pendingShort = null; if (pth.scrollIntoView) pth.scrollIntoView({ block: 'center' }); playShort(pth); }
     }
   }
+  // Shorts play full screen in a viewer (tall 9:16, as big as the screen allows), with Previous / Next through the
+  // Shorts of the row or grid it was opened from, Share, and a close button (the phone's Back button closes it too).
+  var viewer = null, vlist = [], vpos = 0;
+  function vshow() {
+    var it = vlist[vpos]; if (!it) return;
+    viewer.querySelector('.fv-frame').innerHTML = '<iframe src="https://www.youtube.com/embed/' + it.id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
+    viewer.querySelector('.fv-t').textContent = clean(it.title || '');
+    viewer.querySelector('.fv-prev').disabled = vpos <= 0;
+    viewer.querySelector('.fv-next').disabled = vpos >= vlist.length - 1;
+  }
+  function vclose(fromBack) {
+    if (!viewer || viewer.hidden) return;
+    viewer.hidden = true; viewer.querySelector('.fv-frame').innerHTML = ''; doc.documentElement.style.overflow = '';
+    if (!fromBack && root.history && root.history.state && root.history.state.fv) { try { root.history.back(); } catch (e) {} }
+  }
+  function vopen(list, pos) {
+    if (!viewer) {
+      var st = doc.createElement('style');
+      st.textContent = '.fv{position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center}' +
+        '.fv-frame{position:relative;height:calc(100% - 112px);max-height:calc(100vw * 16 / 9);aspect-ratio:9/16;max-width:100vw;background:#000}.fv-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}' +
+        '.fv-top{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:10px;padding:10px 12px;padding-top:max(10px,env(safe-area-inset-top));color:#f3e7c9;font-size:14px;z-index:2}' +
+        '.fv-t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fv button{background:rgba(255,255,255,.12);color:#f3e7c9;border:0;border-radius:999px;padding:9px 16px;font-size:15px;cursor:pointer}' +
+        '.fv button:disabled{opacity:.35}.fv-bar{display:flex;gap:10px;justify-content:center;padding:10px 0;padding-bottom:max(10px,env(safe-area-inset-bottom))}.fv-x{font-size:18px!important;padding:6px 13px!important}' +
+        '.fv-frame{margin-top:52px}';
+      doc.head.appendChild(st);
+      viewer = doc.createElement('div'); viewer.className = 'fv'; viewer.hidden = true; viewer.setAttribute('role', 'dialog'); viewer.setAttribute('aria-label', 'Short');
+      viewer.innerHTML = '<div class="fv-top"><span class="fv-t"></span><button type="button" class="fv-x" aria-label="Close">✕</button></div><div class="fv-frame"></div>' +
+        '<div class="fv-bar"><button type="button" class="fv-prev">‹ Previous</button><button type="button" class="fv-share">↗ Share</button><button type="button" class="fv-next">Next ›</button></div>';
+      doc.body.appendChild(viewer);
+      viewer.addEventListener('click', function (e) {
+        var b = e.target.closest && e.target.closest('button'); if (!b) return;
+        if (b.classList.contains('fv-x')) vclose();
+        else if (b.classList.contains('fv-prev') && vpos > 0) { vpos--; vshow(); }
+        else if (b.classList.contains('fv-next') && vpos < vlist.length - 1) { vpos++; vshow(); }
+        else if (b.classList.contains('fv-share')) { var it = vlist[vpos]; if (it) shareShort(it.id, it.title); }
+      });
+      doc.addEventListener('keydown', function (e) { if (viewer.hidden) return; if (e.key === 'Escape') vclose(); else if (e.key === 'ArrowRight' && vpos < vlist.length - 1) { vpos++; vshow(); } else if (e.key === 'ArrowLeft' && vpos > 0) { vpos--; vshow(); } });
+      root.addEventListener('popstate', function () { vclose(true); });
+    }
+    vlist = list; vpos = pos; viewer.hidden = false; doc.documentElement.style.overflow = 'hidden';
+    try { if (!(root.history.state && root.history.state.fv)) root.history.pushState({ fv: 1 }, ''); } catch (e) {}
+    vshow();
+  }
   function playShort(th) {
-    if (!th || th.querySelector('iframe') || !validId(th.getAttribute('data-id'))) return false;
-    th.innerHTML = '<iframe src="https://www.youtube.com/embed/' + th.getAttribute('data-id') + '?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
+    if (!th || !validId(th.getAttribute('data-id'))) return false;
+    var box = th.closest('.fm-grid, .fm-hs') || th.parentNode, ths = Array.prototype.slice.call(box.querySelectorAll('.fm-sth'));
+    var list = ths.filter(function (t) { return validId(t.getAttribute('data-id')); }).map(function (t) { return { id: t.getAttribute('data-id'), title: (t.getAttribute('aria-label') || '').replace(/^Play /, '') }; });
+    var pos = Math.max(0, ths.indexOf(th)); if (!list.length) list = [{ id: th.getAttribute('data-id'), title: '' }];
+    vopen(list, Math.min(pos, list.length - 1));
     return true;
   }
 
