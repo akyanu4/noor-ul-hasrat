@@ -24,7 +24,7 @@ function config() {
 async function newShorts(key, channel, sinceMs, fetchFn) {
   const pl = 'UUSH' + channel.slice(2);
   const u = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=20&playlistId=' + pl + '&key=' + encodeURIComponent(key);
-  const r = await fetchFn(u);
+  const r = await fetchFn(u, { headers: { Referer: 'https://noor-ul-hasrat.vercel.app/' } });   // the app's key only answers the app's site
   if (!r.ok) throw new Error('YouTube said ' + r.status);
   const d = await r.json();
   return (d.items || []).map(function (it) {
