@@ -343,18 +343,19 @@
     astate.waiters.push(cb); if (!astate.loading) load(false, 'azam');
   };
 
+  // (Only titles with Azam Pasha or dars: the channel also has other long uploads.)
   // Full-length dars videos on the Azam Pasha Zikr channel (its long-videos playlist, UC... -> UULF...), newest first.
   var FULL = null, fullWait = [];
   function azamFull(cb) {
     if (FULL) { cb(FULL); return; }
     fullWait.push(cb); if (fullWait.length > 1) return;
     var fin = function (items) { FULL = items; var w = fullWait; fullWait = []; w.forEach(function (f) { try { f(items); } catch (e) {} }); };
-    var c = null; try { c = JSON.parse(sget('noor_azam_full_v1') || 'null'); } catch (e) {}
+    var c = null; try { c = JSON.parse(sget('noor_azam_full_v2') || 'null'); } catch (e) {}
     if (c && Date.now() - c.t < TTL) { fin(c.items); return; }
     var key = cfg.youtubeApiKey; if (!key || !/^UC/.test(AZAM.id || '')) { fin([]); return; }
     fetch('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=UULF' + AZAM.id.slice(2) + '&key=' + encodeURIComponent(key))
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(function (d) { var items = toItems([d]); sset('noor_azam_full_v1', JSON.stringify({ t: Date.now(), items: items })); fin(items); },
+      .then(function (d) { var items = toItems([d]).filter(function (v) { return /azam\s*pasha|\u0627\u0639\u0638\u0645\s*\u067E\u0627\u0634\u0627|\bdars\b/i.test(v.title); }); sset('noor_azam_full_v2', JSON.stringify({ t: Date.now(), items: items })); fin(items); },
             function () { fin(c && c.items || []); });
   }
   function fullTile(v) {
