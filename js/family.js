@@ -60,6 +60,7 @@
     '.fm-btn{display:block;text-align:center;background:var(--gold);color:#1a2421;font-weight:700;border-radius:12px;padding:13px;font-size:15px;text-decoration:none;margin:12px 0}' +
     '.fm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.fm-sc{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}' +
     '.fm-sth{position:relative;aspect-ratio:9/16;background:#000;cursor:pointer;overflow:hidden}.fm-sth img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02)}.fm-sth iframe{width:100%;height:100%;border:0;display:block}' +
+    '.fm-full{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px 12px;padding:0 18px 6px;scrollbar-width:none}.fm-full::-webkit-scrollbar{display:none}.fm-full .fm-sc{flex:none;width:78%;max-width:360px;scroll-snap-align:start}.fm-sth.fm-wide{aspect-ratio:16/9}.fm-fh{margin:6px 0 8px;font-size:15px;color:var(--teal)}' +
     '.fm-hs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px 4px;padding:0 18px 6px;scrollbar-width:none}.fm-hs::-webkit-scrollbar{display:none}.fm-hs .fm-sc{flex:none;width:42%;max-width:190px;scroll-snap-align:start}.fm-hs .fm-all{flex:none;width:30%;max-width:140px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--teal);font-weight:700;font-size:13px;cursor:pointer;scroll-snap-align:start;padding:8px}' +
     '.fm-acts{display:flex;gap:6px;margin:6px 8px 10px}.fm-acts .fm-like{flex:1;margin:0;font:inherit;font-size:12px;font-weight:600;background:transparent;cursor:pointer}' +
     '.fm-sub{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;color:#fff;background:#c4302b;border-radius:999px;padding:6px 12px;text-decoration:none;white-space:nowrap}' +
@@ -256,6 +257,7 @@
     else if (state.error && state.error !== 'stale') h += '<div class="fm-note">Could not load the Shorts (' + esc(state.error) + '). <a href="#" id="fmRetry">Try again</a></div>';
     else if (!list.length) h += '<div class="fm-note">No Shorts yet.</div>';
     var total = list.length; list = list.slice(0, limit);
+    if (tab === 'azam') { if (FULL) h += fullBlock(FULL); else azamFull(function () { if (tab === 'azam') paint(); }); }
     h += shortsGrid(list);
     if (total > list.length) h += '<button class="fm-btn fm-more" type="button" style="border:0;cursor:pointer">Show more (' + (total - list.length) + ' left)</button>';
     h += '<div class="fm-note">' + total + ' Short' + (total === 1 ? '' : 's') + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
@@ -291,7 +293,7 @@
         '.fv-top{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:10px;padding:10px 12px;padding-top:max(10px,env(safe-area-inset-top));color:#f3e7c9;font-size:14px;z-index:2}' +
         '.fv-t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fv button,.fv-bar a{background:rgba(255,255,255,.12);color:#f3e7c9;border:0;border-radius:999px;padding:9px 14px;font-size:15px;cursor:pointer;text-decoration:none;font-family:inherit}.fv-bar a.fv-sub{background:#c4302b;color:#fff}' +
         '.fv button:disabled{opacity:.35}.fv-bar{display:flex;flex-wrap:wrap;gap:8px 10px;justify-content:center;padding:8px 8px 0}.fv-bar2{padding-bottom:max(10px,env(safe-area-inset-bottom))}.fv-stat{width:100%;text-align:center;color:#cbbf9f;font-size:12px}.fv-x{font-size:18px!important;padding:6px 13px!important}' +
-        '.fv-frame{margin-top:52px}';
+        '.fv-frame{margin-top:52px}.fv.fv-wide .fv-frame{aspect-ratio:16/9;width:100vw;height:auto;max-height:calc(100% - 168px)}';
       doc.head.appendChild(st);
       viewer = doc.createElement('div'); viewer.className = 'fv'; viewer.hidden = true; viewer.setAttribute('role', 'dialog'); viewer.setAttribute('aria-label', 'Short');
       viewer.innerHTML = '<div class="fv-top"><span class="fv-t"></span><button type="button" class="fv-x" aria-label="Close">✕</button></div><div class="fv-frame"></div>' +
@@ -308,14 +310,14 @@
       doc.addEventListener('keydown', function (e) { if (viewer.hidden) return; if (e.key === 'Escape') vclose(); else if (e.key === 'ArrowRight' && vpos < vlist.length - 1) { vpos++; vshow(); } else if (e.key === 'ArrowLeft' && vpos > 0) { vpos--; vshow(); } });
       root.addEventListener('popstate', function () { vclose(true); });
     }
-    vlist = list; vpos = pos; viewer.hidden = false; doc.documentElement.style.overflow = 'hidden';
+    vlist = list; vpos = pos; viewer.classList.toggle('fv-wide', !!(list[0] && list[0].wide)); viewer.hidden = false; doc.documentElement.style.overflow = 'hidden';
     try { if (!(root.history.state && root.history.state.fv)) root.history.pushState({ fv: 1 }, ''); } catch (e) {}
     vshow();
   }
   function playShort(th) {
     if (!th || !validId(th.getAttribute('data-id'))) return false;
-    var box = th.closest('.fm-grid, .fm-hs') || th.parentNode, ths = Array.prototype.slice.call(box.querySelectorAll('.fm-sth'));
-    var list = ths.filter(function (t) { return validId(t.getAttribute('data-id')); }).map(function (t) { return { id: t.getAttribute('data-id'), title: (t.getAttribute('aria-label') || '').replace(/^Play /, '') }; });
+    var box = th.closest('.fm-grid, .fm-hs, .fm-full') || th.parentNode, ths = Array.prototype.slice.call(box.querySelectorAll('.fm-sth'));
+    var list = ths.filter(function (t) { return validId(t.getAttribute('data-id')); }).map(function (t) { return { id: t.getAttribute('data-id'), title: (t.getAttribute('aria-label') || '').replace(/^Play /, ''), wide: t.classList.contains('fm-wide') }; });
     var pos = Math.max(0, ths.indexOf(th)); if (!list.length) list = [{ id: th.getAttribute('data-id'), title: '' }];
     vopen(list, Math.min(pos, list.length - 1));
     return true;
@@ -340,6 +342,29 @@
     if (astate.items !== null && !astate.loading) { cb(astate); return; }
     astate.waiters.push(cb); if (!astate.loading) load(false, 'azam');
   };
+
+  // Full-length dars videos on the Azam Pasha Zikr channel (its long-videos playlist, UC... -> UULF...), newest first.
+  var FULL = null, fullWait = [];
+  function azamFull(cb) {
+    if (FULL) { cb(FULL); return; }
+    fullWait.push(cb); if (fullWait.length > 1) return;
+    var fin = function (items) { FULL = items; var w = fullWait; fullWait = []; w.forEach(function (f) { try { f(items); } catch (e) {} }); };
+    var c = null; try { c = JSON.parse(sget('noor_azam_full_v1') || 'null'); } catch (e) {}
+    if (c && Date.now() - c.t < TTL) { fin(c.items); return; }
+    var key = cfg.youtubeApiKey; if (!key || !/^UC/.test(AZAM.id || '')) { fin([]); return; }
+    fetch('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=UULF' + AZAM.id.slice(2) + '&key=' + encodeURIComponent(key))
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (d) { var items = toItems([d]); sset('noor_azam_full_v1', JSON.stringify({ t: Date.now(), items: items })); fin(items); },
+            function () { fin(c && c.items || []); });
+  }
+  function fullTile(v) {
+    return '<div class="fm-sc fm-fsc"><div class="fm-sth fm-wide" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '">' +
+      '<img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg"><div class="fm-play">▶</div></div>' +
+      '<div class="fm-st">' + esc(clean(v.title)) + '</div>' +
+      '<div class="fm-acts"><button type="button" class="fm-like fm-share" data-sid="' + v.id + '" data-t="' + esc(v.title) + '">↗ Share</button></div></div>';
+  }
+  function fullBlock(items) { return items.length ? '<div class="fm-fullwrap"><h3 class="fm-fh">🎧 Full dars</h3><div class="fm-full">' + items.map(fullTile).join('') + '</div></div>' : ''; }
+  api.azamFull = azamFull; api.fullBlock = fullBlock;
   api.shortsGrid = shortsGrid; api.playShort = playShort; api.subscribeLink = subscribeLink;
   // Home page: a sideways-scrolling row of the newest Azam Pasha Zikr Shorts. The section stays hidden until there are Shorts.
   api.homeStrip = function (wrap) {
@@ -362,6 +387,14 @@
     }
   };
   api.homeStrip(doc.getElementById('homeShorts'));
+  (function () {   // home: the full dars row sits under the Shorts row, and appears once a full video is on the channel
+    var hs = doc.getElementById('homeShorts'); if (!hs) return;
+    azamFull(function (items) {
+      if (!items.length) return;
+      var w = doc.createElement('div'); w.id = 'homeFull'; w.innerHTML = fullBlock(items); hs.parentNode.insertBefore(w, hs.nextSibling);
+      w.addEventListener('click', function (e) { var th = e.target.closest && e.target.closest('.fm-sth'); if (th) playShort(th); });
+    });
+  })();
   // Opened from a "New Short" notification (?short=<id>): show the Shorts screen and play that Short.
   (function () {
     var m = /[?&]short=([\w-]{11})(?:&|$)/.exec(root.location ? root.location.search : '');
