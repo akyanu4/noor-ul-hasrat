@@ -17,6 +17,16 @@
     "api/new-shorts.js": {
       "includeFiles": "js/config.js",
       "maxDuration": 30
+    },
+    "api/s.js": {
+      "includeFiles": "js/config.js",
+      "maxDuration": 10
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/s/:id",
+      "destination": "/api/s?id=:id"
+    }
+  ]
 }

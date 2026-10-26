@@ -235,10 +235,13 @@
   }
   // Share a Short: the phone's share sheet (WhatsApp, Messages…), or copy the link where that isn't available.
   function ftoast(t) { var o = doc.querySelector('.fm-toast'); if (o) o.remove(); var e = doc.createElement('div'); e.className = 'fm-toast'; e.textContent = t; doc.body.appendChild(e); setTimeout(function () { e.remove(); }, 2500); }
+  function clean(t) { return String(t).replace(/\s*#\w+/g, '').trim(); }
   function shareShort(id, title) {
     if (!validId(id)) return;
-    var url = 'https://youtube.com/shorts/' + id, text = (title ? title + '\n' : '') + 'Shared from the Noor-ul-Hasrat app';
-    if (navigator.share) { navigator.share({ title: title || 'Short', text: text, url: url }).catch(function () {}); return; }
+    // our own share page (/s/<id>) carries the video thumbnail and title as a preview card, and opens the Short in the app
+    var site = /^https?:/.test(location.protocol) && !/localhost|127\.0\.0\.1/.test(location.hostname) ? location.origin : 'https://noor-ul-hasrat.vercel.app';
+    var url = site + '/s/' + id, text = title ? clean(title) : 'Hazrat Azam Pasha R.A.';
+    if (navigator.share) { navigator.share({ title: text, text: text, url: url }).catch(function () {}); return; }
     var all = text + '\n' + url;
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(all).then(function () { ftoast('Link copied. Paste it to share.'); }, function () { root.prompt && root.prompt('Copy this link:', url); });
     else if (root.prompt) root.prompt('Copy this link:', url);
