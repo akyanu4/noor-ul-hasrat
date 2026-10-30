@@ -46,7 +46,7 @@
   function cards() {
     var F0 = root.NoorFaith, out = [], now = Date.now(), h = C.nextHalqa(now), t = halqaText(h, C.formatCountdown(h.msUntilStart));
     var when = new Date(h.start).toLocaleString([], { weekday: 'long', hour: 'numeric', minute: '2-digit' });
-    out.push({ ic: '🕯️', k: t.kick, t: 'Haftawar halqa-e-zikr', s: h.state === 'upcoming' || h.state === 'opening' ? when + ' · ' + t.sub : t.sub, go: 'halqa' });
+    out.push({ ic: '🕯️', k: t.kick, t: 'Haftawar halqa-e-zikr', s: (h.state === 'upcoming' || h.state === 'opening' ? when + ' · ' + t.sub : t.sub) + (h.state !== 'upcoming' ? ' · Tap to join on Google Meet' : ''), go: 'halqa', meet: h.state !== 'upcoming' });
 
     var v = pickLatest(N.getClasses ? N.getClasses() : []);
     if (v) {
@@ -64,6 +64,7 @@
           var ds = new Date(x.day).toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
           var hd = x.h && F0 ? x.h.d + ' ' + F0.MONTHS[x.h.m - 1].n : '';
           var ln = new Date(), lday = Date.UTC(ln.getFullYear(), ln.getMonth(), ln.getDate()), dd = Math.round((x.day - lday) / 86400000);   // days from the viewer's own today
+          if (dd === 0) { out.push({ ic: x.g.ic, k: 'Today · join online', t: x.g.name, s: 'Tap to join on Google Meet · ' + x.g.note, meet: true }); return; }
           out.push({ ic: x.g.ic, k: inDays(dd) + ' · ' + ds + (hd ? ' · ' + hd : ''), t: x.g.name, s: x.g.note, go: 'calendar' });
         });
       } catch (e) {}
@@ -103,7 +104,7 @@
   track.addEventListener('click', function (e) {
     var c = e.target.closest && e.target.closest('.ev-card'); if (!c) return;
     var d = data[+c.getAttribute('data-i')]; if (!d) return;
-    if (d.yt) { N.playById(d.yt); } else if (d.go) { N.route(d.go); }
+    if (d.meet && N.openMeet) { N.openMeet(); } else if (d.yt) { N.playById(d.yt); } else if (d.go) { N.route(d.go); }
   });
 
   var calm = root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches;

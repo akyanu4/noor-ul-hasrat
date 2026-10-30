@@ -21,9 +21,9 @@ function plan(nowMs, adj) {
     const add = (kind, at, heading, text) => { if (at > nowMs + 60000 && at <= until) out.push({ key: uuid(`noor-gathering:${g.id}:${d}:${kind}`), at, heading, text }); };
     if (g.id === 'halqa') {
       add('day', ist(x.day, 10, 0), 'Tonight: ' + g.name, 'Weekly zikr circle at 8:30–9:30 pm (India time). Tap to open Noor.');
-      add('soon', ist(x.day, 20, 0), g.name + ' in 30 minutes', 'The weekly zikr circle starts at 8:30 pm (India time).');
+      add('soon', ist(x.day, 20, 0), g.name + ' in 30 minutes', 'The weekly zikr circle starts at 8:30 pm (India time). Tap to open Noor and join on Google Meet.');
     } else {
-      add('day', ist(x.day, 10, 0), 'Today: ' + g.name, g.note + '.');
+      add('day', ist(x.day, 10, 0), 'Today: ' + g.name, g.note + '. Join online from the Noor app (Google Meet).');
       if (g.kind === 'yearly') add('eve', ist(x.day - 86400000, 19, 0), 'Tomorrow: ' + g.name, g.note + '.');
     }
   });

@@ -268,9 +268,21 @@
   $('joinNow').addEventListener('click', function () {
     var h = C.nextHalqa(Date.now());
     if (h.state === 'upcoming') { toast('The room opens 15 minutes before the halqa starts.'); return; }
-    if (/^https:\/\//.test(cfg.halqaVideoUrl || '')) { $('callFrame').src = cfg.halqaVideoUrl; call.classList.add('open'); }
-    else window.open('https://meet.jit.si/' + encodeURIComponent(cfg.halqaRoom || 'NoorHalqaEZikr') + '#config.startWithVideoMuted=true&config.startWithAudioMuted=true', '_blank', 'noopener');
+    openMeet();
   });
+  // The circle's Google Meet room. Google does not allow Meet inside another app's frame, so it opens over the app:
+  // in the Meet app if the phone has it, otherwise an in-app browser tab; closing it returns to Noor.
+  function openMeet() {
+    if (/^https:\/\/meet\.google\.com\//.test(cfg.meetUrl || '')) {
+      var w = window.open(cfg.meetUrl, '_blank', 'noopener');
+      if (!w) location.href = cfg.meetUrl;
+      toast('Opening Google Meet… Please keep your microphone and camera off.');
+      return;
+    }
+    if (/^https:\/\//.test(cfg.halqaVideoUrl || '')) { $('callFrame').src = cfg.halqaVideoUrl; call.classList.add('open'); return; }
+    window.open('https://meet.jit.si/' + encodeURIComponent(cfg.halqaRoom || 'NoorHalqaEZikr') + '#config.startWithVideoMuted=true&config.startWithAudioMuted=true', '_blank', 'noopener');
+  }
+  N.openMeet = openMeet;
 
   $('addCal').addEventListener('click', function () {
     var ics = C.buildHalqaICS(Date.now(), {

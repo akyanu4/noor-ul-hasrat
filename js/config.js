@@ -7,6 +7,8 @@
   youtubeApiKey: "AIzaSyAzuzRf47bDVZnGhBLtFO-fjZYB2II4mYQ",
   youtubeChannelId: "UCatVsvcKbebBYtB6tyQdC2g",   // DAR UL ILM (@Darulilm1)
   halqaVideoUrl: "",
+  // Google Meet room used for the halqa and every gathering (Meet cannot run inside an app frame; it opens in the Meet app or an in-app browser tab).
+  meetUrl: "https://meet.google.com/mxc-pqnb-xba",
   halqaRoom: "NoorHalqaEZikr-BaitUnNoor",
   oneSignalAppId: "46d22dc3-ea76-4e2f-aaf7-1eeb250efa84",
 
