@@ -19,7 +19,8 @@
   // Shorts re-uploaded with the channel watermark burned in: original id -> watermarked copy. Both stay public on YouTube;
   // the app shows only the watermarked one once it is on the channel, so the list has no doubles.
   var WATERMARKED = { JfQsTHE7VrU: 'TgmQQhX_8tU', tayZJTuWGkU: 'PO-sKtkwc60', 'NSWYCYR-Tlo': 'pWWkdTuJM9c', EQbitUdOKqQ: 'N-8fydZ8lg4',
-    '2yjNqJo659g': 'JCBJ2SK79Q8', 'eNHL-OsPxgQ': 'X4CTCYjFU3o', 'g8-0WIXYjcM': 'VlU4EcJGVgQ', 'Fq8X-k08A5Y': 'mWwJL6BTEZY' };
+    '2yjNqJo659g': 'JCBJ2SK79Q8', 'eNHL-OsPxgQ': 'X4CTCYjFU3o', 'g8-0WIXYjcM': 'VlU4EcJGVgQ', 'Fq8X-k08A5Y': 'mWwJL6BTEZY',
+    '7wB9EQldsew': 'ObW6ccXEwn4' };
   function toItems(pages) {
     var seen = {}, out = [];
     pages.forEach(function (data) {
