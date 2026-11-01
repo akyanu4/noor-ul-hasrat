@@ -42,7 +42,7 @@ def apply(src, dst, lines=None):
     y = int(h * (0.865 if h > w else 0.80) - b.height / 2); x = (w - b.width) // 2
     png = tempfile.NamedTemporaryFile(suffix=".png", delete=False).name; b.save(png)
     subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", src, "-i", png, "-filter_complex", f"[0:v][1:v]overlay={x}:{y}:format=auto,format=yuv420p[v]",
-                    "-map", "[v]", "-map", "0:a?", "-c:v", "libx264", "-preset", "medium", "-crf", "23", "-maxrate", "2M", "-bufsize", "4M", "-c:a", "copy", "-movflags", "+faststart", dst], check=True)
+                    "-map", "[v]", "-map", "0:a?", "-c:v", "libx264", "-preset", "medium", "-crf", os.environ.get("NOOR_WM_CRF", "23"), "-maxrate", os.environ.get("NOOR_WM_MAXRATE", "2M"), "-bufsize", "4M", "-c:a", "copy", "-movflags", "+faststart", dst], check=True)
     os.unlink(png)
 
 if __name__ == "__main__":
