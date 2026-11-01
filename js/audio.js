@@ -85,7 +85,7 @@
   function series() { return (data && data.series || []).filter(function (x) { return x && x.title; }); }
   function filesOf(sr) {
     var l = live[sr.folderId];
-    var known = {}; (sr.files || []).forEach(function (f) { if (f && f.id) { known[f.id] = f.dur; if (typeof f.src === 'string' && /^audio\/[\w-]+\.mp3$/.test(f.src)) srcById[f.id] = f.src; } });
+    var known = {}; (sr.files || []).forEach(function (f) { if (f && f.id) { known[f.id] = f.dur; if (typeof f.src === 'string' && /^audio\/[\w-]+\.(mp3|m4a)$/.test(f.src)) srcById[f.id] = f.src; } });
     var list = (l && l.length ? l.map(function (f) { return known[f.id] && !f.dur ? Object.assign({}, f, { dur: known[f.id] }) : f; }) : (sr.files || [])).filter(function (f) { return f && validId(f.id) && isAudio(f.name, f.mime || 'audio/'); });
     return sortFiles(list);
   }
