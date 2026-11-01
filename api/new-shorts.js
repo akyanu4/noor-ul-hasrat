@@ -50,7 +50,8 @@ async function run(env, nowMs, fetchFn) {
   const site = (env.SITE_URL || 'https://noor-ul-hasrat.vercel.app').replace(/\/$/, ''), cfg = config();
   const key = env.YOUTUBE_API_KEY || cfg.key;
   if (!key) return { error: 'no YouTube API key' };
-  const list = (await newShorts(key, cfg.channel, nowMs - WINDOW, fetchFn)).slice(0, 3);   // at most three alerts a day
+  const reup = new Set(Object.values(require('../js/family.js').WATERMARKED || {}));   // watermarked re-uploads of old Shorts: no alert
+  const list = (await newShorts(key, cfg.channel, nowMs - WINDOW, fetchFn)).filter(function (v) { return !reup.has(v.id); }).slice(0, 3);   // at most three alerts a day
   const res = { found: list.length, sent: [], failed: [] };
   for (const v of list) {
     const o = await send(v, env, site, fetchFn).catch(function (e) { return 'fail:' + e.message; });

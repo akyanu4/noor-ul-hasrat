@@ -16,6 +16,10 @@
   function shortsList(ch) { return /^UC/.test(ch || '') ? 'UUSH' + ch.slice(2) : null; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 
+  // Shorts re-uploaded with the channel watermark burned in: original id -> watermarked copy. Both stay public on YouTube;
+  // the app shows only the watermarked one once it is on the channel, so the list has no doubles.
+  var WATERMARKED = { JfQsTHE7VrU: 'TgmQQhX_8tU', tayZJTuWGkU: 'PO-sKtkwc60', 'NSWYCYR-Tlo': 'pWWkdTuJM9c', EQbitUdOKqQ: 'N-8fydZ8lg4',
+    '2yjNqJo659g': 'JCBJ2SK79Q8', 'eNHL-OsPxgQ': 'X4CTCYjFU3o', 'g8-0WIXYjcM': 'VlU4EcJGVgQ', 'Fq8X-k08A5Y': 'mWwJL6BTEZY' };
   function toItems(pages) {
     var seen = {}, out = [];
     pages.forEach(function (data) {
@@ -25,10 +29,11 @@
         seen[id] = 1; out.push({ id: id, title: s.title, at: s.publishedAt, kind: kind(s.title, s.description) });
       });
     });
+    out = out.filter(function (x) { var w = WATERMARKED[x.id]; return !(w && seen[w]); });
     return out.sort(function (a, b) { return (Date.parse(b.at || 0) || 0) - (Date.parse(a.at || 0) || 0); });
   }
 
-  var api = { kind: kind, toItems: toItems, validId: validId, uploads: uploads, shortsList: shortsList, DEFAULTS: DEFAULTS };
+  var api = { kind: kind, toItems: toItems, WATERMARKED: WATERMARKED, validId: validId, uploads: uploads, shortsList: shortsList, DEFAULTS: DEFAULTS };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.NoorFamily = api;
 
@@ -98,7 +103,7 @@
   function done(st) { paintIf(st); var w = st.waiters || []; st.waiters = []; w.forEach(function (f) { try { f(st); } catch (e) {} }); }
   function load(force, t) {
     t = t || tab;
-    var st = stateFor(t), ch = t === 'zikr' ? ZIKR : t === 'azam' ? AZAM : fam, ck = t === 'zikr' ? 'noor_zikr_v1' : t === 'azam' ? 'noor_azam_v2' : 'noor_family_v1';
+    var st = stateFor(t), ch = t === 'zikr' ? ZIKR : t === 'azam' ? AZAM : fam, ck = t === 'zikr' ? 'noor_zikr_v1' : t === 'azam' ? 'noor_azam_v3' : 'noor_family_v1';
     var key = cfg.youtubeApiKey, pl = t === 'azam' ? shortsList(ch.id) : uploads(ch.id), fallback = t === 'azam' ? uploads(ch.id) : null;
     if (!key || !pl) { st.items = []; st.error = 'unconfigured'; done(st); return; }
     if (st.loading) return;
@@ -377,6 +382,7 @@
     { title: "Haqeeqat-e-Bai'at", match: 'haqeeqat|haqiqat',   // both recordings joined into one full dars
       shorts: ['g8-0WIXYjcM', 'r3x7LQru71I', '7wB9EQldsew', 'E7xb4BR6IPQ', 'kziC4lPGmgU', 'Rno3f3mGjyg', 'jRK1SIkPkV0', '3githsE0o6Y', 'ENBkebr3nJI', 'RFLGxcbYBCM', 'cbWGnUMd530', '77ZE201Hbjw', 'Fq8X-k08A5Y'] }
   ]);
+  FULLDARS.forEach(function (f) { (f.shorts || []).slice().forEach(function (id) { if (WATERMARKED[id]) f.shorts.push(WATERMARKED[id]); }); });
   function fullFor(id) { return FULLDARS.filter(function (f) { return (f.shorts || []).indexOf(id) >= 0; })[0] || null; }
   function fullVideo(f, items) {
     var re; try { re = new RegExp(f.match, 'i'); } catch (e) { return null; }
