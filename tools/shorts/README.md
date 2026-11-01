@@ -39,13 +39,15 @@ tools/shorts/
    then `NOOR_PROJECT=projects/X python3 engine/patch_shorts.py <Name>` -> `out/<Name>.mp4`.
    Full video: `render.py full out/Full_video.mp4 2` then `python3 engine/audio.py out/Full_video.mp4 out/Full.mp4`.
    Two workers on 2 CPUs: a 1-minute Short takes ~6–8 min, the 14-minute full dars ~1 h.
-7. **Check** frames from the finished file (start, every scene, end card) and the audio level.
-8. **Deliver** to the user's PC folder (`Videos/Noor-ul-Hasrat Shorts/...`; files over 30 MB in 26 MB parts + a .bat).
-9. **Upload** (needs the user): YouTube Studio in the built-in browser; the user picks the file; fill title,
+7. **Watermark** every finished Short and full video before delivery: `NOOR_PROJECT=projects/X python3 engine/watermark.py out/<Name>.mp4 out/<Name>_wm.mp4`
+   (YouTube handle + SUBSCRIBE + app address under the captions, so WhatsApp copies still point back). Upload and share the `_wm` file.
+8. **Check** frames from the finished file (start, every scene, end card) and the audio level.
+9. **Deliver** to the user's PC folder (`Videos/Noor-ul-Hasrat Shorts/...`; files over 30 MB in 26 MB parts + a .bat).
+10. **Upload** (needs the user): YouTube Studio in the built-in browser; the user picks the file; fill title,
    description, tags, Not made for kids, No paid promotion, AI use (No for drawn animation; **Yes** if realistic AI
    images of a real person are used), Urdu, Education; publish only after the user says so. ~10 uploads/day on an
    unverified channel. Replacing a Short = upload the new one, then set the old one Private (ask first).
-10. The app lists new public Shorts by itself; `/api/new-shorts` pushes a notification once a day.
+11. The app lists new public Shorts by itself; `/api/new-shorts` pushes a notification once a day.
 
 ## Scene library (scene name -> what it shows)
 soul, arsh, creation (Kun), misal, womb, weight_time, sand_body (soul of light, body of sand, time and family threads),
