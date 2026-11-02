@@ -154,7 +154,9 @@ def four_steps(t, d, ot):
     img = sky("night2", [(0, (10, 16, 34)), (1, (26, 40, 46))], stars=220, seed=9).copy()
     n = 4; bw = (W * (0.82 if L.PORTRAIT else 0.6)) / n; sh = 120 * s
     x0 = W / 2 - bw * n / 2; yb = CY() + 300 * s
-    show = [sm(1 + i * (d * 0.18), 2 + i * (d * 0.18), t) for i in range(n)]
+    STEP_T = [534.7, 557.3, 589.3, 590.8]          # when each is named in NAF002
+    if 500 <= ot <= 630: show = [sm(x - 0.3, x + 0.9, ot) for x in STEP_T]
+    else: show = [sm(1 + i * (d * 0.18), 2 + i * (d * 0.18), t) for i in range(n)]
     lay = Image.new("RGB", (W, H)); dr = ImageDraw.Draw(lay)
     for i in range(n):
         x = x0 + i * bw; y = yb - (i + 1) * sh
@@ -169,7 +171,8 @@ def four_steps(t, d, ot):
     img = word(img, "", "the body", x0 + bw, yb + 60 * s, a=show[1], en_size=40)
     img = word(img, "", "the soul", x0 + 3 * bw, yb + 60 * s, a=show[3], en_size=40)
     # a soul of light climbs the steps
-    k = min(3.0, max(0.0, (t / max(1, d)) * 4.2 - 0.3)); i = int(k); f = ease(k - i)
+    k = min(3.0, max(0.0, sum(show) - 1.0)) if 500 <= ot <= 630 else min(3.0, max(0.0, (t / max(1, d)) * 4.2 - 0.3))
+    i = min(2, int(k)) if k < 3 else 2; f = ease(k - i) if k < 3 else 1.0
     xa = x0 + i * bw + bw / 2; xb = x0 + min(3, i + 1) * bw + bw / 2
     ya = yb - (i + 1) * sh; yb2 = yb - (min(3, i + 1) + 1) * sh
     x = lerp(xa, xb, f); y = lerp(ya, yb2, f) - 60 * s - 40 * s * math.sin(math.pi * f)
