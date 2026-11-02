@@ -424,7 +424,7 @@ def dua(t, d, ot):
     img = L.screen(img, L.glow_layer(lambda dr, s2: lantern(dr, s2, W * 0.80, H * 0.06, L.U * 0.6, ot), blur=10))
     img = word(img, "اطمینانِ قلب", "peace in the heart", cx, base + 100 * s, a=sm(d * 0.6, d * 0.7, t), size=64, en_size=30)
     img = motes(img, ot, seed=47, n=40)
-    return title(img, "استخارہ", t, d)
+    return title(img, "توکل" if ot < 500 else "استخارہ", t, d)
 
 # ---------------------------------------------------------------- a night of prayer, then the dawn and the two rakats of fard
 def night_dawn(t, d, ot, mode="night"):
