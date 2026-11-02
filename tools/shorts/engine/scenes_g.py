@@ -36,6 +36,9 @@ def face_glow(im, glows):
         halo = 0.45 * np.exp(-(d / 1.8) ** 2)
         m = np.maximum(m, np.maximum(core, halo))
     m = m[..., None]
+    r = max(fr for _, _, fr in glows) * w * 0.25                 # blur under the light too, so no features show through
+    b = np.asarray(im.filter(ImageFilter.GaussianBlur(r))).astype(np.float32)
+    a = a * (1 - np.clip(m * 1.6, 0, 1)) + b * np.clip(m * 1.6, 0, 1)
     light = np.array([255, 246, 220], np.float32)
     return Image.fromarray((a * (1 - 0.95 * m) + light * 0.95 * m).clip(0, 255).astype(np.uint8))
 
