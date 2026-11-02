@@ -11,9 +11,9 @@ SLIDES = {
     ],
     "hb_zarb": [
         (0.0, "N-HB8-01", "all", F),     # soldiering, binnot, wrestling
-        (1241.4, "N-HB8-02", "all", dict(F, text="ضربِ حیدری")),   # the strike of Hazrat Ali
+        (1241.4, "N-HB8-02", "all", dict(F, text="ضربِ حیدری", slash=[(1245.2, 1), (1251.6, -1)])),   # the strike of Hazrat Ali
         (1257.6, "N-HB8-03", "all", dict(F, glow=[(0.33, 0.24, 0.11)])),   # "Do you know the zarb-e-Haidari?"
-        (1274.9, "N-HB8-02", "all", F),  # he struck, exactly right
+        (1274.9, "N-HB8-02", "all", dict(F, slash=[(1277.6, 1), (1278.5, -1), (1282.6, 1)])),  # he drew and struck, exactly right
         (1287.5, "N-HB8-03", "all", dict(F, glow=[(0.33, 0.24, 0.11)])),   # "you have become my teacher"
         (1301.5, "N-HB8-01", "all", F),  # showing us how to wrestle
         (1308.1, "N-HB8-04", "all", F),  # keep looking into his eyes

@@ -9,6 +9,7 @@ opts (dict, optional):
       "glow": [(fx, fy, fr)] soft light over a face (fractions of the shown picture's width/height; fr of width):
                            a saint's face is always hidden in light
       "text": "..."        Arabic/Urdu words glowing above the picture
+      "slash": [(t, dir)]  sword strokes of light at recording time t (dir 1 = left-to-right, -1 = right-to-left), with a flash and a jolt
 "PORTRAIT" as the code shows his glowing photo instead of a picture."""
 import os, sys
 import numpy as np
@@ -73,6 +74,52 @@ def frame_image(code, crop, opts):
         return bg
     return cached(("slide", code, crop, repr(sorted(opts.items()))), mk)
 
+SLASH_DUR, SLASH_AFTER = 0.32, 0.55
+
+def slash_layer(p, fade, direction=1, seed=0):
+    """A sword stroke of light across the picture: a curved sweep with a fading trail, a crisp white edge and a glint at the tip.
+    p = how far the stroke has swept (0..1); fade = 1 while it sweeps, falling to 0 afterwards."""
+    W, H = L.W, L.H; s = 0.5                                   # drawn at half size, blurred and scaled up (soft glow, cheap)
+    w, h = int(W * s), int(H * s)
+    lay = Image.new("RGB", (w, h)); d = ImageDraw.Draw(lay)
+    var = (seed % 3 - 1) * 0.05
+    P0, P1, P2 = np.array([0.04, 0.17 + var]), np.array([0.42, 0.78]), np.array([0.97, 0.46 - var])   # high-left, dips, rises right
+    if direction < 0: P0, P1, P2 = [np.array([1 - q[0], q[1]]) for q in (P0, P1, P2)]
+    def at(u): q = (1 - u) ** 2 * P0 + 2 * (1 - u) * u * P1 + u ** 2 * P2; return q[0] * w, q[1] * h
+    head = min(1.0, p) ** 0.7; tail = max(0.0, head - 0.75); n = 60
+    for i in range(n):                                         # trail: wide and faint behind, narrow and bright at the edge
+        f = i / (n - 1); u = tail + (head - tail) * f; x, y = at(u)
+        r = (0.010 + 0.055 * (1 - f) ** 1.3) * w
+        c = int(255 * fade * (0.30 + 0.70 * f ** 1.5))
+        d.ellipse((x - r, y - r, x + r, y + r), fill=(c, int(c * 0.84), int(c * 0.50)))
+    lay = lay.filter(ImageFilter.GaussianBlur(0.010 * w))
+    e = ImageDraw.Draw(lay)
+    edge = [at(head - (head - tail) * 0.6 * k / 20) for k in range(21)]
+    e.line(edge, fill=(int(255 * fade), int(240 * fade), int(190 * fade)), width=max(3, int(0.018 * w)))
+    e.line(edge[:12], fill=(int(255 * fade),) * 3, width=max(2, int(0.008 * w)))
+    hx, hy = at(head); g = int(255 * fade); gr = 0.035 * w * (1.0 if p < 1 else 0.7)
+    for ang in (0, np.pi / 2, np.pi / 4, 3 * np.pi / 4):          # four-pointed glint
+        k = gr if ang in (0, np.pi / 2) else gr * 0.45
+        e.line((hx - k * np.cos(ang), hy - k * np.sin(ang), hx + k * np.cos(ang), hy + k * np.sin(ang)), fill=(g, g, g), width=max(1, int(0.003 * w)))
+    return lay.resize((W, H), Image.BILINEAR)
+
+def apply_slashes(img, ot, slashes):
+    """slashes: [(t, direction)] in recording time. Each is a stroke, a flash of light on impact and a small jolt."""
+    for i, sl in enumerate(slashes):
+        t0, direction = sl[0], (sl[1] if len(sl) > 1 else 1)
+        dt = ot - t0
+        if dt < 0 or dt > SLASH_DUR + SLASH_AFTER: continue
+        p = dt / SLASH_DUR; fade = 1.0 if p <= 1 else max(0.0, 1 - (dt - SLASH_DUR) / SLASH_AFTER) ** 1.5
+        k = dt - SLASH_DUR                                     # time since impact
+        if 0 <= k < 0.28:                                      # jolt: a few pixels, dying away
+            a = (1 - k / 0.28) * 14 * L.U; ox, oy = int(a * np.sin(k * 90)), int(a * 0.6 * np.cos(k * 70))
+            img = img.transform(img.size, Image.AFFINE, (1, 0, ox, 0, 1, oy), Image.BICUBIC)
+        img = Image.eval(img, lambda v, a=1 - 0.30 * fade: int(v * a))   # the scene dims a little so the stroke of light stands out
+        img = L.screen(img, slash_layer(p, fade, direction, i))
+        if 0 <= k < 0.35:                                      # warm flash on impact
+            img = Image.blend(img, Image.new("RGB", img.size, (255, 236, 200)), 0.38 * (1 - k / 0.35) ** 2)
+    return img
+
 def kb(im, p, k, still=False):
     zw, zh = im.size
     amt = 0.05 if still else 0.10
@@ -97,6 +144,8 @@ def make(name):
         X = 0.6
         if k > 0 and ot - st < X: img = Image.blend(shot(k - 1, ot), img, (ot - st) / X)
         img = L.screen(img, L.glow_layer(lambda dr, s: L.draw_motes(dr, ot, s, seed=11 + k, n=50), blur=5))
+        sl = [x for b in beats for x in b[3].get("slash", [])]
+        if sl: img = apply_slashes(img, ot, sl)
         txt = beats[k][3].get("text")
         if txt:
             al = min(1, (ot - st) / 0.8)
