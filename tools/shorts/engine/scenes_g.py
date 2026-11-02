@@ -10,6 +10,7 @@ opts (dict, optional):
                            a saint's face is always hidden in light
       "text": "..."        Arabic/Urdu words glowing above the picture
       "slash": [(t, dir)]  sword strokes of light at recording time t (dir 1 = left-to-right, -1 = right-to-left), with a flash and a jolt
+      "surprise": [(t, fx, fy, "text")]  a moment of astonishment at time t: punch-in, burst of light, exclamation pops up
 "PORTRAIT" as the code shows his glowing photo instead of a picture."""
 import os, sys
 import numpy as np
@@ -120,6 +121,44 @@ def apply_slashes(img, ot, slashes):
             img = Image.blend(img, Image.new("RGB", img.size, (255, 236, 200)), 0.38 * (1 - k / 0.35) ** 2)
     return img
 
+SURPRISE_LEN = 1.7
+
+def burst_layer(cx, cy, k, seed=0):
+    """Rays of light bursting out from (cx, cy), k = seconds since the moment (0..SURPRISE_LEN)."""
+    W, H = L.W, L.H; s = 0.5; w, h = int(W * s), int(H * s)
+    lay = Image.new("RGB", (w, h)); d = ImageDraw.Draw(lay)
+    grow = min(1, k / 0.35) ** 0.6; fade = max(0.0, 1 - k / SURPRISE_LEN) ** 1.4
+    rng = np.random.RandomState(seed); n = 28; R = max(w, h) * 0.75 * grow
+    x0, y0 = cx * s, cy * s; spin = k * 0.25
+    for i in range(n):
+        a = 2 * np.pi * i / n + spin + rng.uniform(-0.05, 0.05); half = 0.035 + 0.03 * rng.rand(); r = R * (0.6 + 0.4 * rng.rand())
+        c = int(200 * fade * (0.5 + 0.5 * rng.rand()))
+        d.polygon([(x0, y0), (x0 + r * np.cos(a - half), y0 + r * np.sin(a - half)), (x0 + r * np.cos(a + half), y0 + r * np.sin(a + half))],
+                  fill=(c, int(c * 0.85), int(c * 0.5)))
+    rr = 0.10 * w * (0.5 + grow); c = int(255 * fade)
+    d.ellipse((x0 - rr, y0 - rr, x0 + rr, y0 + rr), fill=(c, int(c * 0.93), int(c * 0.75)))
+    return lay.filter(ImageFilter.GaussianBlur(0.012 * w)).resize((W, H), Image.BILINEAR)
+
+def apply_surprise(img, ot, items):
+    """items: [(t, fx, fy[, text])] in recording time. A moment of astonishment: the picture punches in towards (fx, fy)
+    (fractions of the frame), light bursts out from there, and the exclamation pops up in Urdu above the picture."""
+    for i, it in enumerate(items):
+        t0, fx, fy = it[0], it[1], it[2]; txt = it[3] if len(it) > 3 else None
+        k = ot - t0
+        if k < 0 or k > SURPRISE_LEN: continue
+        bump = min(1, k / 0.16) * max(0.0, 1 - max(0, k - 0.16) / 1.3) ** 1.3   # quick push in, slow ease back
+        z = 1 + 0.13 * bump; cx, cy = fx * L.W, fy * L.H
+        if z > 1.001:
+            cw, ch = L.W / z, L.H / z; x0, y0 = cx - (cx) / z, cy - (cy) / z
+            img = img.transform((L.W, L.H), Image.EXTENT, (x0, y0, x0 + cw, y0 + ch), Image.BICUBIC)
+        img = L.screen(img, burst_layer(cx, cy, k, i))
+        if k < 0.25: img = Image.blend(img, Image.new("RGB", img.size, (255, 240, 210)), 0.30 * (1 - k / 0.25) ** 2)
+        if txt:
+            sc = 0.55 + 0.45 * min(1, k / 0.22) + 0.10 * np.sin(min(1, k / 0.22) * np.pi)   # pops with a little overshoot
+            al = min(1, k / 0.12) * min(1, (SURPRISE_LEN - k) / 0.4)
+            img = L.paste_center(img, L.urdu(txt, 104), L.W / 2, L.H * 0.13, alpha=al, scale=sc)
+    return img
+
 def kb(im, p, k, still=False):
     zw, zh = im.size
     amt = 0.05 if still else 0.10
@@ -146,6 +185,8 @@ def make(name):
         img = L.screen(img, L.glow_layer(lambda dr, s: L.draw_motes(dr, ot, s, seed=11 + k, n=50), blur=5))
         sl = [x for b in beats for x in b[3].get("slash", [])]
         if sl: img = apply_slashes(img, ot, sl)
+        sp = [x for b in beats for x in b[3].get("surprise", [])]
+        if sp: img = apply_surprise(img, ot, sp)
         txt = beats[k][3].get("text")
         if txt:
             al = min(1, (ot - st) / 0.8)

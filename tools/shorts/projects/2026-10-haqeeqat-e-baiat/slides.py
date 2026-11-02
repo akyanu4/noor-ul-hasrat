@@ -36,9 +36,10 @@ SLIDES = {
         (0.0, "HB4-01", None),      # Chadarghat bridge towards Malakpet
         (1780.8, "HB4-02", SQ, {"glow": [(0.28, 0.42, 0.09)]}),    # an old wali in the mosque, all listening
         (1804.4, "HB4-03", SQ),     # he throws his staff
-        (1836.2, "HB4-04", SQ, {"glow": [(0.22, 0.30, 0.09), (0.75, 0.33, 0.09)]}),  # Qadeer Piya caught it
+        (1836.2, "HB4-04", SQ, {"glow": [(0.22, 0.30, 0.09), (0.75, 0.33, 0.09)],
+                                "surprise": [(1837.85, 0.5, 0.36, "اوہو، آپ ہیں"), (1859.25, 0.5, 0.36, "اوہو، آپ ہیں")]}),  # Qadeer Piya caught it: "Oh, it is you!"
         (1846.0, "HB4-03", SQ),     # without turning round he knew
-        (1856.0, "HB4-04", SQ, {"glow": [(0.22, 0.30, 0.09), (0.75, 0.33, 0.09)]}),
+        (1856.0, "HB4-04", SQ, {"glow": [(0.22, 0.30, 0.09), (0.75, 0.33, 0.09)]}),   # "Oh, it is you!" (surprise listed above)
         (1870.7, "HB4-02", SQ, {"glow": [(0.28, 0.42, 0.09)]}),    # a wali recognises a wali
         (1886.0, "HB4-04", SQ, {"glow": [(0.22, 0.30, 0.09), (0.75, 0.33, 0.09)]}),
     ],
