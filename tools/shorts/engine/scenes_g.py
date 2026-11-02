@@ -12,7 +12,7 @@ opts (dict, optional):
       "slash": [(t, dir)]  sword strokes of light at recording time t (dir 1 = left-to-right, -1 = right-to-left), with a flash and a jolt
       "surprise": [(t, fx, fy, "text")]  a moment of astonishment at time t: punch-in, burst of light, exclamation pops up
 "PORTRAIT" as the code shows his glowing photo instead of a picture."""
-import os, sys
+import os, sys, math
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 import cfg, lib as L
@@ -159,6 +159,34 @@ def apply_surprise(img, ot, items):
             img = L.paste_center(img, L.urdu(txt, 104), L.W / 2, L.H * 0.13, alpha=al, scale=sc)
     return img
 
+def apply_fx(img, ot, fx):
+    """Moving weather and light over a picture: rain, snow, dust, embers, rays."""
+    import random as _r
+    W, H, U = L.W, L.H, L.U
+    def f(dr, sc):
+        r = _r.Random(7)
+        if fx == "rain":
+            for _ in range(160):
+                x = r.uniform(0, W); y = (r.uniform(0, H) + ot * 1400 * U) % H
+                dr.line((x * sc, y * sc, (x - 10 * U) * sc, (y + 46 * U) * sc), fill=(170, 185, 210), width=max(1, int(2 * sc)))
+        elif fx == "snow":
+            for _ in range(140):
+                sp = r.uniform(40, 110); x = (r.uniform(0, W) + 30 * U * math.sin(ot * 0.7 + r.random() * 6)) % W; y = (r.uniform(0, H) + ot * sp * U) % H
+                rr = r.uniform(2, 5) * U; dr.ellipse(((x - rr) * sc, (y - rr) * sc, (x + rr) * sc, (y + rr) * sc), fill=(235, 240, 255))
+        elif fx in ("dust", "embers"):
+            c = (210, 160, 110) if fx == "dust" else (255, 150, 60)
+            for _ in range(90):
+                sp = r.uniform(20, 80); x = (r.uniform(0, W) + ot * sp * U * (1 if fx == "dust" else 0.3)) % W
+                y = (r.uniform(0.3, 1.0) * H - (ot * sp * U if fx == "embers" else 0)) % H
+                rr = r.uniform(2, 6) * U; dr.ellipse(((x - rr) * sc, (y - rr) * sc, (x + rr) * sc, (y + rr) * sc), fill=c)
+        elif fx == "rays":
+            for k in range(7):
+                a = -math.pi / 2 + (k - 3) * 0.16 + 0.05 * math.sin(ot * 0.4 + k); x0, y0 = W * 0.5, -H * 0.05
+                w = 0.05 + 0.02 * math.sin(ot * 0.6 + k * 2)
+                pts = [(x0, y0), (x0 + 2 * H * math.cos(-a - w), y0 - 2 * H * math.sin(-a - w)), (x0 + 2 * H * math.cos(-a + w), y0 - 2 * H * math.sin(-a + w))]
+                dr.polygon([(x * sc, y * sc) for x, y in pts], fill=(70, 58, 36))
+    return L.screen(img, L.glow_layer(f, blur=2 if fx in ("rain", "snow") else 14))
+
 def kb(im, p, k, still=False):
     zw, zh = im.size
     amt = 0.05 if still else 0.10
@@ -185,6 +213,7 @@ def make(name):
         img = L.screen(img, L.glow_layer(lambda dr, s: L.draw_motes(dr, ot, s, seed=11 + k, n=50), blur=5))
         sl = [x for b in beats for x in b[3].get("slash", [])]
         if sl: img = apply_slashes(img, ot, sl)
+        if beats[k][3].get("fx"): img = apply_fx(img, ot, beats[k][3]["fx"])
         sp = [x for b in beats for x in b[3].get("surprise", [])]
         if sp: img = apply_surprise(img, ot, sp)
         txt = beats[k][3].get("text")
