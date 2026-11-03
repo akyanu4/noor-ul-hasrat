@@ -20,7 +20,9 @@
   // the app shows only the watermarked one once it is on the channel, so the list has no doubles.
   var WATERMARKED = { JfQsTHE7VrU: 'TgmQQhX_8tU', tayZJTuWGkU: 'PO-sKtkwc60', 'NSWYCYR-Tlo': 'pWWkdTuJM9c', EQbitUdOKqQ: 'N-8fydZ8lg4',
     '2yjNqJo659g': 'JCBJ2SK79Q8', 'eNHL-OsPxgQ': 'X4CTCYjFU3o', 'g8-0WIXYjcM': 'VlU4EcJGVgQ', 'Fq8X-k08A5Y': 'mWwJL6BTEZY',
-    '7wB9EQldsew': 'ObW6ccXEwn4' };
+    '7wB9EQldsew': 'ObW6ccXEwn4',
+    E7xb4BR6IPQ: 'gkYbWlFLc3w', kziC4lPGmgU: '56xW_CnWB0w', Rno3f3mGjyg: '883RmkRT9mE', jRK1SIkPkV0: 'T4cTs3h1QoI',
+    '3githsE0o6Y': '50SwaP11-vk', cbWGnUMd530: 'TkSFt5BlMzs', '77ZE201Hbjw': 'ufZ_iEByRmI' };
   function toItems(pages) {
     var seen = {}, out = [];
     pages.forEach(function (data) {
@@ -104,7 +106,7 @@
   function done(st) { paintIf(st); var w = st.waiters || []; st.waiters = []; w.forEach(function (f) { try { f(st); } catch (e) {} }); }
   function load(force, t) {
     t = t || tab;
-    var st = stateFor(t), ch = t === 'zikr' ? ZIKR : t === 'azam' ? AZAM : fam, ck = t === 'zikr' ? 'noor_zikr_v1' : t === 'azam' ? 'noor_azam_v3' : 'noor_family_v1';
+    var st = stateFor(t), ch = t === 'zikr' ? ZIKR : t === 'azam' ? AZAM : fam, ck = t === 'zikr' ? 'noor_zikr_v1' : t === 'azam' ? 'noor_azam_v4' : 'noor_family_v1';
     var key = cfg.youtubeApiKey, pl = t === 'azam' ? shortsList(ch.id) : uploads(ch.id), fallback = t === 'azam' ? uploads(ch.id) : null;
     if (!key || !pl) { st.items = []; st.error = 'unconfigured'; done(st); return; }
     if (st.loading) return;
