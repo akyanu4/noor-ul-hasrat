@@ -1,8 +1,8 @@
 """Nizam-ul-Amal-e-Fuqara, part 4 (NAF004.mp3). Times are in the original recording.
-FULL waits for a new transcript (20:56-26:24 is garbled and it ends at 29:58); SHORTS are ready."""
+FULL is the whole recording as one picture track (slides n4_full); SHORTS are the clips."""
 FULL = [
     ("title", 7.0),
-    ("voice", 0.00, 2346.0, "book_naf"),
+    ("voice", 0.00, 2346.0, "n4_full"),
     ("outro", 8.0)]
 SHORTS = {
     "NAF4_Short1_Sabr_Tasleem_Raza": ("SABR · TASLEEM · RAZA", [

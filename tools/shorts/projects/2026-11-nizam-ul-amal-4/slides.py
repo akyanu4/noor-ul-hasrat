@@ -20,3 +20,26 @@ SLIDES = {
         (1776.3, "NA4-06", "all", {"fx": "rays"}),
     ],
 }
+
+# ---- the full recording (39 min): the Shorts' own pictures in their ranges, a pool of general pictures between them.
+# NA4-07..NA4-16 (the new Sabr / Shaytan pictures) join automatically once they are in images/.
+import os
+from slidekit import full_track
+_IMG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "images")
+def _has(c): return os.path.exists(os.path.join(_IMG, c + ".png"))
+_SABR = [b for b in [(330.4, "NA4-07", "all"), (338.0, "NA4-08", "all"), (348.1, "NA4-01", "all", {"fx": "rain"}),
+                     (370.7, "NA4-09", "all"), (384.3, "NA4-01", "all", {"fx": "rain"})] if _has(b[1])]
+POOL = [("NA0-01", "all"), ("NA3-04", "all"), ("NA4-03", "all", {"fx": "rays"}), ("NA2-01", "all", {"fx": "rays"}),
+        ("NA3-05", "all"), ("NA4-02", "all", {"fx": "rays"}), ("NA3-01", "all"), ("PORTRAIT", None)]
+POOL += [(c, "all") for c in ("NA4-10", "NA4-11", "NA4-16") if _has(c)]
+SLIDES["n4_full"] = full_track([
+    (330.4, 390.4, _SABR),
+    (519.2, 582.2, SLIDES["n4_path"]),
+    (599.3, 637.8, [(599.3, "NA4-10", "all")] if _has("NA4-10") else [(599.3, "NA3-04", "all")]),
+    (896.1, 931.0, SLIDES["n4_raza"]),
+    (1584.3, 1621.4, SLIDES["n4_snake"]),
+    (1621.4, 1723.9, [b for b in [(1621.4, "NA4-12", "all"), (1647.4, "NA4-13", "all"), (1677.7, "NA4-14", "all"),
+                                   (1698.5, "NA4-15", "all"), (1712.0, "NA4-16", "all", {"fx": "rays"})] if _has(b[1])]
+                     or [(1621.4, "NA4-06", "all")]),
+    (1723.9, 1789.1, SLIDES["n4_dog"]),
+], POOL, 0.0, 2346.0)
