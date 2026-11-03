@@ -1,8 +1,13 @@
 """Picture slideshows for Nizam-ul-Amal-e-Fuqara part 4. Times are in NAF004.mp3."""
 SLIDES = {
     "n4_sabr": [
-        (330.4, "NA4-01", "all", {"fx": "rain"}),
-        (348.1, "NA4-01", "all", {"fx": "rain"}),
+        (330.4, "NA4-07", None, {"fx": "dust"}),                                   # poverty: an empty kitchen, a few coins
+        (337.6, "NA4-08", None),                                                   # illness: an old man on a charpai
+        (345.0, "NA4-01", "all", {"fx": "rain", "lightning": [345.4, 351.3]}),     # the storm of hardship
+        (355.0, "NA4-09", "all", {"fx": "rays", "text": "صبر", "text_at": (0.84, 0.33)}),
+        (364.0, "NA4-10", "all", {"text": "تسلیم"}),
+        (373.2, "NA4-11", "all", {"fx": "rays", "text": "رضا",
+                                  "surprise": [(384.4, 0.5, 0.36, "إِنَّ اللّٰهَ مَعَ الصّٰبِرِينَ")]}),
     ],
     "n4_raza": [
         (896.1, "NA4-02", "all", {"fx": "rays"}),
@@ -27,11 +32,10 @@ import os
 from slidekit import full_track
 _IMG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "images")
 def _has(c): return os.path.exists(os.path.join(_IMG, c + ".png"))
-_SABR = [b for b in [(330.4, "NA4-07", "all"), (338.0, "NA4-08", "all"), (348.1, "NA4-01", "all", {"fx": "rain"}),
-                     (370.7, "NA4-09", "all"), (384.3, "NA4-01", "all", {"fx": "rain"})] if _has(b[1])]
+_SABR = [(b[0], b[1], "all") + tuple(b[3:]) for b in SLIDES["n4_sabr"]]   # the Short's pictures, whole, for the wide frame
 POOL = [("NA0-01", "all"), ("NA3-04", "all"), ("NA4-03", "all", {"fx": "rays"}), ("NA2-01", "all", {"fx": "rays"}),
         ("NA3-05", "all"), ("NA4-02", "all", {"fx": "rays"}), ("NA3-01", "all"), ("PORTRAIT", None)]
-POOL += [(c, "all") for c in ("NA4-10", "NA4-11", "NA4-16") if _has(c)]
+# the pool stays fixed, so a re-rendered chunk joins its neighbours seamlessly
 SLIDES["n4_full"] = full_track([
     (330.4, 390.4, _SABR),
     (519.2, 582.2, SLIDES["n4_path"]),

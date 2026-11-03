@@ -8,8 +8,9 @@ opts (dict, optional):
       "frame": True        smaller picture in a thin gold frame (for small pictures, so they are not blown up as much)
       "glow": [(fx, fy, fr)] soft light over a face (fractions of the shown picture's width/height; fr of width):
                            a saint's face is always hidden in light
-      "text": "..."        Arabic/Urdu words glowing above the picture
+      "text": "..."        Arabic/Urdu words glowing above the picture ("text_at": (fx, fy) to place them elsewhere)
       "slash": [(t, dir)]  sword strokes of light at recording time t (dir 1 = left-to-right, -1 = right-to-left), with a flash and a jolt
+      "lightning": [t, ...]  lightning at recording time t: a jagged bolt and a double flash of cold light
       "surprise": [(t, fx, fy, "text")]  a moment of astonishment at time t: punch-in, burst of light, exclamation pops up
 "PORTRAIT" as the code shows his glowing photo instead of a picture."""
 import os, sys, math
@@ -162,6 +163,25 @@ def apply_surprise(img, ot, items):
             img = L.paste_center(img, L.urdu(txt, 104), L.W / 2, L.H * 0.13, alpha=al, scale=sc)
     return img
 
+def apply_lightning(img, ot, times):
+    """A jagged bolt from the sky and a double flicker of cold light, at each recording time in times."""
+    import random as _r
+    W, H, U = L.W, L.H, L.U
+    for i, t0 in enumerate(times):
+        k = ot - t0
+        if k < 0 or k > 0.7: continue
+        fl = math.exp(-(k / 0.05) ** 2) + 0.75 * math.exp(-((k - 0.2) / 0.06) ** 2)
+        if k < 0.32:
+            r = _r.Random(31 + i); x = W * r.uniform(0.25, 0.75); pts = [(x, -10)]
+            while pts[-1][1] < H * 0.55: pts.append((pts[-1][0] + r.uniform(-60, 60) * U, pts[-1][1] + r.uniform(40, 90) * U))
+            a = int(255 * min(1, fl))
+            def f(dr, sc, pts=pts, a=a):
+                q = [(x * sc, y * sc) for x, y in pts]
+                dr.line(q, fill=(a // 2, a // 2, a), width=max(2, int(14 * U * sc))); dr.line(q, fill=(a, a, a), width=max(1, int(4 * U * sc)))
+            img = L.screen(img, L.glow_layer(f, blur=6))
+        img = Image.blend(img, Image.new("RGB", img.size, (215, 228, 255)), min(0.6, 0.6 * fl))
+    return img
+
 def apply_fx(img, ot, fx):
     """Moving weather and light over a picture: rain, snow, dust, embers, rays."""
     import random as _r
@@ -217,12 +237,15 @@ def make(name):
         sl = [x for b in beats for x in b[3].get("slash", [])]
         if sl: img = apply_slashes(img, ot, sl)
         if beats[k][3].get("fx"): img = apply_fx(img, ot, beats[k][3]["fx"])
+        lt = [x for b in beats for x in b[3].get("lightning", [])]
+        if lt: img = apply_lightning(img, ot, lt)
         sp = [x for b in beats for x in b[3].get("surprise", [])]
         if sp: img = apply_surprise(img, ot, sp)
         txt = beats[k][3].get("text")
         if txt:
             al = min(1, (ot - st) / 0.8)
-            img = L.paste_center(img, L.urdu(txt, 92), L.W / 2, L.H * 0.13, alpha=al)
+            tx, ty = beats[k][3].get("text_at", (0.5, 0.13))
+            img = L.paste_center(img, L.urdu(txt, 92), L.W * tx, L.H * ty, alpha=al)
         return img
     return scene
 
