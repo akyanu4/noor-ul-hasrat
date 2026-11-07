@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.noorulhasrat.app",
+        "sha256_cert_fingerprints": ["83:81:AA:15:F2:AC:1D:17:FD:3E:C1:89:F4:3C:C7:1E:32:24:31:29:74:F8:6A:21:2D:11:BA:53:2E:7A:DC:4D"]
+      }
+    }]

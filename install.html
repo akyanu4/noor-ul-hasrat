@@ -34,6 +34,16 @@
   <div id="installed" class="done" hidden>Noor is already installed on this device. JazakAllah khair!</div>
   <button id="goInstall" class="btn gold" type="button" hidden>Install now</button>
   <div class="tabs" id="tabs"><div class="tab" data-p="android">Android</div><div class="tab" data-p="ios">iPhone</div></div>
+  <div class="card" id="apk" hidden>
+    <h2>Android app (APK)</h2>
+    <a class="btn gold" href="downloads/Noor-ul-Hasrat.apk" download>Download the Android app</a>
+    <ol>
+      <li>Tap <b>Download the Android app</b> and open the file when it finishes.</li>
+      <li>If Android asks, tap <b>Settings</b> and turn on <b>Allow from this source</b>, then go back.</li>
+      <li>Tap <b>Install</b>. Noor-ul-Hasrat appears on your home screen.</li>
+    </ol>
+    <p class="note">Android may warn that the app isn't from the Play Store. It is safe to install: it opens this same Noor-ul-Hasrat site as an app.</p>
+  </div>
   <div class="card"><h2 id="stepsTitle"></h2><ol id="steps"></ol></div>
   <a class="btn line" href="./">Open Noor in the browser</a>
   <button id="share" class="btn line" type="button">Share this page with a friend</button>
@@ -47,7 +57,8 @@
   var which = d.ios ? 'ios' : 'android';
   function render(){
     var fake = which === 'ios' ? {ios:true, safari: d.ios ? d.safari : true} : {android:true};
-    $('stepsTitle').textContent = which === 'ios' ? 'On iPhone (Safari)' : 'On Android (Chrome)';
+    $('stepsTitle').textContent = which === 'ios' ? 'On iPhone (Safari)' : 'Or add it from Chrome';
+    $('apk').hidden = which !== 'android';
     $('steps').innerHTML = I.steps(fake).map(function(s){ return '<li>'+s.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</li>'; }).join('');
     Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(t){ t.classList.toggle('on', t.getAttribute('data-p') === which); });
   }
