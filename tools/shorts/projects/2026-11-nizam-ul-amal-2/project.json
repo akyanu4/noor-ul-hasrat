@@ -1,60 +1,65 @@
 {
- "title": "Nizam-ul-Amal-e-Fuqara, part 2 (NAF002.mp3)",
- "source": "Google Drive folder 'Nizam Ul Amal E Fuqra': NAF002.mp3",
- "audio": "audio/NAF002.mp3",
- "music": "music/nasheed.mp3",
- "photo": "../../assets/azam_pasha_portrait.png",
- "youtube": {
-  "channel_id": "UCn5J7zggR3cV4sCYlEjgZJA",
-  "published": {
-   "NAF2_Short4_The_Body_Is_a_Horse": "SHyAucT3ojs"
-  }
- },
- "photo_crop": [
-  255,
-  120,
-  895,
-  933
- ],
- "photo_grade": false,
- "credits": [
-  [
-   "With thanks to Nayeem Pasha",
-   38
+  "title": "Nizam-ul-Amal-e-Fuqara, part 2 (NAF002.mp3)",
+  "source": "Google Drive folder 'Nizam Ul Amal E Fuqra': NAF002.mp3",
+  "audio": "audio/NAF002.mp3",
+  "music": "music/nasheed.mp3",
+  "photo": "../../assets/azam_pasha_portrait.png",
+  "youtube": {
+    "channel_id": "UCn5J7zggR3cV4sCYlEjgZJA",
+    "published": {
+      "NAF2_Short4_The_Body_Is_a_Horse": "SHyAucT3ojs",
+      "NAF2_Short1_The_Reality_of_Tawbah": "u6BHgjCPuCo",
+      "NAF2_Short2_As_If_Newly_Born": "_l27DFmjd6w",
+      "NAF2_Short3_Soul_and_Body": "pqjEFcL1Nlo",
+      "NAF2_Short5_Fear_and_Hope": "ta6pdvvmJBQ",
+      "NAF2_Short6_Hold_My_Picture_in_Your_Heart": "dyHUfOLlVTs"
+    }
+  },
+  "photo_crop": [
+    255,
+    120,
+    895,
+    933
   ],
-  [
-   "grandson of Hazrat Azam Pasha R.A., for his support and ijazah",
-   32
+  "photo_grade": false,
+  "credits": [
+    [
+      "With thanks to Nayeem Pasha",
+      38
+    ],
+    [
+      "grandson of Hazrat Azam Pasha R.A., for his support and ijazah",
+      32
+    ],
+    [
+      "and to Alhaj Rasheed Khan (Ayub)",
+      38
+    ],
+    [
+      "mureed and khalifa of Hazrat Azam Pasha R.A.",
+      32
+    ],
+    [
+      "for preserving and sharing the dars recordings",
+      32
+    ],
+    [
+      "Transcribed, edited and visualised by Amjad Khan",
+      38
+    ],
+    [
+      "mureed of Hazrat Azam Pasha R.A.",
+      32
+    ],
+    [
+      "Silsila Qadri · Chishti · Naqshbandi",
+      34
+    ]
   ],
-  [
-   "and to Alhaj Rasheed Khan (Ayub)",
-   38
-  ],
-  [
-   "mureed and khalifa of Hazrat Azam Pasha R.A.",
-   32
-  ],
-  [
-   "for preserving and sharing the dars recordings",
-   32
-  ],
-  [
-   "Transcribed, edited and visualised by Amjad Khan",
-   38
-  ],
-  [
-   "mureed of Hazrat Azam Pasha R.A.",
-   32
-  ],
-  [
-   "Silsila Qadri · Chishti · Naqshbandi",
-   34
+  "producer": "Produced by GiraffeTech",
+  "full_subtitle": "Nizam-ul-Amal-e-Fuqara · part 2",
+  "watermark": [
+    "YouTube  @iqra-letslearn7278  ·  SUBSCRIBE",
+    "Noor-ul-Hasrat app  ·  noor-ul-hasrat.vercel.app"
   ]
- ],
- "producer": "Produced by GiraffeTech",
- "full_subtitle": "Nizam-ul-Amal-e-Fuqara · part 2",
- "watermark": [
-  "YouTube  @iqra-letslearn7278  ·  SUBSCRIBE",
-  "Noor-ul-Hasrat app  ·  noor-ul-hasrat.vercel.app"
- ]
 }

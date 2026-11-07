@@ -6,7 +6,13 @@
   "photo": "../../assets/azam_pasha_portrait.png",
   "youtube": {
     "channel_id": "UCn5J7zggR3cV4sCYlEjgZJA",
-    "published": {}
+    "published": {
+      "NAF3_Short1_Eat_Less_Sleep_Less_Speak_Less": "oWZt1YfJ3io",
+      "NAF3_Short2_The_Sufi_Is_the_Son_of_Time": "Vz_I-E521r8",
+      "NAF3_Short3_Not_Working_Is_Not_Tawakkul": "le1EA7cNRAA",
+      "NAF3_Short4_Istikhara_Ask_Allah_First": "EIcNQnQ_TkQ",
+      "NAF3_Short5_Two_Rakats_Better_Than_a_Hundred": "KCmXwBTioD4"
+    }
   },
   "photo_crop": [
     255,
