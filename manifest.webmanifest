@@ -1,4 +1,5 @@
 {
+  "id": "/",
   "name": "Noor-ul-Hasrat",
   "short_name": "Noor-ul-Hasrat",
   "description": "Prayer times, Qur'an, duas, classes and a weekly halqa.",
@@ -26,5 +27,12 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "orientation": "portrait",
+  "categories": [
+    "lifestyle",
+    "education",
+    "books"
+  ],
+  "lang": "en"
 }
