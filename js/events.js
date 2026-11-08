@@ -1,10 +1,12 @@
-/* Noor: rotating "Events" banner at the top of Home.
-   Cards, in order: the weekly Halqa, the newest DAR UL ILM video, the next upcoming Islamic day.
-   It turns by itself every few seconds, pauses while touched, and can be swiped or tapped. */
+/* Noor: "Events" at the top of Home.
+   One featured card that stays put: the circle's next occasion, dressed for it —
+     Salgirah: birthday wishes and "Mubarak ho" with confetti; Urs: roses, the dome and a reminder to recite the Fatiha;
+     monthly mehfil: the full moon, Fatiha and Qasida-e-Burda; an Islamic day: the crescent; the halqa when it is today.
+   On the day itself the card turns into the greeting ("Salgirah Mubarak!", "Urs Sharif Mubarak") with a Join button.
+   Below it, a short still list of what else is coming (halqa countdown, other gatherings, the newest class).
+   A photo can be set per gathering in config.js: eventPhotos: { "urs-azam": "photos/events/urs.jpg", ... }. */
 (function (root) {
   'use strict';
-
-  var EVERY = 5500;
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function pickLatest(list) {
@@ -18,103 +20,152 @@
     if (h.state === 'opening') return { kick: 'Halqa · Room is open', sub: 'Starts in ' + countdown };
     return { kick: 'Weekly Halqa', sub: 'Starts in ' + countdown };
   }
+  // Which theme a gathering gets.
+  function themeOf(id, kind) {
+    if (/^salgirah/.test(id)) return 'bday';
+    if (/^urs/.test(id)) return 'urs';
+    if (id === 'mehfil') return 'mehfil';
+    if (id === 'halqa') return 'halqa';
+    return kind === 'islamic' ? 'moon' : 'moon';
+  }
+  // The words on the featured card. today = the occasion is today.
+  function wording(theme, g, today) {
+    var who = (g.name.split(':')[1] || g.name).trim().replace(/\.$/, '');
+    if (theme === 'bday') return today
+      ? { k: 'Today', t: 'Salgirah Mubarak! 🎉', m: 'Many happy returns to ' + who + '. May Allah grant him a long, healthy life in His obedience, and keep his shade over us. Ameen.', ur: 'سالگرہ مبارک' }
+      : { k: '', t: 'Salgirah Mubarak', m: who + ' · ' + g.note + '. Send your du’as and wishes.', ur: 'سالگرہ مبارک' };
+    if (theme === 'urs') return today
+      ? { k: 'Today', t: 'Urs Sharif Mubarak 🌹', m: who + '. Recite Surah al-Fatiha and send its reward to their blessed souls. Join the fatiha online.', ur: 'عرس شریف مبارک' }
+      : { k: '', t: 'Urs Sharif', m: who + ' · ' + g.note + '. Prepare to recite the Fatiha.', ur: 'عرس شریف' };
+    if (theme === 'mehfil') return { k: today ? 'Today' : '', t: 'Mahana Mehfil', m: g.note + (today ? '. Join online.' : '.'), ur: 'ماہانہ محفل' };
+    if (theme === 'halqa') return { k: today ? 'Tonight' : '', t: 'Haftawar Halqa-e-Zikr', m: g.note, ur: 'حلقۂ ذکر' };
+    return { k: '', t: g.name, m: g.note || '', ur: '' };
+  }
 
-  var api = { pickLatest: pickLatest, inDays: inDays, halqaText: halqaText, EVERY: EVERY };
+  var api = { pickLatest: pickLatest, inDays: inDays, halqaText: halqaText, themeOf: themeOf, wording: wording };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.NoorEvents = api;
 
   var N = root.Noor, C = root.NoorCore, doc = root.document;
   if (!N || !C || !doc) return;
   var home = doc.getElementById('screen-home'); if (!home) return;
+  var cfg = root.NOOR_CONFIG || {};
+
+  // ---- drawings for each theme (right side of the card)
+  var ART = {
+    bday: '<svg viewBox="0 0 120 120" aria-hidden="true"><g class="ev-float"><path d="M28 70 q2 14 -4 26" stroke="#e7d4a3" stroke-width="1.5" fill="none"/><ellipse cx="28" cy="52" rx="13" ry="17" fill="#e5594f"/><path d="M28 69 l-3 4 h6 z" fill="#e5594f"/></g>' +
+      '<g class="ev-float2"><path d="M92 62 q-3 16 3 30" stroke="#e7d4a3" stroke-width="1.5" fill="none"/><ellipse cx="92" cy="44" rx="12" ry="16" fill="#e8c46b"/><path d="M92 60 l-3 4 h6 z" fill="#e8c46b"/></g>' +
+      '<rect x="38" y="78" width="44" height="28" rx="5" fill="#f5efe0"/><rect x="38" y="78" width="44" height="9" rx="4" fill="#e7a8b8"/><rect x="46" y="66" width="28" height="14" rx="4" fill="#f9e7c4"/>' +
+      '<rect x="58" y="56" width="4" height="10" fill="#8bd0c8"/><path class="ev-flame" d="M60 47 q4 5 0 9 q-4 -4 0 -9z" fill="#ffcf5a"/></svg>',
+    urs: '<svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="50" r="40" fill="#fff6dc" opacity=".12"/><path d="M30 104 V70 h60 v34 z" fill="#e7d4a3" opacity=".9"/><path d="M38 70 Q38 36 60 28 Q82 36 82 70 z" fill="#e7d4a3"/>' +
+      '<path d="M60 28 v-12" stroke="#e7d4a3" stroke-width="2"/><path d="M60 10 a5 5 0 1 0 4 8 a4 4 0 1 1 -4 -8z" fill="#e8c46b"/><path d="M52 104 v-18 q8 -8 16 0 v18" fill="#0f3d3e"/>' +
+      '<g fill="#d64561"><circle cx="20" cy="100" r="6"/><circle cx="100" cy="98" r="6"/><circle cx="12" cy="88" r="4"/></g><g fill="#3f8f5a"><ellipse cx="26" cy="106" rx="5" ry="2"/><ellipse cx="94" cy="105" rx="5" ry="2"/></g></svg>',
+    mehfil: '<svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="70" cy="40" r="26" fill="#f4e3b0"/><circle cx="62" cy="34" r="4" fill="#e3cf94"/><circle cx="78" cy="48" r="3" fill="#e3cf94"/>' +
+      '<path d="M22 100 l20 -16 l20 16 z M58 100 l20 -16 l20 16 z" fill="#e7d4a3" opacity=".85"/><path d="M38 100 h48" stroke="#e8c46b" stroke-width="2"/><g fill="#fff3c4"><circle cx="20" cy="30" r="1.6"/><circle cx="104" cy="22" r="1.4"/><circle cx="30" cy="62" r="1.2"/></g></svg>',
+    halqa: '<svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="58" r="40" fill="#fff6dc" opacity=".12"/><rect x="50" y="56" width="20" height="44" rx="3" fill="#f5efe0"/><path d="M60 56 v-5" stroke="#3a2a10" stroke-width="2"/>' +
+      '<path class="ev-flame" d="M60 30 q9 11 0 21 q-9 -10 0 -21z" fill="#ffcf5a"/><ellipse cx="60" cy="102" rx="26" ry="4" fill="#e8c46b" opacity=".6"/></svg>',
+    moon: '<svg viewBox="0 0 120 120" aria-hidden="true"><path d="M78 22 a36 36 0 1 0 0 72 a28 28 0 1 1 0 -72z" fill="#e8c46b"/><g fill="#fff3c4"><path d="M30 30 l2 5 l5 2 l-5 2 l-2 5 l-2 -5 l-5 -2 l5 -2z"/><circle cx="96" cy="86" r="2"/><circle cx="20" cy="76" r="1.5"/></g></svg>'
+  };
+  var BG = { bday: 'linear-gradient(135deg,#5b2a52,#1f3c4f)', urs: 'linear-gradient(135deg,#123f33,#3b1d26)', mehfil: 'linear-gradient(135deg,#1b2f4a,#0f3a33)', halqa: 'linear-gradient(135deg,#0f3d3e,#2a2410)', moon: 'linear-gradient(135deg,#14304a,#0f3a33)' };
+  var BITS = { bday: ['🎉', '✨', '🎊', '⭐'], urs: ['🌹', '🥀', '🌸', '🌹'], mehfil: ['✨', '⭐', '✨'], halqa: ['✨', '✨'], moon: ['⭐', '✨'] };
 
   var css = doc.createElement('style');
   css.textContent =
-    '.ev-wrap{margin-bottom:14px}.ev-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:16px;-webkit-overflow-scrolling:touch}.ev-track::-webkit-scrollbar{display:none}' +
-    '.ev-card{flex:0 0 100%;scroll-snap-align:start;box-sizing:border-box;min-height:104px;padding:14px 16px;background:linear-gradient(135deg,var(--teal),#0f3a33);color:#f5f1e2;display:flex;align-items:center;gap:12px;cursor:pointer;border:0;text-align:left;font:inherit}' +
-    '.ev-ic{flex:none;width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:22px}' +
-    '.ev-tx{flex:1;min-width:0}.ev-k{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-soft);font-weight:700}.ev-t{font-size:15.5px;font-weight:700;line-height:1.3;margin:2px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.ev-s{font-size:12.5px;opacity:.85}' +
-    '.ev-th{flex:none;width:74px;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:rgba(0,0,0,.3)}.ev-th img{width:100%;height:100%;object-fit:cover;display:block}' +
-    '.ev-dots{display:flex;justify-content:center;gap:6px;margin-top:8px}.ev-dot{width:7px;height:7px;border-radius:50%;background:var(--line);border:0;padding:0;cursor:pointer}.ev-dot.on{background:var(--gold);width:18px;border-radius:4px}';
+    '.ev-wrap{margin-bottom:14px}' +
+    '.ev-feat{position:relative;overflow:hidden;border-radius:18px;color:#f5f1e2;padding:16px 16px 14px;min-height:150px;display:flex;gap:10px;cursor:pointer;border:1px solid rgba(232,196,107,.45);box-shadow:0 6px 18px rgba(0,0,0,.18)}' +
+    '.ev-feat .ev-tx{flex:1;min-width:0;position:relative;z-index:2}.ev-k{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#e8c46b;font-weight:700}' +
+    '.ev-t{font-size:20px;font-weight:800;line-height:1.25;margin:3px 0 4px}.ev-ur{font-family:"Noto Nastaliq Urdu",Amiri,serif;font-size:16px;color:#f3dfa6;line-height:1.9;direction:rtl;text-align:left}' +
+    '.ev-m{font-size:13px;line-height:1.5;opacity:.93}.ev-act{display:inline-block;margin-top:10px;background:#e8c46b;color:#1c1a12;font-weight:700;font-size:13px;border-radius:999px;padding:7px 14px}.ev-act.alt{background:rgba(255,255,255,.14);color:#f5f1e2}' +
+    '.ev-art{flex:none;width:112px;align-self:center;position:relative;z-index:1}.ev-art svg{width:112px;height:112px;display:block}' +
+    '.ev-photo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.35}.ev-photo+.ev-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,.15))}' +
+    '.ev-bits{position:absolute;top:0;bottom:0;right:0;width:40%;pointer-events:none;z-index:1;overflow:hidden}.ev-bits span{position:absolute;top:-14%;font-size:13px;opacity:.7;animation:evfall linear infinite}' +
+    '@keyframes evfall{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(230px) rotate(160deg)}}' +
+    '.ev-float{animation:evbob 3.2s ease-in-out infinite}.ev-float2{animation:evbob 3.8s ease-in-out infinite reverse}@keyframes evbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}' +
+    '.ev-flame{transform-origin:60px 52px;animation:evflk 1.1s ease-in-out infinite}@keyframes evflk{0%,100%{transform:scale(1)}50%{transform:scale(1.08,.94)}}' +
+    '@media (prefers-reduced-motion: reduce){.ev-bits{display:none}.ev-float,.ev-float2,.ev-flame{animation:none}}' +
+    '.ev-list{margin-top:8px;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}' +
+    '.ev-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-top:1px solid var(--line);cursor:pointer;width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left;font:inherit;color:var(--ink)}.ev-row:first-child{border-top:0}' +
+    '.ev-row .ic{flex:none;width:30px;text-align:center;font-size:18px}.ev-row .tx{flex:1;min-width:0}.ev-row b{display:block;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ev-row small{display:block;font-size:11.5px;color:var(--muted)}.ev-row .go{color:var(--muted);font-size:18px}';
   doc.head.appendChild(css);
 
   var wrap = doc.createElement('div'); wrap.className = 'ev-wrap'; wrap.id = 'eventsBox';
-  wrap.innerHTML = '<h2 class="section-title" style="margin-top:2px">Events</h2><div class="ev-track" id="evTrack" aria-roledescription="carousel" aria-label="Events"></div><div class="ev-dots" id="evDots"></div>';
+  wrap.innerHTML = '<h2 class="section-title" style="margin-top:2px">Events</h2><div id="evFeat"></div><div class="ev-list" id="evList"></div>';
   home.insertBefore(wrap, home.firstChild);
-  var track = wrap.querySelector('#evTrack'), dots = wrap.querySelector('#evDots');
-  var cur = 0, held = false, resume = 0, timer = 0;
+  var featEl = wrap.querySelector('#evFeat'), listEl = wrap.querySelector('#evList');
 
-  function cards() {
-    var F0 = root.NoorFaith, out = [], now = Date.now(), h = C.nextHalqa(now), t = halqaText(h, C.formatCountdown(h.msUntilStart));
-    var when = new Date(h.start).toLocaleString([], { weekday: 'long', hour: 'numeric', minute: '2-digit' });
-    out.push({ ic: '🕯️', k: t.kick, t: 'Haftawar halqa-e-zikr', s: (h.state === 'upcoming' || h.state === 'opening' ? when + ' · ' + t.sub : t.sub) + (h.state !== 'upcoming' ? ' · Tap to join on Google Meet' : ''), go: 'halqa', meet: h.state !== 'upcoming' });
+  function adj() { var a = 0; try { a = parseInt(localStorage.getItem('noor_hijri_adj'), 10) || 0; } catch (e) {} return a < -2 || a > 2 ? 0 : a; }
+  function localDays(day) { var ln = new Date(), lday = Date.UTC(ln.getFullYear(), ln.getMonth(), ln.getDate()); return Math.round((day - lday) / 86400000); }
 
-    var v = pickLatest(N.getClasses ? N.getClasses() : []);
-    if (v) {
-      var d = Date.parse(v.publishedAt || ''), ds = isNaN(d) ? '' : new Date(d).toLocaleDateString([], { day: 'numeric', month: 'short', year: 'numeric' });
-      out.push({ ic: '▶', k: 'Latest from DAR UL ILM', t: v.title, s: (v.ep ? v.ep + ' · ' : '') + (ds || v.series || ''), yt: v.yt, thumb: v.yt });
-    }
-
-    var G = root.NoorGatherings;   // the circle's own gatherings: mehfil, both urs and the salgirah
+  var data = { feat: null, rows: [] };
+  function collect() {
+    var now = Date.now(), G = root.NoorGatherings, F = root.NoorFaith, items = [];
+    var h = C.nextHalqa(now), ht = halqaText(h, C.formatCountdown(h.msUntilStart));
+    var halqaToday = h.state !== 'upcoming' || localDays(Date.UTC(new Date(h.start).getFullYear(), new Date(h.start).getMonth(), new Date(h.start).getDate())) === 0;
     if (G) {
       try {
-        var gadj = parseInt(localStorage.getItem('noor_hijri_adj'), 10) || 0; if (gadj < -2 || gadj > 2) gadj = 0;
         var seen = {};
-        G.upcoming(now, gadj, 400).forEach(function (x) {   // the next date of every gathering, soonest first
-          if (x.g.id === 'halqa' || seen[x.g.id]) return; seen[x.g.id] = 1;
-          var ds = new Date(x.day).toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
-          var hd = x.h && F0 ? x.h.d + ' ' + F0.MONTHS[x.h.m - 1].n : '';
-          var ln = new Date(), lday = Date.UTC(ln.getFullYear(), ln.getMonth(), ln.getDate()), dd = Math.round((x.day - lday) / 86400000);   // days from the viewer's own today
-          if (dd === 0) { out.push({ ic: x.g.ic, k: 'Today · join online', t: x.g.name, s: 'Tap to join on Google Meet · ' + x.g.note, meet: true }); return; }
-          out.push({ ic: x.g.ic, k: inDays(dd) + ' · ' + ds + (hd ? ' · ' + hd : ''), t: x.g.name, s: x.g.note, go: 'calendar' });
+        G.upcoming(now, adj(), 400).forEach(function (x) {
+          if (seen[x.g.id]) return; seen[x.g.id] = 1;
+          var dd = localDays(x.day), hd = x.h && F ? x.h.d + ' ' + F.MONTHS[x.h.m - 1].n : '';
+          items.push({ id: x.g.id, g: x.g, days: dd, theme: themeOf(x.g.id), when: new Date(x.day).toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }), hd: hd });
         });
       } catch (e) {}
     }
-
-    var F = root.NoorFaith;
     if (F && F.supported && F.supported()) {
       try {
-        var adj = parseInt(localStorage.getItem('noor_hijri_adj'), 10) || 0; if (adj < -2 || adj > 2) adj = 0;
-        var up = F.upcoming(F.dayStart(now, new Date().getTimezoneOffset()), adj, 400)[0];
-        if (up) out.push({ ic: '🌙', k: 'Coming up · ' + inDays(up.days), t: up.name, s: up.d + ' ' + F.MONTHS[up.m - 1].n + ' ' + up.y + ' AH · ' + new Date(up.ms).toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }), go: 'calendar' });
+        var up = F.upcoming(F.dayStart(now, new Date().getTimezoneOffset()), adj(), 400)[0];
+        if (up) items.push({ id: 'islamic', g: { name: up.name, note: up.d + ' ' + F.MONTHS[up.m - 1].n + ' ' + up.y + ' AH', ic: '🌙' }, days: up.days, theme: 'moon',
+          when: new Date(up.ms).toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }), hd: '' });
       } catch (e) {}
     }
-    return out;
+    var RANK = { bday: 0, urs: 1, mehfil: 2, moon: 3, halqa: 4 };   // same day: the Salgirah or Urs comes before the monthly mehfil
+    items.sort(function (a, b) { return a.days - b.days || RANK[a.theme] - RANK[b.theme]; });
+    // The featured card: the next occasion. The weekly halqa is featured only on its own day (otherwise it would always win).
+    var specials = items.filter(function (x) { return x.id !== 'halqa'; });
+    var feat = specials[0] || null;
+    if ((!feat || feat.days > 0) && halqaToday) feat = { id: 'halqa', g: { name: 'Haftawar halqa-e-zikr', note: ht.sub, ic: '🕯️' }, days: 0, theme: 'halqa', when: '', hd: '', halqa: h };
+    var rows = [];
+    rows.push({ ic: '🕯️', t: 'Haftawar halqa-e-zikr', s: ht.kick + ' · ' + ht.sub, go: 'halqa', meet: h.state !== 'upcoming' });
+    items.forEach(function (x) { if (x === feat || x.id === 'halqa' || rows.length >= 4) return; rows.push({ ic: x.g.ic || '📅', t: x.g.name, s: inDays(x.days) + ' · ' + x.when + (x.hd ? ' · ' + x.hd : ''), go: 'calendar' }); });
+    var v = pickLatest(N.getClasses ? N.getClasses() : []);
+    if (v) rows.push({ ic: '▶', t: v.title, s: 'Latest from DAR UL ILM', yt: v.yt });
+    if (feat && feat.id === 'halqa') rows.shift();
+    return { feat: feat, rows: rows };
   }
 
-  var data = [];
   function paint() {
-    var keep = cur; data = cards();
-    track.innerHTML = data.map(function (c, i) {
-      return '<button type="button" class="ev-card" data-i="' + i + '"><div class="ev-ic">' + c.ic + '</div><div class="ev-tx"><div class="ev-k">' + esc(c.k) + '</div><div class="ev-t">' + esc(c.t) + '</div><div class="ev-s">' + esc(c.s) + '</div></div>' +
-        (c.thumb && /^[\w-]{11}$/.test(c.thumb) ? '<div class="ev-th"><img alt="" loading="lazy" src="https://img.youtube.com/vi/' + c.thumb + '/mqdefault.jpg" onerror="this.style.display=\'none\'"></div>' : '') + '</button>';
+    data = collect();
+    var f = data.feat;
+    if (f) {
+      var today = f.days <= 0, w = wording(f.theme, f.g, today), photo = (cfg.eventPhotos || {})[f.id];
+      var kick = today ? (w.k || 'Today') : inDays(f.days) + (f.when ? ' · ' + f.when : '') + (f.hd ? ' · ' + f.hd : '');
+      var bits = (today || f.theme === 'bday' || f.theme === 'urs') ? (BITS[f.theme] || []).concat(BITS[f.theme] || []).map(function (b, i) {
+        return '<span style="left:' + ((i * 37 + 9) % 92) + '%;animation-duration:' + (5 + (i % 4) * 1.3) + 's;animation-delay:' + (-i * 0.9) + 's">' + b + '</span>'; }).join('') : '';
+      featEl.innerHTML = '<div class="ev-feat" role="button" tabindex="0" style="background:' + BG[f.theme] + '">' +
+        (photo ? '<div class="ev-photo" style="background-image:url(\'' + esc(photo) + '\')"></div><div class="ev-shade"></div>' : '') +
+        '<div class="ev-bits">' + bits + '</div>' +
+        '<div class="ev-tx"><div class="ev-k">' + esc(kick) + '</div><div class="ev-t">' + esc(w.t) + '</div>' + (w.ur ? '<div class="ev-ur" lang="ur">' + esc(w.ur) + '</div>' : '') +
+        '<div class="ev-m">' + esc(w.m) + '</div><span class="ev-act' + (today ? '' : ' alt') + '">' + (today ? 'Join online ›' : 'See the calendar ›') + '</span></div>' +
+        '<div class="ev-art">' + (ART[f.theme] || ART.moon) + '</div></div>';
+    } else featEl.innerHTML = '';
+    listEl.innerHTML = data.rows.map(function (r, i) {
+      return '<button type="button" class="ev-row" data-r="' + i + '"><span class="ic">' + r.ic + '</span><span class="tx"><b>' + esc(r.t) + '</b><small>' + esc(r.s) + '</small></span><span class="go">›</span></button>';
     }).join('');
-    dots.innerHTML = data.map(function (c, i) { return '<button type="button" class="ev-dot" aria-label="Show event ' + (i + 1) + '" data-d="' + i + '"></button>'; }).join('');
-    cur = Math.min(keep, data.length - 1); mark();
-    track.scrollLeft = cur * track.clientWidth;
+    listEl.hidden = !data.rows.length;
   }
-  function mark() { Array.prototype.forEach.call(dots.children, function (d, i) { d.classList.toggle('on', i === cur); }); }
-  function go(i) { cur = (i + data.length) % data.length; track.scrollTo({ left: cur * track.clientWidth, behavior: 'smooth' }); mark(); }
 
-  track.addEventListener('scroll', function () { var w = track.clientWidth || 1, i = Math.round(track.scrollLeft / w); if (i !== cur && i >= 0 && i < data.length) { cur = i; mark(); } }, { passive: true });
-  function hold() { held = true; clearTimeout(resume); }
-  function release() { clearTimeout(resume); resume = setTimeout(function () { held = false; }, 6000); }
-  ['touchstart', 'pointerdown', 'mouseenter', 'focusin'].forEach(function (e) { track.addEventListener(e, hold, { passive: true }); });
-  ['touchend', 'touchcancel', 'pointerup', 'mouseleave', 'focusout'].forEach(function (e) { track.addEventListener(e, release, { passive: true }); });
-  dots.addEventListener('click', function (e) { var d = e.target.closest && e.target.closest('[data-d]'); if (d) { hold(); go(+d.getAttribute('data-d')); release(); } });
-  track.addEventListener('click', function (e) {
-    var c = e.target.closest && e.target.closest('.ev-card'); if (!c) return;
-    var d = data[+c.getAttribute('data-i')]; if (!d) return;
-    if (d.meet && N.openMeet) { N.openMeet(); } else if (d.yt) { N.playById(d.yt); } else if (d.go) { N.route(d.go); }
+  featEl.addEventListener('click', function () {
+    var f = data.feat; if (!f) return;
+    if (f.days <= 0 && N.openMeet) N.openMeet(); else N.route(f.id === 'halqa' ? 'halqa' : 'calendar');
+  });
+  listEl.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-r]'); if (!b) return;
+    var r = data.rows[+b.getAttribute('data-r')]; if (!r) return;
+    if (r.meet && N.openMeet) N.openMeet(); else if (r.yt) N.playById(r.yt); else if (r.go) N.route(r.go);
   });
 
-  var calm = root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function tick() {
-    if (calm || held || doc.hidden || home.offsetParent === null || data.length < 2) return;
-    go(cur + 1);
-  }
   paint();
-  timer = setInterval(tick, EVERY);
-  setInterval(function () { if (!held) paint(); }, 30000);                 // keeps the Halqa countdown fresh
+  setInterval(paint, 30000);                                   // keeps the halqa countdown fresh
   if (N.onClasses) N.onClasses(function () { paint(); });
   N.onScreen(function (id) { if (id === 'home') paint(); });
 })(typeof self !== 'undefined' ? self : this);
