@@ -13,6 +13,7 @@
   oneSignalAppId: "46d22dc3-ea76-4e2f-aaf7-1eeb250efa84",
   // Optional accounts (More → My Account). Turn on after the Firebase service account and Gmail are set in Vercel (tools/firebase/ACCOUNTS-SETUP.md).
   accountsOn: false,
+  bayahOn: true,      // "Taking Bai'at" steps (More → Bay'ah), approved 8 Nov 2026
 
   // Donate screen: paste the link to your donation page. Leave empty to show "coming soon".
   donateTitle: "Support the mission",
