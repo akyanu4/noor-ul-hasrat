@@ -12,6 +12,11 @@ import lib as L
 MODE = sys.argv[1]
 if MODE == "full" or (MODE == "frames" and sys.argv[2] == "full"): L.setup(1920, 1080); FPS = 25
 else: L.setup(1080, 1920); FPS = 30
+# The Bay'ah reminder on the closing card: always on full dars; on Shorts that teach a practice of dhikr
+# (project.json "bayah_shorts": [names], or a name with tasawwur / zarb / sabr / eat_less / muraqaba).
+import re as _re
+_nm = sys.argv[2] if MODE == "short" else (sys.argv[2].split(":", 1)[1] if MODE == "frames" and sys.argv[2].startswith("short:") else None)
+L.BAYAH = cfg.P.get("bayah", True) if _nm is None else (_nm in cfg.P.get("bayah_shorts", []) or bool(_re.search(r"(?i)tasawwur|zarb|sabr|eat_less|muraqaba", _nm)))
 import scenes_a as A, scenes_b as B, scenes_c as C, scenes_d as D, scenes_e as E, scenes_f as F, scenes_g as G, scenes_h as Hh
 from captions import CAPTIONS
 from timeline import FULL, SHORTS
@@ -51,6 +56,11 @@ def seg_frame(sg, tl):
             if sz < 36: y -= L.H * 0.008
             img = L.paste_center(img, L.serif_text(txt, sz, (215, 200, 165) if sz >= 36 else (190, 176, 140)), L.W / 2, y, alpha=min(1, max(0, (tl - 0.3) / 0.8)))
             y += L.H * (0.035 if sz < 36 else 0.033)
+        if getattr(L, "BAYAH", False):   # Shorts that teach a practice of dhikr: take Bay'ah and follow a guide
+            ab = min(1, max(0, (tl - 0.6) / 0.8)); y += L.H * 0.006
+            img = L.paste_center(img, A.bayah_urdu(40), L.W / 2, y, alpha=ab); y += L.H * 0.029
+            for line in A.BAYAH_EN:
+                img = L.paste_center(img, L.serif_text(line, 30, (232, 214, 170)), L.W / 2, y, alpha=ab); y += L.H * 0.018
         if cfg.P.get("producer"):   # small, bottom-right corner
             pi = L.serif_text(cfg.P["producer"], 30, (200, 185, 150))
             img = L.paste_center(img, pi, L.W - pi.width / 2 - 40 * L.U, L.H * 0.965, alpha=min(1, max(0, (tl - 0.3) / 0.8)))

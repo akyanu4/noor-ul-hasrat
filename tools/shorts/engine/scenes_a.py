@@ -73,6 +73,10 @@ def portrait(size):
 def bg_night():
     return cached("bg_night", lambda: L.rgrad(L.W / 2, L.H * 0.4, (18, 50, 42), (4, 12, 11), max(L.W, L.H) * 0.75))
 
+BAYAH_EN = ["Take Bay\u2019ah with a Shaykh or his Khalifa,", "and follow their guidance to reach the right station."]
+BAYAH_UR = "\u06a9\u0633\u06cc \u0634\u06cc\u062e \u06cc\u0627 \u062e\u0644\u06cc\u0641\u06c1 \u0633\u06d2 \u0628\u06cc\u0639\u062a \u06a9\u0631\u06cc\u06ba \u0627\u0648\u0631 \u0627\u0646 \u06a9\u06cc \u0631\u06c1\u0646\u0645\u0627\u0626\u06cc \u0645\u06cc\u06ba \u0686\u0644\u06cc\u06ba"
+def bayah_urdu(size): return cached(("bayah_ur", size), lambda: L.urdu(BAYAH_UR, size, (232, 200, 120), path=L.URDU_R))
+
 def title_card(t, d, closing=False):
     img = bg_night().copy()
     lay = L.glow_layer(lambda dr, s: L.draw_motes(dr, t, s, seed=5, n=60), blur=5)
@@ -92,6 +96,13 @@ def title_card(t, d, closing=False):
     img = L.paste_center(img, L.urdu("حضرت اعظم پاشا رحمۃ اللہ علیہ", 54, (225, 212, 182), path=L.URDU_R), tx, ty + 305 * L.U, alpha=fade)
     sub = "JazakAllah khair for watching" if closing else cfg.P.get("full_subtitle", "The soul's journey · Kun fayakun · the blessed malida")
     img = L.paste_center(img, L.serif_text(sub, 40, (215, 205, 180)), tx, ty + 390 * L.U, alpha=fade * sm(0.6, 1.4, t))
+    if closing and getattr(L, "BAYAH", False):   # the Bay'ah reminder: take Bay'ah with a Shaykh or Khalifa and follow their guidance
+        ab = fade * sm(1.2, 2.0, t)
+        if L.PORTRAIT: bx, by, es, us, gap = L.W / 2, ty + 480 * L.U, 34, 44, 46
+        else: bx, by, es, us, gap = L.W * 0.30, L.H * 0.885, 26, 30, 32
+        img = L.paste_center(img, bayah_urdu(us), bx, by, alpha=ab)
+        for k, line in enumerate(BAYAH_EN):
+            img = L.paste_center(img, L.serif_text(line, es, (225, 212, 182)), bx, by + (gap * 1.6 + gap * k) * L.U, alpha=ab)
     if closing and not L.PORTRAIT:   # credits from project.json under the closing words, producer in the corner
         y = ty + 460 * L.U; a = fade * sm(1.0, 1.8, t)
         for line in cfg.P.get("credits", []):

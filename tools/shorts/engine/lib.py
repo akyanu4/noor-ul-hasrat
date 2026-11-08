@@ -12,7 +12,7 @@ SERIF = FD + "fontsource-cormorant-garamond-5.3.0/package/files/cormorant-garamo
 BOLD = FD + "montserrat/package/files/montserrat-latin-900-normal.woff"
 GOLD = (240, 200, 110); WARM = (255, 225, 160); IVORY = (236, 228, 210)
 
-W = H = 0; U = 1.0; PORTRAIT = False
+W = H = 0; U = 1.0; PORTRAIT = False; BAYAH = False
 def setup(w, h):
     global W, H, U, PORTRAIT
     W, H = w, h; U = min(w, h) / 1080; PORTRAIT = h > w
