@@ -285,7 +285,12 @@
   (cfg.practiceShorts || []).forEach(function (id) { PRACTICE_IDS[id] = 1; });
   function isPractice(it) { return !!(it && (it.wide || PRACTICE_IDS[it.id] || PRACTICE_RE.test(it.title || ''))); }
   // Full dars and dhikr-practice Shorts: for signed-in members who have taken Bai'at (marked in My Account).
-  function lockReason(it) { var A = root.NoorAccount; if (!isPractice(it) || !(A && A.on)) return ''; return !A.user() ? 'signin' : (A.hasBayah && !A.hasBayah()) ? 'bayah' : ''; }
+  function lockReason(it) {
+    var A = root.NoorAccount; if (!isPractice(it) || !(A && A.on)) return '';
+    if (!A.user()) return 'signin';
+    var st = A.bayahStatus ? A.bayahStatus() : 'approved';
+    return st === 'approved' ? '' : st === 'pending' ? 'pending' : 'bayah';
+  }
   function locked(it) { return !!lockReason(it); }
   var BAYAH_EN = 'Practices of dhikr are learnt from a guide. Take Bay\u2019ah with a Shaykh or his Khalifa and follow their guidance, so that you reach the right station (maqam).';
   var BAYAH_UR = '\u0630\u06a9\u0631 \u06a9\u06d2 \u0637\u0631\u06cc\u0642\u06d2 \u06a9\u0633\u06cc \u0631\u06c1\u0628\u0631 \u0633\u06d2 \u0633\u06cc\u06a9\u06be\u06d2 \u062c\u0627\u062a\u06d2 \u06c1\u06cc\u06ba\u06d4 \u06a9\u0633\u06cc \u0634\u06cc\u062e \u06cc\u0627 \u0627\u0646 \u06a9\u06d2 \u062e\u0644\u06cc\u0641\u06c1 \u0633\u06d2 \u0628\u06cc\u0639\u062a \u06a9\u0631\u06cc\u06ba \u0627\u0648\u0631 \u0627\u0646 \u06a9\u06cc \u0631\u06c1\u0646\u0645\u0627\u0626\u06cc \u0645\u06cc\u06ba \u0686\u0644\u06cc\u06ba\u060c \u062a\u0627\u06a9\u06c1 \u0635\u062d\u06cc\u062d \u0645\u0642\u0627\u0645 \u062a\u06a9 \u067e\u06c1\u0646\u0686\u06cc\u06ba\u06d4';
@@ -302,7 +307,9 @@
       viewer.querySelector('.fv-frame').innerHTML = '<div class="fv-gate"><div class="fv-gi">🤝</div><b>For murids who have taken Bai\u2019at</b><p>' + esc(BAYAH_EN) + '</p><p class="ur" dir="rtl" lang="ur">' + esc(BAYAH_UR) + '</p>' +
         (why === 'signin'
           ? '<p>This ' + what + ' teaches a practice of dhikr. Sign up (free), then tell us in My Account that you have taken Bai\u2019at, and it opens here.</p><button type="button" class="fv-signin">Sign up or sign in</button>'
-          : '<p>Have you taken Bai\u2019at with a Shaykh or his Khalifa? Mark it in My Account and this ' + what + ' opens here.</p><button type="button" class="fv-signin fv-bay">Yes, I have taken Bai\u2019at</button>') +
+          : why === 'pending'
+          ? '<p>JazakAllah khair. Your Bai\u2019at is waiting for the admin\u2019s approval. Once it is approved, this ' + what + ' opens here.</p><button type="button" class="fv-signin fv-bay">See my Bai\u2019at status</button>'
+          : '<p>Have you taken Bai\u2019at with a Shaykh or his Khalifa? Mark it in My Account. After the admin approves it, this ' + what + ' opens here.</p><button type="button" class="fv-signin fv-bay">Yes, I have taken Bai\u2019at</button>') +
         '<button type="button" class="fv-how">How to take Bai\u2019at</button></div>';
     } else viewer.querySelector('.fv-frame').innerHTML = '<iframe src="https://www.youtube.com/embed/' + it.id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
     viewer.querySelector('.fv-t').textContent = clean(it.title || '');

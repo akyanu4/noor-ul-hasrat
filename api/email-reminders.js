@@ -2,6 +2,7 @@
      - gatherings: one email on the day of any gathering (weekly halqa, monthly mehfil, Urs, Salgirah), and the day
        before an Urs or Salgirah. Sent together, members in Bcc, so nobody sees anyone else's address.
      - Fridays: each member's own Iman Health summary for the last 7 days (only to themselves).
+     - the admin (ADMIN_EMAIL, or the app's Gmail): a short list of Bai'at waiting for approval, if there are any.
    Members choose these under More → My Account. Gmail allows about 500 emails a day, which is plenty for the circle.
    Environment: FIREBASE_SERVICE_ACCOUNT, GMAIL_USER, GMAIL_APP_PASSWORD, CRON_SECRET. Optional: SITE_URL, HIJRI_ADJ, RTDB_URL.
    Add ?dry=1 to see what would be sent without sending anything. */
@@ -79,6 +80,17 @@ async function run(env, nowMs, fetchFn, dry) {
   if (news.length && gTo.length) {
     const e = gatheringEmail(news, site, env.MEET_URL || 'https://meet.google.com/mxc-pqnb-xba');
     for (let i = 0; i < gTo.length; i += BCC_CHUNK) await send(Object.assign({ to: env.GMAIL_USER, bcc: gTo.slice(i, i + BCC_CHUNK) }, e));
+  }
+
+  // Bai'at waiting for the admin's approval (admin.html → Approve)
+  const okMap = (await d.get('bayah_ok')) || {};
+  const waiting = Object.keys(profiles).map(id => ({ id, p: profiles[id] || {} })).filter(x => x.p.bayah && x.p.bayah.taken && !(okMap[x.id] && (okMap[x.id].approved || okMap[x.id].rejected)));
+  res.bayahWaiting = waiting.length;
+  if (waiting.length) {
+    const rows = waiting.map(x => '<li style="margin:4px 0"><b>' + M.esc(x.p.name || '') + '</b>, Bai\u2019at with ' + M.esc(x.p.bayah.with || '?') + ' (' + M.esc(x.p.email || '') + (x.p.phone ? ', ' + M.esc(x.p.phone) : '') + ')</li>').join('');
+    await send({ to: env.ADMIN_EMAIL || env.GMAIL_USER, subject: waiting.length + ' Bai\u2019at waiting for your approval',
+      html: M.layout('Bai\u2019at waiting for approval', '<p style="margin:0 0 8px;line-height:1.55">These members marked that they have taken Bai\u2019at. Approve them on the admin page to open the full dars and dhikr practices for them.</p><ul style="padding-left:18px;margin:0">' + rows + '</ul>' + M.button(site + '/admin.html', 'Open the admin page'), site, 'Sent to the Noor-ul-Hasrat admin.'),
+      text: waiting.map(x => '- ' + (x.p.name || '') + ', with ' + (x.p.bayah.with || '?') + ' (' + (x.p.email || '') + ')').join('\n') + '\n\nApprove: ' + site + '/admin.html' });
   }
 
   if (istWeekday(nowMs) === 5) {                       // Friday

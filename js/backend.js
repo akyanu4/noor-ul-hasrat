@@ -244,7 +244,9 @@
     // For the admin page. The database rules allow these only for ids listed under admins/.
     var admin = {
       isAdmin: function () { var u = account.user(); return u ? get('admins/' + u.uid).then(function (v) { return v === true; }, function () { return false; }) : Promise.resolve(false); },
-      get: function (path) { return get(path); }
+      get: function (path) { return get(path); },
+      put: function (path, v) { return call('PUT', path, v); },
+      del: function (path) { return call('DELETE', path); }
     };
 
     return {
