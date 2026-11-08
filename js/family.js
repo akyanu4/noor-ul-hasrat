@@ -237,7 +237,7 @@
   }
   function shortTile(v) {
     return '<div class="fm-sc"><div class="fm-sth" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '">' +
-      '<img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg\'"><div class="fm-play">▶</div>' + (isPractice(v) ? '<div class="fm-prac">' + (locked(v) ? '🔒 Members' : '🤝 Bay\u2019ah') + '</div>' : '') + '</div>' +
+      '<img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg\'"><div class="fm-play">▶</div>' + (isPractice(v) ? '<div class="fm-prac">' + (locked(v) ? '🔒 Murids' : '🤝 Bay\u2019ah') + '</div>' : '') + '</div>' +
       '<div class="fm-st">' + esc(v.title) + '</div>' +
       '<div class="fm-stat" data-sid="' + v.id + '">' + esc(statText(v.id)) + '</div>' +
       '<div class="fm-acts"><a class="fm-like" target="_blank" rel="noopener" href="https://www.youtube.com/shorts/' + v.id + '">👍 Like</a>' +
@@ -284,7 +284,9 @@
   var PRACTICE_RE = /tasawwur|zarb[-\s]*e[-\s]*haidari|you have become my teacher|eat less,? sleep less|sabr,? tasleem|\bmuraqaba|\bpractice of (zikr|dhikr)/i;
   (cfg.practiceShorts || []).forEach(function (id) { PRACTICE_IDS[id] = 1; });
   function isPractice(it) { return !!(it && (it.wide || PRACTICE_IDS[it.id] || PRACTICE_RE.test(it.title || ''))); }
-  function locked(it) { var A = root.NoorAccount; return isPractice(it) && !!(A && A.on) && !A.user(); }
+  // Full dars and dhikr-practice Shorts: for signed-in members who have taken Bai'at (marked in My Account).
+  function lockReason(it) { var A = root.NoorAccount; if (!isPractice(it) || !(A && A.on)) return ''; return !A.user() ? 'signin' : (A.hasBayah && !A.hasBayah()) ? 'bayah' : ''; }
+  function locked(it) { return !!lockReason(it); }
   var BAYAH_EN = 'Practices of dhikr are learnt from a guide. Take Bay\u2019ah with a Shaykh or his Khalifa and follow their guidance, so that you reach the right station (maqam).';
   var BAYAH_UR = '\u0630\u06a9\u0631 \u06a9\u06d2 \u0637\u0631\u06cc\u0642\u06d2 \u06a9\u0633\u06cc \u0631\u06c1\u0628\u0631 \u0633\u06d2 \u0633\u06cc\u06a9\u06be\u06d2 \u062c\u0627\u062a\u06d2 \u06c1\u06cc\u06ba\u06d4 \u06a9\u0633\u06cc \u0634\u06cc\u062e \u06cc\u0627 \u0627\u0646 \u06a9\u06d2 \u062e\u0644\u06cc\u0641\u06c1 \u0633\u06d2 \u0628\u06cc\u0639\u062a \u06a9\u0631\u06cc\u06ba \u0627\u0648\u0631 \u0627\u0646 \u06a9\u06cc \u0631\u06c1\u0646\u0645\u0627\u0626\u06cc \u0645\u06cc\u06ba \u0686\u0644\u06cc\u06ba\u060c \u062a\u0627\u06a9\u06c1 \u0635\u062d\u06cc\u062d \u0645\u0642\u0627\u0645 \u062a\u06a9 \u067e\u06c1\u0646\u0686\u06cc\u06ba\u06d4';
   api.isPractice = isPractice; api.BAYAH_EN = BAYAH_EN; api.BAYAH_UR = BAYAH_UR;
@@ -296,7 +298,12 @@
     var prac = isPractice(it), bn = viewer.querySelector('.fv-bayah');
     bn.hidden = !prac || locked(it);
     if (locked(it)) {
-      viewer.querySelector('.fv-frame').innerHTML = '<div class="fv-gate"><div class="fv-gi">🤝</div><b>For registered members</b><p>' + esc(BAYAH_EN) + '</p><p class="ur" dir="rtl" lang="ur">' + esc(BAYAH_UR) + '</p><p>This ' + (it.wide ? 'full dars' : 'Short') + ' teaches a practice of dhikr. Sign in with a free account to watch it here.</p><button type="button" class="fv-signin">Sign in or create an account</button></div>';
+      var why = lockReason(it), what = it.wide ? 'full dars' : 'Short';
+      viewer.querySelector('.fv-frame').innerHTML = '<div class="fv-gate"><div class="fv-gi">🤝</div><b>For murids who have taken Bai\u2019at</b><p>' + esc(BAYAH_EN) + '</p><p class="ur" dir="rtl" lang="ur">' + esc(BAYAH_UR) + '</p>' +
+        (why === 'signin'
+          ? '<p>This ' + what + ' teaches a practice of dhikr. Sign up (free), then tell us in My Account that you have taken Bai\u2019at, and it opens here.</p><button type="button" class="fv-signin">Sign up or sign in</button>'
+          : '<p>Have you taken Bai\u2019at with a Shaykh or his Khalifa? Mark it in My Account and this ' + what + ' opens here.</p><button type="button" class="fv-signin fv-bay">Yes, I have taken Bai\u2019at</button>') +
+        '<button type="button" class="fv-how">How to take Bai\u2019at</button></div>';
     } else viewer.querySelector('.fv-frame').innerHTML = '<iframe src="https://www.youtube.com/embed/' + it.id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
     viewer.querySelector('.fv-t').textContent = clean(it.title || '');
     viewer.querySelector('.fv-like').href = 'https://www.youtube.com/shorts/' + it.id;   // likes count only when given on YouTube itself
@@ -322,7 +329,7 @@
         '.fv-t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fv button,.fv-bar a{background:rgba(255,255,255,.12);color:#f3e7c9;border:0;border-radius:999px;padding:9px 14px;font-size:15px;cursor:pointer;text-decoration:none;font-family:inherit}.fv-bar a.fv-sub{background:#c4302b;color:#fff}' +
         '.fv button:disabled{opacity:.35}.fv-bar{display:flex;flex-wrap:wrap;gap:8px 10px;justify-content:center;padding:8px 8px 0}.fv-bar2{padding-bottom:max(10px,env(safe-area-inset-bottom))}.fv-stat{width:100%;text-align:center;color:#cbbf9f;font-size:12px}.fv-x{font-size:18px!important;padding:6px 13px!important}' +
         '.fv-bayah{position:relative;margin:52px 10px 0;max-width:560px;z-index:2;background:rgba(232,196,107,.16);border:1px solid rgba(232,196,107,.5);color:#f3e7c9;border-radius:12px;padding:7px 12px;font-size:12.5px;line-height:1.45;text-align:center}.fv-bayah[hidden]{display:none}.fv-bayah:not([hidden])+.fv-frame{margin-top:6px;height:calc(100% - 260px)}.fv-bayah .ur,.fv-gate .ur{font-family:"Noto Nastaliq Urdu",Amiri,serif;font-size:14px;line-height:2;margin:2px 0 0}' +
-        '.fv-gate{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;color:#f3e7c9;background:linear-gradient(160deg,#0f3d3e,#1c1a12);overflow:auto}.fv-gate b{font-size:18px;color:#e8c46b}.fv-gate p{font-size:13.5px;line-height:1.55;margin:8px 0}.fv-gi{font-size:34px}.fv .fv-signin{background:#e8c46b;color:#1c1a12;font-weight:700;margin-top:6px}' +
+        '.fv-gate{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;color:#f3e7c9;background:linear-gradient(160deg,#0f3d3e,#1c1a12);overflow:auto}.fv-gate b{font-size:18px;color:#e8c46b}.fv-gate p{font-size:13.5px;line-height:1.55;margin:8px 0}.fv-gi{font-size:34px}.fv .fv-signin{background:#e8c46b;color:#1c1a12;font-weight:700;margin-top:6px}.fv .fv-how{background:none;text-decoration:underline;color:#e7d4a3;margin-top:4px}' +
         '.fv-full{background:#e8c46b!important;color:#1c1a12!important;font-weight:700}.fv-full[hidden]{display:none}.fv-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#f3e7c9;padding:10px 16px;border-radius:12px;font-size:14px;max-width:86vw;text-align:center;z-index:3}.fv-frame{margin-top:52px}.fv.fv-wide .fv-frame{aspect-ratio:16/9;width:100vw;height:auto;max-height:calc(100% - 168px)}';
       doc.head.appendChild(st);
       viewer = doc.createElement('div'); viewer.className = 'fv'; viewer.hidden = true; viewer.setAttribute('role', 'dialog'); viewer.setAttribute('aria-label', 'Short');
@@ -333,7 +340,9 @@
       viewer.addEventListener('click', function (e) {
         var b = e.target.closest && e.target.closest('button'); if (!b) return;
         if (b.classList.contains('fv-x')) vclose();
+        else if (b.classList.contains('fv-bay')) { vclose(); if (root.NoorAccount && root.NoorAccount.askBayah) root.NoorAccount.askBayah(); else N.route('account'); }
         else if (b.classList.contains('fv-signin')) { vclose(); N.route('account'); }
+        else if (b.classList.contains('fv-how')) { vclose(); N.route('bayah'); }
         else if (b.classList.contains('fv-prev') && vpos > 0) { vpos--; vshow(); }
         else if (b.classList.contains('fv-next') && vpos < vlist.length - 1) { vpos++; vshow(); }
         else if (b.classList.contains('fv-share')) { var it = vlist[vpos]; if (it) shareShort(it.id, it.title); }

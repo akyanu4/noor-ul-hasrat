@@ -78,13 +78,14 @@
       '<div class="stat"><b>' + members.filter(function (m) { return m.p.joined && Date.now() - m.p.joined < 30 * 86400000; }).length + '</b><span>joined in 30 days</span></div>' +
       '<div class="stat"><b>' + active.length + '</b><span>active this week</span></div>' +
       '<div class="stat"><b>' + (active.length ? avg : '–') + '</b><span>average Iman Health</span></div>' +
+      '<div class="stat"><b>' + members.filter(function (m) { return m.p.bayah && m.p.bayah.taken; }).length + '</b><span>have taken Bai\u2019at 🤝</span></div>' +
       '<div class="stat"><b>' + members.filter(function (m) { return m.p.remind && m.p.remind.gather; }).length + '</b><span>get gathering emails</span></div></div>';
     h += '<div class="bar"><input type="search" id="q" placeholder="Search name, email, city" value="' + esc(q) + '"><button id="csv">Download CSV</button></div><div class="list">';
     var ql = q.toLowerCase();
     members.filter(function (m) { return !ql || [m.p.name, m.p.email, m.p.city, m.p.phone].join(' ').toLowerCase().indexOf(ql) !== -1; }).forEach(function (m) {
       var sc = fresh(m) ? m.s.score : null;
       h += '<button class="m" data-id="' + esc(m.id) + '"><div class="sc ' + (sc == null ? '' : band(sc)) + '">' + (sc == null ? '–' : sc) + '<small>' + (sc == null ? 'no data' : 'of 100') + '</small></div>' +
-        '<div class="who"><b>' + esc(m.p.name || '(no name yet)') + '</b><span>' + esc([m.p.city, m.p.email].filter(Boolean).join(' · ')) + '</span><span>' + (m.s ? esc(m.s.label || '') + ' · updated ' + ago(m.s.updated) : 'Has not used Iman Health yet') + '</span></div></button>';
+        '<div class="who"><b>' + esc(m.p.name || '(no name yet)') + (m.p.bayah && m.p.bayah.taken ? ' 🤝' : '') + '</b><span>' + esc([m.p.city, m.p.email].filter(Boolean).join(' · ')) + '</span><span>' + (m.s ? esc(m.s.label || '') + ' · updated ' + ago(m.s.updated) : 'Has not used Iman Health yet') + '</span></div></button>';
       if (open === m.id) h += '<div class="det" id="det">Loading…</div>';
     });
     if (!members.length) h += '<div class="card">No members yet. Share the app and ask people to tap More → My Account.</div>';
@@ -110,6 +111,7 @@
       var h = '<h2>' + esc(m.p.name || '') + '</h2><div class="kv"><span>Email</span><a href="mailto:' + esc(m.p.email) + '">' + esc(m.p.email) + '</a>' +
         (m.p.phone ? '<span>Mobile</span><a href="tel:' + esc(m.p.phone.replace(/\s/g, '')) + '">' + esc(m.p.phone) + '</a>' : '') +
         '<span>City</span>' + esc(m.p.city || '–') + '<span>Joined</span>' + (m.p.joined ? esc(new Date(m.p.joined).toLocaleDateString()) : '–') +
+        '<span>Bai\u2019at</span><div>' + (m.p.bayah && m.p.bayah.taken ? 'Taken' + (m.p.bayah.with ? ' with ' + esc(m.p.bayah.with) : '') + (m.p.bayah.at ? ' (marked ' + esc(new Date(m.p.bayah.at).toLocaleDateString()) + ')' : '') : 'Not yet') + '</div>' +
         '<span>Reminders</span><div>' + (rem.gather ? '<span class="pill">gathering emails</span>' : '') + (rem.weekly ? '<span class="pill">Friday summary</span>' : '') + (rem.push ? '<span class="pill">app notifications</span>' : '') + (!rem.gather && !rem.weekly && !rem.push ? 'none' : '') + '</div>' +
         '<span>Last 7 days</span><div><b>' + lv.score + '</b> · ' + esc(lv.label) + ' — prayer ' + Math.round(lv.parts.prayer * 100) + '%, fasting ' + Math.round(lv.parts.fast * 100) + '%, dhikr ' + Math.round(lv.parts.dhikr * 100) + '%, good deeds ' + Math.round(lv.parts.deeds * 100) + '%</div>' +
         '<span>This week</span><div>' + sm.onTime + ' on time (' + sm.masjid + ' at the masjid), ' + sm.late + ' late, ' + sm.fasts + ' fasts, ' + sm.dhikr.toLocaleString() + ' dhikr, ' + sm.deeds + ' good deeds</div>' +
@@ -125,10 +127,10 @@
   }
 
   function csv() {
-    var rows = [['Name', 'Email', 'Mobile', 'City', 'Joined', 'Iman Health (last 7 days)', 'Level', 'Updated', 'Gathering emails', 'Friday summary', 'App notifications']];
+    var rows = [['Name', 'Email', 'Mobile', 'City', 'Joined', 'Iman Health (last 7 days)', 'Level', 'Updated', 'Gathering emails', 'Friday summary', 'App notifications', "Bai'at", "Bai'at with"]];
     members.forEach(function (m) {
       var r = m.p.remind || {};
-      rows.push([m.p.name, m.p.email, m.p.phone, m.p.city, m.p.joined ? new Date(m.p.joined).toISOString().slice(0, 10) : '', m.s ? m.s.score : '', m.s ? m.s.label : '', m.s && m.s.updated ? new Date(m.s.updated).toISOString().slice(0, 10) : '', r.gather ? 'yes' : 'no', r.weekly ? 'yes' : 'no', r.push ? 'yes' : 'no']);
+      rows.push([m.p.name, m.p.email, m.p.phone, m.p.city, m.p.joined ? new Date(m.p.joined).toISOString().slice(0, 10) : '', m.s ? m.s.score : '', m.s ? m.s.label : '', m.s && m.s.updated ? new Date(m.s.updated).toISOString().slice(0, 10) : '', r.gather ? 'yes' : 'no', r.weekly ? 'yes' : 'no', r.push ? 'yes' : 'no', m.p.bayah && m.p.bayah.taken ? 'yes' : 'no', (m.p.bayah && m.p.bayah.with) || '']);
     });
     var text = rows.map(function (r) { return r.map(function (v) { v = String(v == null ? '' : v); if (/^[=+\-@]/.test(v)) v = "'" + v; return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(','); }).join('\r\n');
     var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + text], { type: 'text/csv' })); a.download = 'noor-members-' + new Date().toISOString().slice(0, 10) + '.csv'; a.click();

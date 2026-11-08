@@ -28,6 +28,7 @@
     '.ac-ck{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:13.5px;line-height:1.45;cursor:pointer}.ac-ck input{width:20px;height:20px;flex:none;margin:1px 0 0;accent-color:var(--teal)}.ac-ck small{display:block;color:var(--muted);font-size:12px}' +
     '.ac-btn{display:block;width:100%;border:0;border-radius:12px;background:var(--teal);color:#fff;font:inherit;font-size:15px;font-weight:700;padding:13px;cursor:pointer;margin-top:6px}.ac-btn[disabled]{opacity:.55;cursor:default}.ac-btn.alt{background:var(--cream);color:var(--ink);border:1px solid var(--line);font-weight:600}' +
     '.ac-msg{font-size:13px;line-height:1.5;margin:8px 2px;color:var(--ink)}.ac-msg.err{color:#c0392b}.ac-sub{font-size:12px;color:var(--muted);line-height:1.5}.ac-link{background:none;border:0;color:var(--muted);text-decoration:underline;font:inherit;font-size:12.5px;cursor:pointer;padding:8px 2px}' +
+    '.ac-bay.hl{outline:2px solid var(--gold);outline-offset:6px;border-radius:8px}' +
     '.ac-row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}.ac-row:last-child{border-bottom:0}.ac-row span{color:var(--muted)}';
   doc.head.appendChild(css);
 
@@ -46,11 +47,21 @@
       '<div class="ac-sub" style="margin:2px 0 4px;font-weight:600">Reminders</div>' +
       ck('acGather', r.gather, 'Email me before our gatherings', 'Weekly halqa, monthly mehfil, Urs and Salgirah.') +
       ck('acWeekly', r.weekly, 'Email me my Iman Health each Friday', 'A short, private summary of your week.') +
-      ck('acPush', r.push, 'App notifications on this phone', 'Halqa and new classes. Your phone will ask to allow them.');
+      ck('acPush', r.push, 'App notifications on this phone', 'Halqa and new classes. Your phone will ask to allow them.') +
+      bayahFields(p);
+  }
+  // Bai'at: members who have taken it can watch the full dars and the dhikr-practice Shorts.
+  function bayahFields(p) {
+    var b = p.bayah || {};
+    return '<div id="acBayah" class="ac-bay"><div class="ac-sub" style="margin:10px 0 4px;font-weight:600">Bai\u2019at</div>' +
+      ck('acBay', b.taken, 'I have taken Bai\u2019at', 'With a Shaykh or his Khalifa. The full dars and the dhikr practices are for murids.') +
+      '<label class="ac-f" id="acBayWithL"' + (b.taken ? '' : ' hidden') + '><span>With (Shaykh / Khalifa)</span><input id="acBayWith" maxlength="80" placeholder="e.g. Alhaj Rasheed Khan (Ayub)" value="' + esc(b.with || '') + '"></label>' +
+      '<div class="ac-sub" style="margin:-4px 0 6px">Not yet? <a href="#" id="acBayHow">How to take Bai\u2019at →</a></div></div>';
   }
   function readFields() {
     var v = function (id) { var e = body.querySelector('#' + id); return e ? e.value.trim() : ''; }, c = function (id) { var e = body.querySelector('#' + id); return !!(e && e.checked); };
-    return { name: v('acName').slice(0, 60), phone: v('acPhone').replace(/[^\d+ -]/g, '').slice(0, 20), city: v('acCity').slice(0, 40), remind: { gather: c('acGather'), weekly: c('acWeekly'), push: c('acPush') } };
+    return { name: v('acName').slice(0, 60), phone: v('acPhone').replace(/[^\d+ -]/g, '').slice(0, 20), city: v('acCity').slice(0, 40), remind: { gather: c('acGather'), weekly: c('acWeekly'), push: c('acPush') },
+      bayah: { taken: c('acBay'), with: c('acBay') ? v('acBayWith').slice(0, 80) : '' } };
   }
 
   function paint() {
@@ -101,7 +112,9 @@
 
   function saveProfile(p) {
     var u = A.user(); if (!u) return Promise.reject(new Error('not signed in'));
-    var full = { name: p.name, email: u.email, phone: p.phone || '', city: p.city || '', remind: p.remind,
+    var ob = (profile && profile.bayah) || {}, nb = p.bayah || {};
+    var bay = nb.taken ? { taken: true, with: nb.with || '', at: ob.taken && ob.at ? ob.at : Date.now() } : { taken: false };
+    var full = { name: p.name, email: u.email, phone: p.phone || '', city: p.city || '', remind: p.remind, bayah: bay,
       consent: (profile && profile.consent) || { admin: true, at: Date.now() }, joined: (profile && profile.joined) || Date.now(), updated: Date.now() };
     return B.mine.put('profiles', '', full).then(function () { profile = full; sset(PRKEY, JSON.stringify(full)); emit(); return full; });
   }
@@ -120,7 +133,11 @@
     });
   }
 
+  body.addEventListener('change', function (e) {
+    if (e.target && e.target.id === 'acBay') { var l = body.querySelector('#acBayWithL'); if (l) l.hidden = !e.target.checked; }
+  });
   body.addEventListener('click', function (e) {
+    if (e.target && e.target.id === 'acBayHow') { e.preventDefault(); N.route('bayah'); return; }
     var t = e.target.closest ? e.target.closest('button') : null; if (!t) return;
     if (t.id === 'acSend' || t.id === 'acResend') {
       var pend = t.id === 'acResend' ? jget(PKEY) || { email: (jget(SKEY) || {}).email } : Object.assign({ email: (body.querySelector('#acEmail').value || '').trim().toLowerCase(), consent: body.querySelector('#acConsent').checked }, readFields());
@@ -128,6 +145,7 @@
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(pend.email)) { say('!Please enter your email address.'); return; }
         if (!pend.name) { say('!Please enter your name.'); return; }
         if (!pend.consent) { say('!Please tick the box to agree, so your Iman Health can be saved to your account.'); return; }
+        if (pend.bayah && pend.bayah.taken && !pend.bayah.with) { say('!Please write the name of the Shaykh or Khalifa you took Bai\u2019at with.'); return; }
         sset(PKEY, JSON.stringify(pend));
       }
       t.disabled = true; say('Sending…');
@@ -139,7 +157,8 @@
     if (t.id === 'acSave') {
       var p = readFields(); if (!p.name) { say('!Please enter your name.'); return; }
       t.disabled = true; say('Saving…');
-      saveProfile(p).then(function () { if (p.remind.push) askPush(); msg = 'Saved.'; paint(); }, function () { t.disabled = false; say('!Could not save. Check your internet and try again.'); });
+      if (p.bayah.taken && !p.bayah.with) { t.disabled = false; say('!Please write the name of the Shaykh or Khalifa you took Bai\u2019at with.'); return; }
+      saveProfile(p).then(function () { if (p.remind.push) askPush(); msg = p.bayah.taken ? 'Saved. JazakAllah khair. The full dars and dhikr practices are open for you.' : 'Saved.'; paint(); }, function () { t.disabled = false; say('!Could not save. Check your internet and try again.'); });
       return;
     }
     if (t.id === 'acAdmin') { root.location.href = 'admin.html'; return; }
@@ -211,6 +230,9 @@
 
   root.NoorAccount = {
     on: !!(A.available && accountsOn),
+    hasBayah: function () { return !!(A.user() && profile && profile.bayah && profile.bayah.taken); },
+    // open My Account at the Bai'at question (from a locked video)
+    askBayah: function () { N.showScreen('account'); setTimeout(function () { var b = body.querySelector('#acBayah'); if (b) { b.classList.add('hl'); if (b.scrollIntoView) b.scrollIntoView({ block: 'center' }); } }, 120); },
     user: function () { return A.user(); },
     profile: function () { return profile; },
     onChange: function (fn) { listeners.push(fn); },
