@@ -175,6 +175,40 @@
 
   N.onScreen(function (id) { if (id === 'account') { if (state !== 'verifying' && !/^!/.test(msg)) msg = ''; paint(); } });
 
+  /* ---------- on Home: a header button (👤, or your initial once signed in) and a sign-up card for signed-out visitors ---------- */
+  var hcss = doc.createElement('style');
+  hcss.textContent = '.acc-hbtn{font-size:17px!important;font-weight:700}.acc-home[hidden]{display:none!important}.acc-home{display:flex;align-items:center;gap:12px;margin:10px 0 2px;padding:11px 14px;border-radius:14px;cursor:pointer;background:var(--panel);border:1px solid var(--gold)}' +
+    '.acc-home .ic{flex:none;width:40px;height:40px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:20px}.acc-home .tx{flex:1;min-width:0}.acc-home b{display:block;font-size:15px;color:var(--ink)}.acc-home small{display:block;font-size:12px;color:var(--muted);margin-top:1px}' +
+    '.acc-home .bt{flex:none;background:var(--teal);color:#fff;font-weight:700;font-size:13px;border-radius:999px;padding:8px 14px}';
+  doc.head.appendChild(hcss);
+  var hbtn = null, hcard = null;
+  function paintHome() {
+    if (!A.available || !accountsOn) return;
+    var u = A.user(), mb = doc.getElementById('menuBtn');
+    if (mb && !hbtn) {
+      hbtn = N.el('button', 'menubtn acc-hbtn', '👤'); hbtn.type = 'button'; hbtn.id = 'accBtn';
+      hbtn.addEventListener('click', function () { N.showScreen('account'); });
+      mb.parentNode.insertBefore(hbtn, mb);
+    }
+    if (hbtn) {
+      var nm = profile && profile.name ? profile.name.trim() : '';
+      hbtn.textContent = u ? (nm ? nm.charAt(0).toUpperCase() : '✓') : '👤';
+      hbtn.setAttribute('aria-label', u ? 'My Account (signed in as ' + u.email + ')' : 'Sign in or create an account');
+      hbtn.title = u ? 'My Account' : 'Sign in / Sign up';
+    }
+    var home = doc.getElementById('screen-home'), after = home && home.querySelector('.bay-home');
+    if (!hcard && home) {
+      hcard = N.el('div', 'acc-home', '<div class="ic" aria-hidden="true">👤</div><div class="tx"><b>Create your free account</b><small>Keep your Iman Health safe · email reminders · members’ videos</small></div><span class="bt">Sign up / Sign in</span>');
+      hcard.setAttribute('role', 'button'); hcard.tabIndex = 0;
+      hcard.addEventListener('click', function () { N.showScreen('account'); });
+      if (after && after.nextSibling) home.insertBefore(hcard, after.nextSibling); else if (after) home.appendChild(hcard); else home.insertBefore(hcard, home.firstChild);
+    }
+    if (hcard) hcard.hidden = !!u;
+  }
+  listeners.push(function () { paintHome(); });
+  setTimeout(paintHome, 0);
+  N.onScreen(function (id) { if (id === 'home') paintHome(); });
+
   root.NoorAccount = {
     on: !!(A.available && accountsOn),
     user: function () { return A.user(); },
