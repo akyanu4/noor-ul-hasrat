@@ -54,13 +54,18 @@
   }
   // Bai'at: members who have taken it can watch the full dars and the dhikr-practice Shorts.
   // Shaykhs / Khalifas to choose from (config.js bayahGuides adds or replaces them), and "Other" to type a name.
-  var GUIDES = (cfg.bayahGuides && cfg.bayahGuides.length) ? cfg.bayahGuides : ['Hazrat Azam Pasha R.A.', 'Alhaj Rasheed Khan (Ayub), Khalifa'];
+  var GUIDES_NOW = (cfg.bayahGuides && cfg.bayahGuides.length) ? cfg.bayahGuides : ['Alhaj Rasheed Khan (Ayub), Khalifa'];
+  var GUIDES_PAST = cfg.bayahGuidesPast || [];
+  var GUIDES = GUIDES_NOW.concat(GUIDES_PAST);
   function bayahFields(p, inCard) {
     var b = p.bayah || {}, w = b.with || '', known = GUIDES.indexOf(w) >= 0, other = !!w && !known;
     return '<div id="acBayah" class="ac-bay">' + (inCard ? '<div style="height:6px"></div>' : '<div class="ac-sub" style="margin:10px 0 4px;font-weight:600">Bai’at</div>') +
       ck('acBay', b.taken, 'I have taken Bai’at', 'With a Shaykh or his Khalifa. The full dars and the dhikr practices are for murids, after approval.') +
       '<div id="acBayWithL"' + (b.taken ? '' : ' hidden') + '><label class="ac-f"><span>With (Shaykh / Khalifa)</span><select id="acBaySel" class="ac-sel">' +
-        '<option value="">Choose…</option>' + GUIDES.map(function (g) { return '<option' + (g === w ? ' selected' : '') + '>' + esc(g) + '</option>'; }).join('') +
+        '<option value="">Choose…</option>' + (function () {
+          var opt = function (g) { return '<option' + (g === w ? ' selected' : '') + '>' + esc(g) + '</option>'; };
+          return GUIDES_PAST.length ? '<optgroup label="Giving Bai\u2019at today">' + GUIDES_NOW.map(opt).join('') + '</optgroup><optgroup label="In their lifetime">' + GUIDES_PAST.map(opt).join('') + '</optgroup>' : GUIDES_NOW.map(opt).join('');
+        })() +
         '<option value="__other"' + (other ? ' selected' : '') + '>Other (type the name)</option></select></label>' +
       '<label class="ac-f" id="acBayOtherL"' + (other ? '' : ' hidden') + '><span>Name of the Shaykh / Khalifa</span><input id="acBayWith" maxlength="80" value="' + esc(other ? w : '') + '"></label></div>' +
       '<div class="ac-sub" style="margin:-4px 0 6px">Not yet? <a href="#" id="acBayHow">How to take Bai’at →</a></div></div>';

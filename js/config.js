@@ -16,6 +16,8 @@
   bayahOn: true,      // "Taking Bai'at" steps (More → Bay'ah), approved 8 Nov 2026
   // Living Shaykhs / Khalifas who give Bai'at: the choices under My Account → Bai'at ("Other" stays for anyone else).
   bayahGuides: ["Alhaj Rasheed Khan (Ayub), Khalifa", "Nooruddin (Nayeem Pasha)"],
+  // Elders of the silsila, for murids who gave Bai'at at their hands in their lifetime.
+  bayahGuidesPast: ["Hazrat Azam Pasha R.A.", "Hazrat Khaja Baba R.A.", "Hazrat Qadeer Piya R.A."],
 
   // Donate screen: paste the link to your donation page. Leave empty to show "coming soon".
   donateTitle: "Support the mission",
