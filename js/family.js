@@ -68,6 +68,7 @@
     '.fm-btn{display:block;text-align:center;background:var(--gold);color:#1a2421;font-weight:700;border-radius:12px;padding:13px;font-size:15px;text-decoration:none;margin:12px 0}' +
     '.fm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.fm-sc{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}' +
     '.fm-sth{position:relative;aspect-ratio:9/16;background:#000;cursor:pointer;overflow:hidden}.fm-sth img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02)}.fm-sth iframe{width:100%;height:100%;border:0;display:block}' +
+    '.fm-prac{position:absolute;left:6px;top:6px;background:rgba(15,61,62,.88);color:#f3e7c9;border:1px solid rgba(232,196,107,.6);border-radius:999px;padding:2px 8px;font-size:11px;font-weight:600}' +
     '.fm-full{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px 12px;padding:0 18px 6px;scrollbar-width:none}.fm-full::-webkit-scrollbar{display:none}.fm-full .fm-sc{flex:none;width:78%;max-width:360px;scroll-snap-align:start}.fm-sth.fm-wide{aspect-ratio:16/9}.fm-fh{margin:6px 0 8px;font-size:15px;color:var(--teal)}.fm-soonth{cursor:default;background:linear-gradient(135deg,#123b33,#2a2410);display:flex;align-items:center;justify-content:center}.fm-soonin{text-align:center;color:#e8c46b;font-size:14px;line-height:1.5}' +
     '.fm-hs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px 4px;padding:0 18px 6px;scrollbar-width:none}.fm-hs::-webkit-scrollbar{display:none}.fm-hs .fm-sc{flex:none;width:42%;max-width:190px;scroll-snap-align:start}.fm-hs .fm-all{flex:none;width:30%;max-width:140px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--teal);font-weight:700;font-size:13px;cursor:pointer;scroll-snap-align:start;padding:8px}' +
     '.fm-acts{display:flex;gap:6px;margin:6px 8px 10px}.fm-acts .fm-like{flex:1;margin:0;font:inherit;font-size:12px;font-weight:600;background:transparent;cursor:pointer}' +
@@ -236,7 +237,7 @@
   }
   function shortTile(v) {
     return '<div class="fm-sc"><div class="fm-sth" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '">' +
-      '<img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg\'"><div class="fm-play">▶</div></div>' +
+      '<img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg\'"><div class="fm-play">▶</div>' + (isPractice(v) ? '<div class="fm-prac">' + (locked(v) ? '🔒 Members' : '🤝 Bay\u2019ah') + '</div>' : '') + '</div>' +
       '<div class="fm-st">' + esc(v.title) + '</div>' +
       '<div class="fm-stat" data-sid="' + v.id + '">' + esc(statText(v.id)) + '</div>' +
       '<div class="fm-acts"><a class="fm-like" target="_blank" rel="noopener" href="https://www.youtube.com/shorts/' + v.id + '">👍 Like</a>' +
@@ -274,12 +275,29 @@
       if (pth) { pendingShort = null; if (pth.scrollIntoView) pth.scrollIntoView({ block: 'center' }); playShort(pth); }
     }
   }
+
+  /* ---------- Bay'ah guidance and sign-in for dhikr practices ----------
+     Full dars videos and the Shorts that teach a practice of dhikr (Tasawwur-e-Shaykh, Zarb-e-Haidari, Taqwa: eat less,
+     sleep less, speak less; Sabr, Tasleem, Raza) carry a reminder to take Bay'ah and follow a guide. In the app they
+     play for signed-in members once accounts are switched on (More → My Account). They stay public on YouTube. */
+  var PRACTICE_IDS = { dyHUfOLlVTs: 1, '3githsE0o6Y': 1, '50SwaP11-vk': 1, oWZt1YfJ3io: 1 };
+  var PRACTICE_RE = /tasawwur|zarb[-\s]*e[-\s]*haidari|you have become my teacher|eat less,? sleep less|sabr,? tasleem|\bmuraqaba|\bpractice of (zikr|dhikr)/i;
+  (cfg.practiceShorts || []).forEach(function (id) { PRACTICE_IDS[id] = 1; });
+  function isPractice(it) { return !!(it && (it.wide || PRACTICE_IDS[it.id] || PRACTICE_RE.test(it.title || ''))); }
+  function locked(it) { var A = root.NoorAccount; return isPractice(it) && !!(A && A.on) && !A.user(); }
+  var BAYAH_EN = 'Practices of dhikr are learnt from a guide. Take Bay\u2019ah with a Shaykh or his Khalifa and follow their guidance, so that you reach the right station (maqam).';
+  var BAYAH_UR = '\u0630\u06a9\u0631 \u06a9\u06d2 \u0637\u0631\u06cc\u0642\u06d2 \u06a9\u0633\u06cc \u0631\u06c1\u0628\u0631 \u0633\u06d2 \u0633\u06cc\u06a9\u06be\u06d2 \u062c\u0627\u062a\u06d2 \u06c1\u06cc\u06ba\u06d4 \u06a9\u0633\u06cc \u0634\u06cc\u062e \u06cc\u0627 \u0627\u0646 \u06a9\u06d2 \u062e\u0644\u06cc\u0641\u06c1 \u0633\u06d2 \u0628\u06cc\u0639\u062a \u06a9\u0631\u06cc\u06ba \u0627\u0648\u0631 \u0627\u0646 \u06a9\u06cc \u0631\u06c1\u0646\u0645\u0627\u0626\u06cc \u0645\u06cc\u06ba \u0686\u0644\u06cc\u06ba\u060c \u062a\u0627\u06a9\u06c1 \u0635\u062d\u06cc\u062d \u0645\u0642\u0627\u0645 \u062a\u06a9 \u067e\u06c1\u0646\u0686\u06cc\u06ba\u06d4';
+  api.isPractice = isPractice; api.BAYAH_EN = BAYAH_EN; api.BAYAH_UR = BAYAH_UR;
   // Shorts play full screen in a viewer (tall 9:16, as big as the screen allows), with Previous / Next through the
   // Shorts of the row or grid it was opened from, Share, and a close button (the phone's Back button closes it too).
   var viewer = null, vlist = [], vpos = 0;
   function vshow() {
     var it = vlist[vpos]; if (!it) return;
-    viewer.querySelector('.fv-frame').innerHTML = '<iframe src="https://www.youtube.com/embed/' + it.id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
+    var prac = isPractice(it), bn = viewer.querySelector('.fv-bayah');
+    bn.hidden = !prac || locked(it);
+    if (locked(it)) {
+      viewer.querySelector('.fv-frame').innerHTML = '<div class="fv-gate"><div class="fv-gi">🤝</div><b>For registered members</b><p>' + esc(BAYAH_EN) + '</p><p class="ur" dir="rtl" lang="ur">' + esc(BAYAH_UR) + '</p><p>This ' + (it.wide ? 'full dars' : 'Short') + ' teaches a practice of dhikr. Sign in with a free account to watch it here.</p><button type="button" class="fv-signin">Sign in or create an account</button></div>';
+    } else viewer.querySelector('.fv-frame').innerHTML = '<iframe src="https://www.youtube.com/embed/' + it.id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
     viewer.querySelector('.fv-t').textContent = clean(it.title || '');
     viewer.querySelector('.fv-like').href = 'https://www.youtube.com/shorts/' + it.id;   // likes count only when given on YouTube itself
     viewer.querySelector('.fv-sub').href = 'https://www.youtube.com/channel/' + AZAM.id + '?sub_confirmation=1';
@@ -303,16 +321,19 @@
         '.fv-top{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:10px;padding:10px 12px;padding-top:max(10px,env(safe-area-inset-top));color:#f3e7c9;font-size:14px;z-index:2}' +
         '.fv-t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fv button,.fv-bar a{background:rgba(255,255,255,.12);color:#f3e7c9;border:0;border-radius:999px;padding:9px 14px;font-size:15px;cursor:pointer;text-decoration:none;font-family:inherit}.fv-bar a.fv-sub{background:#c4302b;color:#fff}' +
         '.fv button:disabled{opacity:.35}.fv-bar{display:flex;flex-wrap:wrap;gap:8px 10px;justify-content:center;padding:8px 8px 0}.fv-bar2{padding-bottom:max(10px,env(safe-area-inset-bottom))}.fv-stat{width:100%;text-align:center;color:#cbbf9f;font-size:12px}.fv-x{font-size:18px!important;padding:6px 13px!important}' +
+        '.fv-bayah{position:relative;margin:52px 10px 0;max-width:560px;z-index:2;background:rgba(232,196,107,.16);border:1px solid rgba(232,196,107,.5);color:#f3e7c9;border-radius:12px;padding:7px 12px;font-size:12.5px;line-height:1.45;text-align:center}.fv-bayah[hidden]{display:none}.fv-bayah:not([hidden])+.fv-frame{margin-top:6px;height:calc(100% - 260px)}.fv-bayah .ur,.fv-gate .ur{font-family:"Noto Nastaliq Urdu",Amiri,serif;font-size:14px;line-height:2;margin:2px 0 0}' +
+        '.fv-gate{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;color:#f3e7c9;background:linear-gradient(160deg,#0f3d3e,#1c1a12);overflow:auto}.fv-gate b{font-size:18px;color:#e8c46b}.fv-gate p{font-size:13.5px;line-height:1.55;margin:8px 0}.fv-gi{font-size:34px}.fv .fv-signin{background:#e8c46b;color:#1c1a12;font-weight:700;margin-top:6px}' +
         '.fv-full{background:#e8c46b!important;color:#1c1a12!important;font-weight:700}.fv-full[hidden]{display:none}.fv-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#f3e7c9;padding:10px 16px;border-radius:12px;font-size:14px;max-width:86vw;text-align:center;z-index:3}.fv-frame{margin-top:52px}.fv.fv-wide .fv-frame{aspect-ratio:16/9;width:100vw;height:auto;max-height:calc(100% - 168px)}';
       doc.head.appendChild(st);
       viewer = doc.createElement('div'); viewer.className = 'fv'; viewer.hidden = true; viewer.setAttribute('role', 'dialog'); viewer.setAttribute('aria-label', 'Short');
-      viewer.innerHTML = '<div class="fv-top"><span class="fv-t"></span><button type="button" class="fv-x" aria-label="Close">✕</button></div><div class="fv-frame"></div>' +
+      viewer.innerHTML = '<div class="fv-top"><span class="fv-t"></span><button type="button" class="fv-x" aria-label="Close">✕</button></div><div class="fv-bayah" hidden>🤝 ' + esc(BAYAH_EN) + '<div class="ur" dir="rtl" lang="ur">' + esc(BAYAH_UR) + '</div></div><div class="fv-frame"></div>' +
         '<div class="fv-bar"><span class="fv-stat"></span><a class="fv-like" target="_blank" rel="noopener">👍 Like</a><a class="fv-sub" target="_blank" rel="noopener">🔔 Subscribe</a><button type="button" class="fv-share">↗ Share</button><button type="button" class="fv-full" hidden>🎧 Full dars</button></div>' +
         '<div class="fv-bar fv-bar2"><button type="button" class="fv-prev">‹ Previous</button><button type="button" class="fv-next">Next ›</button></div>';
       doc.body.appendChild(viewer);
       viewer.addEventListener('click', function (e) {
         var b = e.target.closest && e.target.closest('button'); if (!b) return;
         if (b.classList.contains('fv-x')) vclose();
+        else if (b.classList.contains('fv-signin')) { vclose(); N.route('account'); }
         else if (b.classList.contains('fv-prev') && vpos > 0) { vpos--; vshow(); }
         else if (b.classList.contains('fv-next') && vpos < vlist.length - 1) { vpos++; vshow(); }
         else if (b.classList.contains('fv-share')) { var it = vlist[vpos]; if (it) shareShort(it.id, it.title); }

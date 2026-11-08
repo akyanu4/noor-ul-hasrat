@@ -81,7 +81,8 @@
       '<div class="ac-card"><label class="ac-f"><span>Email</span><input id="acEmail" type="email" autocomplete="email" inputmode="email" maxlength="120" value="' + esc(pend.email || '') + '"></label>' + fields(pend) +
       '<label class="ac-ck" style="border-top:1px solid var(--line);margin-top:4px;padding-top:12px"><input type="checkbox" id="acConsent"' + (pend.consent ? ' checked' : '') + '><div>I agree that my Iman Health is saved to my account and that the Noor-ul-Hasrat admin can see it.<small>Prayers, fasting, dhikr, good deeds and zakat (paid or not, never an amount). Your location is never sent.</small></div></label>' +
       '<button class="ac-btn" id="acSend" type="button">Email me a sign-in link</button><div class="ac-msg' + (/^!/.test(msg) ? ' err' : '') + '" id="acMsg">' + esc(msg.replace(/^!/, '')) + '</div>' +
-      '<div class="ac-sub">No password. Already have an account? Just enter your email and tap the button. <a href="privacy.html">Privacy</a></div></div>';
+      '<div class="ac-sub">No password. Already have an account? Just enter your email and tap the button. <a href="privacy.html">Privacy</a></div></div>' +
+      '<div class="ac-card" style="border-color:var(--gold)"><div class="ac-msg" style="margin:0"><b>🤝 Full dars and dhikr practices</b><br>Members can watch the full dars and the Shorts that teach a practice of dhikr. ' + esc((root.NoorFamily && root.NoorFamily.BAYAH_EN) || '') + '</div></div>';
     body.innerHTML = h;
   }
 
