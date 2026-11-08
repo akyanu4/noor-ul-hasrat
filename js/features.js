@@ -12,6 +12,7 @@
     fetch: window.fetch.bind(window), core: C, storage: store, crypto: window.crypto,
     isVisible: function () { return document.visibilityState !== 'hidden'; }
   });
+  N.backend = B;                                   // shared with js/account.js and js/iman.js
   if (B.enabled && !B.authEnabled && window.console) console.warn('Noor: rtdbUrl is set but firebaseApiKey is empty, so the app is not signed in and the database will answer "Permission denied". Add firebaseApiKey in js/config.js (see SETUP.md, step 1).');
   var el = N.el, esc = N.esc, $ = function (id) { return document.getElementById(id); };
   var host = document.querySelector('.screens').parentNode, activeScreen = 'home';

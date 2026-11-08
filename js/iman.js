@@ -1,5 +1,7 @@
 /* Noor: "Iman Health", a private weekly check on prayer, dhikr and fasting.
-   Everything is typed in by the person and kept in this browser only. Nothing is sent anywhere and no location is used. */
+   Typed in by the person and kept on the phone. With an account (js/account.js) the days, zakat flags and a weekly
+   summary are also saved to iman/<uid> and summaries/<uid>, where the person and the app admin can read them.
+   Saved masjid places and location never leave the phone. */
 (function (root) {
   'use strict';
 
@@ -79,7 +81,29 @@
     return null;
   }
 
-  var api = { DEEDS: DEEDS, hijriYear: hijriYear, score: score, meters: meters, windowFor: windowFor, PRAYERS: PRAYERS, dayKey: dayKey, lastDays: lastDays, summarize: summarize, note: note, fastHint: fastHint, fmtN: fmtN };
+
+  // A day without any marks, in a stable shape (so the same day always compares equal), or null when empty.
+  function clean(d) {
+    if (!d) return null;
+    var o = {}, p = {}, a = {}, g = {};
+    PRAYERS.forEach(function (x) { var v = d.p && d.p[x[0]]; if (v === 'm' || v === 'h' || v === 'l') { p[x[0]] = v; if (d.a && d.a[x[0]]) a[x[0]] = 1; } });
+    DEEDS.forEach(function (x) { if (d.g && d.g[x[0]]) g[x[0]] = 1; });
+    if (Object.keys(a).length) o.a = a;
+    if ((d.dhikr || 0) > 0) o.dhikr = Math.floor(d.dhikr);
+    if (d.fast) o.fast = true;
+    if (Object.keys(g).length) o.g = g;
+    if (Object.keys(p).length) o.p = p;
+    return Object.keys(o).length ? o : null;
+  }
+  // Two copies of the same day (this phone and the account): keep every mark from both, this phone wins a disagreement.
+  function mergeDay(local, remote) {
+    local = clean(local); remote = clean(remote);
+    if (!local) return remote; if (!remote) return local;
+    var o = { p: Object.assign({}, remote.p || {}, local.p || {}), a: Object.assign({}, remote.a || {}, local.a || {}), g: Object.assign({}, remote.g || {}, local.g || {}),
+      dhikr: Math.max(local.dhikr || 0, remote.dhikr || 0), fast: !!(local.fast || remote.fast) };
+    return clean(o);
+  }
+  var api = { clean: clean, mergeDay: mergeDay, DEEDS: DEEDS, hijriYear: hijriYear, score: score, meters: meters, windowFor: windowFor, PRAYERS: PRAYERS, dayKey: dayKey, lastDays: lastDays, summarize: summarize, note: note, fastHint: fastHint, fmtN: fmtN };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.NoorIman = api;
 
@@ -91,10 +115,10 @@
   function save() {
     var ks = Object.keys(data).sort(); while (ks.length > 400) delete data[ks.shift()];
     try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
-    paintHome();
+    paintHome(); scheduleSync();
   }
   function esc(t) { return N.esc(t); }
-  function day(k) { return data[k] || (data[k] = { p: {} }); }
+  function day(k) { var d = data[k] || (data[k] = { p: {} }); if (!d.p) d.p = {}; return d; }
   var MKEY = 'noor_iman_masjids', AKEY = 'noor_iman_auto', RADIUS = 150, masjids = [], autoOn = true, lastCheck = '', busy = false;
   try { masjids = JSON.parse(localStorage.getItem(MKEY) || '[]') || []; if (!Array.isArray(masjids)) masjids = []; } catch (e) { masjids = []; }
   try { autoOn = localStorage.getItem(AKEY) !== '0'; } catch (e) {}
@@ -132,6 +156,60 @@
     navigator.geolocation.getCurrentPosition(ok, bad, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
   }
   function toast(t) { var host = doc.querySelector('.screens').parentNode, old = host.querySelector('.toast'); if (old) old.remove(); var e = N.el('div', 'toast', esc(t)); host.appendChild(e); e.addEventListener('click', function () { e.remove(); }); setTimeout(function () { e.remove(); }, 4500); }
+
+
+  /* ---------- saving to the account (only when signed in) ---------- */
+  var ACC = root.NoorAccount, synced = {}, syncTimer = null, syncing = false, merging = false, zakatDirty = false, syncNote = '', lastSum = '';
+  function signedIn() { return !!(ACC && ACC.user()); }
+  function scheduleSync(ms) { if (!signedIn() || merging) return; clearTimeout(syncTimer); syncTimer = setTimeout(pushSync, ms == null ? 2500 : ms); }
+  function summaryNow() {
+    var now = new Date(), keys = lastDays(7, now).map(dayKey), ft = 2; try { if (fastHint(now) === 'Ramadan') ft = 7; } catch (e) {}
+    var lv = score(data, keys, ft), sm = summarize(data, keys), pc = function (x) { return Math.round(x * 100); };
+    return { score: lv.score, label: lv.label, tip: lv.tip, prayer: pc(lv.parts.prayer), fast: pc(lv.parts.fast), dhikr: pc(lv.parts.dhikr), deeds: pc(lv.parts.deeds),
+      onTime: sm.onTime, masjid: sm.masjid, late: sm.late, fasts: sm.fasts, dhikrCount: sm.dhikr, goodDeeds: sm.deeds, from: keys[0], to: keys[6], day: keys[6] };
+  }
+  function pushSync() {
+    if (!signedIn() || syncing || merging) return;
+    var patch = {}, n = 0;
+    Object.keys(data).forEach(function (k) { var c = clean(data[k]), j = c ? JSON.stringify(c) : ''; if ((synced[k] || '') !== j) { patch[k] = c; n++; } });
+    Object.keys(synced).forEach(function (k) { if (!(k in data)) { patch[k] = null; n++; } });
+    var sum = summaryNow(), sumKey = JSON.stringify(sum);
+    if (!n && !zakatDirty && sumKey === lastSum) return;
+    syncing = true;
+    var ops = [];
+    if (n) ops.push(ACC.mine.patch('iman', 'days', patch).then(function () { Object.keys(patch).forEach(function (k) { if (patch[k]) synced[k] = JSON.stringify(patch[k]); else delete synced[k]; }); }));
+    if (zakatDirty) ops.push(ACC.mine.put('iman', 'zakat', Object.keys(zakat).length ? zakat : null).then(function () { zakatDirty = false; }));
+    if (sumKey !== lastSum) ops.push(ACC.mine.put('summaries', '', Object.assign({ updated: { '.sv': 'timestamp' } }, sum)).then(function () { lastSum = sumKey; }));
+    Promise.all(ops).then(function () {
+      syncing = false; syncNote = 'Saved to your account at ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    }, function () {
+      syncing = false; syncNote = 'Not saved to your account yet (no internet?). It will try again.'; scheduleSync(60000);
+    });
+  }
+  // Just signed in (or opened the app signed in): bring this phone and the account together, then save the result.
+  function mergeFromAccount() {
+    if (!signedIn() || merging) return;
+    merging = true;
+    ACC.mine.get('iman').then(function (remote) {
+      var days = (remote && remote.days) || {};
+      synced = {};
+      Object.keys(days).forEach(function (k) { var c = clean(days[k]); if (c) synced[k] = JSON.stringify(c); });
+      Object.keys(days).concat(Object.keys(data)).forEach(function (k) { var m = mergeDay(data[k], days[k]); if (m) data[k] = m; else delete data[k]; });
+      var rz = (remote && remote.zakat) || {};
+      Object.keys(rz).forEach(function (y) { if (!zakat[y]) { zakat[y] = 1; } });
+      if (Object.keys(zakat).some(function (y) { return !rz[y]; })) zakatDirty = true;
+      try { localStorage.setItem(ZKEY, JSON.stringify(zakat)); } catch (e) {}
+      merging = false;
+      save(); scheduleSync(300);
+      if (s.classList.contains('active')) paint();
+    }, function () { merging = false; syncNote = 'Could not reach your account just now.'; });
+  }
+  if (ACC) {
+    ACC.onChange(function (u) { if (u) mergeFromAccount(); else { synced = {}; lastSum = ''; syncNote = ''; } if (s.classList.contains('active')) paint(); });
+    if (signedIn()) setTimeout(mergeFromAccount, 1500);
+    doc.addEventListener('visibilitychange', function () { if (!doc.hidden) scheduleSync(); });   // a new day changes the weekly summary
+  }
+  root.NoorImanSync = { status: function () { return signedIn() ? (syncNote || 'Saved to your account') : ''; } };
 
   var css = doc.createElement('style');
   css.textContent =
@@ -189,18 +267,22 @@
       '<tr><td>Dhikr</td>' + keys.map(function (k) { var n = data[k] && data[k].dhikr; return '<td>' + (n ? fmtN(n) : '·') + '</td>'; }).join('') + '</tr>' +
       '<tr><td>Good deeds</td>' + keys.map(function (k) { var n = data[k] && data[k].g ? Object.keys(data[k].g).length : 0; return '<td>' + (n ? '💛' + n : '·') + '</td>'; }).join('') + '</tr></table></div>';
     h += '<div class="ih-note"><b>How the level is worked out:</b> 50% prayers (at the masjid counts most, then on time at home, then late), 15% fasting (2 days a week, or every day in Ramadan), 15% dhikr (33 or more on a day) and 20% good deeds (sadaqa, helping others, kindness: 5 days out of 7 is full). Zakat is not scored, because not everyone owes it. Dots under each day: green means all 5 prayers marked, gold means some.</div>';
-    h += '<div class="ih-note">This is between you and your Lord. It is a private reminder, not a score, and it is not a judgment. Everything stays on this phone and nothing is sent anywhere. Your location is used only to see whether you are at the masjid you saved, and it is not stored. You can always correct a mark yourself.</div>' +
-      '<button type="button" class="ih-clear" id="ihClear">Erase my Iman Health data from this phone</button>';
+    h += signedIn()
+      ? '<div class="ih-note">This is a private reminder, not a score, and it is not a judgment. It is saved to your account, where you and the Noor-ul-Hasrat admin can see it' + (syncNote ? ' (' + esc(syncNote.charAt(0).toLowerCase() + syncNote.slice(1)) + ')' : '') + '. Your location is used only on the phone to see whether you are at the masjid you saved; it is never stored or sent. You can always correct a mark yourself.</div>'
+      : '<div class="ih-note">This is between you and your Lord. It is a private reminder, not a score, and it is not a judgment. Everything stays on this phone and nothing is sent anywhere. Your location is used only to see whether you are at the masjid you saved, and it is not stored. You can always correct a mark yourself.' + (ACC && ACC.on ? ' <a href="#" id="ihAcct">Keep it safe on a new phone with a free account →</a>' : '') + '</div>';
+    h +=
+'<button type="button" class="ih-clear" id="ihClear">Erase my Iman Health data from this phone</button>';
     body.innerHTML = h;
   }
 
   body.addEventListener('click', function (e) {
-    var t = e.target.closest ? e.target.closest('[data-k],[data-p],[data-rm],[data-g],#ihZakat,#ihNudge,#ihFast,#ihTas,#ihClear,#ihAuto,#ihAdd') : null; if (!t) return;
+    var t = e.target.closest ? e.target.closest('[data-k],[data-p],[data-rm],[data-g],#ihZakat,#ihNudge,#ihFast,#ihTas,#ihClear,#ihAuto,#ihAdd,#ihAcct') : null; if (!t) return;
+    if (t.id === 'ihAcct') { e.preventDefault(); N.route('account'); return; }
     if (t.hasAttribute('data-k')) { sel = t.getAttribute('data-k'); paint(); return; }
     if (t.hasAttribute('data-p')) { var d = day(sel), p = t.getAttribute('data-p'), m = t.getAttribute('data-m'); d.p[p] = d.p[p] === m ? '' : m; if (!d.p[p]) delete d.p[p]; if (d.a) delete d.a[p]; save(); paint(); return; }
     if (t.id === 'ihFast') { var f = day(sel); f.fast = !f.fast; if (!f.fast) delete f.fast; save(); paint(); return; }
     if (t.hasAttribute('data-g')) { var dg = day(sel), gk = t.getAttribute('data-g'); dg.g = dg.g || {}; if (dg.g[gk]) delete dg.g[gk]; else dg.g[gk] = 1; if (!Object.keys(dg.g).length) delete dg.g; save(); paint(); return; }
-    if (t.id === 'ihZakat') { var yy = t.getAttribute('data-y'); if (zakat[yy]) delete zakat[yy]; else zakat[yy] = 1; try { localStorage.setItem(ZKEY, JSON.stringify(zakat)); } catch (er) {} paint(); return; }
+    if (t.id === 'ihZakat') { var yy = t.getAttribute('data-y'); if (zakat[yy]) delete zakat[yy]; else zakat[yy] = 1; try { localStorage.setItem(ZKEY, JSON.stringify(zakat)); } catch (er) {} zakatDirty = true; scheduleSync(); paint(); return; }
     if (t.id === 'ihNudge') { setNudge(!nudgeOn); return; }
     if (t.hasAttribute('data-rm')) { masjids.splice(+t.getAttribute('data-rm'), 1); saveMasjids(); paint(); return; }
     if (t.id === 'ihAuto') { autoOn = !autoOn; try { localStorage.setItem(AKEY, autoOn ? '1' : '0'); } catch (er) {} paint(); if (autoOn) check('toggle'); return; }

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Members · Noor-ul-Hasrat</title>
+<meta name="theme-color" content="#0a2b2c">
+<link rel="icon" href="icons/favicon-48.png">
+<style>
+  :root{--ink:#1a2421;--cream:#faf7f0;--panel:#fff;--teal:#0f3d3e;--gold:#c9a24b;--line:#e4ddc9;--muted:#6b7570;--good:#2f9e63;--mid:#d39b1e;--low:#d0564c}
+  @media (prefers-color-scheme:dark){:root{--ink:#f2ede0;--cream:#0d1413;--panel:#132322;--teal:#8bd0c8;--gold:#d9b968;--line:#264443;--muted:#8fa19c}}
+  *{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:900px;margin:0 auto;padding:18px 16px 48px}
+  a{color:var(--teal)}h1{font-size:22px;margin:4px 0 2px}.muted{color:var(--muted);font-size:13px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:14px 0}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px}.stat b{display:block;font-size:24px;font-variant-numeric:tabular-nums}.stat span{font-size:12px;color:var(--muted)}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+  input[type=search]{flex:1;min-width:180px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:10px 12px;font:inherit}
+  button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:9px 12px;cursor:pointer}
+  button.pri{background:var(--teal);color:#fff;border-color:var(--teal)}
+  @media (prefers-color-scheme:dark){button.pri{color:#0d1413}}
+  .list{display:flex;flex-direction:column;gap:8px}
+  .m{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;gap:12px;align-items:center;cursor:pointer;text-align:left;width:100%}
+  .m:hover{border-color:var(--gold)}.m .who{flex:1;min-width:0}.m .who b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.m .who span{font-size:12.5px;color:var(--muted);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sc{width:52px;height:52px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;border:3px solid var(--line);font-weight:700;font-variant-numeric:tabular-nums}
+  .sc small{font-size:9px;font-weight:600;color:var(--muted)}.sc.g{border-color:var(--good)}.sc.y{border-color:var(--mid)}.sc.r{border-color:var(--low)}
+  .det{background:var(--panel);border:1px solid var(--gold);border-radius:14px;padding:14px;margin:4px 0 6px}
+  .det h2{font-size:17px;margin:0 0 4px}.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13.5px;margin:8px 0}.kv span{color:var(--muted)}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;text-align:center}th{color:var(--muted);font-weight:600;padding:4px 2px}td{padding:5px 2px;border-top:1px solid var(--line)}td:first-child,th:first-child{text-align:left}
+  .scroll{overflow-x:auto}
+  .pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--line);color:var(--muted);margin-right:4px}
+  code{background:var(--cream);border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-size:13px;word-break:break-all}
+</style>
+</head>
+<body><div class="wrap">
+<p><a href="./">← Back to Noor-ul-Hasrat</a></p>
+<h1>Members</h1>
+<div class="muted">Registered members and their Iman Health. Members agreed to share this with the admin when they signed up. Please keep it private.</div>
+<div id="out"><div class="card">Loading…</div></div>
+</div>
+<script src="js/config.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/iman.js"></script>
+<script>
+(function () {
+  'use strict';
+  var out = document.getElementById('out'), I = window.NoorIman;
+  var store = null; try { store = localStorage; } catch (e) {}
+  var B = NoorBackend.create(window.NOOR_CONFIG || {}, { fetch: window.fetch.bind(window), storage: store, crypto: window.crypto });
+  function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function ago(ms) { if (!ms) return 'never'; var d = Math.floor((Date.now() - ms) / 86400000); return d <= 0 ? 'today' : d === 1 ? 'yesterday' : d + ' days ago'; }
+  function band(n) { return n >= 85 ? 'g' : n >= 40 ? 'y' : 'r'; }
+  var members = [], open = '';
+
+  var u = B.account.user();
+  if (!u) { out.innerHTML = '<div class="card">Sign in first: open the app, go to <b>More → My Account</b>, sign in with your email, then come back to this page.</div>'; return; }
+  B.admin.isAdmin().then(function (ok) {
+    if (!ok) {
+      out.innerHTML = '<div class="card"><b>' + esc(u.email) + ' is not an admin yet.</b><p>To make this account an admin, open the Firebase console → Realtime Database → Data. Add a key <code>admins</code>, and inside it a key with this account id and the value <code>true</code>:</p><p><code id="uid">' + esc(u.uid) + '</code> <button id="cp">Copy id</button></p><p class="muted">Only someone with access to the Firebase console can do this. Then reload this page.</p></div>';
+      document.getElementById('cp').onclick = function () { try { navigator.clipboard.writeText(u.uid); this.textContent = 'Copied'; } catch (e) {} };
+      return;
+    }
+    return Promise.all([B.admin.get('profiles'), B.admin.get('summaries')]).then(function (r) {
+      var P = r[0] || {}, S = r[1] || {};
+      members = Object.keys(P).map(function (id) { return { id: id, p: P[id] || {}, s: S[id] || null }; })
+        .sort(function (a, b) { return String(a.p.name || '').localeCompare(String(b.p.name || '')); });
+      paint();
+    });
+  }).catch(function (e) { out.innerHTML = '<div class="card">Could not load members (' + esc(e && e.message) + '). Check your internet and the database rules, then reload.</div>'; });
+
+  function fresh(m) { return m.s && m.s.updated && Date.now() - m.s.updated < 7 * 86400000; }
+  function paint() {
+    var q = (document.getElementById('q') || {}).value || '';
+    var active = members.filter(fresh), avg = active.length ? Math.round(active.reduce(function (t, m) { return t + (m.s.score || 0); }, 0) / active.length) : 0;
+    var h = '<div class="stats"><div class="stat"><b>' + members.length + '</b><span>members</span></div>' +
+      '<div class="stat"><b>' + members.filter(function (m) { return m.p.joined && Date.now() - m.p.joined < 30 * 86400000; }).length + '</b><span>joined in 30 days</span></div>' +
+      '<div class="stat"><b>' + active.length + '</b><span>active this week</span></div>' +
+      '<div class="stat"><b>' + (active.length ? avg : '–') + '</b><span>average Iman Health</span></div>' +
+      '<div class="stat"><b>' + members.filter(function (m) { return m.p.remind && m.p.remind.gather; }).length + '</b><span>get gathering emails</span></div></div>';
+    h += '<div class="bar"><input type="search" id="q" placeholder="Search name, email, city" value="' + esc(q) + '"><button id="csv">Download CSV</button></div><div class="list">';
+    var ql = q.toLowerCase();
+    members.filter(function (m) { return !ql || [m.p.name, m.p.email, m.p.city, m.p.phone].join(' ').toLowerCase().indexOf(ql) !== -1; }).forEach(function (m) {
+      var sc = fresh(m) ? m.s.score : null;
+      h += '<button class="m" data-id="' + esc(m.id) + '"><div class="sc ' + (sc == null ? '' : band(sc)) + '">' + (sc == null ? '–' : sc) + '<small>' + (sc == null ? 'no data' : 'of 100') + '</small></div>' +
+        '<div class="who"><b>' + esc(m.p.name || '(no name yet)') + '</b><span>' + esc([m.p.city, m.p.email].filter(Boolean).join(' · ')) + '</span><span>' + (m.s ? esc(m.s.label || '') + ' · updated ' + ago(m.s.updated) : 'Has not used Iman Health yet') + '</span></div></button>';
+      if (open === m.id) h += '<div class="det" id="det">Loading…</div>';
+    });
+    if (!members.length) h += '<div class="card">No members yet. Share the app and ask people to tap More → My Account.</div>';
+    h += '</div>';
+    out.innerHTML = h;
+    var qi = document.getElementById('q'); qi.oninput = function () { var pos = qi.selectionStart; paint(); var n = document.getElementById('q'); n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) {} };
+    document.getElementById('csv').onclick = csv;
+    if (open) detail(open);
+  }
+
+  out.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('.m'); if (!b) return;
+    var id = b.getAttribute('data-id'); open = open === id ? '' : id; paint();
+  });
+
+  function detail(id) {
+    var m = members.filter(function (x) { return x.id === id; })[0], box = document.getElementById('det'); if (!m || !box) return;
+    B.admin.get('iman/' + id).then(function (r) {
+      if (document.getElementById('det') !== box) return;
+      var data = (r && r.days) || {}, now = new Date(), days14 = I.lastDays(14, now), keys14 = days14.map(I.dayKey), wk = keys14.slice(7);
+      var lv = I.score(data, wk, 2), sm = I.summarize(data, wk), rem = m.p.remind || {}, zy = Object.keys((r && r.zakat) || {});
+      var marks = { m: '🕌', h: '🏠', l: '⏰' }, names = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+      var h = '<h2>' + esc(m.p.name || '') + '</h2><div class="kv"><span>Email</span><a href="mailto:' + esc(m.p.email) + '">' + esc(m.p.email) + '</a>' +
+        (m.p.phone ? '<span>Mobile</span><a href="tel:' + esc(m.p.phone.replace(/\s/g, '')) + '">' + esc(m.p.phone) + '</a>' : '') +
+        '<span>City</span>' + esc(m.p.city || '–') + '<span>Joined</span>' + (m.p.joined ? esc(new Date(m.p.joined).toLocaleDateString()) : '–') +
+        '<span>Reminders</span><div>' + (rem.gather ? '<span class="pill">gathering emails</span>' : '') + (rem.weekly ? '<span class="pill">Friday summary</span>' : '') + (rem.push ? '<span class="pill">app notifications</span>' : '') + (!rem.gather && !rem.weekly && !rem.push ? 'none' : '') + '</div>' +
+        '<span>Last 7 days</span><div><b>' + lv.score + '</b> · ' + esc(lv.label) + ' — prayer ' + Math.round(lv.parts.prayer * 100) + '%, fasting ' + Math.round(lv.parts.fast * 100) + '%, dhikr ' + Math.round(lv.parts.dhikr * 100) + '%, good deeds ' + Math.round(lv.parts.deeds * 100) + '%</div>' +
+        '<span>This week</span><div>' + sm.onTime + ' on time (' + sm.masjid + ' at the masjid), ' + sm.late + ' late, ' + sm.fasts + ' fasts, ' + sm.dhikr.toLocaleString() + ' dhikr, ' + sm.deeds + ' good deeds</div>' +
+        (zy.length ? '<span>Zakat paid</span><div>' + esc(zy.join(', ')) + ' AH</div>' : '') + '</div>';
+      h += '<div class="scroll"><table><tr><th>Last 14 days</th>' + days14.map(function (d, i) { return '<th>' + names[d.getDay()] + '<br>' + d.getDate() + '</th>'; }).join('') + '</tr>' +
+        I.PRAYERS.map(function (p) { return '<tr><td>' + p[1] + '</td>' + keys14.map(function (k) { var v = data[k] && data[k].p && data[k].p[p[0]]; return '<td>' + (v ? marks[v] : '·') + '</td>'; }).join('') + '</tr>'; }).join('') +
+        '<tr><td>Fast</td>' + keys14.map(function (k) { return '<td>' + (data[k] && data[k].fast ? '🌙' : '·') + '</td>'; }).join('') + '</tr>' +
+        '<tr><td>Dhikr</td>' + keys14.map(function (k) { var n = data[k] && data[k].dhikr; return '<td>' + (n ? I.fmtN(n) : '·') + '</td>'; }).join('') + '</tr>' +
+        '<tr><td>Good deeds</td>' + keys14.map(function (k) { var n = data[k] && data[k].g ? Object.keys(data[k].g).length : 0; return '<td>' + (n || '·') + '</td>'; }).join('') + '</tr></table></div>' +
+        '<p class="muted" style="margin:8px 0 0">🕌 on time at the masjid · 🏠 on time at home · ⏰ late or made up</p>';
+      box.innerHTML = h;
+    }, function () { box.textContent = 'Could not load this member\'s Iman Health.'; });
+  }
+
+  function csv() {
+    var rows = [['Name', 'Email', 'Mobile', 'City', 'Joined', 'Iman Health (last 7 days)', 'Level', 'Updated', 'Gathering emails', 'Friday summary', 'App notifications']];
+    members.forEach(function (m) {
+      var r = m.p.remind || {};
+      rows.push([m.p.name, m.p.email, m.p.phone, m.p.city, m.p.joined ? new Date(m.p.joined).toISOString().slice(0, 10) : '', m.s ? m.s.score : '', m.s ? m.s.label : '', m.s && m.s.updated ? new Date(m.s.updated).toISOString().slice(0, 10) : '', r.gather ? 'yes' : 'no', r.weekly ? 'yes' : 'no', r.push ? 'yes' : 'no']);
+    });
+    var text = rows.map(function (r) { return r.map(function (v) { v = String(v == null ? '' : v); if (/^[=+\-@]/.test(v)) v = "'" + v; return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(','); }).join('\r\n');
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + text], { type: 'text/csv' })); a.download = 'noor-members-' + new Date().toISOString().slice(0, 10) + '.csv'; a.click();
+  }
+})();
+</script>
+</body>
+</html>

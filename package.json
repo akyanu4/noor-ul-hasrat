@@ -1,0 +1,9 @@
+{
+  "name": "noor-ul-hasrat",
+  "private": true,
+  "description": "Noor-ul-Hasrat app. Static site + Vercel functions in api/. nodemailer sends account emails through Gmail.",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "nodemailer": "^6.9.16"
+  }
+}

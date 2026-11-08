@@ -11,6 +11,8 @@
   meetUrl: "https://meet.google.com/mxc-pqnb-xba",
   halqaRoom: "NoorHalqaEZikr-BaitUnNoor",
   oneSignalAppId: "46d22dc3-ea76-4e2f-aaf7-1eeb250efa84",
+  // Optional accounts (More → My Account). Turn on after the Firebase service account and Gmail are set in Vercel (tools/firebase/ACCOUNTS-SETUP.md).
+  accountsOn: false,
 
   // Donate screen: paste the link to your donation page. Leave empty to show "coming soon".
   donateTitle: "Support the mission",

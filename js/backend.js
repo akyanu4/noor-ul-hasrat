@@ -4,6 +4,9 @@
  * - Live class list: YouTube Data API v3 (uploads playlist).
  * - Optional anonymous sign-in (Firebase Auth over REST, no SDK): when config.firebaseApiKey is set every database
  *   call carries a sign-in token, and the rules then tie each RSVP to the person who made it.
+ * - Accounts (optional): sign-in by an emailed link. The server (api/auth-link.js) sends the link and, when it is opened,
+ *   returns a Firebase custom token; the session then carries the person's email (auth.token.em in the rules).
+ *   Their profile, Iman Health and weekly summary live under profiles/<uid>, iman/<uid> and summaries/<uid>.
  * Everything degrades to "not connected" when config.js has no keys. */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
@@ -53,7 +56,8 @@
     function refreshToken() {
       return postJSON(tokenBase + '/v1/token?key=' + encodeURIComponent(cfg.firebaseApiKey),
         'grant_type=refresh_token&refresh_token=' + encodeURIComponent(session.refresh), true).then(function (d) {
-        return saveSession({ uid: d.user_id, id: d.id_token, refresh: d.refresh_token, exp: now() + Number(d.expires_in || 3600) * 1000 });
+        var em = session && session.uid === d.user_id ? session.em : undefined;     // keep the account's email across refreshes
+        return saveSession({ uid: d.user_id, id: d.id_token, refresh: d.refresh_token, exp: now() + Number(d.expires_in || 3600) * 1000, em: em });
       });
     }
     // Resolves to a valid session, or null when sign-in is not configured. Never runs twice at once.
@@ -61,7 +65,10 @@
       if (!authOn) return Promise.resolve(null);
       if (!force && session && session.id && session.exp - now() > 60000) return Promise.resolve(session);
       if (authPromise) return authPromise;
-      var p = (session && session.refresh ? refreshToken().catch(function () { return signUp(); }) : signUp());
+      var p = (session && session.refresh ? refreshToken().catch(function (e) {
+        if (session && session.em && !(e && e.status >= 400 && e.status < 500)) throw e;   // offline: keep the account, do not swap it for an anonymous one
+        return signUp();
+      }) : signUp());
       authPromise = p.then(function (s) { authPromise = null; return s; }, function (e) { authPromise = null; throw e; });
       return authPromise;
     }
@@ -197,7 +204,51 @@
       });
     }
 
+    /* ---------- account (sign-in by email link) ---------- */
+    var apiBase = String(cfg.apiBase || '').replace(/\/+$/, '');
+    function apiPost(path, body) {
+      return fetchFn(apiBase + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (d) {
+          if (!res.ok) { var e = new Error(d.error || ('Request failed (' + res.status + ')')); e.status = res.status; throw e; }
+          return d;
+        });
+      });
+    }
+    var account = {
+      available: authOn,
+      user: function () { return session && session.em ? { uid: session.uid, email: session.em } : null; },
+      requestLink: function (email) { return apiPost('/api/auth-link', { action: 'send', email: email }); },
+      // `token` is the ?signin= value from the emailed link.
+      completeLink: function (token) {
+        return apiPost('/api/auth-link', { action: 'verify', token: token }).then(function (d) {
+          return postJSON(identityBase + '/v1/accounts:signInWithCustomToken?key=' + encodeURIComponent(cfg.firebaseApiKey), { token: d.token, returnSecureToken: true }).then(function (r) {
+            return saveSession({ uid: d.uid, em: d.email, id: r.idToken, refresh: r.refreshToken, exp: now() + Number(r.expiresIn || 3600) * 1000 });
+          });
+        }).then(function (s) { return { uid: s.uid, email: s.em }; });
+      },
+      signOut: function () { session = null; storage.removeItem('noor_auth'); },
+      deleteAccount: function () {
+        var u = account.user(); if (!u) return Promise.resolve();
+        return Promise.all(['profiles', 'summaries', 'iman'].map(function (t) { return call('DELETE', t + '/' + u.uid); })).then(function () {
+          return ensureAuth(false).then(function (s) { return postJSON(identityBase + '/v1/accounts:delete?key=' + encodeURIComponent(cfg.firebaseApiKey), { idToken: s.id }).catch(function () {}); });
+        }).then(function () { account.signOut(); });
+      }
+    };
+    // The signed-in person's own data: top = "profiles" | "summaries" | "iman", sub = an optional path below their id.
+    function minePath(top, sub) { var u = account.user(); if (!u) throw new Error('not signed in'); return top + '/' + u.uid + (sub ? '/' + sub : ''); }
+    var mine = {
+      get: function (top, sub) { return Promise.resolve().then(function () { return get(minePath(top, sub)); }); },
+      put: function (top, sub, v) { return Promise.resolve().then(function () { return call('PUT', minePath(top, sub), v); }); },
+      patch: function (top, sub, v) { return Promise.resolve().then(function () { return call('PATCH', minePath(top, sub), v); }); }
+    };
+    // For the admin page. The database rules allow these only for ids listed under admins/.
+    var admin = {
+      isAdmin: function () { var u = account.user(); return u ? get('admins/' + u.uid).then(function (v) { return v === true; }, function () { return false; }) : Promise.resolve(false); },
+      get: function (path) { return get(path); }
+    };
+
     return {
+      account: account, mine: mine, admin: admin,
       enabled: enabled, authEnabled: authOn, youtubeEnabled: !!(cfg.youtubeApiKey && cfg.youtubeChannelId),
       deviceId: deviceId, poll: poll, getCollective: getCollective, createTally: createTally,
       rsvp: rsvp, notice: notice, loadYouTube: loadYouTube, MAX_STEP: MAX_STEP
