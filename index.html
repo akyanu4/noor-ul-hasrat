@@ -661,7 +661,7 @@ if(!self.NOOR_CONFIG){
       {ic:'📜', lb:'Hadith', go:'hadith'}, {ic:'📰', lb:'Articles', go:soon('Articles','Reflections & teachings')}, {ic:'⬇️', lb:'Downloads', go:soon('Downloads','Offline content')}, {ic:'🔖', lb:'My Bookmarks', go:'quran:marks'},
       {ic:'⭐', lb:'My Favorites', go:soon('My Favorites','Your saved items')}, {ic:'📊', lb:'Reading Stats', go:'quran'}]},
     {id:'resourceList', title:'Resources', cls:'t-res', items:[
-      {ic:'👤', lb:'My Account', go:'account'}, {ic:'🕊️', lb:'Shaykhs', go:'classes:speakers'}, {ic:'🤝', lb:'Donate', go:'donate'}, {ic:'🫱', lb:"Bay'ah", go:soon("Bay'ah",'Spiritual allegiance')}, {ic:'🔗', lb:'Golden Chain', go:soon('Golden Chain','Silsila lineage')},
+      {ic:'👤', lb:'My Account', go:'account'}, {ic:'🕊️', lb:'Shaykhs', go:'classes:speakers'}, {ic:'🤝', lb:'Donate', go:'donate'}, {ic:'🫱', lb:"Bay'ah", go:'bayah'}, {ic:'🔗', lb:'Golden Chain', go:soon('Golden Chain','Silsila lineage')},
       {ic:'🤖', lb:'Shaykh AI', go:soon('Shaykh AI','Ask a guided question')}, {ic:'🔔', lb:'Notifications', go:'halqa'}, {ic:'🔒', lb:'Privacy', go:'url:privacy.html'}]},
     {id:'socialTiles', title:'Social Media', cls:'t-soc', items:[
       {ic:'▶️', lb:'YouTube', go:'url:'+channels.darulilm.url}, {ic:'📷', lb:'Instagram', go:soon('Instagram','Daily reminders')}, {ic:'📘', lb:'Facebook', go:soon('Facebook','Community updates')},
@@ -786,6 +786,7 @@ if(!self.NOOR_CONFIG){
         else if(it[1] === 'Islamic Months'){ route('months'); }
         else if(it[1] === 'Duas'){ route('duas'); }
         else if(it[1] === 'Donate'){ route('donate'); }
+        else if(it[1] === "Bay'ah"){ route('bayah'); }
         else if(it[1] === 'Notifications'){ route('halqa'); }
         else if(it[1] === 'Halqa & Community'){ route('halqa'); }
         else if(it[1] === 'Classes & Channels'){ route('classes'); }
@@ -900,6 +901,7 @@ if(!self.NOOR_CONFIG){
   function route(target){
     if(target === 'quran:marks'){ route('quran'); var mt = document.querySelector('#screen-quran .qtab[data-t="marks"]'); if(mt) mt.click(); return; }
     if(target === 'tasbeeh'){ showScreen('tasbeeh-full'); return; }
+    if(target === 'bayah'){ if(document.getElementById('screen-bayah')){ showScreen('bayah'); } else { route(soon("Bay'ah",'Spiritual allegiance')); } return; }
     if(target === 'halqa'){ showScreen('halqa'); return; }
     if(target === 'qibla'){ showScreen('qibla'); return; }
     if(target === 'prayers'){ showScreen('prayers'); return; }
@@ -1158,6 +1160,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
 <script src="js/voice.js"></script>
 <script src="js/cities.js"></script>
 <script src="js/iman.js"></script>
+<script src="js/bayah.js"></script>
 <script src="js/install.js"></script>
 </body>
 </html>
