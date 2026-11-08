@@ -48,17 +48,18 @@ def seg_frame(sg, tl):
     if k == "outro": return A.title_card(tl, sg["d"], closing=True)
     if k == "endcard":
         img = C.calm(tl, sg["d"], None, "stars", "")
-        img = L.paste_center(img, L.serif_text("NOOR-UL-HASRAT", 76, L.GOLD, 10), L.W / 2, L.H * 0.50, alpha=min(1, tl / 0.5))
+        up = 0.03 if getattr(L, "BAYAH", False) and L.PORTRAIT else 0.0   # room for the Bay'ah reminder above the subscribe strip
+        img = L.paste_center(img, L.serif_text("NOOR-UL-HASRAT", 76, L.GOLD, 10), L.W / 2, L.H * (0.50 - up), alpha=min(1, tl / 0.5))
         import cfg   # "Full dars on the channel" only once the full video is really up: project.json "endcard_line"
-        img = L.paste_center(img, L.serif_text(cfg.P.get("endcard_line", "Subscribe for more dars"), 52), L.W / 2, L.H * 0.56, alpha=min(1, tl / 0.8))   # credit lines from project.json "credits": shown small under the channel name
-        y = L.H * 0.615
+        img = L.paste_center(img, L.serif_text(cfg.P.get("endcard_line", "Subscribe for more dars"), 52), L.W / 2, L.H * (0.56 - up), alpha=min(1, tl / 0.8))   # credit lines from project.json "credits": shown small under the channel name
+        y = L.H * (0.615 - up)
         for line in cfg.P.get("credits", []):   # "text" or ["text", size]; a size under 36 is a sub-line (dimmer, closer)
             txt, sz = (line, 38) if isinstance(line, str) else line
             if sz < 36: y -= L.H * 0.008
             img = L.paste_center(img, L.serif_text(txt, sz, (215, 200, 165) if sz >= 36 else (190, 176, 140)), L.W / 2, y, alpha=min(1, max(0, (tl - 0.3) / 0.8)))
             y += L.H * (0.035 if sz < 36 else 0.033)
         if getattr(L, "BAYAH", False):   # Shorts that teach a practice of dhikr: take Bay'ah and follow a guide
-            ab = min(1, max(0, (tl - 0.6) / 0.8)); y += L.H * 0.006
+            ab = min(1, max(0, (tl - 0.6) / 0.8)); y = L.H * 0.902   # below the subscribe strip (watermark.py), in place of the small brand line
             img = L.paste_center(img, A.bayah_urdu(40), L.W / 2, y, alpha=ab); y += L.H * 0.029
             for line in A.BAYAH_EN:
                 img = L.paste_center(img, L.serif_text(line, 30, (232, 214, 170)), L.W / 2, y, alpha=ab); y += L.H * 0.018
@@ -127,7 +128,7 @@ class Renderer:
         if self.header:
             hi = L.serif_text(self.header, 40, L.GOLD, 4)
             im.alpha_composite(hi, (int((L.W - hi.width) / 2), int(L.H * 0.035)))
-        if sg["kind"] not in ("title", "outro"):
+        if sg["kind"] not in ("title", "outro") and not (sg["kind"] == "endcard" and getattr(L, "BAYAH", False)):
             bx = int((L.W - self.brand.width) / 2) if L.PORTRAIT else int(L.W - self.brand.width - 40 * L.U)
             by = int(L.H * 0.93) if L.PORTRAIT else int(L.H - self.brand.height - 24 * L.U)
             im.alpha_composite(self.brand, (bx, by))
