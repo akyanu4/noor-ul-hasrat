@@ -1,6 +1,5 @@
 # English captions (seconds in the ORIGINAL recording NAF002.mp3). *word* = shown in gold.
 # Cleaned from the TurboScribe translation for the Shorts. Lines in “quotes” are read from the book Nizam-ul-Amal-e-Fuqara.
-# The full dars needs the rest of the transcript (from 27:55) before its captions are complete.
 CAPTIONS = [
     (0.14, 71.36, 'Everyone has come to meet me today, family and friends together, and there is great joy. Whatever small doubt is in your heart, throw it away. The arrangement of the world is in the hands of the One to whom it belongs. Allah knows best.'),
     (72.92, 147.72, '*Dhikr al-anbiya min al-ibadah*: remembering the prophets is a kind of worship. And remembering the *righteous* wipes away sins: they are forgiven. In sha Allah we have begun this dars again; this is the second session.'),
@@ -55,4 +54,15 @@ CAPTIONS = [
     (1497.34, 1518.66, '“Do you know my tasawwur? Picture me; look at me in the picture.” And at once, my eyes *opened*.'),
     (1519.64, 1594.56, "I don't have much *kashf*. Just a while ago, for 45 minutes, *Maula Ali* was present in my house. A girl came and said: give the fatiha of *Maula Mushkil Kusha*. Allahu Akbar!"),
     (1602.37, 1668.00, 'The fatiha was given. Maula stood leaning by the wall, looking at me. Then *Qadir Piya* came, in love with Maula. Did you see all this? Allahu Akbar!'),
+    (1670.18, 1676.10, 'If you ever see any such trouble, stop at once and say: forgive me.'),
+    (1765.86, 1777.98, 'Everyone here has become so absorbed that you have forgotten everything and gone into the thought of *Maula*. What a great Maula he is; just think of him.'),
+    (1779.48, 1783.76, 'Maula makes the difficult easy. SubhanAllah.'),
+    (1784.30, 1800.22, "Allahumma salli 'ala Sayyidina Muhammad ﷺ."),
+    (1807.84, 1854.48, '*Maula Mushkil Kusha*: the remover of difficulties.'),
+    (1854.48, 1879.05, 'Only one who has seen it knows. Where else will you find this? Elsewhere there is only the body; where is the *soul*? The reality of spirituality is here.'),
+    (1881.54, 1919.68, "MashaAllah. What time is it? We must pray *Zuhr*; it is a quarter to. We will end today's dars here, because it goes into such detail."),
+    (1920.38, 1946.80, 'The books were needed for this dars; suddenly they were brought, and the money reached him. Look at this: who is doing all this?'),
+    (1946.92, 1973.88, 'MashaAllah, write the date on this. This lesson was short, but it is very great: this is the dars of *Tawbah*. See its importance.'),
+    (1974.06, 2038.00, "Today's date by the Hijri calendar: *3-10-1432*."),
+    (2047.90, 2071.60, 'From now on, everyone should keep a pen with black ink, and write. MashaAllah.'),
 ]

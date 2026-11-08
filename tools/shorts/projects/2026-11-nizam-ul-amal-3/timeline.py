@@ -1,5 +1,5 @@
 """Nizam-ul-Amal-e-Fuqara, part 3 (NAF003.mp3). Times are in the original recording.
-FULL is the whole recording as one picture track (slides n3_full); captions for 18:00-34:20 come once that clip is transcribed. SHORTS are the clips."""
+FULL is the whole recording as one picture track (slides n3_full); captions cover the whole recording. SHORTS are the clips."""
 FULL = [
     ("title", 7.0),
     ("voice", 0.00, 3026.0, "n3_full"),
