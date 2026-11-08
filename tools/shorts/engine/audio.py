@@ -17,6 +17,13 @@ for sg in segs:
     if sg["kind"] == "voice":
         inputs += ["-ss", "%.3f" % sg["a"], "-t", "%.3f" % d, "-i", CLEAN]
         i = len(labels); fl.append(f"[{i}:a]asetpts=PTS-STARTPTS,afade=t=in:d=0.04,afade=t=out:st={max(0, d - 0.06):.3f}:d=0.06,adelay={ms}|{ms}[s{i}]")
+    elif any(str(x).startswith("recite:") for x in sg.get("args", [])):
+        # Qur'an recitation in this pause (no music): "recite:<file in the project>:<from s>:<to s>[:<delay s>]"
+        r = [x for x in sg["args"] if str(x).startswith("recite:")][0].split(":")
+        f, a0, a1, dl = os.path.join(cfg.PROJECT, r[1]), float(r[2]), float(r[3]), float(r[4]) if len(r) > 4 else 0.5
+        rd = a1 - a0; rms = ms + int(dl * 1000)
+        inputs += ["-ss", "%.3f" % a0, "-t", "%.3f" % rd, "-i", f]
+        i = len(labels); fl.append(f"[{i}:a]asetpts=PTS-STARTPTS,aformat=sample_rates=44100:channel_layouts=stereo,loudnorm=I=-16:TP=-1.5,afade=t=in:d=0.15,afade=t=out:st={max(0, rd - 0.4):.3f}:d=0.4,adelay={rms}|{rms}[s{i}]")
     else:
         off = offs[mi % len(offs)]; mi += 1
         md = min(d + 0.4, 95 - off)

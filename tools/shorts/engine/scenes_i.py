@@ -121,7 +121,7 @@ def make(name):
                 bgp = SG.frame_image(imgs[0][0], imgs[0][1], imgs[0][2] if len(imgs[0]) > 2 else {}).resize((L.W // 4, L.H // 4)).filter(ImageFilter.GaussianBlur(6)).resize((L.W, L.H))
                 img = Image.blend(img, Image.eval(bgp, lambda v: int(v * 0.45)), 0.55)
             img = L.screen(img, L.glow_layer(lambda dr, s: L.draw_motes(dr, t, s, seed=21, n=55), blur=5))
-            has_ar = any(t0 < cut for t0, _ in st.get("arabic", []))   # Arabic shown while the drawing is up: a smaller medallion, higher
+            has_ar = any(it[0] < cut for it in st.get("arabic", []))   # Arabic shown while the drawing is up: a smaller medallion, higher
             ms, my = (int(L.W * 0.56), L.H * 0.365) if has_ar else (int(L.W * 0.76), L.H * 0.45)
             a_in = sm(0, 0.6, t)
             img = L.paste_center(img, medallion(ms), L.W / 2, my, alpha=a_in, scale=0.92 + 0.08 * a_in)
@@ -137,17 +137,19 @@ def make(name):
             pic = L.screen(pic, L.glow_layer(lambda dr, s: L.draw_motes(dr, t, s, seed=31 + k, n=45), blur=5))
             img = pic if t > cut + 0.7 else Image.blend(img, pic, (t - cut) / 0.7)
         # Arabic lines (Qur'an / du'a), fading in one after another, over a soft dark band
-        for t0, lines in st.get("arabic", []):
+        for item in st.get("arabic", []):
+            t0, lines = item[0], item[1]
+            at = list(item[2]) if len(item) > 2 else [t0 + i * 0.9 for i in range(len(lines))]   # when each line appears
             if t < t0: continue
             y = L.H * st.get("arabic_y", 0.64)
             band = Image.new("RGBA", (L.W, int(len(lines) * 118 * L.U + 70 * L.U)), (6, 16, 14, 150))
             img = L.paste_center(img, band.filter(ImageFilter.GaussianBlur(20)), L.W / 2, y + (len(lines) - 1) * 59 * L.U, alpha=sm(t0, t0 + 0.6, t))
             for i, ln in enumerate(lines):
-                img = L.paste_center(img, L.urdu(ln, 56, (250, 226, 160)), L.W / 2, y + i * 118 * L.U, alpha=sm(t0 + i * 0.9, t0 + i * 0.9 + 0.8, t))
+                img = L.paste_center(img, L.urdu(ln, 56, (250, 226, 160)), L.W / 2, y + i * 118 * L.U, alpha=sm(at[i], at[i] + 0.8, t))
             mean = st.get("mean") or []
             for j, ml in enumerate([mean] if isinstance(mean, str) else mean):
                 mi = L.serif_text(ml, 32, (235, 225, 200))
-                img = L.paste_center(img, mi, L.W / 2, y + len(lines) * 118 * L.U - 20 * L.U + j * 44 * L.U, alpha=sm(t0 + len(lines) * 0.9, t0 + len(lines) * 0.9 + 0.8, t))
+                img = L.paste_center(img, mi, L.W / 2, y + len(lines) * 118 * L.U - 20 * L.U + j * 44 * L.U, alpha=sm(st.get("mean_at", at[-1] + 0.9), st.get("mean_at", at[-1] + 0.9) + 0.8, t))
         # the step badge and title, sliding down at the start
         b = badge(st.get("n", 0), st.get("of", 6), st["en"], st.get("ur", ""))
         a = sm(0.1, 0.8, t)
