@@ -40,6 +40,7 @@
       HAND(80, 76, 0.85, 90, '#e9cfa0') + '<path d="M18 104 Q50 96 70 100 M90 100 Q112 96 142 104" fill="none" stroke="' + T + '" stroke-width="2" opacity=".5"/>')
   };
 
+  var NISA_AR = 'وَلَوْ أَنَّهُمْ إِذْ ظَّلَمُوٓا أَنفُسَهُمْ جَآءُوكَ فَٱسْتَغْفَرُوا ٱللّٰهَ وَٱسْتَغْفَرَ لَهُمُ ٱلرَّسُولُ لَوَجَدُوا ٱللّٰهَ تَوَّابًا رَّحِيمًا';
   var ISTIGHFAR_AR = 'أَسْتَغْفِرُ اللّٰهَ الْعَظِيمَ الَّذِي لَا إِلٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ وَأَتُوبُ إِلَيْهِ';
   var STEPS = [
     { art: 'look', t: 'Look first, then give your hand', b: 'Choose a murshid: a shaykh, or a khalifa he has authorised, who follows the Shari’ah and the Sunnah. Hazrat said: “Look first and understand, then give your hand. Otherwise regret follows.”',
@@ -53,6 +54,7 @@
       q: 'Small children are sometimes given bai’at for blessing: this is called bai’at-e-barakat.' },
     { art: 'pledge', t: 'The pledge', b: 'After the istighfar comes the promise. In Hazrat’s words:', q: '“I promise that, as far as I can, I will walk according to the commands of Allah and of His Messenger ﷺ, keep away from what is bad, and hold fast to what is good.”' },
     { art: 'dua', t: 'The shaykh’s du’a', b: 'The murshid asks Allah to forgive the new murid, and there is hope that it is accepted.',
+      ar: NISA_AR,
       mn: '“If, when they had wronged themselves, they had come to you and asked Allah’s forgiveness, and the Messenger had asked forgiveness for them, they would have found Allah Accepting of repentance, Most Merciful.” (Surah an-Nisa 4:64)' },
     { art: 'rope', t: 'After bai’at: hold the rope', b: 'Through bai’at the murid holds the rope that reaches from the Prophet ﷺ through the chain of masters. Follow your shaykh’s guidance: practices of dhikr are learnt from him, so that you reach the right station. If you slip, do not despair: repent and recite the istighfar again. Repentance never goes to waste, and bai’at can be renewed: the Prophet ﷺ told a Companion who had already given it, “Give bai’at again.”' }
   ];
@@ -94,5 +96,5 @@
   }
   body.addEventListener('click', function (e) { var th = e.target.closest && e.target.closest('.fm-sth'); if (th && root.NoorFamily) root.NoorFamily.playShort(th); });
   N.onScreen(function (id) { if (id === 'bayah') paint(); });
-  root.NoorBayah = { ready: true };
+  root.NoorBayah = { ready: true, NISA_AR: NISA_AR, ISTIGHFAR_AR: ISTIGHFAR_AR };
 })(typeof self !== 'undefined' ? self : this);
