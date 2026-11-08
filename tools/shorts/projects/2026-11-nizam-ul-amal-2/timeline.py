@@ -1,8 +1,8 @@
 """Nizam-ul-Amal-e-Fuqara, part 2 (NAF002.mp3). Times are in the original recording.
-FULL waits for the rest of the transcript (from 27:55); SHORTS are ready."""
+FULL is the whole recording as one picture track (slides n2_full); captions from 27:50 on come once that clip is transcribed. SHORTS are the clips."""
 FULL = [
     ("title", 7.0),
-    ("voice", 0.00, 2074.0, "book_naf"),
+    ("voice", 0.00, 2074.0, "n2_full"),
     ("outro", 8.0)]
 SHORTS = {
     "NAF2_Short1_The_Reality_of_Tawbah": ("THE REALITY OF TAWBAH", [

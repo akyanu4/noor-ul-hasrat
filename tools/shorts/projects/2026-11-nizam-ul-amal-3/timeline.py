@@ -1,8 +1,8 @@
 """Nizam-ul-Amal-e-Fuqara, part 3 (NAF003.mp3). Times are in the original recording.
-FULL waits for the rest of the transcript (from 18:06); SHORTS are ready."""
+FULL is the whole recording as one picture track (slides n3_full); captions for 18:00-34:20 come once that clip is transcribed. SHORTS are the clips."""
 FULL = [
     ("title", 7.0),
-    ("voice", 0.00, 3026.0, "book_naf"),
+    ("voice", 0.00, 3026.0, "n3_full"),
     ("outro", 8.0)]
 SHORTS = {
     "NAF3_Short1_Eat_Less_Sleep_Less_Speak_Less": ("WHAT IS TAQWA?", [

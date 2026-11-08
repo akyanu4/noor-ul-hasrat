@@ -28,3 +28,17 @@ SLIDES = {
                                    "surprise": [(1481.4, 0.5, 0.36, "آنکھیں کھل گئیں"), (1512.6, 0.5, 0.36, "آنکھیں کھل گئیں")]}),
     ],
 }
+
+# ---- the full recording (34.5 min): the Shorts' own pictures in their ranges, a pool of general pictures between them.
+from slidekit import full_track
+POOL = [("NA0-01", "all"), ("NA2-01", "all", {"fx": "rays"}), ("NA2-06", "all"), ("NA2-02", "all", {"fx": "rays"}),
+        ("NA2-05", "all"), ("NA2-01b", "all"), ("PORTRAIT", None)]
+SLIDES["n2_full"] = full_track([
+    (198.2, 313.4, [(b[0], b[1], "all") + tuple(b[3:]) for b in SLIDES["n2_tawbah"]]),
+    (331.9, 366.8, [(331.9, "NA2-01b", "all")]),                       # the heart (an animated scene in the Short)
+    (459.8, 501.5, SLIDES["n2_newborn"]),
+    (658.2, 784.8, SLIDES["n2_horse"]),
+    (873.5, 911.2, SLIDES["n2_wings"]),
+    (1072.2, 1123.2, [(1072.2, "NA2-06", "all", {"fx": "rays"})]),     # the two wings
+    (1417.7, 1518.7, SLIDES["n2_tasawwur"]),
+], POOL, 0.0, 2074.0)
