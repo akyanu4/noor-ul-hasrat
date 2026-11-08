@@ -13,9 +13,9 @@
   oneSignalAppId: "46d22dc3-ea76-4e2f-aaf7-1eeb250efa84",
   // Optional accounts (More → My Account). Turn on after the Firebase service account and Gmail are set in Vercel (tools/firebase/ACCOUNTS-SETUP.md).
   accountsOn: true,
-  bayahOn: true,
+  bayahOn: true,      // "Taking Bai'at" steps (More → Bay'ah), approved 8 Nov 2026
   // Living Shaykhs / Khalifas who give Bai'at: the choices under My Account → Bai'at ("Other" stays for anyone else).
-  bayahGuides: ["Alhaj Rasheed Khan (Ayub), Khalifa", "Nooruddin (Nayeem Pasha)"],      // "Taking Bai'at" steps (More → Bay'ah), approved 8 Nov 2026
+  bayahGuides: ["Alhaj Rasheed Khan (Ayub), Khalifa", "Nooruddin (Nayeem Pasha)"],
 
   // Donate screen: paste the link to your donation page. Leave empty to show "coming soon".
   donateTitle: "Support the mission",
