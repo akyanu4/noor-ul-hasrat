@@ -30,4 +30,15 @@ SHORTS = {
     "HB_Short6_Whoever_Has_No_Pir": ("WHOEVER HAS NO PIR", [
         ("voice", 2507.40, 2555.80, "hb_pir"),
         ("endcard", 5.5)]),
+    # Taking Bai'at, step by step: animated teaching cards over his words (steps.py). Under 3 minutes with the opening card.
+    "HB_Short12_Taking_Baiat_Step_by_Step": ("TAKING BAI'AT STEP BY STEP", [
+        ("pause", 3.5, "bs_intro", ()),
+        ("voice", 1644.21, 1665.63, "bs_look"),
+        ("voice", 748.16, 775.78, "bs_hand"),
+        ("voice", 871.40, 889.40, "bs_isti"),
+        ("voice", 889.40, 908.04, "bs_pledge"),
+        ("pause", 7.5, "bs_dua", ()),
+        ("voice", 1208.93, 1255.53, "bs_women"),
+        ("voice", 2326.27, 2353.47, "bs_after"),
+        ("endcard", 4.5)]),
 }

@@ -27,6 +27,7 @@ SCENES = {"soul": A.soul, "arsh": A.arsh, "creation": A.creation, "misal": A.mis
           "malida_prep": C.malida_prep, "malida_feast": C.malida_feast, "glory": C.glory, "jannah": D.jannah, "iman": E.iman, "sand_body": F.sand_body}
 SCENES.update(Hh.SCENES)
 SCENES.update(G.SCENES)   # project image slideshows (slides.py)
+import scenes_i as I; SCENES.update(I.SCENES)   # step-by-step teaching cards (steps.py)
 
 def build(tl):
     segs, T = [], 0.0
