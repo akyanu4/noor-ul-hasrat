@@ -25,7 +25,7 @@
   function dismissed(storage, now) {
     try { var t = Number(storage.getItem('noor_install_dismissed')); return t > 0 && now - t < DISMISS_DAYS * 86400000; } catch (e) { return false; }
   }
-  return { detect: detect, steps: steps, dismissed: dismissed, DISMISS_DAYS: DISMISS_DAYS };
+  return { detect: detect, steps: steps, dismissed: dismissed, DISMISS_DAYS: DISMISS_DAYS, APK: 'downloads/Noor-ul-Hasrat.apk' };
 });
 
 /* ---- UI inside the app ---- */
@@ -42,17 +42,26 @@
     '.icard .t{flex:1;font-size:13px;line-height:1.4}.icard .t b{display:block;font-size:14.5px}.icard button.go{background:var(--gold);color:#1a2421;border:0;border-radius:10px;padding:9px 13px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap}' +
     '.icard button.x{background:none;border:0;color:#f5f1e2;opacity:.7;font-size:18px;cursor:pointer;padding:2px 6px}' +
     '.isheet{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:80;display:flex;align-items:flex-end}.isheet .in{background:var(--panel);color:var(--ink);width:100%;border-radius:18px 18px 0 0;padding:18px 18px 26px;max-height:80%;overflow:auto}' +
+    '.isheet a.apk{display:block;text-align:center;background:var(--gold);color:#1a2421;border-radius:12px;padding:12px;font-size:14.5px;font-weight:700;text-decoration:none;margin:0 0 8px}.isheet .or{font-size:13px;color:var(--muted);margin:14px 0 6px}.isheet button.alt{background:var(--panel);color:var(--ink);border:1px solid var(--line);margin-bottom:8px}' +
     '.isheet h3{margin:0 0 10px;font-size:17px}.isheet ol{margin:0 0 14px;padding-left:20px;font-size:14px;line-height:1.6}.isheet button{width:100%;background:var(--teal);color:#fff;border:0;border-radius:12px;padding:12px;font-size:14px;font-weight:600;cursor:pointer}';
   doc.head.appendChild(css);
 
+  function esc(x) { return x.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
   function sheet() {
     var host = doc.querySelector('.screens').parentNode, s = doc.createElement('div'); s.className = 'isheet';
-    s.innerHTML = '<div class="in"><h3>Install Noor</h3><ol>' + I.steps(d).map(function (x) { return '<li>' + x.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</li>'; }).join('') + '</ol><button type="button">Got it</button></div>';
-    s.addEventListener('click', function (e) { if (e.target === s || e.target.tagName === 'BUTTON') s.remove(); });
+    var body = '<ol>' + I.steps(d).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>';
+    if (d.android) body = '<a class="apk" href="' + I.APK + '" download>Download the Android app</a>' +
+      '<ol><li>Open the file when it finishes downloading.</li><li>If Android asks, tap Settings and turn on "Allow from this source", then go back.</li><li>Tap Install. Noor-ul-Hasrat appears on your home screen.</li></ol>' +
+      '<div class="or">Or add it from Chrome instead:</div>' + (deferred ? '<button type="button" class="alt" data-k="chrome">Add from Chrome</button>' : body);
+    s.innerHTML = '<div class="in"><h3>Install Noor</h3>' + body + '<button type="button">Got it</button></div>';
+    s.addEventListener('click', function (e) {
+      if (e.target.getAttribute && e.target.getAttribute('data-k') === 'chrome') { var p = deferred; deferred = null; try { p.prompt(); } catch (x) {} s.remove(); paint(); return; }
+      if (e.target === s || e.target.tagName === 'BUTTON' || e.target.classList.contains('apk')) setTimeout(function () { s.remove(); }, 300);
+    });
     host.appendChild(s);
   }
   function install() {
-    if (deferred) { var p = deferred; deferred = null; try { p.prompt(); } catch (e) { sheet(); } paint(); return; }
+    if (deferred && !d.android) { var p = deferred; deferred = null; try { p.prompt(); } catch (e) { sheet(); } paint(); return; }
     sheet();
   }
   function paint() {
