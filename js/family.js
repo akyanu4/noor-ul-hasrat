@@ -404,7 +404,14 @@
     { title: "The Soul's Journey, Death, the Scale and the Blessed Malida", match: 'soul|malida',
       shorts: ['JfQsTHE7VrU', 'tayZJTuWGkU', 'NSWYCYR-Tlo', 'EQbitUdOKqQ', '2yjNqJo659g', 'eNHL-OsPxgQ', 'ZHg4XMwt3Ok'] },
     { title: "Haqeeqat-e-Bai'at", match: 'haqeeqat|haqiqat',   // both recordings joined into one full dars
-      shorts: ['g8-0WIXYjcM', 'r3x7LQru71I', '7wB9EQldsew', 'E7xb4BR6IPQ', 'kziC4lPGmgU', 'Rno3f3mGjyg', 'jRK1SIkPkV0', '3githsE0o6Y', 'ENBkebr3nJI', 'RFLGxcbYBCM', 'cbWGnUMd530', '77ZE201Hbjw', 'Fq8X-k08A5Y'] }
+      shorts: ['g8-0WIXYjcM', 'r3x7LQru71I', '7wB9EQldsew', 'E7xb4BR6IPQ', 'kziC4lPGmgU', 'Rno3f3mGjyg', 'jRK1SIkPkV0', '3githsE0o6Y', 'ENBkebr3nJI', 'RFLGxcbYBCM', 'cbWGnUMd530', '77ZE201Hbjw', 'Fq8X-k08A5Y'] },
+    // Nizam-ul-Amal-e-Fuqra: the full dars of each part shows here once it is on the channel (title with "Nizam" and "Part N").
+    { title: 'Nizam-ul-Amal-e-Fuqra, Part 2', match: 'nizam.*part\\s*2',
+      shorts: ['u6BHgjCPuCo', '_l27DFmjd6w', 'pqjEFcL1Nlo', 'SHyAucT3ojs', 'ta6pdvvmJBQ', 'dyHUfOLlVTs'] },
+    { title: 'Nizam-ul-Amal-e-Fuqra, Part 3', match: 'nizam.*part\\s*3',
+      shorts: ['oWZt1YfJ3io', 'Vz_I-E521r8', 'le1EA7cNRAA', 'EIcNQnQ_TkQ', 'KCmXwBTioD4'] },
+    { title: 'Nizam-ul-Amal-e-Fuqra, Part 4', match: 'nizam.*part\\s*4',
+      shorts: ['Imuwo7g6UzE'] }
   ]);
   FULLDARS.forEach(function (f) { (f.shorts || []).slice().forEach(function (id) { if (WATERMARKED[id]) f.shorts.push(WATERMARKED[id]); }); });
   function fullFor(id) { return FULLDARS.filter(function (f) { return (f.shorts || []).indexOf(id) >= 0; })[0] || null; }
