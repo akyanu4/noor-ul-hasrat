@@ -35,6 +35,19 @@
     '<div class="ab-card"><h3>Technical support &amp; development</h3>' +
       person('💻', 'Amjad Khan', 'Murid of Hazrat Azam Pasha R.A. · ' + SILSILA) + person('💻', 'Ahmed Khan', '') + '</div>' +
     '<div class="ab-note">Made under GiraffeTech. <a href="privacy.html">Privacy</a></div>';
+  // On Home: a small "Made by GiraffeTech" card at the bottom, opening this page.
+  var home = doc.getElementById('screen-home');
+  if (home) {
+    var hc = doc.createElement('style');
+    hc.textContent = '.gt-home{display:flex;align-items:center;gap:12px;margin:18px 0 6px;padding:12px 14px;border-radius:14px;background:var(--panel);border:1px solid var(--line);cursor:pointer}' +
+      '.gt-home .lg{flex:none;width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#e8c46b,#c9a24b);display:flex;align-items:center;justify-content:center;font-size:22px}' +
+      '.gt-home .tx{flex:1;min-width:0}.gt-home b{display:block;font-size:14.5px;color:var(--ink)}.gt-home small{display:block;font-size:12px;color:var(--muted);line-height:1.4;margin-top:1px}.gt-home .go{color:var(--muted);font-size:20px}';
+    doc.head.appendChild(hc);
+    var card = N.el('div', 'gt-home', '<div class="lg" aria-hidden="true">🦒</div><div class="tx"><b>Made by GiraffeTech</b><small>App, Shorts, full dars, transcripts and visuals. Support the app and its upkeep: ' + PHONE_SHOW + '</small></div><div class="go" aria-hidden="true">›</div>');
+    card.setAttribute('role', 'button'); card.tabIndex = 0; card.setAttribute('aria-label', 'About GiraffeTech and support');
+    card.addEventListener('click', function () { N.showScreen('about'); });
+    home.appendChild(card);
+  }
   s.querySelector('#abCopy').addEventListener('click', function (e) {
     var b = e.currentTarget;
     try { navigator.clipboard.writeText(PHONE_SHOW).then(function () { b.textContent = '✓ Copied'; setTimeout(function () { b.textContent = '📋 Copy number'; }, 2000); }); } catch (er) { root.prompt && root.prompt('Copy this number:', PHONE_SHOW); }
