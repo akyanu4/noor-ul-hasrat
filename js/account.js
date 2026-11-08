@@ -15,6 +15,7 @@
   function jget(k) { try { return JSON.parse(sget(k) || 'null'); } catch (e) { return null; } }
 
   var listeners = [], profile = jget(PRKEY), state = '', msg = '', isAdmin = false;
+  var mode = sget('noor_last_email') ? 'signin' : 'signup';   // a phone that has signed in before opens on "Sign in"
   // Before accounts are switched on for everyone, open the app once with ?accounts=1 to try them on this phone.
   if (/[?&]accounts=1/.test(root.location.search || '')) { sset('noor_accounts_preview', '1'); try { root.history.replaceState(null, '', root.location.pathname); } catch (e) {} setTimeout(function () { N.showScreen('account'); }, 300); }
   var accountsOn = !!cfg.accountsOn || sget('noor_accounts_preview') === '1';
@@ -28,6 +29,7 @@
     '.ac-ck{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:13.5px;line-height:1.45;cursor:pointer}.ac-ck input{width:20px;height:20px;flex:none;margin:1px 0 0;accent-color:var(--teal)}.ac-ck small{display:block;color:var(--muted);font-size:12px}' +
     '.ac-btn{display:block;width:100%;border:0;border-radius:12px;background:var(--teal);color:#fff;font:inherit;font-size:15px;font-weight:700;padding:13px;cursor:pointer;margin-top:6px}.ac-btn[disabled]{opacity:.55;cursor:default}.ac-btn.alt{background:var(--cream);color:var(--ink);border:1px solid var(--line);font-weight:600}' +
     '.ac-msg{font-size:13px;line-height:1.5;margin:8px 2px;color:var(--ink)}.ac-msg.err{color:#c0392b}.ac-sub{font-size:12px;color:var(--muted);line-height:1.5}.ac-link{background:none;border:0;color:var(--muted);text-decoration:underline;font:inherit;font-size:12.5px;cursor:pointer;padding:8px 2px}' +
+    '.ac-tabs{display:flex;background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:3px;margin-bottom:12px}.ac-tabs button{flex:1;border:0;background:none;padding:9px;border-radius:9px;font:inherit;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}.ac-tabs button.on{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}' +
     '.ac-f[hidden],#acBayWithL[hidden]{display:none!important}' +
     '.ac-pill{color:#fff;font-size:11.5px;font-weight:700;border-radius:999px;padding:3px 10px;white-space:nowrap}.ac-sel{width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--cream);color:var(--ink);border-radius:10px;padding:11px 12px;font:inherit;font-size:15px}' +
     '.ac-bay.hl{outline:2px solid var(--gold);outline-offset:6px;border-radius:8px}' +
@@ -108,7 +110,8 @@
     if (u) {
       var p = profile || {};
       h += '<div class="ac-hero"><b>Assalamu alaikum' + (p.name ? ', ' + esc(p.name.split(' ')[0]) : '') + '</b><p>Signed in as ' + esc(u.email) + '. Your Iman Health is saved to your account.</p></div>';
-      if (!p.name) h += '<div class="ac-card"><div class="ac-msg"><b>One more step:</b> add your name to finish your account.</div></div>';
+      if (!p.name) h += '<div class="ac-card"><div class="ac-msg"><b>One more step:</b> add your name below, tick the agreement, and tap Save to finish your account.</div>' +
+        '<label class="ac-ck"><input type="checkbox" id="acConsent2"><div>I agree that my Iman Health is saved to my account and that the Noor-ul-Hasrat admin can see it.</div></label></div>';
       h += bayahCard();
       h += '<div class="ac-card">' + fields(p, true) + '<button class="ac-btn" id="acSave" type="button">Save</button><div class="ac-msg' + (/^!/.test(msg) ? ' err' : '') + '" id="acMsg">' + esc(msg.replace(/^!/, '')) + '</div></div>';
       h += '<div class="ac-card"><div class="ac-row"><span>Email</span>' + esc(u.email) + '</div><div class="ac-row"><span>Iman Health</span>' + esc((root.NoorImanSync && root.NoorImanSync.status()) || 'Saved to your account') + '</div>' +
@@ -126,11 +129,20 @@
       body.innerHTML = h; return;
     }
     var pend = jget(PKEY) || {};
+    if (mode === 'signin') {
+      h += '<div class="ac-tabs"><button type="button" class="on" data-mode="signin">Sign in</button><button type="button" data-mode="signup">Create account</button></div>' +
+        '<div class="ac-card"><div class="ac-sub" style="margin:0 0 10px">Already a member? Enter your email and we will send you a sign-in link. No password.</div>' +
+        '<label class="ac-f"><span>Email</span><input id="acEmail" type="email" autocomplete="email" inputmode="email" maxlength="120" value="' + esc(pend.email || sget('noor_last_email') || '') + '"></label>' +
+        '<button class="ac-btn" id="acSignIn" type="button">Email me a sign-in link</button><div class="ac-msg' + (/^!/.test(msg) ? ' err' : '') + '" id="acMsg">' + esc(msg.replace(/^!/, '')) + '</div>' +
+        '<div class="ac-sub">New here? <a href="#" data-mode="signup">Create a free account</a></div></div>';
+      body.innerHTML = h; return;
+    }
+    h += '<div class="ac-tabs"><button type="button" data-mode="signin">Sign in</button><button type="button" class="on" data-mode="signup">Create account</button></div>';
     h += '<div class="ac-hero"><b>Create your free account</b><p>Optional. Everything in Noor works without it. With an account:</p><ul><li>Your Iman Health is kept safe, even on a new phone</li><li>Email reminders before our gatherings</li><li>Your Iman Health summary each Friday</li></ul></div>' +
       '<div class="ac-card"><label class="ac-f"><span>Email</span><input id="acEmail" type="email" autocomplete="email" inputmode="email" maxlength="120" value="' + esc(pend.email || '') + '"></label>' + fields(pend) +
       '<label class="ac-ck" style="border-top:1px solid var(--line);margin-top:4px;padding-top:12px"><input type="checkbox" id="acConsent"' + (pend.consent ? ' checked' : '') + '><div>I agree that my Iman Health is saved to my account and that the Noor-ul-Hasrat admin can see it.<small>Prayers, fasting, dhikr, good deeds and zakat (paid or not, never an amount). Your location is never sent.</small></div></label>' +
       '<button class="ac-btn" id="acSend" type="button">Email me a sign-in link</button><div class="ac-msg' + (/^!/.test(msg) ? ' err' : '') + '" id="acMsg">' + esc(msg.replace(/^!/, '')) + '</div>' +
-      '<div class="ac-sub">No password. Already have an account? Just enter your email and tap the button. <a href="privacy.html">Privacy</a></div></div>' +
+      '<div class="ac-sub">No password. Already have an account? <a href="#" data-mode="signin">Sign in</a> · <a href="privacy.html">Privacy</a></div></div>' +
       '<div class="ac-card" style="border-color:var(--gold)"><div class="ac-msg" style="margin:0"><b>🤝 Full dars and dhikr practices</b><br>Members can watch the full dars and the Shorts that teach a practice of dhikr. ' + esc((root.NoorFamily && root.NoorFamily.BAYAH_EN) || '') + '</div></div>';
     body.innerHTML = h;
   }
@@ -158,6 +170,7 @@
   }
 
   function afterSignIn(u) {
+    sset('noor_last_email', u.email);
     var pend = jget(PKEY);
     sset(SKEY, null);
     return B.mine.get('profiles').then(function (remote) {
@@ -177,10 +190,20 @@
     if (e.target && e.target.id === 'acBaySel') { var o = body.querySelector('#acBayOtherL'); if (o) o.hidden = e.target.value !== '__other'; }
   });
   body.addEventListener('click', function (e) {
+    var md = e.target.closest && e.target.closest('[data-mode]');
+    if (md) { e.preventDefault(); mode = md.getAttribute('data-mode'); msg = ''; paint(); return; }
     if (e.target && e.target.id === 'acBayHow') { e.preventDefault(); N.route('bayah'); return; }
     var t = e.target.closest ? e.target.closest('button') : null; if (!t) return;
+    if (t.id === 'acSignIn') {
+      var em = (body.querySelector('#acEmail').value || '').trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)) { say('!Please enter your email address.'); return; }
+      t.disabled = true; say('Sending…');
+      A.requestLink(em).then(function () { msg = ''; sset(SKEY, JSON.stringify({ email: em, t: Date.now() })); paint(); },
+        function (er) { t.disabled = false; say('!' + (er && er.message || 'Could not send the email. Check your internet and try again.')); });
+      return;
+    }
     if (t.id === 'acSend' || t.id === 'acResend') {
-      var pend = t.id === 'acResend' ? jget(PKEY) || { email: (jget(SKEY) || {}).email } : Object.assign({ email: (body.querySelector('#acEmail').value || '').trim().toLowerCase(), consent: body.querySelector('#acConsent').checked }, readFields());
+      var pend = t.id === 'acResend' ? { email: (jget(SKEY) || {}).email } : Object.assign({ email: (body.querySelector('#acEmail').value || '').trim().toLowerCase(), consent: body.querySelector('#acConsent').checked }, readFields());
       if (t.id === 'acSend') {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(pend.email)) { say('!Please enter your email address.'); return; }
         if (!pend.name) { say('!Please enter your name.'); return; }
@@ -196,6 +219,7 @@
     if (t.id === 'acOther') { sset(SKEY, null); msg = ''; paint(); return; }
     if (t.id === 'acSave') {
       var p = readFields(); if (!p.name) { say('!Please enter your name.'); return; }
+      var c2 = body.querySelector('#acConsent2'); if (c2 && !c2.checked) { say('!Please tick the agreement above to finish your account.'); return; }
       t.disabled = true; say('Saving…');
       saveProfile(p).then(function () { if (p.remind.push) askPush(); msg = 'Saved.'; paint(); }, function () { t.disabled = false; say('!Could not save. Check your internet and try again.'); });
       return;
@@ -214,14 +238,14 @@
     if (t.id === 'acAdmin') { root.location.href = 'admin.html'; return; }
     if (t.id === 'acOut') {
       if (!root.confirm('Sign out on this phone? Your Iman Health stays on this phone and in your account.')) return;
-      A.signOut(); profile = null; isAdmin = false; sset(PRKEY, null); bayOk = null; sset('noor_bayah_ok', null); msg = '';
+      A.signOut(); profile = null; isAdmin = false; sset(PRKEY, null); bayOk = null; sset('noor_bayah_ok', null); msg = ''; mode = 'signin';
       if (cfg.oneSignalAppId) { root.OneSignalDeferred = root.OneSignalDeferred || []; root.OneSignalDeferred.push(function (OS) { try { return OS.logout(); } catch (er) {} }); }
       emit(); paint(); return;
     }
     if (t.id === 'acDel') {
       if (!root.confirm('Delete your account? Your profile and the Iman Health saved in your account are erased for good. What is on this phone stays until you erase it in Iman Health.')) return;
       t.disabled = true;
-      A.deleteAccount().then(function () { profile = null; isAdmin = false; sset(PRKEY, null); msg = 'Your account was deleted.'; emit(); paint(); },
+      A.deleteAccount().then(function () { profile = null; isAdmin = false; sset(PRKEY, null); sset('noor_last_email', null); mode = 'signup'; msg = 'Your account was deleted.'; emit(); paint(); },
         function () { t.disabled = false; root.alert('Could not delete the account. Check your internet and try again.'); });
     }
   });
