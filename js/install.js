@@ -32,7 +32,10 @@
 (function () {
   if (typeof window === 'undefined' || !window.Noor || !window.NoorInstall) return;
   var N = window.Noor, I = window.NoorInstall, doc = document, d = I.detect(navigator, window), deferred = null;
-  if (d.standalone) return;
+  // Inside the Android app itself (opened from the APK) there is nothing to install.
+  var twa = false; try { if (/^android-app:\/\//.test(doc.referrer || '')) sessionStorage.setItem('noor_twa', '1'); twa = sessionStorage.getItem('noor_twa') === '1'; } catch (e) {}
+  if (twa || (d.standalone && !d.android)) return;
+  var homeApp = d.standalone;   // Android, opened from a home-screen icon added with Chrome: still offer the proper Android app
   var store = null; try { localStorage.setItem('_t', '1'); localStorage.removeItem('_t'); store = localStorage; } catch (e) {}
   window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; paint(); });
   window.addEventListener('appinstalled', function () { deferred = null; var c = doc.getElementById('installCard'); if (c) c.remove(); var r = doc.getElementById('installRow'); if (r) r.remove(); });
@@ -52,7 +55,7 @@
     var body = '<ol>' + I.steps(d).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>';
     if (d.android) body = '<a class="apk" href="' + I.APK + '" download>Download the Android app</a>' +
       '<ol><li>Open the file when it finishes downloading.</li><li>If Android asks, tap Settings and turn on "Allow from this source", then go back.</li><li>Tap Install. Noor-ul-Hasrat appears on your home screen.</li></ol>' +
-      '<div class="or">Or add it from Chrome instead:</div>' + (deferred ? '<button type="button" class="alt" data-k="chrome">Add from Chrome</button>' : body);
+      (homeApp ? '' : '<div class="or">Or add it from Chrome instead:</div>' + (deferred ? '<button type="button" class="alt" data-k="chrome">Add from Chrome</button>' : body));
     s.innerHTML = '<div class="in"><h3>Install Noor</h3>' + body + '<button type="button">Got it</button></div>';
     s.addEventListener('click', function (e) {
       if (e.target.getAttribute && e.target.getAttribute('data-k') === 'chrome') { var p = deferred; deferred = null; try { p.prompt(); } catch (x) {} s.remove(); paint(); return; }
@@ -67,19 +70,21 @@
   function paint() {
     var home = doc.getElementById('screen-home'); if (!home) return;
     var card = doc.getElementById('installCard');
-    if (!d.mobile || I.dismissed(store, Date.now())) { if (card) card.remove(); }
+    // The Android app is new, so its card has its own "hide" memory: people who hid the old card see it once more.
+    var hidden = d.android ? (function () { try { var t = Number(store.getItem('noor_apk_dismissed')); return t > 0 && Date.now() - t < I.DISMISS_DAYS * 86400000; } catch (e) { return false; } })() : I.dismissed(store, Date.now());
+    if (!d.mobile || hidden) { if (card) card.remove(); }
     else if (!card) {
       card = doc.createElement('div'); card.id = 'installCard'; card.className = 'icard';
-      card.innerHTML = '<div class="ic" style="font-size:22px">📲</div><div class="t"><b>Install Noor on your phone</b>Opens like an app, with its own icon.</div><button class="go" type="button">' + (d.ios ? 'How' : 'Install') + '</button><button class="x" type="button" aria-label="Hide for now">✕</button>';
+      card.innerHTML = '<div class="ic" style="font-size:22px">📲</div><div class="t">' + (d.android ? '<b>Get the Noor-ul-Hasrat Android app</b>Full-screen app with its own icon. Free download.' : '<b>Install Noor on your phone</b>Opens like an app, with its own icon.') + '</div><button class="go" type="button">' + (d.ios ? 'How' : d.android ? 'Get app' : 'Install') + '</button><button class="x" type="button" aria-label="Hide for now">✕</button>';
       card.querySelector('.go').onclick = install;
-      card.querySelector('.x').onclick = function () { try { store && store.setItem('noor_install_dismissed', String(Date.now())); } catch (e) {} card.remove(); };
+      card.querySelector('.x').onclick = function () { try { store && store.setItem(d.android ? 'noor_apk_dismissed' : 'noor_install_dismissed', String(Date.now())); } catch (e) {} card.remove(); };
       home.insertBefore(card, home.firstChild);
     }
     var more = doc.getElementById('resourceList');
     if (more && !doc.getElementById('installRow')) {
       var r = doc.createElement(more.classList.contains('ftiles') ? 'button' : 'div'); r.id = 'installRow';
-      if (more.classList.contains('ftiles')) { r.type = 'button'; r.className = 'ftile'; r.innerHTML = '<div class="fi" aria-hidden="true">📲</div><div class="fl">Install App</div>'; }
-      else { r.className = 'rowitem'; r.innerHTML = '<div class="ic">📲</div><div class="tx">Install the app<div class="sub">Add Noor to your home screen</div></div><div class="chev">›</div>'; }
+      if (more.classList.contains('ftiles')) { r.type = 'button'; r.className = 'ftile'; r.innerHTML = '<div class="fi" aria-hidden="true">📲</div><div class="fl">' + (d.android ? 'Android App' : 'Install App') + '</div>'; }
+      else { r.className = 'rowitem'; r.innerHTML = '<div class="ic">📲</div><div class="tx">' + (d.android ? 'Get the Android app' : 'Install the app') + '<div class="sub">' + (d.android ? 'Full-screen Noor-ul-Hasrat app, free download' : 'Add Noor to your home screen') + '</div></div><div class="chev">›</div>'; }
       r.onclick = install; more.insertBefore(r, more.firstChild);
     }
   }
