@@ -1,0 +1,81 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "collective": {
+      "current": {
+        ".read": true,
+        "count": {
+          ".write": "auth != null && newData.isNumber() && newData.val() >= (data.exists() ? data.val() : 0) && newData.val() <= (data.exists() ? data.val() : 0) + 500"
+        }
+      }
+    },
+    "halqa": {
+      "current": {
+        ".read": true
+      },
+      "$week": {
+        ".validate": "$week.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)",
+        "rsvps": {
+          ".read": true,
+          "$uid": {
+            ".write": "auth != null && auth.uid === $uid",
+            ".validate": "newData.hasChildren(['m', 't'])",
+            "$other": {
+              ".validate": false
+            },
+            "m": {
+              ".validate": "newData.isString() && (newData.val() == 'online' || newData.val() == 'offline')"
+            },
+            "t": {
+              ".validate": "newData.val() == now"
+            }
+          }
+        }
+      }
+    },
+    "admins": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid"
+      }
+    },
+    "profiles": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid && auth.token.em != null",
+        ".validate": "newData.child('email').val() === auth.token.em && newData.child('name').isString() && newData.child('name').val().length <= 60",
+        "phone": {
+          ".validate": "newData.isString() && newData.val().length <= 20"
+        },
+        "city": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        }
+      }
+    },
+    "summaries": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid && auth.token.em != null",
+        ".validate": "newData.child('score').isNumber()"
+      }
+    },
+    "iman": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid && auth.token.em != null",
+        "days": {
+          "$day": {
+            ".validate": "$day.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)"
+          }
+        }
+      }
+    },
+    "authlinks": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}
