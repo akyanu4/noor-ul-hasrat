@@ -52,8 +52,22 @@ def duration(path):
     cap = cv2.VideoCapture(path); fps = cap.get(cv2.CAP_PROP_FPS) or 24.0; n = cap.get(cv2.CAP_PROP_FRAME_COUNT); cap.release()
     return n / fps
 
+_shade = None
+def _shaded(im):   # soft dark band at the top (heading) and bottom (brand line), so the gold text reads on bright images
+    global _shade
+    if _shade is None:
+        import numpy as np
+        y = np.linspace(0, 1, L.H)[:, None]
+        a = np.clip(1 - y / 0.13, 0, 1) ** 1.6 * 150 + np.clip((y - 0.88) / 0.12, 0, 1) ** 1.6 * 120
+        m = np.zeros((L.H, L.W, 4), np.uint8); m[..., 3] = np.repeat(a, L.W, axis=1).astype(np.uint8)
+        _shade = Image.fromarray(m)
+    out = im.convert("RGBA"); out.alpha_composite(_shade); return out.convert("RGB")
+
 _dur = {}
 def clip(name, tl, d):
+    return _shaded(_clip(name, tl, d))
+
+def _clip(name, tl, d):
     p = _find(name, (".mp4", ".mov", ".webm"))
     if p:
         cd = _dur.setdefault(p, duration(p))
