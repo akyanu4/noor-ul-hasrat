@@ -18,10 +18,10 @@ STEPS = {
                     arabic=[(2.5, ISTI)], arabic_y=0.585),
     "bs_pledge": dict(n=4, of=OF, en="THE PLEDGE", ur="عہد", art="pledge", art_until=0.6,
                       images=[("N-HB0-02", "all", F)]),
-    # an-Nisa 4:64 recited by Mishary Alafasy (everyayah.com 004064.mp3, 10.55-35.25 s): each line appears as it is recited
+    # an-Nisa 4:64 shown line by line over the nasheed (a recited version was Content-ID blocked on YouTube)
     "bs_dua": dict(n=5, of=OF, en="THE SHAYKH'S DU'A", ur="شیخ کی دعا", art="dua", art_until=0.3,
                    images=[("HB1-01", "all"), ("N-HB0-02", "all", F)],
-                   arabic=[(0.6, NISA, (0.6, 9.5, 13.5))], arabic_y=0.575, mean_at=21.0,
+                   arabic=[(0.6, NISA, (0.6, 4.6, 8.2))], arabic_y=0.575, mean_at=11.0,
                    mean=["They would have found Allah Accepting", "of repentance, Most Merciful. (an-Nisa 4:64)"]),
     "bs_women": dict(n=6, of=OF, en="WOMEN & CHILDREN", ur="خواتین کی بیعت", art="cloth", art_until=0.62,
                      images=[("HB1-01", "all"), ("N-HB7-03", "all", F)]),

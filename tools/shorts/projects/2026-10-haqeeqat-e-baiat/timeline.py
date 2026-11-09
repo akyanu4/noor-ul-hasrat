@@ -37,7 +37,7 @@ SHORTS = {
         ("voice", 748.16, 775.78, "bs_hand"),
         ("voice", 871.40, 889.40, "bs_isti"),
         ("voice", 889.40, 908.04, "bs_pledge"),
-        ("pause", 26.2, "bs_dua", ("recite:audio/quran_004064_alafasy.mp3:10.55:35.25:0.6",)),
+        ("pause", 16.0, "bs_dua", ()),  # nasheed only: the Alafasy recitation was Content-ID blocked
         ("voice", 1208.93, 1255.53, "bs_women"),
         ("voice", 2326.27, 2336.73, "bs_after"),
         ("endcard", 4.2)]),
