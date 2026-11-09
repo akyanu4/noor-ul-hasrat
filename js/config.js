@@ -20,8 +20,8 @@
   bayahGuidesPast: ["Hazrat Azam Pasha R.A.", "Hazrat Azeem Piya R.A.", "Hazrat Khaja Baba R.A.", "Hazrat Qadeer Piya R.A."],
 
   // Donate screen: paste the link to your donation page. Leave empty to show "coming soon".
-  donateTitle: "Charity, Dargah & religious events",
-  donateContact: { name: "Nooruddin (Nayeem Pasha)", phone: "+91 96763 78351", note: "For any kind of charity or support to the Dargah and religious events, please contact:" },
+  donateTitle: "Charity, Dargah & Events",
+  donateContact: { name: "Nooruddin (Nayeem Pasha)", phone: "+91 96763 78351", note: "For any kind of charity or support to the Dargah and Events, please contact:" },
   donateUrl: "",
   donateNote: "",
 

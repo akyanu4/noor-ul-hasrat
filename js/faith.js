@@ -243,7 +243,7 @@
       var dc = cfg.donateContact;   // { name, phone, note }: whom to contact for charity / dargah support
       if (dc && dc.phone) {
         var tel = String(dc.phone).replace(/[^\d+]/g, '');
-        h += '<div class="fcard"><div style="font-size:14px;line-height:1.6;margin-bottom:8px">' + esc(dc.note || 'For any kind of charity or support to the Dargah and religious events, please contact:') + '</div>' +
+        h += '<div class="fcard"><div style="font-size:14px;line-height:1.6;margin-bottom:8px">' + esc(dc.note || 'For any kind of charity or support to the Dargah and Events, please contact:') + '</div>' +
           '<div style="font-size:17px;font-weight:700">' + esc(dc.name || '') + '</div><div style="font-size:20px;font-weight:700;letter-spacing:.02em;margin:2px 0 10px">' + esc(dc.phone) + '</div>' +
           '<div style="display:flex;gap:8px;flex-wrap:wrap"><a class="fbtn" style="flex:1;margin:0;text-align:center" href="tel:' + esc(tel) + '">📞 Call</a>' +
           '<a class="fbtn" style="flex:1;margin:0;text-align:center;background:var(--panel);color:var(--ink);border:1px solid var(--line)" href="https://wa.me/' + esc(tel.replace('+', '')) + '" target="_blank" rel="noopener">💬 WhatsApp</a></div></div>';

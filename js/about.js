@@ -31,7 +31,7 @@
       '<a class="ab-btn" href="https://wa.me/' + PHONE.replace('+', '') + '" target="_blank" rel="noopener">💬 WhatsApp</a>' +
       '<button class="ab-btn" type="button" id="abCopy">📋 Copy number</button></div>' +
       '</div>' +
-    '<div class="ab-card"><h3>Charity, Dargah &amp; religious events</h3><div class="ab-note" style="margin:0 0 4px">For any kind of charity or support to the Dargah and religious events, please contact:</div>' +
+    '<div class="ab-card"><h3>Charity, Dargah &amp; Events</h3><div class="ab-note" style="margin:0 0 4px">For any kind of charity or support to the Dargah and Events, please contact:</div>' +
       person('🕌', 'Nooruddin (Nayeem Pasha)', '+91 96763 78351') +
       '<div class="ab-btns" style="margin-top:6px"><a class="ab-btn pri" href="tel:+919676378351">📞 Call</a><a class="ab-btn" href="https://wa.me/919676378351" target="_blank" rel="noopener">💬 WhatsApp</a></div></div>' +
     '<div class="ab-card"><h3>General support</h3>' + person('🕊️', 'Alhaj Rasheed Khan (Ayub)', 'Khalifa · ' + SILSILA) + '</div>' +
@@ -49,10 +49,10 @@
     var card = N.el('div', 'gt-home', '<div class="lg" aria-hidden="true">🦒</div><div class="tx"><b>Made by GiraffeTech</b><small>App, Shorts, full dars, transcripts and visuals. Contact: ' + PHONE_SHOW + '</small></div><div class="go" aria-hidden="true">›</div>');
     card.setAttribute('role', 'button'); card.tabIndex = 0; card.setAttribute('aria-label', 'About GiraffeTech and support');
     card.addEventListener('click', function () { N.showScreen('about'); });
-    // A slim Donate button at the very top of Home (opens Donate: charity, Dargah & religious events)
+    // A slim Donate button at the very top of Home (opens Donate: charity, Dargah & Events)
     hc.textContent += '.don-top{display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;margin:0 0 12px;padding:10px 14px;border-radius:12px;cursor:pointer;font:inherit;text-align:left;' +
       'background:linear-gradient(135deg,#e8c46b,#c9a24b);color:#1c1a12;border:0;box-shadow:0 3px 10px rgba(201,162,75,.3)}.don-top .ic{font-size:20px}.don-top b{font-size:15px}.don-top span.s{flex:1;font-size:12.5px;opacity:.8}.don-top .go{font-size:18px}';
-    var dt = N.el('button', 'don-top', '<span class="ic" aria-hidden="true">🤲</span><b>Donate</b><span class="s">Charity, Dargah &amp; religious events</span><span class="go" aria-hidden="true">›</span>');
+    var dt = N.el('button', 'don-top', '<span class="ic" aria-hidden="true">🤲</span><b>Donate</b><span class="s">Charity, Dargah &amp; Events</span><span class="go" aria-hidden="true">›</span>');
     dt.type = 'button'; dt.addEventListener('click', function () { N.route('donate'); });
     home.insertBefore(dt, home.firstChild);
     home.appendChild(card);
