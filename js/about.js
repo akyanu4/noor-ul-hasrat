@@ -49,18 +49,12 @@
     var card = N.el('div', 'gt-home', '<div class="lg" aria-hidden="true">🦒</div><div class="tx"><b>Made by GiraffeTech</b><small>App, Shorts, full dars, transcripts and visuals. Contact: ' + PHONE_SHOW + '</small></div><div class="go" aria-hidden="true">›</div>');
     card.setAttribute('role', 'button'); card.tabIndex = 0; card.setAttribute('aria-label', 'About GiraffeTech and support');
     card.addEventListener('click', function () { N.showScreen('about'); });
-    // Charity, Dargah & religious events (contact from config.js donateContact), just above the GiraffeTech card
-    var dc = (root.NOOR_CONFIG || {}).donateContact;
-    if (dc && dc.phone) {
-      var tel = String(dc.phone).replace(/[^\d+]/g, '');
-      hc.textContent += '.ch-home{margin:18px 0 0;padding:13px 14px;border-radius:14px;background:linear-gradient(135deg,#123f33,#2a2410);color:#f5f1e2;border:1px solid rgba(232,196,107,.5)}' +
-        '.ch-home .t{display:flex;align-items:center;gap:10px}.ch-home .ic{flex:none;font-size:24px}.ch-home b{display:block;font-size:15px}.ch-home small{display:block;font-size:12.5px;opacity:.88;line-height:1.45;margin-top:2px}' +
-        '.ch-home .bt{display:flex;gap:8px;margin-top:10px}.ch-home a{flex:1;text-align:center;text-decoration:none;border-radius:10px;padding:9px 6px;font-size:13.5px;font-weight:700;background:#e8c46b;color:#1c1a12}.ch-home a.alt{background:rgba(255,255,255,.12);color:#f5f1e2}' +
-        '.gt-home{margin-top:10px!important}';
-      var ch = N.el('div', 'ch-home', '<div class="t"><div class="ic" aria-hidden="true">🕌</div><div><b>Charity, Dargah &amp; religious events</b><small>For any charity or support to the Dargah and religious events, contact ' + esc(dc.name || '') + ' · ' + esc(dc.phone) + '</small></div></div>' +
-        '<div class="bt"><a href="tel:' + esc(tel) + '">📞 Call</a><a class="alt" href="https://wa.me/' + esc(tel.replace('+', '')) + '" target="_blank" rel="noopener">💬 WhatsApp</a></div>');
-      home.appendChild(ch);
-    }
+    // A slim Donate button at the very top of Home (opens Donate: charity, Dargah & religious events)
+    hc.textContent += '.don-top{display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;margin:0 0 12px;padding:10px 14px;border-radius:12px;cursor:pointer;font:inherit;text-align:left;' +
+      'background:linear-gradient(135deg,#e8c46b,#c9a24b);color:#1c1a12;border:0;box-shadow:0 3px 10px rgba(201,162,75,.3)}.don-top .ic{font-size:20px}.don-top b{font-size:15px}.don-top span.s{flex:1;font-size:12.5px;opacity:.8}.don-top .go{font-size:18px}';
+    var dt = N.el('button', 'don-top', '<span class="ic" aria-hidden="true">🤲</span><b>Donate</b><span class="s">Charity, Dargah &amp; religious events</span><span class="go" aria-hidden="true">›</span>');
+    dt.type = 'button'; dt.addEventListener('click', function () { N.route('donate'); });
+    home.insertBefore(dt, home.firstChild);
     home.appendChild(card);
   }
   s.querySelector('#abCopy').addEventListener('click', function (e) {
