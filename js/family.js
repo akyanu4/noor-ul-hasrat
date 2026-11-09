@@ -280,7 +280,7 @@
      Full dars videos and the Shorts that teach a practice of dhikr (Tasawwur-e-Shaykh, Zarb-e-Haidari, Taqwa: eat less,
      sleep less, speak less; Sabr, Tasleem, Raza) carry a reminder to take Bay'ah and follow a guide. In the app they
      play for signed-in members once accounts are switched on (More → My Account). They stay public on YouTube. */
-  var PRACTICE_IDS = { dyHUfOLlVTs: 1, '3githsE0o6Y': 1, '50SwaP11-vk': 1, oWZt1YfJ3io: 1 };
+  var PRACTICE_IDS = { dyHUfOLlVTs: 1, '3githsE0o6Y': 1, '50SwaP11-vk': 1, oWZt1YfJ3io: 1, mwPT8CFRfR0: 1 };
   var PRACTICE_RE = /tasawwur|zarb[-\s]*e[-\s]*haidari|you have become my teacher|eat less,? sleep less|sabr,? tasleem|\bmuraqaba|\bpractice of (zikr|dhikr)/i;
   (cfg.practiceShorts || []).forEach(function (id) { PRACTICE_IDS[id] = 1; });
   function isPractice(it) { return !!(it && (it.wide || PRACTICE_IDS[it.id] || PRACTICE_RE.test(it.title || ''))); }
@@ -427,7 +427,7 @@
     { title: 'Nizam-ul-Amal-e-Fuqra, Part 3', match: 'nizam.*part\\s*3',
       shorts: ['oWZt1YfJ3io', 'Vz_I-E521r8', 'le1EA7cNRAA', 'EIcNQnQ_TkQ', 'KCmXwBTioD4'] },
     { title: 'Nizam-ul-Amal-e-Fuqra, Part 4', match: 'nizam.*part\\s*4',
-      shorts: ['Imuwo7g6UzE'] }
+      shorts: ['mwPT8CFRfR0', 'Imuwo7g6UzE', '7CIgqlzMN1E'] }
   ]);
   FULLDARS.forEach(function (f) { (f.shorts || []).slice().forEach(function (id) { if (WATERMARKED[id]) f.shorts.push(WATERMARKED[id]); }); });
   function fullFor(id) { return FULLDARS.filter(function (f) { return (f.shorts || []).indexOf(id) >= 0; })[0] || null; }

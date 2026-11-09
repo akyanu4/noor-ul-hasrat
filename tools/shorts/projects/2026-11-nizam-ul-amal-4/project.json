@@ -1,60 +1,63 @@
 {
- "title": "Nizam-ul-Amal-e-Fuqara, part 4 (NAF004.mp3)",
- "source": "Google Drive folder 'Nizam Ul Amal E Fuqra': NAF004.mp3",
- "audio": "audio/NAF004.mp3",
- "music": "music/nasheed.mp3",
- "photo": "../../assets/azam_pasha_portrait.png",
- "youtube": {
-  "channel_id": "UCn5J7zggR3cV4sCYlEjgZJA",
-  "published": {
-   "NAF4_Short2_The_Straight_Path_Is_the_Shortest": "Imuwo7g6UzE"
-  }
- },
- "photo_crop": [
-  255,
-  120,
-  895,
-  933
- ],
- "photo_grade": false,
- "credits": [
-  [
-   "With thanks to Nayeem Pasha",
-   38
+  "title": "Nizam-ul-Amal-e-Fuqara, part 4 (NAF004.mp3)",
+  "source": "Google Drive folder 'Nizam Ul Amal E Fuqra': NAF004.mp3",
+  "audio": "audio/NAF004.mp3",
+  "music": "music/nasheed.mp3",
+  "photo": "../../assets/azam_pasha_portrait.png",
+  "youtube": {
+    "channel_id": "UCn5J7zggR3cV4sCYlEjgZJA",
+    "published": {
+      "NAF4_Short2_The_Straight_Path_Is_the_Shortest": "Imuwo7g6UzE",
+      "NAF4_Short1_Sabr_Tasleem_Raza": "mwPT8CFRfR0",
+      "NAF4_Short3_Do_Not_Think_the_Snake_Is_Dead": "7CIgqlzMN1E",
+      "Full": "UGu8yLNox9I"
+    }
+  },
+  "photo_crop": [
+    255,
+    120,
+    895,
+    933
   ],
-  [
-   "grandson of Hazrat Azam Pasha R.A., for his support and ijazah",
-   32
+  "photo_grade": false,
+  "credits": [
+    [
+      "With thanks to Nayeem Pasha",
+      38
+    ],
+    [
+      "grandson of Hazrat Azam Pasha R.A., for his support and ijazah",
+      32
+    ],
+    [
+      "and to Alhaj Rasheed Khan (Ayub)",
+      38
+    ],
+    [
+      "mureed and khalifa of Hazrat Azam Pasha R.A.",
+      32
+    ],
+    [
+      "for preserving and sharing the dars recordings",
+      32
+    ],
+    [
+      "Transcribed, edited and visualised by Amjad Khan",
+      38
+    ],
+    [
+      "mureed of Hazrat Azam Pasha R.A.",
+      32
+    ],
+    [
+      "Silsila Qadri · Chishti · Naqshbandi",
+      34
+    ]
   ],
-  [
-   "and to Alhaj Rasheed Khan (Ayub)",
-   38
-  ],
-  [
-   "mureed and khalifa of Hazrat Azam Pasha R.A.",
-   32
-  ],
-  [
-   "for preserving and sharing the dars recordings",
-   32
-  ],
-  [
-   "Transcribed, edited and visualised by Amjad Khan",
-   38
-  ],
-  [
-   "mureed of Hazrat Azam Pasha R.A.",
-   32
-  ],
-  [
-   "Silsila Qadri · Chishti · Naqshbandi",
-   34
+  "producer": "Produced by GiraffeTech",
+  "full_subtitle": "Nizam-ul-Amal-e-Fuqara · part 4",
+  "watermark": [
+    "YouTube  @iqra-letslearn7278  ·  SUBSCRIBE",
+    "Noor-ul-Hasrat app  ·  noor-ul-hasrat.vercel.app"
   ]
- ],
- "producer": "Produced by GiraffeTech",
- "full_subtitle": "Nizam-ul-Amal-e-Fuqara · part 4",
- "watermark": [
-  "YouTube  @iqra-letslearn7278  ·  SUBSCRIBE",
-  "Noor-ul-Hasrat app  ·  noor-ul-hasrat.vercel.app"
- ]
 }
