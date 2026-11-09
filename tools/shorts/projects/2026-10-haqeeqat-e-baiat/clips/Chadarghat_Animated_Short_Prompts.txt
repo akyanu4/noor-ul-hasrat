@@ -1,0 +1,138 @@
+ANIMATED SHORT: "A WALI RECOGNISES A WALI" (Chadarghat)
+Hazrat Azam Pasha R.A.'s own voice: Haqeeqat-e-Bai'at, 29:22 to 31:40 (2 min 18 s)
+18 scenes. For each scene: (1) make the IMAGE, then (2) animate it into a VIDEO CLIP with the MOTION prompt.
+
+====================================================================
+HOW TO DO IT
+====================================================================
+1. IMAGE: paste the image prompt into ChatGPT or Gemini. Ask for portrait 9:16.
+   Save it as  AN1-01.png, AN1-02.png ... (the scene number).
+2. CLIP: open an image-to-video tool, for example:
+     - Gemini app -> Video (Veo): upload the image, paste the motion prompt  (8-second clips)
+     - Kling AI (klingai.com) -> Image to Video                           (5 or 10 seconds)
+     - Hailuo (hailuoai.video) or Runway also work
+   Choose 9:16 if asked. Save it as  AN1-01.mp4, AN1-02.mp4 ...
+   Any sound or music the tool adds is ignored; Hazrat's voice is used.
+3. Put all the clips in one folder (Videos\Noor-ul-Hasrat Shorts\Animated\Chadarghat) and tell me.
+   I add Hazrat's voice, captions, the title, end card, credits and watermark.
+
+CHECK EVERY CLIP before keeping it: faces of the awliya must stay covered by light,
+no extra hands or fingers, no strange text or signs, nobody suddenly changing clothes.
+If a clip goes wrong, just generate it again (or tell me, and I use the still image with a slow zoom).
+
+RULES (keep in every prompt)
+- Hazrat Qadeer Piya and the old wali: face ALWAYS hidden by soft white glowing light. No facial features.
+- Never draw the Prophet (peace be upon him). No calligraphy or Arabic writing made by the AI (I add the real text).
+- Other people: seen from behind or the side, faces not in focus.
+
+====================================================================
+THE TWO CHARACTERS (copy into a prompt whenever they appear)
+====================================================================
+OLD WALI = "an elderly Sufi wali in a plain white kurta, white skullcap and a grey woollen shawl, long white beard,
+his face completely hidden by a soft white glowing light, a long wooden staff with a brass top"
+
+QADEER PIYA = "a tall dignified Sufi dervish in a long green kurta and white trousers, a green turban,
+prayer beads in his hand, his face completely hidden by a soft white glowing light"
+(Correct the clothes or colours if you know how Hazrat Qadeer Piya really dressed.)
+
+STYLE (end of every image prompt) =
+"photorealistic, cinematic, old Hyderabad in the 1930s, warm natural light, soft golden haze,
+rich detail, vertical 9:16, no text, no letters, no logos"
+
+====================================================================
+SCENES   (time = place in Hazrat's audio; the clip should cover about that long)
+====================================================================
+
+--- 1. "There is an incident. The Chadarghat bridge..."   (6 s)
+IMAGE:  The old stone arched Chadarghat bridge over the Musi river in Hyderabad at early morning, a few people
+        in sherwanis and Rumi topis walking across, a horse-drawn tonga, river mist. + STYLE
+MOTION: Slow camera push forward along the bridge, river water flowing, the tonga moves slowly, mist drifting.
+
+--- 2. "...towards Malakpet, on the way to Sultan Bazar..."   (6 s)
+IMAGE:  An old Hyderabad bazaar street just after the bridge, shops with wooden shutters, people walking,
+        a bicycle, pigeons. + STYLE
+MOTION: Camera slowly moves down the street, people walking past, pigeons fly up.
+
+--- 3. "...there is a mosque on the left-hand side."   (5.5 s)
+IMAGE:  A small white old mosque on the left side of the street, arched doorway, two slender minarets,
+        stone steps leading up to the door, morning light. + STYLE
+MOTION: Camera slowly turns left toward the mosque and rises a little, sunlight shimmering on the white walls.
+
+--- 4. "In that mosque people were sitting for namaz, talking..."   (7 s)
+IMAGE:  Inside the mosque, men sitting in rows on prayer mats under white arches, quietly talking,
+        seen from behind and the side, oil lamps, soft light through the arches. + STYLE
+MOTION: Slow sideways camera move across the rows, men gently nodding and talking, lamp flames flicker.
+
+--- 5. "An old man, a wali, was sitting there..."   (7 s)
+IMAGE:  OLD WALI sitting cross-legged against a pillar, his staff lying beside him, his back toward the
+        mosque door, men around him. + STYLE
+MOTION: Slow push in toward the old wali, the light around his face glows gently, his hand moves on his knee.
+
+--- 6. "...and everyone was listening to him."   (8 s)
+IMAGE:  A circle of men leaning forward, listening to OLD WALI who sits in the middle, seen from behind the men,
+        lamp light. + STYLE
+MOTION: Gentle circling camera move, the men lean in, a lamp flame flickers.
+
+--- 7. "Hazrat Qadeer Piya Sarkar was entering the mosque..."   (7 s)
+IMAGE:  QADEER PIYA walking toward the mosque door from the street, morning sun behind him, his robe moving. + STYLE
+MOTION: He walks slowly toward the camera and the door, robe moving in the breeze, dust in the sunbeams.
+
+--- 8. "...as he stepped onto the stairs..."   (6 s)
+IMAGE:  Close-up of feet in simple leather jootis stepping onto old stone mosque steps, the hem of a green
+        kurta. + STYLE
+MOTION: One foot steps up onto the next stone step, slow motion.
+
+--- 9. "...the old wali threw his staff..."   (6 s)
+IMAGE:  OLD WALI inside, still with his back to the door, lifting his wooden staff in one hand, the bright
+        doorway far behind him. + STYLE
+MOTION: The old wali slowly raises the staff, he does not turn around, light glows around him.
+
+--- 10. "...and said: if anyone has the strength, let him pick it up!"   (6 s)
+IMAGE:  The wooden staff flying through the air across the mosque toward the bright doorway, the men turning
+        their heads in surprise, motion blur. + STYLE
+MOTION: The staff flies slowly across the frame toward the door, slow motion, the men turn to look.
+
+--- 11. (same moment, the men startled)   (5 s)
+IMAGE:  Men sitting on the mats, startled, looking toward the doorway, seen from behind. + STYLE
+MOTION: The men turn their heads toward the door, one starts to rise.
+
+--- 12. "Qadeer Piya Sarkar caught it!"   (6 s)
+IMAGE:  QADEER PIYA standing in the bright arched doorway, catching the wooden staff in one hand, sunlight
+        behind him. + STYLE
+MOTION: His hand closes around the flying staff and he holds it still, robe settles, light flares softly.
+
+--- 13. "Oh, it is you who has come!"   (7 s)
+IMAGE:  OLD WALI still seated, his back to the door, his head slightly raised as if he knows, warm light
+        growing around him. + STYLE
+MOTION: The light around the old wali grows warmer, he nods slowly, without turning.
+
+--- 14. "Without turning round, the old wali knew..."   (7 s)
+IMAGE:  QADEER PIYA walking across the mosque carrying the staff, holding it out with both hands to OLD WALI,
+        who has now turned toward him. + STYLE
+MOTION: He walks forward slowly and offers the staff, the old wali reaches up and takes it.
+
+--- 15. "...that a wali was behind him."   (8 s)
+IMAGE:  The two walis, OLD WALI and QADEER PIYA, seated together facing each other, both faces hidden in
+        soft white light, the other men watching in wonder from a distance. + STYLE
+MOTION: Very slow push in, the light around the two walis glows and joins between them.
+
+--- 16. "Did you see? A wali recognises a wali."   (9 s)
+IMAGE:  Close view of two hands, an old hand and a younger hand, both resting on the same wooden staff with a
+        brass top, soft golden light. + STYLE
+MOTION: Slow push in on the hands, golden light glows on the brass top.
+
+--- 17. "If a wali is behind him, he knows..."   (10 s)
+IMAGE:  The white mosque from outside at sunset, golden sky, birds flying home, the old city rooftops. + STYLE
+MOTION: Slow camera pull back and up, birds crossing the sky, clouds drifting.
+
+--- 18. "...he knows someone is there."   (10 s)
+IMAGE:  The wooden staff resting against a white mosque pillar beside a glowing oil lamp at dusk, empty prayer
+        mats. + STYLE
+MOTION: Lamp flame flickers, very slow push in, soft dust in the light.
+
+====================================================================
+TIPS
+- 8-second clips are fine for every scene; I trim or slow them to fit.
+- If the tool lets you set "start frame", use your image as the start frame.
+- If the characters look different from scene to scene, upload the earlier image too and say
+  "same man, same clothes as in this image".

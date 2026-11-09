@@ -49,6 +49,11 @@ tools/shorts/
    unverified channel. Replacing a Short = upload the new one, then set the old one Private (ask first).
 11. The app lists new public Shorts by itself; `/api/new-shorts` pushes a notification once a day.
 
+## Animated clips (image-to-video)
+A scene named `clip:<name>` plays `<project>/clips/<name>.mp4` (Veo, Kling, etc.) under the captions: slowed to fill
+the segment (min 0.6x), then the last frame holds with a slow zoom. Without the clip it uses `clips/<name>.png`, then a
+placeholder. Example: `HB_Short13_A_Wali_Recognises_a_Wali_Animated` (prompts in that project's `clips/`).
+
 ## Scene library (scene name -> what it shows)
 soul, arsh, creation (Kun), misal, womb, weight_time, sand_body (soul of light, body of sand, time and family threads),
 death_barzakh, graves, window, sins, hashr, scales, intercession, jannah (Sufi lifting believers to the door of Jannah),

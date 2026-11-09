@@ -40,6 +40,8 @@ def build(tl):
 
 def seg_frame(sg, tl):
     k = sg["kind"]
+    if k in ("voice", "pause") and sg["scene"].startswith("clip:"):   # animated clip (scenes_v.py)
+        import scenes_v as V; return V.clip(sg["scene"][5:], tl, sg["d"])
     if k == "voice": return SCENES[sg["scene"]](tl, sg["d"], sg["a"] + tl)
     if k == "pause":
         if sg["scene"] == "calm": return C.calm(tl, sg["d"], None, *sg["args"])
