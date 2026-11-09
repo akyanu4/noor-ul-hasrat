@@ -31,7 +31,7 @@
       '<a class="ab-btn" href="https://wa.me/' + PHONE.replace('+', '') + '" target="_blank" rel="noopener">💬 WhatsApp</a>' +
       '<button class="ab-btn" type="button" id="abCopy">📋 Copy number</button></div>' +
       '</div>' +
-    '<div class="ab-card"><h3>Charity &amp; Dargah support</h3><div class="ab-note" style="margin:0 0 4px">For any kind of charity or support to the Dargah, please contact:</div>' +
+    '<div class="ab-card"><h3>Charity, Dargah &amp; religious events</h3><div class="ab-note" style="margin:0 0 4px">For any kind of charity or support to the Dargah and religious events, please contact:</div>' +
       person('🕌', 'Nooruddin (Nayeem Pasha)', '+91 96763 78351') +
       '<div class="ab-btns" style="margin-top:6px"><a class="ab-btn pri" href="tel:+919676378351">📞 Call</a><a class="ab-btn" href="https://wa.me/919676378351" target="_blank" rel="noopener">💬 WhatsApp</a></div></div>' +
     '<div class="ab-card"><h3>General support</h3>' + person('🕊️', 'Alhaj Rasheed Khan (Ayub)', 'Khalifa · ' + SILSILA) + '</div>' +
