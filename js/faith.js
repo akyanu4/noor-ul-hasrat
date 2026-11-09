@@ -240,7 +240,15 @@
     function paintDonate() {
       var url = safeUrl(cfg.donateUrl), note = String(cfg.donateNote || '').trim(), title = String(cfg.donateTitle || 'Support the mission').trim();
       var h = '<div class="fhero"><div class="h" style="font-size:20px">' + esc(title) + '</div></div>';
-      if (!url && !note) {
+      var dc = cfg.donateContact;   // { name, phone, note }: whom to contact for charity / dargah support
+      if (dc && dc.phone) {
+        var tel = String(dc.phone).replace(/[^\d+]/g, '');
+        h += '<div class="fcard"><div style="font-size:14px;line-height:1.6;margin-bottom:8px">' + esc(dc.note || 'For any kind of charity or support to the Dargah, please contact:') + '</div>' +
+          '<div style="font-size:17px;font-weight:700">' + esc(dc.name || '') + '</div><div style="font-size:20px;font-weight:700;letter-spacing:.02em;margin:2px 0 10px">' + esc(dc.phone) + '</div>' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap"><a class="fbtn" style="flex:1;margin:0;text-align:center" href="tel:' + esc(tel) + '">📞 Call</a>' +
+          '<a class="fbtn" style="flex:1;margin:0;text-align:center;background:var(--panel);color:var(--ink);border:1px solid var(--line)" href="https://wa.me/' + esc(tel.replace('+', '')) + '" target="_blank" rel="noopener">💬 WhatsApp</a></div></div>';
+      }
+      if (!url && !note && !(dc && dc.phone)) {
         h += '<div class="placeholder-note">Donation details haven\'t been added yet, in shaa Allah soon.</div>';
       } else {
         if (url) h += '<a class="fbtn" id="donGo" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">Donate securely ›</a><div class="fnote">Opens the donation page in your browser. Noor itself never handles payments or card details.</div>';
