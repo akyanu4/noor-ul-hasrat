@@ -49,6 +49,18 @@
     var card = N.el('div', 'gt-home', '<div class="lg" aria-hidden="true">🦒</div><div class="tx"><b>Made by GiraffeTech</b><small>App, Shorts, full dars, transcripts and visuals. Contact: ' + PHONE_SHOW + '</small></div><div class="go" aria-hidden="true">›</div>');
     card.setAttribute('role', 'button'); card.tabIndex = 0; card.setAttribute('aria-label', 'About GiraffeTech and support');
     card.addEventListener('click', function () { N.showScreen('about'); });
+    // Charity, Dargah & religious events (contact from config.js donateContact), just above the GiraffeTech card
+    var dc = (root.NOOR_CONFIG || {}).donateContact;
+    if (dc && dc.phone) {
+      var tel = String(dc.phone).replace(/[^\d+]/g, '');
+      hc.textContent += '.ch-home{margin:18px 0 0;padding:13px 14px;border-radius:14px;background:linear-gradient(135deg,#123f33,#2a2410);color:#f5f1e2;border:1px solid rgba(232,196,107,.5)}' +
+        '.ch-home .t{display:flex;align-items:center;gap:10px}.ch-home .ic{flex:none;font-size:24px}.ch-home b{display:block;font-size:15px}.ch-home small{display:block;font-size:12.5px;opacity:.88;line-height:1.45;margin-top:2px}' +
+        '.ch-home .bt{display:flex;gap:8px;margin-top:10px}.ch-home a{flex:1;text-align:center;text-decoration:none;border-radius:10px;padding:9px 6px;font-size:13.5px;font-weight:700;background:#e8c46b;color:#1c1a12}.ch-home a.alt{background:rgba(255,255,255,.12);color:#f5f1e2}' +
+        '.gt-home{margin-top:10px!important}';
+      var ch = N.el('div', 'ch-home', '<div class="t"><div class="ic" aria-hidden="true">🕌</div><div><b>Charity, Dargah &amp; religious events</b><small>For any charity or support to the Dargah and religious events, contact ' + esc(dc.name || '') + ' · ' + esc(dc.phone) + '</small></div></div>' +
+        '<div class="bt"><a href="tel:' + esc(tel) + '">📞 Call</a><a class="alt" href="https://wa.me/' + esc(tel.replace('+', '')) + '" target="_blank" rel="noopener">💬 WhatsApp</a></div>');
+      home.appendChild(ch);
+    }
     home.appendChild(card);
   }
   s.querySelector('#abCopy').addEventListener('click', function (e) {
