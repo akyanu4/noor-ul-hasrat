@@ -6,6 +6,7 @@
   var esc = N.esc;
   var PHONE = '+919347524980', PHONE_SHOW = '+91 93475 24980';
   var SILSILA = 'Qadri · Chishti · Naqshbandi';
+  var SITE = 'https://www.giraffestech.com', SITE_SHOW = 'giraffestech.com';
 
   var css = doc.createElement('style');
   css.textContent =
@@ -24,7 +25,8 @@
 
   function person(ic, name, sub) { return '<div class="ab-p"><div class="ab-av" aria-hidden="true">' + ic + '</div><div><b>' + esc(name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : '') + '</div></div>'; }
   s.querySelector('#abBody').innerHTML =
-    '<div class="ab-hero"><b>Noor-ul-Hasrat</b><p>The complete application, the Shorts and full dars videos, the transcripts, the editing and the visualisation were made by <b>GiraffeTech</b>.</p></div>' +
+    '<div class="ab-hero"><b>Noor-ul-Hasrat</b><p>The complete application, the Shorts and full dars videos, the transcripts, the editing and the visualisation were made by <b>GiraffeTech</b>.</p>' +
+      '<a class="ab-btn" style="display:inline-block;flex:none;margin-top:10px;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#f5f1e2" href="' + SITE + '" target="_blank" rel="noopener">🌐 ' + SITE_SHOW + '</a></div>' +
     '<div class="ab-card"><h3>Contact</h3><div class="ab-note" style="margin:0 0 4px">To support the application or for any help, call or message:</div>' +
       '<div class="ab-num">' + PHONE_SHOW + '</div><div class="ab-btns">' +
       '<a class="ab-btn pri" href="tel:' + PHONE + '">📞 Call</a>' +
@@ -37,7 +39,7 @@
     '<div class="ab-card"><h3>General support</h3>' + person('🕊️', 'Alhaj Rasheed Khan (Ayub)', 'Khalifa · ' + SILSILA) + '</div>' +
     '<div class="ab-card"><h3>Technical support &amp; development</h3>' +
       person('💻', 'Amjad Khan', 'Murid of Hazrat Azam Pasha R.A. · ' + SILSILA) + person('💻', 'Ahmed Khan', '') + '</div>' +
-    '<div class="ab-note">Made under GiraffeTech. <a href="privacy.html">Privacy</a></div>';
+    '<div class="ab-note">Made under GiraffeTech · <a href="' + SITE + '" target="_blank" rel="noopener">' + SITE_SHOW + '</a> · <a href="privacy.html">Privacy</a></div>';
   // On Home: a small "Made by GiraffeTech" card at the bottom, opening this page.
   var home = doc.getElementById('screen-home');
   if (home) {
@@ -46,7 +48,7 @@
       '.gt-home .lg{flex:none;width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#e8c46b,#c9a24b);display:flex;align-items:center;justify-content:center;font-size:22px}' +
       '.gt-home .tx{flex:1;min-width:0}.gt-home b{display:block;font-size:14.5px;color:var(--ink)}.gt-home small{display:block;font-size:12px;color:var(--muted);line-height:1.4;margin-top:1px}.gt-home .go{color:var(--muted);font-size:20px}';
     doc.head.appendChild(hc);
-    var card = N.el('div', 'gt-home', '<div class="lg" aria-hidden="true">🦒</div><div class="tx"><b>Made by GiraffeTech</b><small>App, Shorts, full dars, transcripts and visuals. Contact: ' + PHONE_SHOW + '</small></div><div class="go" aria-hidden="true">›</div>');
+    var card = N.el('div', 'gt-home', '<div class="lg" aria-hidden="true">🦒</div><div class="tx"><b>Made by GiraffeTech</b><small>App, Shorts, full dars, transcripts and visuals. ' + SITE_SHOW + ' · ' + PHONE_SHOW + '</small></div><div class="go" aria-hidden="true">›</div>');
     card.setAttribute('role', 'button'); card.tabIndex = 0; card.setAttribute('aria-label', 'About GiraffeTech and support');
     card.addEventListener('click', function () { N.showScreen('about'); });
     // A slim Donate button at the very top of Home (opens Donate: charity, Dargah & Events)
