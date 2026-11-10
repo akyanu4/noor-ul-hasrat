@@ -58,8 +58,8 @@
       mn: '“If, when they had wronged themselves, they had come to you and asked Allah’s forgiveness, and the Messenger had asked forgiveness for them, they would have found Allah Accepting of repentance, Most Merciful.” (Surah an-Nisa 4:64)' },
     { art: 'rope', t: 'After bai’at: hold the rope', b: 'Through bai’at the murid holds the rope that reaches from the Prophet ﷺ through the chain of masters. Follow your shaykh’s guidance: practices of dhikr are learnt from him, so that you reach the right station. If you slip, do not despair: repent and recite the istighfar again. Repentance never goes to waste, and bai’at can be renewed: the Prophet ﷺ told a Companion who had already given it, “Give bai’at again.”' }
   ];
+  var STEPS_SHORT = { id: '0yhKLLlv5ww', title: 'How to Take Bai’at: Step by Step' };   // the steps in Hazrat's voice, shown at the top
   var SHORTS = [
-    { id: '0yhKLLlv5ww', title: 'How to Take Bai’at: Step by Step' },
     { id: 'TkSFt5BlMzs', title: 'What Is Bai’at? Hand Upon Hand' }, { id: 'VlU4EcJGVgQ', title: 'The Hand of Allah' },
     { id: 'ufZ_iEByRmI', title: 'Why One Trusted Guide? The Lawyer and the Shaykh' }, { id: '883RmkRT9mE', title: 'Whoever Has No Pir, His Pir Is Shaytan' },
     { id: '56xW_CnWB0w', title: 'The Big Stone and the Small Pebble: The Power of Company' }
@@ -73,6 +73,8 @@
     '.by-n{position:absolute;left:12px;top:10px;width:28px;height:28px;border-radius:50%;background:var(--teal);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center}' +
     '.by-tx{padding:12px 14px 14px}.by-tx h3{margin:0 0 6px;font-size:16.5px;color:var(--ink)}.by-tx p{margin:0 0 8px;font-size:14px;line-height:1.6;color:var(--ink)}.by-tx .q{border-left:3px solid var(--gold);padding:2px 0 2px 10px;color:var(--muted);font-style:italic}' +
     '.by-ar{font-family:Amiri,"Scheherazade New",serif;font-size:22px;line-height:1.9;direction:rtl;text-align:center;color:var(--teal);margin:6px 0}.by-tr{font-size:13px;text-align:center;color:var(--ink);font-style:italic;margin-bottom:4px}.by-mn{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.5}' +
+    '.by-vid{display:flex;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:10px;margin-bottom:12px}.by-vid .fm-sth{flex:none;width:92px;height:164px;border-radius:12px;overflow:hidden;position:relative;cursor:pointer;background:#000}.by-vid .fm-sth img{width:100%;height:100%;object-fit:cover}' +
+    '.by-vid .fm-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6)}.by-vid b{display:block;font-size:16px;color:var(--ink)}.by-vid p{margin:4px 0 8px;font-size:13px;line-height:1.5;color:var(--muted)}.by-vid .go{display:inline-block;background:var(--teal);color:#fff;border-radius:10px;padding:8px 12px;font-size:13.5px;font-weight:600;cursor:pointer}' +
     '.by-src{font-size:11.5px;color:var(--muted);line-height:1.5;margin:6px 2px 14px}';
   doc.head.appendChild(css);
 
@@ -86,6 +88,9 @@
     if (!cfg.bayahOn) h += '<div class="by-draft"><b>Draft for review.</b> Only phones opened with ?bayah=1 see this page. Members still see “coming soon” until it is approved.</div>';
     h += '<div class="by-hero"><b>Taking Bai’at</b><p>Bai’at (iradat) is a covenant with Allah at the hand of a murshid. These are the steps as Hazrat Azam Pasha R.A. explained them in the dars Haqeeqat-e-Bai’at. Your shaykh or his khalifa will guide you through them.</p>' +
       '<div class="ur">' + esc(F && F.BAYAH_UR || '') + '</div></div>';
+    var v = STEPS_SHORT;
+    h += '<div class="by-vid"><div class="fm-sth" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg\'"><div class="fm-play">▶</div></div>' +
+      '<div><b>Watch the steps</b><p>All the steps of Bai’at in Hazrat Azam Pasha R.A.’s own voice, with pictures (about 3 minutes).</p><span class="go by-play">▶ Play the video</span></div></div>';
     STEPS.forEach(function (st, i) {
       h += '<div class="by-step"><div class="by-art"><span class="by-n">' + (i + 1) + '</span>' + ART[st.art] + '</div><div class="by-tx"><h3>' + esc(st.t) + '</h3><p>' + esc(st.b) + '</p>' +
         (st.ar ? '<div class="by-ar" lang="ar">' + esc(st.ar) + '</div>' : '') + (st.tr ? '<div class="by-tr">' + esc(st.tr) + '</div>' : '') + (st.mn ? '<div class="by-mn">' + esc(st.mn) + '</div>' : '') +
@@ -95,7 +100,7 @@
     h += '<div class="by-src">From the dars Haqeeqat-e-Bai’at of Hazrat Azam Pasha R.A. The words of the istighfar and the pledge may differ a little from one silsila to another: follow what your shaykh or khalifa teaches.</div>';
     body.innerHTML = h;
   }
-  body.addEventListener('click', function (e) { var th = e.target.closest && e.target.closest('.fm-sth'); if (th && root.NoorFamily) root.NoorFamily.playShort(th); });
+  body.addEventListener('click', function (e) { var th = e.target.closest && (e.target.closest('.fm-sth') || (e.target.closest('.by-play') && body.querySelector('.by-vid .fm-sth'))); if (th && root.NoorFamily) root.NoorFamily.playShort(th); });
   N.onScreen(function (id) { if (id === 'bayah') paint(); });
   root.NoorBayah = { ready: true, NISA_AR: NISA_AR, ISTIGHFAR_AR: ISTIGHFAR_AR };
 })(typeof self !== 'undefined' ? self : this);
