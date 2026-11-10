@@ -59,6 +59,7 @@
     { art: 'rope', t: 'After bai’at: hold the rope', b: 'Through bai’at the murid holds the rope that reaches from the Prophet ﷺ through the chain of masters. Follow your shaykh’s guidance: practices of dhikr are learnt from him, so that you reach the right station. If you slip, do not despair: repent and recite the istighfar again. Repentance never goes to waste, and bai’at can be renewed: the Prophet ﷺ told a Companion who had already given it, “Give bai’at again.”' }
   ];
   var SHORTS = [
+    { id: '0yhKLLlv5ww', title: 'How to Take Bai’at: Step by Step' },
     { id: 'TkSFt5BlMzs', title: 'What Is Bai’at? Hand Upon Hand' }, { id: 'VlU4EcJGVgQ', title: 'The Hand of Allah' },
     { id: 'ufZ_iEByRmI', title: 'Why One Trusted Guide? The Lawyer and the Shaykh' }, { id: '883RmkRT9mE', title: 'Whoever Has No Pir, His Pir Is Shaytan' },
     { id: '56xW_CnWB0w', title: 'The Big Stone and the Small Pebble: The Power of Company' }
