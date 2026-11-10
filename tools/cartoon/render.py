@@ -146,116 +146,128 @@ def sweat(x, y, t):
 
 def heart(x, y, s=1, op=1): return f'<path transform="translate({x},{y}) scale({s})" d="M0,10 C-25,-15 -50,10 0,45 C50,10 25,-15 0,10Z" fill="#ff5c8a" stroke="#3b2a20" stroke-width="4" opacity="{op}"/>'
 
+def emo_of(t, who, default='neutral'):
+    for s_ in SHOTS:
+        for b_ in s_['beats']:
+            if b_['kind'] == 'say' and b_['who'] == who and b_['t'] - 0.2 <= t < b_['t'] + b_['d'] + 0.4: return b_.get('emo', default)
+    return default
+
+def sfx_on(sh, t, name, extra=0.0): return any(b['kind'] == 'sfx' and b['name'] == name and b['t'] <= t < b['t'] + b['d'] + extra for b in sh['beats'])
+
+TEXTS = []   # Urdu text drawn after compositing: (text, x, y, size, rgb, alpha)
+
 def scene(t):
+    global TEXTS
+    TEXTS = []
     sh = shot_at(t); n = sh['name']; lt = t - sh['t0']; D = sh['t1'] - sh['t0']
-    A = lambda **k: dict(k)
+    A = lambda **k: dict(k, t=t) if 't' not in k else dict(k)
     mA, mM, mN, mC = mouth(t, 'ALI'), mouth(t, 'MARYAM'), mouth(t, 'NANA'), mouth(t, 'CAT')
+    eA, eM, eN = (lambda d='neutral': emo_of(t, 'ALI', d)), (lambda d='neutral': emo_of(t, 'MARYAM', d)), (lambda d='neutral': emo_of(t, 'NANA', d))
     bl = lambda i: blink(t, i)
     over = ''
     if n == 'title':
-        lay = C.kid(A(x=560, y=GROUND, s=1.15, face=-1, arm_f=135 + 18 * math.sin(t * 6), blink=bl(1), happy=1))
-        lay += C.kid(A(x=860, y=GROUND, s=1.0, face=1, arm_f=130 + 18 * math.sin(t * 6 + 1), blink=bl(2), happy=1), girl=True)
-        lay += C.nana(A(x=1120, y=GROUND, s=0.95, face=-1, arm_f=40, blink=bl(3), happy=1))
-        lay += C.cat(A(x=1330, y=GROUND, s=1.0, face=-1, pose='sit', happy=1, t=t))
+        lay = C.kid(A(x=600, y=GROUND, s=1.1, face=1, wave=1, blink=bl(1), emo='happy'))
+        lay += C.kid(A(x=850, y=GROUND, s=0.95, face=1, wave=1, blink=bl(2), emo='happy'), girl=True)
+        lay += C.nana(A(x=1120, y=GROUND, s=0.92, face=-1, blink=bl(3), emo='warm'))
+        lay += C.cat(A(x=1330, y=GROUND, s=1.0, face=-1, pose='sit', happy=1))
         k = ease(lt / 0.8)
-        over = (f'<g transform="translate(960,250) scale({0.6+0.4*k})" opacity="{k}"><rect x="-640" y="-110" width="1280" height="190" rx="40" fill="#fff" stroke="#3b2a20" stroke-width="8"/>'
-                f'<text x="0" y="12" text-anchor="middle" font-family="Poppins" font-weight="700" font-size="92" fill="#2E8B57">{story.TITLE}</text>'
-                f'<text x="0" y="62" text-anchor="middle" font-family="Poppins" font-weight="600" font-size="34" fill="#c0396b">A story about kindness</text></g>')
+        over = f'<g transform="translate(960,240) scale({0.6+0.4*k:.3f})" opacity="{k:.2f}"><rect x="-560" y="-150" width="1120" height="290" rx="44" fill="#fff" stroke="#3b2a20" stroke-width="8"/></g>'
+        TEXTS += [('E', story.TITLE_EN, 960, 205, int(88 * (0.6 + 0.4 * k)), (46, 139, 87), k), ('U', story.TITLE, 960, 285, int(46 * (0.6 + 0.4 * k)), (192, 57, 107), k)]
         return 'title', (0, 1), lay, over
     if n == 'street':
-        b0, b1 = beat(sh, 0), beat(sh, 1); stop = b1['t'] + b1['d'] - sh['t0'] + 0.2
+        b1 = beat(sh, 1); stop = b1['t'] + b1['d'] - sh['t0'] + 0.2
         wx = lerp(300, 1900, lt / stop); walking = lt < stop
         ph = lt * 1.6 if walking else None
         camx = max(0, min(3400 - W, wx - 820))
-        aliT = A(x=wx + 120, y=GROUND, s=1.0, walk=ph, mouth=mA, blink=bl(1), arm_b=10, arm_f=(150 if not walking and mA > 0.05 else 8))
-        marT = A(x=wx - 110, y=GROUND, s=0.88, walk=(ph + 0.5) if walking else None, mouth=mM, blink=bl(2), face=(-1 if (not walking and mA > .05) else 1), arm_f=(60 if mM > .05 else 8))
-        if not walking and speaking(t, 'ALI'): aliT['face'] = -1
+        ali_talk = speaking(t, 'ALI')
+        aliT = A(x=wx + 120, y=GROUND, s=1.0, walk=ph, mouth=mA, blink=bl(1), emo=eA('tired' if not walking else 'neutral'), face=(-1 if (not walking and ali_talk) else 1))
+        if not walking and ali_talk: aliT.update(arm_f=150, el_f=70, hand_f='open')      # wipes his forehead
+        marT = A(x=wx - 110, y=GROUND, s=0.88, walk=(ph + 0.5) if walking else None, mouth=mM, blink=bl(2), emo=eM('neutral'), look=1)
         lay = C.kid(marT, girl=True) + C.kid(aliT)
-        lay += sweat(wx + 120 + 70 - camx + camx, GROUND - 470, t) if not walking else ''
-        over = sun(1680, 170, t)
-        return 'street', (camx, 1), lay, over
+        if not walking: lay += sweat(wx + 150, GROUND - 470, t)
+        return 'street', (camx, 1), lay, sun(1680, 170, t)
     if n == 'tree':
-        lt2 = lt; walking = lt2 < 2.4
-        ax = lerp(500, 980, lt2 / 2.4)
-        lay = C.cat(A(x=1650, y=GROUND + 4, s=1.05, face=-1, pose='lie', eyes=0.55, tongue=1, mouth=mC, t=t))
-        lay += C.kid(A(x=ax - 230, y=GROUND, s=0.88, walk=lt2 * 1.6 if walking else None, mouth=mM, blink=bl(2), arm_f=(115 if speaking(t, 'MARYAM') else 8), look=1), girl=True)
-        lay += C.kid(A(x=ax, y=GROUND, s=1.0, walk=lt2 * 1.6 + 0.5 if walking else None, mouth=mA, blink=bl(1), arm_f=(30 if mA > .05 else 8), tilt=(4 if not walking else 0), look=1))
-        cam = (lerp(0, 380, lt2 / 3.0), 1)
-        return 'park', cam, lay, sun(1680 - 0, 150, t, 60)
+        walking = lt < 2.4; ax = lerp(500, 980, lt / 2.4)
+        lay = C.cat(A(x=1650, y=GROUND + 4, s=1.05, face=-1, pose='lie', eyes=0.55, tongue=1, mouth=mC))
+        mt = speaking(t, 'MARYAM')
+        lay += C.kid(A(x=ax - 230, y=GROUND, s=0.88, walk=lt * 1.6 if walking else None, mouth=mM, blink=bl(2), look=1, emo=eM('surprised' if not walking else 'neutral'),
+                       **({'arm_f': 95, 'el_f': 4, 'hand_f': 'point'} if mt else {})), girl=True)
+        lay += C.kid(A(x=ax, y=GROUND, s=1.0, walk=lt * 1.6 + 0.5 if walking else None, mouth=mA, blink=bl(1), look=1, emo=eA('sad' if not walking and lt > 4.5 else 'neutral'), tear=0))
+        return 'park', (lerp(0, 380, lt / 3.0), 1), lay, sun(1680, 150, t, 60)
     if n == 'think':
-        nb = beat(sh, 2); bubble = (nb['t'] - sh['t0'] - 0.6) <= lt <= (nb['t'] + nb['d'] - sh['t0'] + 0.5)
-        lay = C.cat(A(x=1650, y=GROUND + 4, s=1.05, face=-1, pose='lie', eyes=0.55, tongue=1, t=t))
-        lay += C.kid(A(x=760, y=GROUND, s=0.88, blink=bl(2), look=1), girl=True)
-        lay += C.kid(A(x=1010, y=GROUND, s=1.0, mouth=mA, blink=bl(1), arm_f=120, hold='bottle', hold_tilt=-20, look=(-1 if lt < 4 else 1)))
-        zoom = lerp(1.0, 1.25, lt / 2.5); cam = (lerp(380, 400, lt / 2.5), zoom)
+        nb = beat(sh, 2); b0 = sh['t0'] + nb['t'] - sh['t0']
+        bubble = (nb['t'] - sh['t0'] - 0.6) <= lt <= (nb['t'] + nb['d'] - sh['t0'] + 0.5)
+        remembering = lt > (beat(sh, 1)['t'] - sh['t0'])
+        lay = C.cat(A(x=1650, y=GROUND + 4, s=1.05, face=-1, pose='lie', eyes=0.55, tongue=1))
+        lay += C.kid(A(x=760, y=GROUND, s=0.88, blink=bl(2), look=1, emo='worried'), girl=True)
+        lay += C.kid(A(x=1010, y=GROUND, s=1.0, mouth=mA, blink=bl(1), arm_f=88, el_f=40, hold='bottle', hold_tilt=0,
+                       emo=('thinking' if remembering and not bubble else ('warm' if bubble else eA('worried'))), look=(-1 if lt < 4 else 1), head=(-6 if remembering else 0)))
+        cam = (lerp(380, 400, lt / 2.5), lerp(1.0, 1.25, lt / 2.5))
         if bubble:
             k = ease((lt - (nb['t'] - sh['t0'] - 0.6)) / 0.5)
-            over = (f'<g opacity="{k}"><circle cx="1180" cy="560" r="16" fill="#fff" stroke="#3b2a20" stroke-width="5"/><circle cx="1240" cy="480" r="26" fill="#fff" stroke="#3b2a20" stroke-width="5"/>'
+            over = (f'<g opacity="{k:.2f}"><circle cx="1180" cy="560" r="16" fill="#fff" stroke="#3b2a20" stroke-width="5"/><circle cx="1240" cy="480" r="26" fill="#fff" stroke="#3b2a20" stroke-width="5"/>'
                     f'<ellipse cx="1500" cy="290" rx="330" ry="230" fill="#fffbea" stroke="#3b2a20" stroke-width="7"/>'
-                    f'<clipPath id="bub"><ellipse cx="1500" cy="290" rx="320" ry="220"/></clipPath><g clip-path="url(#bub)">'
-                    f'<rect x="1170" y="60" width="660" height="460" fill="#fff4d6"/>'
-                    + C.nana(A(x=1500, y=830, s=1.15, mouth=mN, blink=bl(3), arm_f=(100 + 10 * math.sin(t * 3) if mN > .05 else 20), look=0)) + '</g></g>')
+                    f'<clipPath id="bub"><ellipse cx="1500" cy="290" rx="320" ry="220"/></clipPath><g clip-path="url(#bub)"><rect x="1170" y="60" width="660" height="460" fill="#fff4d6"/>'
+                    + C.nana(A(x=1500, y=880, s=1.12, mouth=mN, blink=bl(3), emo='warm')) + '</g></g>')
         return 'park', cam, lay, over
     if n == 'pour':
         b0 = beat(sh, 0); lapb = beat(sh, 1); t_lap = lapb['t'] - sh['t0']; t_end = t_lap + lapb['d']
         pouring = (b0['d'] * 0.6) < lt < t_lap + 0.4
         drink = t_lap - 0.2 < lt < t_end + 0.2
-        happyC = lt > t_end
-        purr = any(b['kind'] == 'sfx' and b['name'] == 'purr' and b['t'] <= t < b['t'] + b['d'] for b in sh['beats'])
-        laughing = speaking(t, 'MARYAM')
+        happyC = lt > t_end; purr = sfx_on(sh, t, 'purr'); laughing = speaking(t, 'MARYAM')
         lay = f'<ellipse cx="1430" cy="{GROUND+6}" rx="56" ry="16" fill="#4aa8e0" stroke="#3b2a20" stroke-width="5"/><ellipse cx="1430" cy="{GROUND}" rx="44" ry="9" fill="#9fd6f5"/>'
         catpose = 'drink' if drink else ('sit' if lt > 1.2 else 'lie')
-        lay += C.cat(A(x=1560 if catpose != 'lie' else 1650, y=GROUND + 4, s=1.05, face=-1, pose=catpose, eyes=(0.55 if lt < 1.2 else (0.9 if purr else 0)), tongue=lt < 1.2, mouth=mC, happy=happyC or purr, t=t))
-        lay += C.kid(A(x=930, y=GROUND, s=0.88, blink=bl(2), look=1, mouth=mM, happy=1 if laughing else 0, arm_f=(150 + 15 * math.sin(t * 8) if laughing else 8), arm_b=(150 if laughing else 8)), girl=True)
-        lay += C.kid(A(x=1240, y=GROUND, s=1.0, mouth=mA, blink=bl(1), arm_f=(78 if pouring else 20), hold='bottle', hold_tilt=(115 if pouring else 0), tilt=(10 if pouring else 0), look=1, happy=1 if happyC else 0))
-        if pouring:
-            lay += f'<path d="M1420,{GROUND-110} Q1430,{GROUND-50} 1430,{GROUND-4}" fill="none" stroke="#4aa8e0" stroke-width="12" stroke-linecap="round" opacity=".85"/>'
+        lay += C.cat(A(x=1560 if catpose != 'lie' else 1650, y=GROUND + 4, s=1.05, face=-1, pose=catpose, eyes=(0.55 if lt < 1.2 else (0.9 if purr else 0)), tongue=lt < 1.2, mouth=mC, happy=happyC or purr))
+        lay += C.kid(A(x=930, y=GROUND, s=0.88, blink=bl(2), look=1, mouth=mM, emo=('laugh' if laughing else ('happy' if happyC else 'neutral')),
+                       **({'arm_f': 140, 'el_f': 40, 'arm_b': 140, 'el_b': 40, 'hand_f': 'open', 'hand_b': 'open'} if laughing else {})), girl=True)
+        lay += C.kid(A(x=1240, y=GROUND, s=1.0, mouth=mA, blink=bl(1), arm_f=(80 if pouring else 30), el_f=(10 if pouring else 30), hold='bottle', hold_tilt=(115 if pouring else 0),
+                       tilt=(10 if pouring else 0), look=1, emo=('happy' if happyC or pouring else eA('happy'))))
+        if pouring: lay += f'<path d="M1418,{GROUND-120} Q1428,{GROUND-50} 1430,{GROUND-4}" fill="none" stroke="#4aa8e0" stroke-width="12" stroke-linecap="round" opacity=".85"/>'
         if happyC:
             for i in range(3):
                 k = ((t * 0.7 + i / 3) % 1); lay += heart(1600 + 30 * math.sin(t * 2 + i), GROUND - 260 - k * 160, 0.8, 1 - k)
-        cam = (lerp(400, 420, lt / 2), lerp(1.25, 1.15, lt / 2))
-        return 'park', cam, lay, sun(1700, 140, t, 55)
+        return 'park', (lerp(400, 420, lt / 2), lerp(1.25, 1.15, lt / 2)), lay, sun(1700, 140, t, 55)
     if n == 'follow':
         hey = beat(sh, 2); turned = lt > hey['t'] - sh['t0'] - 0.1
         kx = lerp(1100, 1750, lt / 3.5) if not turned else 1100 + 650 * ease((hey['t'] - sh['t0'] - 0.1) / 3.5)
         walking = not turned
-        lay = C.kid(A(x=kx - 220, y=GROUND, s=0.88, walk=lt * 1.6 if walking else None, blink=bl(2), face=(1 if walking else -1), happy=1), girl=True)
-        lay += C.kid(A(x=kx, y=GROUND, s=1.0, walk=lt * 1.6 + .5 if walking else None, blink=bl(1), mouth=mA, face=(1 if walking else -1), arm_f=(150 if turned else 8)))
-        cx = kx - 470 + (0 if walking else 40 * abs(math.sin(t * 5)))
+        lay = C.kid(A(x=kx - 220, y=GROUND, s=0.88, walk=lt * 1.6 if walking else None, blink=bl(2), face=(1 if walking else -1), emo=('laugh' if turned else 'happy')), girl=True)
+        lay += C.kid(A(x=kx, y=GROUND, s=1.0, walk=lt * 1.6 + .5 if walking else None, blink=bl(1), mouth=mA, face=(1 if walking else -1), emo=eA('happy'),
+                       **({'arm_f': 125, 'el_f': 15, 'hand_f': 'point'} if turned else {})))
+        cxp = kx - 470 + (0 if walking else 40 * abs(math.sin(t * 5)))
         hop = 0 if walking else -abs(math.sin(t * 6)) * 40
-        lay += C.cat(A(x=cx, y=GROUND + 4 + hop, s=0.95, pose='walk', walk=lt * 2.2, happy=1, mouth=mC, t=t))
+        lay += C.cat(A(x=cxp, y=GROUND + 4 + hop, s=0.95, pose='walk', walk=lt * 2.2, happy=1, mouth=mC))
         return 'park', (lerp(500, 600, lt / D), 1), lay, sun(1700, 140, t, 55)
     if n == 'home':
         ent = 2.0; kx = lerp(-150, 560, lt / ent); walking = lt < ent
-        laugh = any(b['kind'] in ('sfx',) and b['name'] == 'laugh' and b['t'] <= t < b['t'] + b['d'] + 1.6 for b in sh['beats']) or speaking(t, 'NANA') and 'Ha ha' in (caption(t) or ('', ''))[1]
-        lay = C.nana(A(x=1310, y=GROUND - 40, s=0.95, face=-1, mouth=mN, blink=bl(3), arm_f=(95 + 10 * math.sin(t * 2.5) if mN > .05 else 12), happy=1 if laugh else 0, bob=(-6 * abs(math.sin(t * 9)) if laugh else 0)))
-        lay += C.cat(A(x=kx - 330 if walking else 720, y=GROUND + 4, s=0.95, pose='walk' if walking else 'sit', walk=lt * 2.2, happy=1, mouth=mC, t=t))
-        lay += C.kid(A(x=kx - 150, y=GROUND, s=0.88, walk=lt * 1.6 if walking else None, mouth=mM, blink=bl(2), happy=1 if laugh else 0, arm_f=(120 if mM > .05 else 8), bob=(-8 * abs(math.sin(t * 9 + 1)) if laugh else 0)), girl=True)
-        lay += C.kid(A(x=kx + 110, y=GROUND, s=1.0, walk=lt * 1.6 + .5 if walking else None, mouth=mA, blink=bl(1), happy=1 if laugh else 0, arm_f=(70 if mA > .05 else 8), bob=(-8 * abs(math.sin(t * 9 + 2)) if laugh else 0)))
+        laugh = sfx_on(sh, t, 'laugh', 1.6) or (speaking(t, 'NANA') and emo_of(t, 'NANA') == 'laugh')
+        nt = speaking(t, 'NANA')
+        lay = C.nana(A(x=1310, y=GROUND - 40, s=0.95, face=-1, mouth=mN, blink=bl(3), emo=('laugh' if laugh else eN('happy'))))
+        lay += C.cat(A(x=kx - 330 if walking else 720, y=GROUND + 4, s=0.95, pose='walk' if walking else 'sit', walk=lt * 2.2, happy=1, mouth=mC))
+        lay += C.kid(A(x=kx - 150, y=GROUND, s=0.88, walk=lt * 1.6 if walking else None, mouth=mM, blink=bl(2), emo=('laugh' if laugh else eM('happy')), look=1), girl=True)
+        lay += C.kid(A(x=kx + 110, y=GROUND, s=1.0, walk=lt * 1.6 + .5 if walking else None, mouth=mA, blink=bl(1), look=1,
+                       emo=('laugh' if laugh else ('proud' if nt and emo_of(t, 'NANA') == 'proud' else eA('happy')))))
         if laugh:
             for i in range(4):
                 k = ((t * 0.8 + i / 4) % 1); lay += heart(500 + i * 260, GROUND - 520 - k * 180, 0.7, 1 - k)
         return 'home', (0, 1), lay, ''
     if n == 'moral':
         k = ease(lt / 0.8)
-        lay = C.kid(A(x=640, y=GROUND, s=0.95, happy=1, blink=bl(1), arm_f=150 + 15 * math.sin(t * 5))) + C.kid(A(x=820, y=GROUND, s=0.85, happy=1, face=-1, blink=bl(2), arm_f=150 + 15 * math.sin(t * 5 + 1)), girl=True)
-        lay += C.nana(A(x=1080, y=GROUND, s=0.82, face=-1, happy=1, blink=bl(3), arm_f=40)) + C.cat(A(x=1280, y=GROUND, s=0.9, face=-1, pose='sit', happy=1, t=t))
-        over = (f'<g opacity="{k}"><rect x="260" y="110" width="1400" height="300" rx="46" fill="#fffbea" stroke="#3b2a20" stroke-width="8"/>'
-                f'<text x="960" y="190" text-anchor="middle" font-family="Poppins" font-weight="700" font-size="44" fill="#c0396b">The Lesson</text>'
-                f'<text x="960" y="282" text-anchor="middle" font-family="Poppins" font-weight="700" font-size="62" fill="#2E8B57">{story.MORAL[0]}</text>'
-                f'<text x="960" y="360" text-anchor="middle" font-family="Poppins" font-weight="600" font-size="46" fill="#3b2a20">{story.MORAL[1]}</text></g>')
+        lay = C.kid(A(x=640, y=GROUND, s=0.95, emo='happy', blink=bl(1), wave=1)) + C.kid(A(x=820, y=GROUND, s=0.85, emo='happy', face=-1, blink=bl(2), wave=1), girl=True)
+        lay += C.nana(A(x=1080, y=GROUND, s=0.82, face=-1, emo='proud', blink=bl(3))) + C.cat(A(x=1280, y=GROUND, s=0.9, face=-1, pose='sit', happy=1))
+        over = f'<g opacity="{k:.2f}"><rect x="260" y="90" width="1400" height="330" rx="46" fill="#fffbea" stroke="#3b2a20" stroke-width="8"/></g>'
         for i in range(5):
             kk = ((t * 0.5 + i / 5) % 1); over += heart(220 + i * 370, 900 - kk * 400, 0.7, (1 - kk) * 0.8)
+        TEXTS += [('E', story.MORAL_EN[0], 960, 150, 44, (192, 57, 107), k), ('E', story.MORAL_EN[1], 960, 250, 62, (46, 139, 87), k), ('E', story.MORAL_EN[2], 960, 340, 44, (59, 42, 32), k)]
         return 'moral', (0, 1), lay, over
-    # end card
     k = ease(lt / 0.6)
-    lay = C.kid(A(x=700, y=GROUND, s=0.95, happy=1, blink=bl(1), arm_f=150 + 20 * math.sin(t * 6))) + C.kid(A(x=880, y=GROUND, s=0.85, happy=1, face=-1, blink=bl(2), arm_f=150 + 20 * math.sin(t * 6 + 1)), girl=True)
-    lay += C.cat(A(x=1100, y=GROUND, s=0.95, face=-1, pose='sit', happy=1, t=t))
-    over = (f'<g opacity="{k}"><rect x="460" y="120" width="1000" height="330" rx="46" fill="#fff" stroke="#3b2a20" stroke-width="8"/>'
-            f'<text x="960" y="215" text-anchor="middle" font-family="Poppins" font-weight="700" font-size="56" fill="#2E8B57">Thank you for watching!</text>'
-            f'<rect x="700" y="255" width="520" height="96" rx="48" fill="#e62117" stroke="#3b2a20" stroke-width="6"/>'
-            f'<text x="960" y="318" text-anchor="middle" font-family="Poppins" font-weight="700" font-size="46" fill="#fff">SUBSCRIBE</text>'
-            f'<text x="960" y="410" text-anchor="middle" font-family="Poppins" font-weight="600" font-size="36" fill="#3b2a20">Iqra-LetsLearn · more stories every week</text></g>')
+    lay = C.kid(A(x=700, y=GROUND, s=0.95, emo='happy', blink=bl(1), wave=1)) + C.kid(A(x=880, y=GROUND, s=0.85, emo='happy', face=-1, blink=bl(2), wave=1), girl=True)
+    lay += C.cat(A(x=1100, y=GROUND, s=0.95, face=-1, pose='sit', happy=1))
+    over = (f'<g opacity="{k:.2f}"><rect x="460" y="100" width="1000" height="360" rx="46" fill="#fff" stroke="#3b2a20" stroke-width="8"/>'
+            f'<rect x="700" y="268" width="520" height="96" rx="48" fill="#e62117" stroke="#3b2a20" stroke-width="6"/>'
+            f'<text x="960" y="331" text-anchor="middle" font-family="Poppins" font-weight="700" font-size="46" fill="#fff">SUBSCRIBE</text>'
+            f'<text x="960" y="428" text-anchor="middle" font-family="Poppins" font-weight="600" font-size="34" fill="#3b2a20">Iqra-LetsLearn</text></g>')
+    TEXTS += [('E', story.END_EN, 960, 190, 58, (46, 139, 87), k)]
     return 'end', (0, 1), lay, over
 
 # ---------------------------------------------------------------- frame
@@ -265,26 +277,46 @@ def font(sz, bold=True):
     if k not in _f: _f[k] = ImageFont.truetype(FONT if bold else FONT_R, sz)
     return _f[k]
 
-NAMES = {'N': None, 'ALI': ('Ali', '#2E8B57'), 'MARYAM': ('Maryam', '#c0396b'), 'NANA': ('Nana', '#7b5a3c')}
+NAMES = {'N': None, 'ALI': ('Ali', '#c0392b'), 'MARYAM': ('Maryam', '#c0396b'), 'NANA': ('Nana Jaan', '#7b5a3c')}
+UR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fonts', 'nastaliq-700.woff')
+_uf = {}
+def ufont(sz):
+    if sz not in _uf: _uf[sz] = ImageFont.truetype(UR, sz, layout_engine=ImageFont.Layout.RAQM)
+    return _uf[sz]
+
+def ufix(text): return text.replace('!', '').replace('  ', ' ').strip()   # the Nastaliq font has no '!' glyph
+
+def utext(im, text, x, y, size, rgb, alpha=1.0):
+    if alpha <= 0.01: return
+    text = ufix(text)
+    layer = Image.new('RGBA', im.size, (0, 0, 0, 0)); d = ImageDraw.Draw(layer)
+    d.text((x, y), text, font=ufont(size), fill=rgb + (int(255 * alpha),), anchor='mm', direction='rtl', language='ur')
+    im.alpha_composite(layer)
 
 def draw_caption(im, cap):
-    who, text = cap; d = ImageDraw.Draw(im); f = font(46)
+    who, text = cap; d = ImageDraw.Draw(im); f = font(44)
     words = text.split(); lines = []; cur = ''
     for w_ in words:
         tt = (cur + ' ' + w_).strip()
         if d.textlength(tt, font=f) > 1500 and cur: lines.append(cur); cur = w_
         else: cur = tt
     lines.append(cur)
-    lh = 60; bh = lh * len(lines) + 34; y0 = H - bh - 26
+    lh = 58; bh = lh * len(lines) + 34; y0 = H - bh - 24
     bw = max(d.textlength(l, font=f) for l in lines) + 80
-    d.rounded_rectangle([W / 2 - bw / 2, y0, W / 2 + bw / 2, y0 + bh], 26, fill=(255, 255, 255, 235), outline=(59, 42, 32), width=5)
+    d.rounded_rectangle([W / 2 - bw / 2, y0, W / 2 + bw / 2, y0 + bh], 26, fill=(255, 255, 255, 238), outline=(59, 42, 32), width=5)
     nm = NAMES.get(who)
     if nm:
-        nf = font(32); nw = d.textlength(nm[0], font=nf) + 40
+        nf = font(30); nw = d.textlength(nm[0], font=nf) + 40
         d.rounded_rectangle([W / 2 - bw / 2 + 30, y0 - 30, W / 2 - bw / 2 + 30 + nw, y0 + 16], 18, fill=nm[1], outline=(59, 42, 32), width=4)
-        d.text((W / 2 - bw / 2 + 50, y0 - 28), nm[0], font=nf, fill='white')
+        d.text((W / 2 - bw / 2 + 50, y0 - 27), nm[0], font=nf, fill='white')
     for i, l in enumerate(lines):
-        d.text((W / 2, y0 + 18 + i * lh), l, font=f, fill=(40, 30, 24), anchor='ma')
+        d.text((W / 2, y0 + 17 + i * lh), l, font=f, fill=(40, 30, 24), anchor='ma')
+
+def etext(im, text, x, y, size, rgb, alpha=1.0, bold=True):
+    if alpha <= 0.01: return
+    layer = Image.new('RGBA', im.size, (0, 0, 0, 0)); d = ImageDraw.Draw(layer)
+    d.text((x, y), text, font=font(size, bold), fill=rgb + (int(255 * alpha),), anchor='mm')
+    im.alpha_composite(layer)
 
 def frame(t):
     name, (cx, zoom), lay, over = scene(t)
@@ -302,6 +334,7 @@ def frame(t):
     # fade between shots
     sh = shot_at(t); lt = t - sh['t0']; rt = sh['t1'] - t
     im = im.convert('RGBA')
+    for tx in TEXTS: (etext if tx[0] == 'E' else utext)(im, *tx[1:])
     cap = caption(t)
     if cap: draw_caption(im, cap)
     fade = min(1, lt / 0.35, rt / 0.35) if sh['name'] != 'title' or lt > 0.3 else lt / 0.3
@@ -352,5 +385,5 @@ if __name__ == '__main__':
         open('build/chunks/list.txt', 'w').write(''.join(f"file '{os.path.basename(o)}'\n" for o in outs))
         subprocess.run(['ffmpeg', '-v', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', 'build/chunks/list.txt', '-c', 'copy', 'build/video.mp4'], check=True)
         mix('build/audio_mix.wav')
-        subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', 'build/video.mp4', '-i', 'build/audio_mix.wav', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', 'build/ali_and_the_thirsty_cat.mp4'], check=True)
-        print('done build/ali_and_the_thirsty_cat.mp4')
+        subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', 'build/video.mp4', '-i', 'build/audio_mix.wav', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', 'build/ali_aur_pyasi_billi.mp4'], check=True)
+        print('done build/ali_aur_pyasi_billi.mp4')
