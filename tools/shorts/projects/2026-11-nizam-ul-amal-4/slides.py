@@ -20,6 +20,13 @@ SLIDES = {
         (1584.3, "NA4-04", "all", {"fx": "snow"}),
         (1600.5, "NA4-05", "all", {"fx": "embers", "surprise": [(1601.6, 0.5, 0.36, "پھن پھیلا کر اٹھا")]}),
     ],
+    "n4_enemy": [                                                                   # Shaytan, the open enemy
+        (1621.4, "NA4-12", "all", {"fx": "rays"}),                                  # Jannah, the gate closing
+        (1647.4, "NA4-13", "all", {"fx": "dust"}),                                  # sent down to earth
+        (1677.7, "NA4-14", "all"),                                                  # the unseen whisperer
+        (1698.5, "NA4-15", "all", {"fx": "dust"}),                                  # among people, unseen
+        (1712.0, "NA4-16", "all", {"fx": "rays", "surprise": [(1713.0, 0.5, 0.36, "قُلْ أَعُوذُ بِرَبِّ النَّاسِ")]}),
+    ],
     "n4_dog": [
         (1723.9, "NA4-06", "all", {"surprise": [(1741.3, 0.5, 0.36, "أعوذ بالله")]}),
         (1776.3, "NA4-06", "all", {"fx": "rays"}),
@@ -42,8 +49,6 @@ SLIDES["n4_full"] = full_track([
     (599.3, 637.8, [(599.3, "NA4-10", "all")] if _has("NA4-10") else [(599.3, "NA3-04", "all")]),
     (896.1, 931.0, SLIDES["n4_raza"]),
     (1584.3, 1621.4, SLIDES["n4_snake"]),
-    (1621.4, 1723.9, [b for b in [(1621.4, "NA4-12", "all"), (1647.4, "NA4-13", "all"), (1677.7, "NA4-14", "all"),
-                                   (1698.5, "NA4-15", "all"), (1712.0, "NA4-16", "all", {"fx": "rays"})] if _has(b[1])]
-                     or [(1621.4, "NA4-06", "all")]),
+    (1621.4, 1723.9, SLIDES["n4_enemy"]),
     (1723.9, 1789.1, SLIDES["n4_dog"]),
 ], POOL, 0.0, 2346.0)

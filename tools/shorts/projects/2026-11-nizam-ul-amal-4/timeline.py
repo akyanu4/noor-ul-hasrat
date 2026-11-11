@@ -17,7 +17,7 @@ SHORTS = {
         ("voice", 1584.32, 1621.40, "n4_snake"),
         ("endcard", 5.5)]),
     "NAF4_Short4_The_Dog_at_the_Door": ("THE DOG AT THE DOOR", [
-        ("voice", 1621.40, 1723.96, "enemy"),
+        ("voice", 1621.40, 1723.96, "n4_enemy"),
         ("voice", 1723.96, 1789.06, "n4_dog"),
         ("endcard", 5.5)]),
 }
