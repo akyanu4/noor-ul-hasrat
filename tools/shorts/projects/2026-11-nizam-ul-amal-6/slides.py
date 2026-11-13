@@ -1,6 +1,8 @@
 """Picture slideshows for Nizam-ul-Amal-e-Fuqara part 6. Times are in NAF006.mp3.
 Pictures are reused from earlier dars (NA*, HB*, N-HB*) and the light backgrounds (L03/L04/L07/L08/L11/L12).
-N6-NET / N6-NETBIRD are drawn (red threads over the night sky; the dove of NA2-06 caught in them).
+N6-NET / N6-NETBIRD are drawn (red threads over the night sky; the dove of NA2-06 caught in them, wings pulled in and
+wound with thread); N6-FOOT is NA2-06 with a red thread knotted round the dove's feet. NA4-15b is NA4-15 with the
+crowd softly blurred (no faces while the talk is of lowering the gaze).
 NA6-01 (a spread of many dishes) is still to be generated; until it is in images/, NA3-01 stands in.
 Faces of saints are hidden in light (glow); the shaykh is never shown with a face."""
 import os
@@ -24,7 +26,7 @@ SLIDES = {
         (543.9, "NA4-17", "all", {"text": "نظر بر قدم"}),
         (556.7, "NA4-16", "all", {"fx": "rays", "text": "خلوت در انجمن"}),       # solitude in the crowd
         (574.4, "NA4-09", "all"),                                                 # gaze lowered
-        (590.0, "NA4-15", "all", {"fx": "dust"}),                                 # faces enter the heart through the eyes
+        (590.0, "NA4-15b", "all", {"fx": "dust"}),                                # faces enter the heart through the eyes (crowd blurred)
         (608.4, "N-HB5-03", "all", {"fx": "dust"}),                               # the heart scattered
     ],
     "n6_one_point": [
@@ -35,11 +37,12 @@ SLIDES = {
     "n6_hunters": [                                                               # the eyes are hunters
         (660.2, "NA2-06", "all"),                                                 # the bird of the gaze, free
         (672.7, "N6-NET", "all"),                                                 # red threads: a net spread out
-        (692.3, "N6-NETBIRD", "all"),                                             # a bird sits in the net: caught
-        (713.4, "L04", "all", {"fx": "rays", "text": "لال ڈورے ہیں بند پائے نظر"}),
+        (692.3, "N6-NETBIRD", "all"),                                             # a bird sits in the net: caught, tangled in the threads
+        (713.4, "L04", "all", {"fx": "rays", "text": "لال ڈورے ہیں\nبند پائے نظر", "text_at": (0.5, 0.165)}),   # two lines: clear of the edges
         (720.6, "L04", "all", {"fx": "rays", "text": "صید کرتی ہیں یار کی آنکھیں"}),
-        (733.5, "NA2-06", (230, 160, 720, 560), {"frame": True}),                # band-e-pa: the thread on the foot
-        (752.0, "L08", "all", {"fx": "rays", "surprise": [(766.6, 0.5, 0.36, "اللہ")]}),
+        (733.5, "N6-FOOT", (230, 160, 720, 560), {"frame": True}),               # band-e-pa: the thread on the foot
+        (752.0, "L08", "all", {"fx": "rays"}),
+        (766.6, "L08", "all", {"fx": "rays", "text": "اللہ"}),                    # the word over the pillar of light (no burst disc)
     ],
     "n6_tasawwur": [                                                              # holding the elder in thought
         (1099.1, "NA2-07", "all", {"glow": [(0.605, 0.165, 0.21), (0.61, 0.26, 0.14)]}),
@@ -61,7 +64,7 @@ SLIDES = {
         (1868.5, "HB3-03", _HB, {"fx": "dust"}),                                  # when will you reach your goal?
     ],
     "n6_tawheed": [
-        (1943.2, "NA4-15", "all", {"fx": "dust"}),                                # thinking about everything
+        (1943.2, "NA4-15b", "all", {"fx": "dust"}),                                # thinking about everything
         (1953.6, "L08", "all", {"fx": "rays", "surprise": [(1954.0, 0.5, 0.36, "قُلْ هُوَ اللّٰهُ أَحَدٌ")]}),
         (1959.3, "NA4-03", "all", {"fx": "rays"}),                                # one direction
         (1973.2, "L12", "all", {"fx": "rays", "text": "توحید"}),
