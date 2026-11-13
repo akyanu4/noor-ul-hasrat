@@ -60,7 +60,7 @@ SLIDES = {
     "n6_food": [                                                                  # many kinds of food
         (1820.3, _FOOD, "all", {"text": "طرح طرح کے کھانے"}),
         (1834.4, "N-HB5-03", "all", {"fx": "dust"}),                              # impurity in the thoughts
-        (1855.7, "NA4-14", "all"),
+        (1855.7, "N-HB5-03", "all"),                                # impurity enters the thoughts (was NA4-14: woman-shaped shadow)
         (1868.5, "HB3-03", _HB, {"fx": "dust"}),                                  # when will you reach your goal?
     ],
     "n6_tawheed": [
