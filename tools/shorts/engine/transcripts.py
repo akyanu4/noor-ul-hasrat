@@ -25,7 +25,8 @@ def energy(path, hop=0.1):
 def quietest(e, hop, t, win):
     i0, i1 = max(0, int((t - win) / hop)), min(len(e), int((t + win) / hop) + 1)
     if i1 <= i0: return t
-    k = int(np.convolve(e[i0:i1], np.ones(5) / 5, mode="same").argmin())
+    seg = np.pad(e[i0:i1], 2, mode="edge")          # edge padding: zero padding made the window ends look quietest
+    k = int(np.convolve(seg, np.ones(5) / 5, mode="valid").argmin())
     return round((i0 + k) * hop, 1)
 
 def tag(sec):
