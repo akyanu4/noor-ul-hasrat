@@ -40,14 +40,14 @@ SLIDES = {
     ],
     # ---- Short 3: driving away stray thoughts - movement, or run
     "n7_move": [
-        (806.65, "N-HB0-01", "all", dict(F, glow=[(0.52, 0.21, 0.08)])),        # "I am reading the methods to you"
+        (806.65, "N-HB0-01", "all", dict(F, glow=[(0.52, 0.26, 0.13)])),        # "I am reading the methods to you" (glow covers face and beard)
         (817.1, "N-HB5-03", "all", dict(F, fx="dust", text="حالت بدلو")),      # Number 1: change your state
         (835.3, "NA4-17", "all", {"text": "حرکت"}),                             # the root is movement
-        (850.1, "NA4-14", "all", {"fx": "dust"}),                              # we sit and sit, they do not leave
-        (857.5, "N-HB7-01", "all", dict(F, fx="rays")),                        # stand up: they vanish
+        (850.1, "N-HB5-03", "all", dict(F, fx="dust")),                       # we sit and sit, they do not leave (dark smoke over a seated man; was NA4-14: shadow looked woman-shaped)
+        (857.5, "HB3-03", (0, 212, 540, 748), dict(F, fx="rays")),            # stand up: they vanish (one man walking on, mist left below; crop drops the blurred bands)
     ],
     "n7_run": [
-        (867.5, "N-HB6-01", "all", dict(F, text="بھاگو", text_at=(0.5, 0.09))),                      # Number 2: run from it
+        (867.5, "N-HB6-01", "all", dict(F, text="بھاگو", text_at=(0.30, 0.22))),                     # Number 2: run from it
         (887.1, "NA4-13", "all", {"fx": "rays"}),                              # it is left behind; you get out
         (904.9, "NA2-06", "all"),                                              # captives set free
         (917.5, "L06", "all", {"fx": "dust"}),                                 # imagine the thought running away
@@ -61,11 +61,11 @@ SLIDES = {
     ],
     "n7_breath": [
         (1013.6, "NA2-07", "all", {"glow": SHAYKH_07, "fx": "dust", "text": "ہوں   ہوں"}),   # Number 4: breathe out hard
-        (1030.3, "NA4-14", "all", {"fx": "dust"}),                             # to drive the khatrat away
-        (1040.1, "HB3-04", "all", dict(F, fx="rays")),                          # even the Awliya are troubled; they walk the path of refuge (was N-HB6-02: smoke looked horned)
+        (1030.3, "N-HB5-03", (0, 10, 236, 250), dict(F, fx="dust")),          # to drive the khatrat away (dark smoke; was NA4-14; crop keeps the frame clear of the captions)
+        (1040.1, "NA4-01", "all", {"glow": [(0.535, 0.41, 0.075)], "fx": "rays"}),   # even the Awliya are troubled (rain), come into Allah's refuge (light); face hidden
     ],
     "n7_new_creation": [
-        (1395.45, "NA0-01", "all", {"fx": "rays"}),                            # Number 6: recite this verse
+        (1395.45, "NA3-05", "all", {"fx": "rays"}),                            # Number 6: recite this verse (seated in the lamp-lit hall; no script)
         (1404.8, "L05", "all", {"surprise": [(1405.0, 0.5, 0.33, "وَيَأْتِ بِخَلْقٍ جَدِيدٍ")]}),   # a new creation
         (1410.9, "L12", "all", {"fx": "rays", "text": "سبحان اللہ"}),           # not difficult for Allah
     ],
