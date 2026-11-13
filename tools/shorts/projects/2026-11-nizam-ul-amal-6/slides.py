@@ -44,14 +44,14 @@ SLIDES = {
     "n6_tasawwur": [                                                              # holding the elder in thought
         (1099.1, "NA2-07", "all", {"glow": [(0.605, 0.165, 0.21), (0.61, 0.26, 0.14)]}),
         (1114.2, "NA3-02", "all", {"glow": [(0.51, 0.29, 0.11)]}),                # a life spent in heedlessness
-        (1126.0, "HB4-04", (30, 252, 540, 742), {**_PIR, "fx": "rays", "surprise": [(1138.3, 0.5, 0.36, "يَا خَالِقُ يَا مُصَوِّرُ")]}),
+        (1126.0, "HB4-04", (30, 252, 540, 742), {**_PIR, "fx": "rays", "surprise": [(1138.3, 0.5, 0.36, "يَا خَالِقُ يَا بَارِئُ يَا مُصَوِّرُ")]}),
         (1147.3, "N-HB5-04", "all", {"fx": "rays", "glow": [(0.33, 0.27, 0.13)]}),  # looking within Hazrat
         (1161.5, "L07", "all", {"fx": "rays", "surprise": [(1164.4, 0.5, 0.36, "کشف")]}),  # the veil opens
         (1177.6, "N-HB0-02", "all", {"frame": True, "text": "پانچ سو صفحات"}),    # a 500-page book
     ],
     "n6_kashf": [
         (1214.6, "HB4-04", (30, 252, 540, 742), {**_PIR, "fx": "rays"}),                                  # what my pir did for me
-        (1232.9, "NA2-01b", "all", {"fx": "rays", "text": "يا خالق   يا مصور"}),
+        (1232.9, "NA2-01b", "all", {"fx": "rays", "text": "يا خالق   يا بارئ   يا مصور"}),
         (1250.5, "L12", "all", {"fx": "rays", "surprise": [(1251.0, 0.5, 0.36, "آنکھیں کھل گئیں")]}),
     ],
     "n6_food": [                                                                  # many kinds of food
