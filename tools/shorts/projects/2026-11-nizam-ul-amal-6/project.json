@@ -6,7 +6,15 @@
   "photo": "../../assets/azam_pasha_portrait.png",
   "youtube": {
     "channel_id": "UCn5J7zggR3cV4sCYlEjgZJA",
-    "published": {}
+    "published": {},
+    "drafts": {
+      "NAF6_Short1_A_Passing_Thought_or_a_Resolve": "cfKWk-fq-BQ",
+      "NAF6_Short2_Keep_Your_Gaze_on_Your_Steps": "PvTqdGvfuQw",
+      "NAF6_Short3_The_Eyes_Are_Hunters": "UFGrLXEdwmk",
+      "NAF6_Short4_What_Opened_My_Eyes": "2zH6zC_Z8P4",
+      "NAF6_Short5_Where_Will_You_Find_Tawheed": "trMoVHtadHI"
+    },
+    "drafts_note": "Uploaded 2026-11-13 as private drafts (not published); move to 'published' once the user makes them public."
   },
   "photo_crop": [
     255,

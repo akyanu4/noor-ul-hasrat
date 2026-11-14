@@ -6,7 +6,15 @@
   "photo": "../../assets/azam_pasha_portrait.png",
   "youtube": {
     "channel_id": "UCn5J7zggR3cV4sCYlEjgZJA",
-    "published": {}
+    "published": {},
+    "drafts": {
+      "NAF7_Short1_Ask_Allah_for_Good_Thoughts": "Tv8U5Rk8kF4",
+      "NAF7_Short2_The_Pact_of_Remembrance": "EbnxYFqNhXI",
+      "NAF7_Short3_Stand_Up_and_the_Thought_Leaves": "SBy10BJdsdk",
+      "NAF7_Short4_Take_Refuge_in_Allah": "QKlEyf9c7tg",
+      "NAF7_Short5_I_Recognise_You_in_Every_Form": "z698TQzQjQg"
+    },
+    "drafts_note": "Uploaded 2026-11-13 as private drafts (not published); move to 'published' once the user makes them public."
   },
   "photo_crop": [
     255,
