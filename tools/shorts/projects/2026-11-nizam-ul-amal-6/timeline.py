@@ -69,4 +69,18 @@ SHORTS = {
         ("voice", 1958.88, 1972.06, "clip:N6S5-08"),
         ("voice", 1972.06, 1986.0, "clip:N6S5-09"),
         ("endcard", 5.5)]),
+    "NAF6_Short6_Tasawwur_e_Shaykh": ("TASAWWUR-E-SHAYKH", [   # practice demonstration, drawn (demo:tasawwur in scenes_p.py)
+        ("voice", 1125.98, 1150.70, "demo:tasawwur"),
+        ("voice", 1231.96, 1257.80, "demo:tasawwur"),
+        ("endcard", 5.5)]),
+}
+# Drawn demonstrations (engine/scenes_p.py). Times are recording times, from the audio energy (phrases between pauses)
+# and the captions: the three Names are read at about 1138.1 / 1139.9 / 1141.45 and again at 1238.2 / 1240.45 / 1242.4.
+DEMOS = {
+    "tasawwur": dict(parts=[
+        dict(start=1125.98, names=[1138.10, 1139.90, 1141.45], beads_every=1.8, form=(1144.25, 1148.30), thread=1147.80,
+             steps=[1135.55, 1144.25, 1147.80]),
+        dict(start=1231.96, names=[1238.20, 1240.45, 1242.40], beads_every=1.8, form=(1243.40, 1246.00),
+             thread=1244.45, steps=[1235.45, 1243.40, 1245.75], bloom=1251.05),
+    ]),
 }

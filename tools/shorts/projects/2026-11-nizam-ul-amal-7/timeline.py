@@ -83,4 +83,15 @@ SHORTS = {
         ("voice", 1205.90, 1211.80, "clip:N7S5-11"),
         ("voice", 1211.80, 1225.25, "clip:N7S5-12"),
         ("endcard", 5.5)]),
+    "NAF7_Short6_Hoon_Hoon": ("HOON, HOON", [       # practice demonstration, drawn (demo:hoon in scenes_p.py)
+        ("voice", 1013.60, 1040.00, "demo:hoon"),
+        ("voice", 1040.00, 1055.85, "demo:hoon"),
+        ("endcard", 5.5)]),
+}
+# Drawn demonstrations (engine/scenes_p.py). Times are recording times.
+# hoon: the four isolated "hoon" breaths found from the audio energy at 1023.28, 1024.48, 1025.77, 1026.71; 1020.94 is
+# the loud "forcefully" in his first instruction, 1034.5 / 1037.3 the loud words of the repeated instruction.
+DEMOS = {
+    "hoon": dict(puffs=[1020.94, 1023.28, 1024.48, 1025.77, 1026.71, 1034.50, 1037.30],
+                 steps=[1013.60, 1016.70, 1024.48], refuge=1040.30),
 }
