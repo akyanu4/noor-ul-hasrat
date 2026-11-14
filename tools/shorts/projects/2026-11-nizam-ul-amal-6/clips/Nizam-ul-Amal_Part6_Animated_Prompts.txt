@@ -68,8 +68,8 @@ MOTION: The man straightens his back and slowly lowers his raised hands onto his
 --- N6S1-03  "A bad thought came and we resolved on it: 'I will do this.' We became sinners."  (18.9 s, long)   NEW IMAGE
 IMAGE:  SEEKER sitting alone on a low wooden bench in a dim room at night, a single oil lamp, a thin curl of dark
         smoke rising behind his shoulder, his hand closing into a fist on his knee. + STYLE
-MOTION: The dark smoke curls slowly around his shoulders, he clenches his fist and stands up, the lamp gutters
-        and the room grows darker, his shadow stretches long across the wall. Slow, heavy.
+MOTION: The thin dark smoke thickens slowly and curls around his shoulders, he clenches his fist, the room grows darker,
+        his shadow stretches long across the wall. Slow, heavy.
 
 --- N6S1-04  "And a good thought came and we resolved on it: then we are given its guidance."  (8.3 s)
 IMAGE:  N6S1-04.png (a road of golden light through the hills).
@@ -95,8 +95,8 @@ MOTION: He stands still, looks toward the dark lane, then slowly turns and walks
 --- N6S1-08  "A person made a firm intention to do a bad deed, but things happened so that he could not carry it out."  (12.9 s)   NEW IMAGE
 IMAGE:  A man in a dark shawl seen from behind, walking quickly down a narrow old lane at night, ahead of him a
         heavy wooden door in an archway, half open. + STYLE
-MOTION: The man walks fast toward the door; the heavy door swings shut in front of him, he stops, his shawl
-        settles. Camera behind him, slow.
+MOTION: The man walks toward the heavy shut door and stops right before it, his shawl settles; the door stays shut.
+        Slow, calm.
 
 --- N6S1-09  "This resolve is a sin. He will be punished for it, but less than for the bad deed."  (7.6 s)   NEW IMAGE
 IMAGE:  An old brass balance scale on a dark wooden table, lit by one oil lamp, a small dark pebble in one pan,
