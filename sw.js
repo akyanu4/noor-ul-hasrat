@@ -1,8 +1,9 @@
 // Caches the app shell so Noor opens offline. Videos, the database and call rooms always use the network.
-const CACHE = 'noor-v115';
+const CACHE = 'noor-v116';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png', 'icons/favicon-48.png',
-               'js/config.js', 'js/core.js', 'js/backend.js', 'js/features.js', 'js/account.js', 'js/quran-data.js', 'js/quran.js', 'js/faith.js', 'js/gatherings.js', 'js/scholar.js', 'js/family.js', 'js/audio.js', 'js/events.js', 'js/voice.js', 'js/cities.js', 'js/iman.js', 'js/bayah.js', 'js/about.js', 'js/install.js', 'install.html',
-               'photos/shaykh-1.jpg', 'photos/shaykh-2.jpg', 'photos/shaykh-3.jpg'];
+               'js/config.js', 'js/core.js', 'js/backend.js', 'js/features.js', 'js/account.js', 'js/quran-data.js', 'js/quran.js', 'js/faith.js', 'js/gatherings.js', 'js/scholar.js', 'js/family.js', 'js/audio.js', 'js/events.js', 'js/voice.js', 'js/cities.js', 'js/iman.js', 'js/bayah.js', 'js/meditations.js', 'js/about.js', 'js/install.js', 'install.html',
+               'photos/shaykh-1.jpg', 'photos/shaykh-2.jpg', 'photos/shaykh-3.jpg',
+               'photos/meditations/khatrat.jpg', 'photos/meditations/good-thoughts.jpg', 'photos/meditations/yaad-faramosh.jpg', 'photos/meditations/change-state.jpg', 'photos/meditations/run-from-it.jpg', 'photos/meditations/imagine-it-leaving.jpg', 'photos/meditations/refuge.jpg', 'photos/meditations/hoon-hoon.jpg', 'photos/meditations/new-creation.jpg', 'photos/meditations/nazar-bar-qadam.jpg', 'photos/meditations/khalwat-dar-anjuman.jpg', 'photos/meditations/guard-the-gaze.jpg', 'photos/meditations/tasawwur-e-shaykh.jpg', 'photos/meditations/one-point.jpg', 'photos/meditations/asl-e-wujood.jpg'];
 
 // Push notifications (OneSignal) — only loaded when an app id is set in js/config.js.
 try {
