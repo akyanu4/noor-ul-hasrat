@@ -1,7 +1,12 @@
-# Bilingual captions: each script line (script.md) split into chunks of (Urdu as narrated, short faithful English).
+# Captions: each script line (script.md) split into chunks of (Urdu as narrated, short faithful English).
+# Version 1 (script A/B) is bilingual. Version 2 (script A2/B2, everyday Urdu with English words) is English only, one
+# short faithful line per sentence or clause (the Nastaliq font has no Latin letters, so the mixed Urdu-English cannot
+# be shown in it); its Urdu slot is ''. A third item, where given, is the narration second the chunk starts (where the
+# English length alone would put the change on the wrong words). NOOR_V=1 picks the first version.
 # The web address is written as it was read ("نورالحسرت ڈاٹ ورسل ڈاٹ ایپ"); the English line shows the address itself.
+import os
 URL_UR = 'نورالحسرت ڈاٹ ورسل ڈاٹ ایپ'
-CAPTIONS = {
+CAPTIONS_V1 = {
  'A': [
   [('بسم اللہ الرحمٰن الرحیم۔', 'In the name of Allah, the Most Gracious, the Most Merciful.')],
   [('نورالحسرت — آپ کا روحانی ساتھی۔', 'Noor-ul-Hasrat: your spiritual companion.')],
@@ -36,3 +41,40 @@ CAPTIONS = {
   [('نورالحسرت — مفت، اور سب کے لیے۔', 'Noor-ul-Hasrat: free, and for everyone.'), ('اللہ ہم سب کے دلوں کو اپنی یاد سے آباد رکھے۔ آمین۔', 'May Allah keep all our hearts alive with His remembrance. Ameen.')],
  ],
 }
+
+def _en(*lines): return [('', e) if isinstance(e, str) else ('', e[0], e[1]) for e in lines]
+CAPTIONS_V2 = {
+ 'A': [
+  _en('In the name of Allah, the Most Gracious, the Most Merciful.'),
+  _en('The Noor-ul-Hasrat app: your spiritual companion.'),
+  _en('It has Prayer Times, a Qibla finder,', ('and an Islamic Calendar too.', 10.32)),
+  _en('Dars and Shorts of Hazrat Azam Pasha R.A.,', 'a new Short of the Day, every day.'),
+  _en('Watch the Series in order;', 'what you have watched gets a tick.'),
+  _en('Mystic Meditations: ways to drive away passing thoughts, with pictures.'),
+  _en('These practices help after Bai’at,', ('under the guidance of the Shaykh.', 28.4)),
+  _en('Send your Bai’at request from the app itself.', 'The Khalifa will contact you, in shaa Allah.'),
+  _en('Every Saturday, join the halqa-e-zikr online,', 'and check your state with Iman Health.'),
+  _en('Noor-ul-Hasrat is completely free.'),
+  _en('Come, let us light up the heart with the remembrance of Allah.'),
+ ],
+ 'B': [
+  _en('Assalamu alaikum.', 'Welcome to the Noor-ul-Hasrat app.', 'Let us see how to use the app.'),
+  _en('To install, open noor-ul-hasrat.vercel.app in the browser.', 'On Android, tap Download app,', ('or choose Add to Home screen in the browser menu.', 12.75)),
+  _en('On Home, the next mehfil or halqa is at the top;', 'when it is time, tap Join online.'),
+  _en('Then the Short of the Day, and Start here:', 'a few chosen Shorts for newcomers, in order.'),
+  _en('In Series, the parts of Haqeeqat-e-Bai’at and Nizam-ul-Amal are in order.', 'When a Short ends, tap Next.'),
+  _en('Topics like Tawbah, Khatrat, Tasawwur, Sabr:', ('one tap shows the Shorts on that topic.', 37.07)),
+  _en('Share any Short on WhatsApp.'),
+  _en('At the top of Practices: Mystic Meditations.', 'Open a topic:', 'a picture, the method in Hazrat’s words, and its Short.'),
+  _en('Remember, these meditations help only after Bai’at,', 'under the guidance of your Shaykh or Khalifa.'),
+  _en('For Bai’at, open Bai’at in More,', ('and see all the steps in Hazrat’s own words.', 56.57)),
+  _en('Tap Request to take Bai’at and make a free account:', ('just an email, no password.', 62.22), ('Open the link that comes in the email,', 63.54),
+      'choose the Shaykh or Khalifa, write your mobile number,', 'and send the request.'),
+  _en('In My Account, tick if you have already taken Bai’at;', 'after approval, the members’ videos open.'),
+  _en('Iman Health: a daily record of namaz, zikr and fasting.', 'See the state of your iman.'),
+  _en('Tasbeeh, Duas, Prayer Times, Qibla finder and Islamic Calendar:', 'all in one place.'),
+  _en('Turn on notifications', 'to get reminders for the halqa and the mehfil.'),
+  _en('Noor-ul-Hasrat is completely free, for everyone.', 'May Allah keep all our hearts alive with His remembrance. Ameen.'),
+ ],
+}
+CAPTIONS = CAPTIONS_V1 if os.environ.get('NOOR_V', '2') == '1' else CAPTIONS_V2

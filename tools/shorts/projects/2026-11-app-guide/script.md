@@ -35,3 +35,38 @@ Style prompt for the voice: "Read in Urdu, slowly and softly, like a gentle Sufi
 14. تسبیح، دعائیں، نماز کے اوقات، قبلہ اور اسلامی کیلنڈر — سب ایک جگہ۔
 15. اطلاعات آن کریں، تاکہ حلقے اور محفل کی یاد دہانی مل جائے۔
 16. نورالحسرت — مفت، اور سب کے لیے۔ اللہ ہم سب کے دلوں کو اپنی یاد سے آباد رکھے۔ آمین۔
+
+---
+# Version 2: everyday Urdu with English words (the user asked for mixed Urdu-English, not very formal Urdu)
+Voice style: AI Studio "Friendly" (warm and neutral, normal pace). Captions in English only, because the Nastaliq font has no Latin letters.
+
+## A2. Short
+1. بسم اللہ الرحمٰن الرحیم۔
+2. Noor-ul-Hasrat app، آپ کا روحانی companion۔
+3. اس میں namaz کے اوقات یعنی Prayer Times ہیں، Qibla finder ہے، اور Islamic Calendar بھی۔
+4. حضرت اعظم پاشا رحمۃ اللہ علیہ کے dars اور Shorts، ہر روز ایک نیا Short of the Day۔
+5. Series ترتیب سے دیکھیے، جو دیکھ لیا اس پر tick لگ جاتا ہے۔
+6. Mystic Meditations میں خطرات دور کرنے کے طریقے، تصویروں کے ساتھ۔
+7. یہ practices بیعت کے بعد، شیخ کی guidance میں فائدہ دیتی ہیں۔
+8. Bai'at کی request app ہی سے بھیجیے، خلیفہ صاحب آپ سے contact کریں گے، ان شاء اللہ۔
+9. ہر Saturday halqa-e-zikr میں online join کیجیے، اور Iman Health سے اپنا حال دیکھیے۔
+10. Noor-ul-Hasrat بالکل free ہے۔
+11. آئیے، دل کو اللہ کی یاد سے روشن کریں۔
+
+## B2. Walkthrough
+1. السلام علیکم۔ Noor-ul-Hasrat app میں آپ کا welcome ہے۔ چلیے دیکھتے ہیں app کیسے use کریں۔
+2. Install کرنے کے لیے browser میں noor-ul-hasrat dot vercel dot app کھولیں۔ Android پر Download app دبائیں، یا browser کے menu سے Add to Home screen کریں۔
+3. Home پر سب سے اوپر اگلی mehfil یا halqa دکھتا ہے، وقت ہو تو Join online دبائیں۔
+4. پھر Short of the Day، اور Start here، نئے لوگوں کے لیے چند چنے ہوئے Shorts، order میں۔
+5. Series میں Haqeeqat-e-Bai'at اور Nizam-ul-Amal کے parts ترتیب سے ہیں، Short ختم ہو تو Next دبائیں۔
+6. Topics جیسے Tawbah، Khatrat، Tasawwur، Sabr، ایک tap میں اسی topic کے Shorts۔
+7. ہر Short WhatsApp پر share کیجیے۔
+8. Practices میں سب سے اوپر Mystic Meditations ہیں، topic کھولیں، تصویر، حضرت کے الفاظ میں طریقہ، اور اس کا Short۔
+9. یاد رکھیے، یہ meditations بیعت کے بعد، اپنے شیخ یا خلیفہ کی guidance میں ہی فائدہ دیتی ہیں۔
+10. Bai'at کے لیے More میں Bai'at کھولیں، حضرت کی زبانی سارے steps دیکھیں۔
+11. Request to take Bai'at دبائیں، free account بنائیں، صرف email، کوئی password نہیں۔ Email میں آیا link کھولیں، شیخ یا خلیفہ چنیں، mobile number لکھیں، اور request send کر دیں۔
+12. My Account میں، اگر بیعت لے چکے ہیں تو tick کریں، approval کے بعد members کے videos کھل جاتے ہیں۔
+13. Iman Health میں namaz، zikr اور روزے کا روزانہ حساب، اپنے ایمان کا حال دیکھیں۔
+14. Tasbeeh، Duas، Prayer Times، Qibla finder اور Islamic Calendar، سب ایک جگہ۔
+15. Notifications on کیجیے، تاکہ halqa اور mehfil کا reminder ملتا رہے۔
+16. Noor-ul-Hasrat بالکل free ہے، سب کے لیے۔ اللہ ہم سب کے دلوں کو اپنی یاد سے آباد رکھے۔ آمین۔
