@@ -135,26 +135,28 @@
     }
     var sent = jget(SKEY);
     if (sent && Date.now() - sent.t < 30 * 60000) {
-      h += '<div class="ac-hero"><b>Check your email</b><p>We sent a sign-in link to <b>' + esc(sent.email) + '</b>. Open it on this phone and you are in. It works for 30 minutes.</p><p>Not there? Look in Spam or Promotions.</p></div>' +
-        '<div class="ac-msg' + (/^!/.test(msg) ? ' err' : '') + '">' + esc(msg.replace(/^!/, '')) + '</div>' +
-        '<button class="ac-btn alt" id="acResend" type="button">Send the link again</button><button class="ac-link" id="acOther" type="button">Use a different email</button>';
+      h += '<div class="ac-hero"><b>Check your email</b><p>We sent an email to <b>' + esc(sent.email) + '</b>. Type the <b>6-digit code</b> from it here, or open its link on this phone. It works for 30 minutes.</p><p>Not there? Look in Spam or Promotions.</p></div>' +
+        '<div class="ac-card"><label class="ac-f"><span>Code from the email</span><input id="acCode" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" placeholder="123456" style="font-size:22px;letter-spacing:6px;text-align:center"></label>' +
+        '<button class="ac-btn" id="acCodeGo" type="button">Sign in</button></div>' +
+        '<div class="ac-msg' + (/^!/.test(msg) ? ' err' : '') + '" id="acMsg">' + esc(msg.replace(/^!/, '')) + '</div>' +
+        '<button class="ac-btn alt" id="acResend" type="button">Send a new code</button><button class="ac-link" id="acOther" type="button">Use a different email</button>';
       body.innerHTML = h; return;
     }
     var pend = jget(PKEY) || {};
     if (mode === 'signin') {
       h += '<div class="ac-tabs"><button type="button" class="on" data-mode="signin">Sign in</button><button type="button" data-mode="signup">Create account</button></div>' +
-        '<div class="ac-card"><div class="ac-sub" style="margin:0 0 10px">Already a member? Enter your email and we will send you a sign-in link. No password.</div>' +
+        '<div class="ac-card"><div class="ac-sub" style="margin:0 0 10px">Already a member? Enter your email and we will send you a sign-in code. No password.</div>' +
         '<label class="ac-f"><span>Email</span><input id="acEmail" type="email" autocomplete="email" inputmode="email" maxlength="120" value="' + esc(pend.email || sget('noor_last_email') || '') + '"></label>' +
-        '<button class="ac-btn" id="acSignIn" type="button">Email me a sign-in link</button><div class="ac-msg' + (/^!/.test(msg) ? ' err' : '') + '" id="acMsg">' + esc(msg.replace(/^!/, '')) + '</div>' +
+        '<button class="ac-btn" id="acSignIn" type="button">Email me a sign-in code</button><div class="ac-msg' + (/^!/.test(msg) ? ' err' : '') + '" id="acMsg">' + esc(msg.replace(/^!/, '')) + '</div>' +
         '<div class="ac-sub">New here? <a href="#" data-mode="signup">Create a free account</a>: 🎁 gifts, rewards and member discounts.</div></div>';
       body.innerHTML = h; return;
     }
     h += '<div class="ac-tabs"><button type="button" data-mode="signin">Sign in</button><button type="button" class="on" data-mode="signup">Create account</button></div>';
-    if (sget(WKEY)) h += '<div class="ac-card" id="acWant" style="border-color:var(--gold)"><div class="ac-msg" style="margin:0"><b>🤝 Request to take Bai’at</b><br>Create your free account first. After you open the sign-in link, the app takes you back to Taking Bai’at to submit your request.</div></div>';
+    if (sget(WKEY)) h += '<div class="ac-card" id="acWant" style="border-color:var(--gold)"><div class="ac-msg" style="margin:0"><b>🤝 Request to take Bai’at</b><br>Create your free account first. After you sign in with the emailed code, the app takes you back to Taking Bai’at to submit your request.</div></div>';
     h += '<div class="ac-hero"><b>Create your free account</b><p>Optional. Everything in Noor works without it. With an account:</p><ul><li>Your Iman Health is kept safe, even on a new phone</li><li>Email reminders before our gatherings</li><li>Your Iman Health summary each Friday</li><li>🎁 Gifts, rewards and member discounts, in shaa Allah</li></ul></div>' +
       '<div class="ac-card"><label class="ac-f"><span>Email</span><input id="acEmail" type="email" autocomplete="email" inputmode="email" maxlength="120" value="' + esc(pend.email || '') + '"></label>' + fields(pend) +
       '<label class="ac-ck" style="border-top:1px solid var(--line);margin-top:4px;padding-top:12px"><input type="checkbox" id="acConsent"' + (pend.consent ? ' checked' : '') + '><div>I agree that my Iman Health is saved to my account and that the Noor-ul-Hasrat admin can see it.<small>Prayers, fasting, dhikr, good deeds and zakat (paid or not, never an amount). Your location is never sent.</small></div></label>' +
-      '<button class="ac-btn" id="acSend" type="button">Email me a sign-in link</button><div class="ac-msg' + (/^!/.test(msg) ? ' err' : '') + '" id="acMsg">' + esc(msg.replace(/^!/, '')) + '</div>' +
+      '<button class="ac-btn" id="acSend" type="button">Create account: email me a code</button><div class="ac-msg' + (/^!/.test(msg) ? ' err' : '') + '" id="acMsg">' + esc(msg.replace(/^!/, '')) + '</div>' +
       '<div class="ac-sub">No password. Already have an account? <a href="#" data-mode="signin">Sign in</a> · <a href="privacy.html">Privacy</a></div></div>' +
       '<div class="ac-card" style="border-color:var(--gold)"><div class="ac-msg" style="margin:0"><b>🤝 Full dars and dhikr practices</b><br>Members can watch the full dars and the Shorts that teach a practice of dhikr. ' + esc((root.NoorFamily && root.NoorFamily.BAYAH_EN) || '') + '</div></div>';
     body.innerHTML = h;
@@ -228,6 +230,17 @@
       t.disabled = true; say('Sending…');
       A.requestLink(pend.email).then(function () { msg = ''; sset(SKEY, JSON.stringify({ email: pend.email, t: Date.now() })); paint(); },
         function (er) { t.disabled = false; say('!' + (er && er.message || 'Could not send the email. Check your internet and try again.')); });
+      return;
+    }
+    if (t.id === 'acCodeGo') {
+      var sn = jget(SKEY) || {}, cd = ((body.querySelector('#acCode') || {}).value || '').replace(/\D/g, '');
+      if (cd.length !== 6) { say('!Please type the 6 digits from the email.'); return; }
+      t.disabled = true; say('Signing in…');
+      A.completeCode(sn.email, cd).then(function (u) { msg = ''; return afterSignIn(u); }, function (er) { msg = '!' + (er && er.message || 'Could not sign you in. Try again.'); })
+        .then(function () {
+          paint();
+          if (A.user() && sget(WKEY) && profile && profile.name && doc.getElementById('screen-bayah')) { sset(WKEY, null); setTimeout(function () { N.route('bayah'); scrollReq(); }, 600); }
+        });
       return;
     }
     if (t.id === 'acOther') { sset(SKEY, null); msg = ''; paint(); return; }

@@ -219,6 +219,14 @@
       user: function () { return session && session.em ? { uid: session.uid, email: session.em } : null; },
       requestLink: function (email) { return apiPost('/api/auth-link', { action: 'send', email: email }); },
       // `token` is the ?signin= value from the emailed link.
+      completeCode: function (email, code) { return account._finish(apiPost('/api/auth-link', { action: 'code', email: email, code: code })); },
+      _finish: function (pr) {
+        return pr.then(function (d) {
+          return postJSON(identityBase + '/v1/accounts:signInWithCustomToken?key=' + encodeURIComponent(cfg.firebaseApiKey), { token: d.token, returnSecureToken: true }).then(function (r) {
+            return saveSession({ uid: d.uid, em: d.email, id: r.idToken, refresh: r.refreshToken, exp: now() + Number(r.expiresIn || 3600) * 1000 });
+          });
+        }).then(function (s) { return { uid: s.uid, email: s.em }; });
+      },
       completeLink: function (token) {
         return apiPost('/api/auth-link', { action: 'verify', token: token }).then(function (d) {
           return postJSON(identityBase + '/v1/accounts:signInWithCustomToken?key=' + encodeURIComponent(cfg.firebaseApiKey), { token: d.token, returnSecureToken: true }).then(function (r) {

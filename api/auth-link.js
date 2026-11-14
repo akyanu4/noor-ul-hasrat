@@ -1,6 +1,7 @@
 /* Sign-in by email link, no password.
      POST { action: "send",   email }  → emails a one-time link (valid 30 minutes) to that address.
      POST { action: "verify", token }  → checks the link and returns a Firebase custom token for that person's account.
+     POST { action: "code", email, code } → the same, with the 6-digit code from the email (5 tries).
    The link is signed with a secret only the server knows (AUTH_LINK_SECRET, or derived from the service account key),
    so nobody can make one for another person's email. Each link works once.
    Limits so the Gmail account is never abused: 1 email a minute and 5 a day per address, 300 a day in total.
@@ -46,13 +47,18 @@ async function sendLink(env, email, nowMs, fetchFn, site) {
   if (n >= PER_DAY_ADDR) return { status: 429, error: 'Too many links were sent to this email today. Please use the last one, or try again tomorrow.' };
   if ((all || 0) >= PER_DAY_ALL) return { status: 503, error: 'Sign-in emails are busy today. Please try again tomorrow.' };
   const link = site + '/?signin=' + makeToken(env, email, nowMs);
+  // A 6-digit code too: the link often opens in the browser, not in the installed app, so the code can be typed into the app instead.
+  const code = String(crypto.randomInt(0, 1000000)).padStart(6, '0');
+  await d.put('authlinks/code/' + k, { h: sign(env, 'code:' + email + ':' + code), x: nowMs + LINK_MINUTES * 60000, tries: 0 });
   const html = M.layout('Sign in to Noor-ul-Hasrat',
     '<p style="line-height:1.55;margin:0">Assalamu alaikum. Tap the button to sign in to the Noor-ul-Hasrat app on this phone.</p>' +
     M.button(link, 'Sign in to Noor-ul-Hasrat') +
+    '<p style="line-height:1.55;margin:0 0 6px">Using the installed app? Type this code in the app instead:</p>' +
+    '<p style="font-size:30px;font-weight:700;letter-spacing:8px;margin:0 0 16px;font-family:Consolas,monospace;color:#0f3d3e">' + code + '</p>' +
     '<p style="font-size:13px;color:#6b7570;line-height:1.5;margin:0">The link works once, for ' + LINK_MINUTES + ' minutes. If you did not ask for it, you can ignore this email: nothing happens without the link.</p>',
     site, 'This email was sent because someone asked to sign in to the Noor-ul-Hasrat app with this address.');
-  await M.send(env, { to: email, subject: 'Your Noor-ul-Hasrat sign-in link', html,
-    text: 'Assalamu alaikum. Open this link on your phone to sign in to Noor-ul-Hasrat (it works once, for ' + LINK_MINUTES + ' minutes):\n\n' + link + '\n\nIf you did not ask for it, ignore this email.' });
+  await M.send(env, { to: email, subject: 'Noor-ul-Hasrat sign-in code ' + code, html,
+    text: 'Assalamu alaikum. Open this link on your phone to sign in to Noor-ul-Hasrat (it works once, for ' + LINK_MINUTES + ' minutes):\n\n' + link + '\n\nOr type this code in the app: ' + code + '\n\nIf you did not ask for it, ignore this email.' });
   await Promise.all([
     d.put('authlinks/addr/' + k, { last: nowMs, day, n: n + 1 }),
     d.put('authlinks/day/' + day, { '.sv': { increment: 1 } })
@@ -72,6 +78,22 @@ async function verify(env, token, nowMs, fetchFn) {
   return { status: 200, ok: true, uid, email: t.email, token: G.customToken(env, uid, { em: t.email }, Math.floor(nowMs / 1000)) };
 }
 
+async function verifyCode(env, email, code, nowMs, fetchFn) {
+  const d = G.db(env, fetchFn), k = addrKey(email), rec = await d.get('authlinks/code/' + k);
+  const bad = { status: 400, error: 'That code is not right. Check the latest email, or ask for a new code.' };
+  if (!rec || !rec.h) return { status: 400, error: 'No code is waiting for this email. Ask for a new one.' };
+  if (!(rec.x > nowMs)) return { status: 400, error: 'This code has expired. Ask for a new one.' };
+  if ((rec.tries || 0) >= 5) return { status: 429, error: 'Too many wrong tries. Ask for a new code.' };
+  const want = Buffer.from(rec.h), got = Buffer.from(sign(env, 'code:' + email + ':' + code));
+  if (!/^[0-9]{6}$/.test(code) || want.length !== got.length || !crypto.timingSafeEqual(want, got)) {
+    await d.put('authlinks/code/' + k + '/tries', (rec.tries || 0) + 1);
+    return bad;
+  }
+  await d.del('authlinks/code/' + k);
+  const uid = G.uidFor(email);
+  return { status: 200, ok: true, uid, email, token: G.customToken(env, uid, { em: email }, Math.floor(nowMs / 1000)) };
+}
+
 async function handle(env, body, nowMs, fetchFn) {
   const site = (env.SITE_URL || 'https://noor-ul-hasrat.vercel.app').replace(/\/$/, '');
   if (!env.FIREBASE_SERVICE_ACCOUNT) return { status: 503, error: 'Accounts are not switched on yet (FIREBASE_SERVICE_ACCOUNT is not set).' };
@@ -82,6 +104,11 @@ async function handle(env, body, nowMs, fetchFn) {
     return sendLink(env, email, nowMs, fetchFn, site);
   }
   if (body.action === 'verify') return verify(env, body.token, nowMs, fetchFn);
+  if (body.action === 'code') {
+    const email = String(body.email || '').trim().toLowerCase();
+    if (!EMAIL_RE.test(email)) return { status: 400, error: 'Please check the email address.' };
+    return verifyCode(env, email, String(body.code || '').replace(/\s+/g, ''), nowMs, fetchFn);
+  }
   return { status: 400, error: 'unknown action' };
 }
 
