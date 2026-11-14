@@ -124,6 +124,7 @@ h2.section-title:first-child{margin-top:2px;}
 .bay-home .bh-ur{font-family:"Noto Nastaliq Urdu",Amiri,serif; font-size:17px; color:var(--gold-soft); line-height:1.6;}
 .bay-home .bh-go{font-size:22px; color:var(--gold-soft);}
 .qcard .ic{font-size:22px;}
+#quickGrid{grid-template-columns:repeat(6,1fr); gap:6px;} #quickGrid .qcard .lb{font-size:10px;}
 .qcard .lb{font-size:10.5px; margin-top:6px; color:var(--muted); line-height:1.25;}
 
 /* ---- feature rows (List) ---- */
@@ -577,6 +578,7 @@ if(!self.NOOR_CONFIG){
 (function(){
   // ---------- data ----------
   var quick = [
+    {ic:"🧘", lb:"Meditation", go:"meditations"},
     {ic:"🕋", lb:"Qibla", go:"qibla"},
     {ic:"📿", lb:"Tasbeeh", go:"tasbeeh"},
     {ic:"🤲", lb:"Duas", go:"duas"},
