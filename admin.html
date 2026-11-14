@@ -52,7 +52,7 @@
   function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function ago(ms) { if (!ms) return 'never'; var d = Math.floor((Date.now() - ms) / 86400000); return d <= 0 ? 'today' : d === 1 ? 'yesterday' : d + ' days ago'; }
   function band(n) { return n >= 85 ? 'g' : n >= 40 ? 'y' : 'r'; }
-  var members = [], open = '';
+  var members = [], open = '', helps = [];
 
   var u = B.account.user();
   if (!u) { out.innerHTML = '<div class="card">Sign in first: open the app, go to <b>More → My Account</b>, sign in with your email, then come back to this page.</div>'; return; }
@@ -62,8 +62,9 @@
       document.getElementById('cp').onclick = function () { try { navigator.clipboard.writeText(u.uid); this.textContent = 'Copied'; } catch (e) {} };
       return;
     }
-    return Promise.all([B.admin.get('profiles'), B.admin.get('summaries'), B.admin.get('bayah_ok').catch(function () { return null; }), B.admin.get('bayah_req').catch(function () { return null; })]).then(function (r) {
+    return Promise.all([B.admin.get('profiles'), B.admin.get('summaries'), B.admin.get('bayah_ok').catch(function () { return null; }), B.admin.get('bayah_req').catch(function () { return null; }), B.admin.get('helpreq').catch(function () { return null; })]).then(function (r) {
       var P = r[0] || {}, S = r[1] || {}, OK = r[2] || {}, RQ = r[3] || {};
+      helps = Object.keys(r[4] || {}).map(function (id) { return Object.assign({ id: id }, r[4][id]); }).sort(function (a, b) { return ((a.status === 'done') - (b.status === 'done')) || (b.at - a.at); });
       members = Object.keys(P).map(function (id) { return { id: id, p: P[id] || {}, s: S[id] || null, ok: OK[id] || null, rq: RQ[id] || null }; })
         .sort(function (a, b) { return String(a.p.name || '').localeCompare(String(b.p.name || '')); });
       paint();
@@ -116,6 +117,16 @@
         (c ? '<div class="muted" style="margin-top:2px">Contacted ✓ ' + esc(m.rq.by || '') + ', ' + esc(new Date(m.rq.at).toLocaleDateString()) + '</div>' : '') + '</div>' +
         (c ? '<button data-unc="' + esc(m.id) + '">Undo</button>' : '<button class="pri" data-con="' + esc(m.id) + '">Mark contacted</button>') + '</div>';
     }).join('') + '</div>';
+    var hOpen = helps.filter(function (x) { return x.status !== 'done'; }).length;
+    if (helps.length) h += '<div class="card"' + (hOpen ? ' style="border-color:var(--gold)"' : '') + '><b>🛠️ Help requests (' + hOpen + ' open)</b>' + (helps.length > hOpen ? ' <span class="muted">· ' + (helps.length - hOpen) + ' done</span>' : '') + helps.slice(0, 40).map(function (x) {
+      var dn = x.status === 'done', c = String(x.contact || ''), isMail = c.indexOf('@') !== -1, digits = c.replace(/[^0-9+]/g, '');
+      var reach = isMail ? '<a href="mailto:' + esc(c) + '">' + esc(c) + '</a>' : '<a href="tel:' + esc(digits) + '">' + esc(c) + '</a> · <a href="https://wa.me/' + esc(digits.replace('+', '')) + '" target="_blank" rel="noopener">WhatsApp</a>';
+      return '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-top:1px solid var(--line);flex-wrap:wrap' + (dn ? ';opacity:.6' : '') + '"><div style="flex:1;min-width:220px"><b>' + esc(x.name || '') + '</b> <span class="muted">· ' + esc(x.topic || '') + ' · ' + esc(new Date(x.at).toLocaleString()) + '</span>' +
+        '<div class="muted">' + reach + (x.uid ? ' · signed in' : '') + '</div><div class="muted">' + esc(x.device || '') + '</div>' +
+        '<div style="font-size:13.5px;margin-top:4px;white-space:pre-wrap">' + esc(x.message || '') + '</div>' +
+        (dn && x.doneBy ? '<div class="muted" style="margin-top:2px">Done ✓ ' + esc(x.doneBy) + '</div>' : '') + '</div>' +
+        '<button ' + (dn ? '' : 'class="pri" ') + 'data-hd="' + esc(x.id) + '">' + (dn ? 'Reopen' : 'Mark done') + '</button></div>';
+    }).join('') + '</div>';
     h += '<div class="bar"><input type="search" id="q" placeholder="Search name, email, city" value="' + esc(q) + '"><button id="csv">Download CSV</button></div><div class="list">';
     var ql = q.toLowerCase();
     members.filter(function (m) { return !ql || [m.p.name, m.p.email, m.p.city, m.p.phone].join(' ').toLowerCase().indexOf(ql) !== -1; }).forEach(function (m) {
@@ -138,6 +149,14 @@
     if (no) { decide(no.getAttribute('data-no'), false, no); return; }
     var con = e.target.closest && e.target.closest('[data-con]'), unc = e.target.closest && e.target.closest('[data-unc]');
     if (con) { markContacted(con.getAttribute('data-con'), true, con); return; }
+    var hd = e.target.closest && e.target.closest('[data-hd]');
+    if (hd) {
+      var hx = helps.filter(function (x) { return x.id === hd.getAttribute('data-hd'); })[0]; if (!hx) return;
+      var done = hx.status !== 'done', hv = Object.assign({}, hx, { status: done ? 'done' : 'new', doneBy: done ? u.email : null, doneAt: done ? Date.now() : null }); delete hv.id;
+      hd.disabled = true;
+      B.admin.put('helpreq/' + hx.id, hv).then(function () { Object.assign(hx, hv); paint(); }, function (er) { hd.disabled = false; alert('Could not save (' + (er && er.message) + '). Check the database rules include "helpreq".'); });
+      return;
+    }
     if (unc) { markContacted(unc.getAttribute('data-unc'), false, unc); return; }
     var b = e.target.closest && e.target.closest('.m'); if (!b) return;
     var id = b.getAttribute('data-id'); open = open === id ? '' : id; paint();
