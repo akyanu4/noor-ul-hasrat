@@ -31,7 +31,7 @@
       'Good and bad thoughts come and go from morning to evening; no one is held to account for them.',
       'For daf’-e-khatrat, driving away passing thoughts, the book gives “tried and tested” (mujarrab) methods: they are below.'
     ],
-    shorts: []
+    shorts: [{ id: 'cfKWk-fq-BQ', title: 'A Passing Thought or a Resolve' }]
   };
   var CARDS = [
     { slug: 'good-thoughts', t: 'Turn the thought into du’a', ur: 'اچھے خیالات کی دعا',
@@ -46,7 +46,7 @@
         { ar: 'ٱدْعُونِيٓ أَسْتَجِبْ لَكُمْ', tr: 'Ud‘uni astajib lakum.', mn: 'Call upon Me; I will answer you. (Surah Ghafir 40:60)' },
         { ar: 'اَلدُّعَاءُ مُخُّ الْعِبَادَةِ', tr: 'Ad-du‘a mukhkh al-‘ibadah.', mn: 'Du’a is the core of worship. (Hadith)' }
       ],
-      shorts: [] },
+      shorts: [{ id: 'Tv8U5Rk8kF4', title: 'Ask Allah for Good Thoughts' }] },
     { slug: 'yaad-faramosh', t: 'The pact of remembrance', ur: 'یاد فراموش',
       d: 'A pact made among companions so that the remembrance of Allah goes on and is never forgotten, even while they sit together, talk and go about their work.',
       steps: [
@@ -56,7 +56,7 @@
         'Through this pact one gets help toward constant presence, one admits one’s own mistake, and the work becomes lillah, fillah: for the sake of Allah, and in Allah.'
       ],
       ar: [{ ar: 'اَللّٰه ۔ اَلْحَمْدُ لِلّٰهِ ۔ أَسْتَغْفِرُ اللّٰهَ', tr: 'Allah! · Alhamdulillah · Astaghfirullah', mn: 'The call; the answer of the heart that was present; the answer of the heart that had forgotten.' }],
-      shorts: [] },
+      shorts: [{ id: 'EbnxYFqNhXI', title: 'The Pact of Remembrance' }] },
     { slug: 'change-state', t: 'Change your state', ur: 'حالت بدلنا',
       d: 'When khatrat come in great numbers, change your state. The root principle here is movement.',
       steps: [
@@ -64,7 +64,7 @@
         'As soon as we move, the khatrat are driven away.',
         'We sit and sit and they do not leave; the moment we stand up and change our state, the khatrat vanish.'
       ],
-      shorts: [] },
+      shorts: [{ id: 'SBy10BJdsdk', title: 'Stand Up and the Thought Leaves' }] },
     { slug: 'run-from-it', t: 'Run from the thought', ur: 'خطرہ سے بھاگنا',
       d: 'When a khatra comes into your heart, into your thoughts, run from it.',
       steps: [
@@ -72,14 +72,14 @@
         'In a little while the thought will be left behind; you will get out and be freed from it.',
         'We who were captives of the thought get out of that captivity.'
       ],
-      shorts: [] },
+      shorts: [{ id: 'SBy10BJdsdk', title: 'Stand Up and the Thought Leaves' }] },
     { slug: 'imagine-it-leaving', t: 'See the thought running away', ur: 'عالمِ تخیل',
       d: 'Or imagine, in the world of imagination (aalam-e-takhayyul), that the thought is running away from you: this too removes it.',
       steps: [
         'When the khatra comes, think: “This thought is running from me.”',
         'Aalam-e-takhayyul means the world of imagination, of thought. By this too the khatra is removed.'
       ],
-      shorts: [] },
+      shorts: [{ id: 'SBy10BJdsdk', title: 'Stand Up and the Thought Leaves' }] },
     { slug: 'refuge', t: 'Come into Allah’s refuge', ur: 'اللہ کی پناہ',
       d: 'When the khatrat keep coming, come into the refuge of Allah and ask for His help.',
       steps: [
@@ -87,14 +87,14 @@
         'When a khatra comes, say: “If these trouble us, where else will we find refuge? Save us from these khatrat; take us into Your refuge.”',
         'Even great people are troubled by khatrat: the Awliya Allah too come into Allah’s refuge, and adopt these methods.'
       ],
-      shorts: [] },
+      shorts: [{ id: 'QKlEyf9c7tg', title: 'Take Refuge in Allah' }] },
     { slug: 'hoon-hoon', t: 'Breathe out: “hoon, hoon”', ur: 'ہوں ہوں',
       d: 'One of the tried and tested methods for driving away khatrat, done with the breath.',
       steps: [
         'Saying “hoon, hoon”, breathe out forcefully, outward.',
         'Hoon… hoon… hoon… hoon: “that is what to do.”'
       ],
-      shorts: [] },
+      shorts: [{ id: 'QKlEyf9c7tg', title: 'Take Refuge in Allah' }] },
     { slug: 'new-creation', t: 'Recite the verse', ur: 'آیت کی تلاوت',
       d: 'By reciting this verse too, khatrat lessen.',
       steps: [
@@ -103,7 +103,7 @@
       ],
       ar: [{ ar: 'إِن يَشَأْ يُذْهِبْكُمْ وَيَأْتِ بِخَلْقٍ جَدِيدٍ ۝ وَمَا ذٰلِكَ عَلَى اللّٰهِ بِعَزِيزٍ', tr: 'In yasha’ yudhhibkum wa ya’ti bi-khalqin jadid, wa ma dhalika ‘ala-llahi bi-‘aziz.',
         mn: 'If He wills, He will take you away and bring a new creation; and that is not difficult for Allah. (Surah Fatir 35:16-17; the same words are in Surah Ibrahim 14:19-20)' }],
-      shorts: [] },
+      shorts: [{ id: 'QKlEyf9c7tg', title: 'Take Refuge in Allah' }] },
     { slug: 'nazar-bar-qadam', t: 'Gaze on your steps', ur: 'نظر بر قدم',
       d: 'In driving away khatrat there is one important principle: nazar bar qadam, keep your gaze on your feet, on your steps.',
       steps: [
@@ -111,14 +111,14 @@
         'There is great attraction in the human face: whoever you look at, his face comes into your heart through your eyes.',
         'If you keep looking all around, your heart will be scattered.'
       ],
-      shorts: [] },
+      shorts: [{ id: 'PvTqdGvfuQw', title: 'Keep Your Gaze on Your Steps' }] },
     { slug: 'khalwat-dar-anjuman', t: 'Solitude in the crowd', ur: 'خلوت در انجمن',
       d: 'Khalwat dar anjuman: even in the middle of people, keep your attention in your heart.',
       steps: [
         'Keep your attention in your heart. The gathering is within our own heart.',
         'Together with it, keep your gaze on your steps (nazar bar qadam) and your eyes lowered.'
       ],
-      shorts: [] },
+      shorts: [{ id: 'PvTqdGvfuQw', title: 'Keep Your Gaze on Your Steps' }] },
     { slug: 'guard-the-gaze', t: 'Guard your gaze', ur: 'حفاظتِ نظر',
       d: 'The practical teaching: for a few days, guard your gaze, and protect yourself from the gaze of others.',
       steps: [
@@ -127,7 +127,7 @@
         'When the heart is fixed on one point, the reality will come before you, and we will come to know it.'
       ],
       q: '“Laal dore hain band-e-pa-e-nazar, sayd karti hain yaar ki aankhen”: the red threads are fetters on the feet of the gaze; the Beloved’s eyes go hunting. Who is the Beloved? Allah.',
-      shorts: [] },
+      shorts: [{ id: 'UFGrLXEdwmk', title: 'The Eyes Are Hunters' }] },
     { slug: 'tasawwur-e-shaykh', t: 'Holding the shaykh in your thought', ur: 'تصورِ شیخ',
       d: 'Whichever elder you hold in your thought, the states that are in that elder’s blessed chest will begin to appear to you.',
       steps: [
@@ -137,7 +137,7 @@
       ],
       ar: [{ ar: 'يَا خَلَّاقُ يَا فَعَّالُ يَا مُصَوِّرُ', tr: 'Ya Khallaqu, Ya Fa’’alu, Ya Musawwiru.', mn: 'O Great Creator, O Doer of all He wills, O Fashioner of forms.' }],
       q: 'This is what Hazrat’s own pir taught him. Take such a practice from your own shaykh.',
-      shorts: [] },
+      shorts: [{ id: '2zH6zC_Z8P4', title: 'What Opened My Eyes' }, { id: 'dyHUfOLlVTs', title: 'Hold My Picture in Your Heart' }] },
     { slug: 'one-point', t: 'One point: where will you find Tawheed?', ur: 'یکسوئی',
       d: 'Instead of thinking in one direction, we think about everything. When will you reach your goal (Murad)? Where will you find Tawheed? Tawheed is one: Allah is one.',
       steps: [
@@ -145,7 +145,7 @@
         'Do not eat many kinds of food: “many-coloured food brings impurity into the thoughts.”',
         'When the heart is fixed on one point, the reality will come before you.'
       ],
-      shorts: [] },
+      shorts: [{ id: 'trMoVHtadHI', title: 'Where Will You Find Tawheed?' }] },
     { slug: 'asl-e-wujood', t: 'Recognise Him in every form', ur: 'اصلِ وجود',
       d: 'This is the matter of very great people: it belongs to a very high station, it is no ordinary thing, and not every person can understand it.',
       steps: [
@@ -154,7 +154,7 @@
         'They say it and fall silent: “Yes, I have understood; I have passed my test.”'
       ],
       q: 'Hazrat’s rubai: “Tu dar har shaan ba-kamaali… jis rang mein aao, kuch nahin hai parwa; is naaz-o-ada se tumko pehchanta hoon”: You are perfect in every state; in whatever colour You come, it does not matter; I recognise You by this grace.',
-      shorts: [] }
+      shorts: [{ id: 'z698TQzQjQg', title: 'I Recognise You in Every Form' }] }
   ];
   var BAYAH_NOTE = 'These meditations bring their benefit after you have taken Bay’ah, under the guidance of your Shaykh or his Khalifa.';
 
@@ -190,7 +190,7 @@
       '<h4>' + esc(c.head || 'How Hazrat taught it') + '</h4><ol>' + c.steps.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>';
     (c.ar || []).forEach(function (a) { h += '<div class="md-ar" lang="ar">' + esc(a.ar) + '</div>' + (a.tr ? '<div class="md-tr">' + esc(a.tr) + '</div>' : '') + (a.mn ? '<div class="md-mn">' + esc(a.mn) + '</div>' : ''); });
     if (c.q) h += '<p class="q">' + esc(c.q) + '</p>';
-    if (c.shorts && c.shorts.length && F && F.shortsGrid) h += F.shortsGrid(c.shorts);
+    if (c.shorts && c.shorts.length && F && F.shortsGrid) h += '<h4>Watch Hazrat explain it</h4>' + F.shortsGrid(c.shorts);
     return h + '</div></div>';
   }
   // the index: groups of meditations, and more practices Hazrat teaches in other Shorts (published, for murids)
@@ -240,7 +240,7 @@
     h += bayBox(F);
     if (tp.card) {
       h += card(tp.card, tp.n, F);
-      if (!(tp.card.shorts && tp.card.shorts.length)) h += '<div class="md-src">Hazrat’s Short on this practice will appear here once it is published.</div>';
+      if (!(tp.card.shorts && tp.card.shorts.length)) h += '<div class="md-src">Hazrat’s Short on this practice will appear here soon.</div>';
     } else {
       h += '<h2 class="section-title" style="margin-top:4px">' + esc(tp.video.title) + '</h2>' + (F && F.shortsGrid ? F.shortsGrid([tp.video]) : '') +
         '<div class="md-src">A practice Hazrat Azam Pasha R.A. teaches in this Short. Practice Shorts open for members who have taken Bay’ah.</div>';
