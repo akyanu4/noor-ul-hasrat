@@ -169,15 +169,15 @@
     '.md-tx p{margin:0 0 8px;font-size:14px;line-height:1.6;color:var(--ink)}.md-tx h4{margin:10px 0 6px;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--gold)}' +
     '.md-tx ol{margin:0 0 6px;padding-left:20px}.md-tx li{font-size:14px;line-height:1.6;color:var(--ink);margin-bottom:5px}.md-tx .q{border-left:3px solid var(--gold);padding:2px 0 2px 10px;color:var(--muted);font-style:italic;margin-top:8px}' +
     '.md-ar{font-family:Amiri,"Scheherazade New",serif;font-size:22px;line-height:1.9;direction:rtl;text-align:center;color:var(--teal);margin:8px 0 2px}.md-tr{font-size:13px;text-align:center;color:var(--ink);font-style:italic;margin-bottom:2px}.md-mn{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.5;margin-bottom:6px}' +
-    '.md-idx{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:14px}.md-idx>b{font-size:17px;color:var(--ink)}.md-ig{margin-top:10px}.md-igt{font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}.md-igt span{font-family:"Noto Nastaliq Urdu",Amiri,serif;text-transform:none;letter-spacing:0;font-weight:400;margin-left:6px}' +
-    '.md-il{display:flex;align-items:center;gap:10px;padding:8px 2px;border-top:1px solid var(--line);font-size:14.5px;color:var(--ink);cursor:pointer;text-decoration:none}.md-in{flex:none;width:24px;height:24px;border-radius:50%;background:var(--teal);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}.md-iu{margin-left:auto;font-family:"Noto Nastaliq Urdu",Amiri,serif;font-size:14px;color:var(--teal);direction:rtl}' +
+    '.md-idx{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:14px}.md-idx>b{font-size:17px;color:var(--ink)}.md-ig{margin-top:10px}.md-idx .md-igt{margin-bottom:6px}.md-igt{font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}.md-igt span{font-family:"Noto Nastaliq Urdu",Amiri,serif;text-transform:none;letter-spacing:0;font-weight:400;margin-left:6px}' +
+    '.md-il{display:flex;align-items:center;gap:10px;padding:8px 2px;border-top:1px solid var(--line);font-size:14.5px;color:var(--ink);cursor:pointer;text-decoration:none}.md-in{flex:none;width:24px;height:24px;border-radius:50%;background:var(--teal);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}.md-it{flex:1}.md-ch{color:var(--muted);font-size:20px;margin-left:6px}.md-toidx{display:block;width:100%;margin:4px 0 16px;background:var(--teal);color:#fff;border:0;border-radius:12px;padding:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}.md-iu{margin-left:auto;font-family:"Noto Nastaliq Urdu",Amiri,serif;font-size:14px;color:var(--teal);direction:rtl}' +
     '.md-gh{margin:18px 0 10px;scroll-margin-top:70px}.md-card{scroll-margin-top:70px}' +
     '.md-src{font-size:11.5px;color:var(--muted);line-height:1.5;margin:6px 2px 14px}';
   doc.head.appendChild(css);
 
   var s = N.el('div', 'screen', '<div class="subhead"><div class="backbtn" id="mdBack">←</div><div class="subtitle">Mystic Meditations</div></div><div id="mdBody"></div>');
   s.id = 'screen-meditations'; doc.querySelector('.screens').appendChild(s);
-  s.querySelector('#mdBack').addEventListener('click', function () { N.backTab(); });
+  s.querySelector('#mdBack').addEventListener('click', function () { if (cur) { open(''); } else { N.backTab(); } });
   var body = s.querySelector('#mdBody');
 
   function bayBox(F) {
@@ -207,40 +207,57 @@
     { id: 'EIcNQnQ_TkQ', title: 'Istikhara: Ask Allah First' },
     { id: 'KCmXwBTioD4', title: 'Two Rakats Better Than a Hundred' }
   ];
+  function topicOf(sl) {
+    if (sl.indexOf('v-') === 0) { var v = MORE.filter(function (x) { return 'v-' + x.id === sl; })[0]; return v ? { video: v } : null; }
+    var all = [INTRO].concat(CARDS); for (var k = 0; k < all.length; k++) if (all[k].slug === sl) return { card: all[k], n: CARDS.indexOf(all[k]) + 1 };
+    return null;
+  }
+  function row(sl, n, t, ur) {
+    return '<a class="md-il" data-topic="' + esc(sl) + '"><span class="md-in">' + n + '</span><span class="md-it">' + esc(t) + '</span>' + (ur ? '<span class="md-iu" lang="ur">' + esc(ur) + '</span>' : '') + '<span class="md-ch">›</span></a>';
+  }
   function indexBox() {
     var all = [INTRO].concat(CARDS), num = {}; CARDS.forEach(function (c, i) { num[c.slug] = i + 1; });
-    var h = '<div class="md-idx"><b>Index</b>';
+    var h = '';
     GROUPS.forEach(function (g) {
-      h += '<div class="md-ig"><div class="md-igt">' + esc(g.t) + ' <span lang="ur">' + esc(g.ur) + '</span></div>';
-      g.slugs.forEach(function (sl) { var c = all.filter(function (x) { return x.slug === sl; })[0]; if (!c) return;
-        h += '<a class="md-il" data-to="md-' + sl + '"><span class="md-in">' + (num[sl] || '•') + '</span>' + esc(c.t) + '<span class="md-iu" lang="ur">' + esc(c.ur) + '</span></a>'; });
+      h += '<div class="md-idx"><div class="md-igt">' + esc(g.t) + ' <span lang="ur">' + esc(g.ur) + '</span></div>';
+      g.slugs.forEach(function (sl) { var c = all.filter(function (x) { return x.slug === sl; })[0]; if (c) h += row(sl, num[sl] || '•', c.t, c.ur); });
       h += '</div>';
     });
-    return h + '<div class="md-ig"><a class="md-il" data-to="md-more"><span class="md-in">▶</span>More practices in Hazrat’s Shorts</a></div></div>';
+    h += '<div class="md-idx"><div class="md-igt">More practices <span lang="ur">مزید اعمال</span></div>';
+    MORE.forEach(function (v) { h += row('v-' + v.id, '▶', v.title, ''); });
+    return h + '</div>';
   }
-  function groupHead(sl) {
-    var g = GROUPS.filter(function (x) { return x.slugs[0] === sl; })[0];
-    return g ? '<h2 class="section-title md-gh">' + esc(g.t) + '</h2>' : '';
-  }
-  function paint() {
+  var cur = '';   // '' = the index; otherwise the open topic
+  function paintIndex() {
     var F = root.NoorFamily, h = '';
-    h += '<div class="md-hero"><b>Mystic Meditations</b><div class="ur" lang="ur">مراقبات</div><p>Muraqabat: the ways Hazrat Azam Pasha R.A. taught to drive away khatrat, the passing thoughts, and to keep the heart turned to Allah.</p></div>';
-    h += bayBox(F);
-    h += indexBox();
-    h += groupHead(INTRO.slug) + card(INTRO, 0, F);
-    CARDS.forEach(function (c, i) { h += groupHead(c.slug) + card(c, i + 1, F); });
-    h += '<h2 class="section-title md-gh" id="md-more">More practices in Hazrat’s Shorts</h2>' +
-      '<p class="md-src" style="margin-top:0">Tasawwur-e-Shaykh, taqwa, sabr and istikhara, as Hazrat taught them. Practice Shorts open for members who have taken Bay’ah.</p>' +
-      (F && F.shortsGrid ? F.shortsGrid(MORE) : '');
-    h += bayBox(F);
-    h += '<div class="md-src">From Hazrat Azam Pasha R.A.’s dars Nizam-ul-Amal-e-Fuqara (parts 6 and 7). These are his teachings as he gave them, not fatwas: follow what your shaykh teaches.</div>';
-    body.innerHTML = h;
+    h += '<div class="md-hero"><b>Mystic Meditations</b><div class="ur" lang="ur">مراقبات</div><p>Muraqabat: the ways Hazrat Azam Pasha R.A. taught to drive away khatrat, the passing thoughts, and to keep the heart turned to Allah. Choose a topic.</p></div>';
+    h += bayBox(F) + indexBox();
+    h += '<div class="md-src">From Hazrat Azam Pasha R.A.’s dars. These are his teachings as he gave them, not fatwas: follow what your shaykh teaches.</div>';
+    body.innerHTML = h; s.querySelector('.subtitle').textContent = 'Mystic Meditations';
   }
+  function paintTopic(sl) {
+    var F = root.NoorFamily, tp = topicOf(sl), h = ''; if (!tp) { cur = ''; return paintIndex(); }
+    h += bayBox(F);
+    if (tp.card) {
+      h += card(tp.card, tp.n, F);
+      if (!(tp.card.shorts && tp.card.shorts.length)) h += '<div class="md-src">Hazrat’s Short on this practice will appear here once it is published.</div>';
+    } else {
+      h += '<h2 class="section-title" style="margin-top:4px">' + esc(tp.video.title) + '</h2>' + (F && F.shortsGrid ? F.shortsGrid([tp.video]) : '') +
+        '<div class="md-src">A practice Hazrat Azam Pasha R.A. teaches in this Short. Practice Shorts open for members who have taken Bay’ah.</div>';
+    }
+    h += '<button type="button" class="go md-toidx">☰ All meditations</button>';
+    body.innerHTML = h; s.querySelector('.subtitle').textContent = tp.card ? tp.card.t : 'Practice';
+    root.scrollTo(0, 0); var sc = doc.querySelector('.screens'); if (sc) sc.scrollTop = 0;
+  }
+  function paint() { if (cur) paintTopic(cur); else paintIndex(); }
+  function open(sl) { cur = sl || ''; paint(); }
   body.addEventListener('click', function (e) {
-    if (e.target.closest && e.target.closest('.md-tobay')) { N.route('bayah'); return; }
-    var il = e.target.closest && e.target.closest('.md-il'); if (il) { var t = doc.getElementById(il.getAttribute('data-to')); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
-    var th = e.target.closest && e.target.closest('.fm-sth'); if (th && root.NoorFamily) root.NoorFamily.playShort(th);
+    var c = e.target.closest ? e.target : null; if (!c) return;
+    if (c.closest('.md-tobay')) { N.route('bayah'); return; }
+    if (c.closest('.md-toidx')) { open(''); return; }
+    var il = c.closest('.md-il'); if (il) { open(il.getAttribute('data-topic')); return; }
+    var th = c.closest('.fm-sth'); if (th && root.NoorFamily) root.NoorFamily.playShort(th);
   });
   N.onScreen(function (id) { if (id === 'meditations') paint(); });
-  root.NoorMeditations = { ready: true, cards: CARDS };
+  root.NoorMeditations = { ready: true, cards: CARDS, open: open };
 })(typeof self !== 'undefined' ? self : this);
