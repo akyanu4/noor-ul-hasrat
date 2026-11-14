@@ -63,11 +63,14 @@
     card.setAttribute('role', 'button'); card.tabIndex = 0; card.setAttribute('aria-label', 'About GiraffeTech and support');
     card.addEventListener('click', function () { N.showScreen('about'); });
     // A slim Donate button at the very top of Home (opens Donate: charity, Dargah & Events)
-    hc.textContent += '.don-top{display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;margin:0 0 12px;padding:10px 14px;border-radius:12px;cursor:pointer;font:inherit;text-align:left;' +
-      'background:linear-gradient(135deg,#e8c46b,#c9a24b);color:#1c1a12;border:0;box-shadow:0 3px 10px rgba(201,162,75,.3)}.don-top .ic{font-size:20px}.don-top b{font-size:15px}.don-top span.s{flex:1;font-size:12.5px;opacity:.8}.don-top .go{font-size:18px}';
-    var dt = N.el('button', 'don-top', '<span class="ic" aria-hidden="true">🤲</span><b>Donate</b><span class="s">Charity, Dargah &amp; Events</span><span class="go" aria-hidden="true">›</span>');
+    hc.textContent += '.qa-head{display:flex;align-items:center;justify-content:space-between;gap:10px}' +
+      '.don-top{display:inline-flex;align-items:center;gap:5px;flex:none;margin:0;padding:6px 12px;min-height:34px;border-radius:999px;cursor:pointer;font:inherit;font-size:13px;font-weight:600;letter-spacing:0;text-transform:none;' +
+      'background:linear-gradient(135deg,#e8c46b,#c9a24b);color:#1c1a12;border:0;box-shadow:0 2px 6px rgba(201,162,75,.3)}.don-top .ic{font-size:15px}';
+    var dt = N.el('button', 'don-top', '<span class="ic" aria-hidden="true">🤲</span>Donate');
+    dt.setAttribute('aria-label', 'Donate: charity, Dargah and Events');
     dt.type = 'button'; dt.addEventListener('click', function () { N.route('donate'); });
-    home.insertBefore(dt, home.firstChild);
+    var qa = home.querySelector('.section-title');
+    if (qa) { qa.classList.add('qa-head'); qa.innerHTML = '<span>' + qa.innerHTML + '</span>'; qa.appendChild(dt); } else home.insertBefore(dt, home.firstChild);
     home.appendChild(card);
   }
   s.querySelector('#abCopy').addEventListener('click', function (e) {
@@ -130,8 +133,7 @@
       var sl = N.el('div', 'sl-note', '<div class="t"><b>🌱 Soft launch</b> · The app is new. Your feedback helps us make it better.</div><button type="button" class="fb">Give feedback</button><button type="button" class="x" aria-label="Close">×</button>');
       sl.querySelector('.fb').addEventListener('click', function () { openForm(true); });
       sl.querySelector('.x').addEventListener('click', function () { try { localStorage.setItem(SLKEY, String(Date.now())); } catch (er) {} sl.remove(); });
-      var dtop = home.querySelector('.don-top');
-      home.insertBefore(sl, dtop ? dtop.nextSibling : home.firstChild);
+      home.insertBefore(sl, home.firstChild);
     }
   }
   // ?help=1 opens this page at the form (used by the printed cards and the WhatsApp invite)
