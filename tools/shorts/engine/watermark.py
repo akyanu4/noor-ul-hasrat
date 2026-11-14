@@ -57,12 +57,33 @@ def apply(src, dst, lines=None):
     y = int(h * (0.865 if h > w else 0.80) - b.height / 2); x = (w - b.width) // 2
     png = tempfile.NamedTemporaryFile(suffix=".png", delete=False).name; b.save(png)
     name = os.path.basename(src).rsplit(".", 1)[0]
-    if name in cfg.P.get("bayah_shorts", []):   # practice Shorts also carry "for murids, take Bay'ah first" under the heading
-        m = murid_badge(w, h); bg = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-        bg.alpha_composite(m, ((w - m.width) // 2, int(h * (0.075 if h > w else 0.10))))
-        bg.alpha_composite(b, (x, y)); b = bg; x = y = 0; b.save(png)
-    subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", src, "-i", png, "-filter_complex", f"[0:v][1:v]overlay={x}:{y}:format=auto,format=yuv420p[v]",
+    inputs, fc = ["-i", src, "-i", png], f"[0:v][1:v]overlay={x}:{y}:format=auto[v0]"
+    if name in cfg.P.get("bayah_shorts", []):
+        # Practice Shorts: "for murids, take Bay'ah first" before the teaching starts (the full mark under the heading for
+        # the first seconds after the opening card), then a small line at the very bottom; off on the closing card,
+        # which carries the Bay'ah lines itself. Kept out of the top band the rest of the time, where the Urdu words sit.
+        segs = os.path.join(os.path.dirname(src), name + "_video2.mp4.json"); t_end = 1e9; t0 = 3.6
+        try:
+            js = json.load(open(segs)); t0 = next((sg["T"] + sg["d"] for sg in js["segs"] if sg.get("kind") == "title"), t0)
+            t_end = next((sg["T"] for sg in js["segs"] if sg.get("kind") == "endcard"), t_end)
+        except Exception: pass
+        m = murid_badge(w, h); mp = png + ".m.png"; m.save(mp)
+        L.setup(w, h); f = L.font(L.BOLD, (24 if L.PORTRAIT else 18) * L.U); tx = "FOR MURIDS  \u00b7  TAKE BAY\u2019AH FIRST"
+        tw = int(ImageDraw.Draw(Image.new("L", (1, 1))).textlength(tx, font=f)); sm = Image.new("RGBA", (tw + int(30 * L.U), int(f.size * 1.6)), (0, 0, 0, 0))
+        d = ImageDraw.Draw(sm); d.rounded_rectangle((0, 0, sm.width - 1, sm.height - 1), radius=sm.height // 2, fill=(0, 0, 0, 110))
+        d.text((int(15 * L.U), int(f.size * 0.25)), tx, font=f, fill=(240, 205, 120, 235)); sp = png + ".s.png"; sm.save(sp)
+        my = int(h * (0.075 if h > w else 0.10)); sy = int(h * 0.958 - sm.height / 2)
+        t1 = min(t0 + 6.5, t_end)
+        inputs += ["-i", mp, "-i", sp]
+        fc += (f";[v0][2:v]overlay={(w - m.width) // 2}:{my}:format=auto:enable='between(t,{t0:.2f},{t1:.2f})'[v1]"
+               f";[v1][3:v]overlay={(w - sm.width) // 2}:{sy}:format=auto:enable='between(t,{t1:.2f},{t_end:.2f})'[v2]")
+        last = "v2"
+    else: last = "v0"
+    fc += f";[{last}]format=yuv420p[v]"
+    subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", *inputs, "-filter_complex", fc,
                     "-map", "[v]", "-map", "0:a?", "-c:v", "libx264", "-preset", "medium", "-crf", os.environ.get("NOOR_WM_CRF", "23"), "-maxrate", os.environ.get("NOOR_WM_MAXRATE", "2M"), "-bufsize", "4M", "-c:a", "copy", "-movflags", "+faststart", dst], check=True)
+    for q in (png + ".m.png", png + ".s.png"):
+        if os.path.exists(q): os.unlink(q)
     os.unlink(png)
 
 if __name__ == "__main__":

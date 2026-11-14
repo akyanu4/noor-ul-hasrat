@@ -63,13 +63,14 @@ def seg_frame(sg, tl):
             img = L.paste_center(img, L.serif_text(txt, sz, (215, 200, 165) if sz >= 36 else (190, 176, 140)), L.W / 2, y, alpha=min(1, max(0, (tl - 0.3) / 0.8)))
             y += L.H * (0.035 if sz < 36 else 0.033)
         if getattr(L, "BAYAH", False):   # Shorts that teach a practice of dhikr: take Bay'ah and follow a guide
-            ab = min(1, max(0, (tl - 0.6) / 0.8)); y = L.H * 0.902   # below the subscribe strip (watermark.py), in place of the small brand line
-            img = L.paste_center(img, A.bayah_urdu(40), L.W / 2, y, alpha=ab); y += L.H * 0.029
+            ab = min(1, max(0, (tl - 0.6) / 0.8)); y = L.H * 0.908   # below the subscribe strip (watermark.py), in place of the small brand line
+            img = L.paste_center(img, A.bayah_urdu(34), L.W / 2, y, alpha=ab); y += L.H * 0.024
             for line in A.BAYAH_EN:
-                img = L.paste_center(img, L.serif_text(line, 30, (232, 214, 170)), L.W / 2, y, alpha=ab); y += L.H * 0.018
-        if cfg.P.get("producer"):   # small, bottom-right corner
-            pi = L.serif_text(cfg.P["producer"], 30, (200, 185, 150))
-            img = L.paste_center(img, pi, L.W - pi.width / 2 - 40 * L.U, L.H * 0.965, alpha=min(1, max(0, (tl - 0.3) / 0.8)))
+                img = L.paste_center(img, L.serif_text(line, 26, (232, 214, 170)), L.W / 2, y, alpha=ab); y += L.H * 0.016
+        if cfg.P.get("producer"):   # small, bottom-right corner (centred under the Bay'ah lines on practice Shorts)
+            pi = L.serif_text(cfg.P["producer"], 26 if getattr(L, "BAYAH", False) else 30, (200, 185, 150))
+            px = L.W / 2 if getattr(L, "BAYAH", False) else L.W - pi.width / 2 - 40 * L.U
+            img = L.paste_center(img, pi, px, L.H * (0.976 if getattr(L, "BAYAH", False) else 0.965), alpha=min(1, max(0, (tl - 0.3) / 0.8)))
         return img
 
 # ---- captions mapped onto the output timeline
