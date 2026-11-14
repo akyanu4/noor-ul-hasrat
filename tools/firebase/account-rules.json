@@ -20,6 +20,29 @@
         "with": {
           ".validate": "newData.isString() && newData.val().length <= 80"
         }
+      },
+      "bayah_request": {
+        "with": {
+          ".validate": "newData.isString() && newData.val().length <= 80"
+        },
+        "phone": {
+          ".validate": "newData.isString() && newData.val().length <= 20"
+        },
+        "note": {
+          ".validate": "newData.isString() && newData.val().length <= 300"
+        },
+        "at": {
+          ".validate": "newData.isNumber()"
+        },
+        "edited": {
+          ".validate": "newData.isNumber()"
+        },
+        "status": {
+          ".validate": "newData.isString() && newData.val() === 'sent'"
+        },
+        "$other": {
+          ".validate": false
+        }
       }
     }
   },
@@ -48,6 +71,13 @@
     ".write": false
   },
   "bayah_ok": {
+    ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
+    "$uid": {
+      ".read": "auth != null && auth.uid === $uid",
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true"
+    }
+  },
+  "bayah_req": {
     ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
     "$uid": {
       ".read": "auth != null && auth.uid === $uid",

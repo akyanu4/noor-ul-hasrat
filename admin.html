@@ -62,9 +62,9 @@
       document.getElementById('cp').onclick = function () { try { navigator.clipboard.writeText(u.uid); this.textContent = 'Copied'; } catch (e) {} };
       return;
     }
-    return Promise.all([B.admin.get('profiles'), B.admin.get('summaries'), B.admin.get('bayah_ok').catch(function () { return null; })]).then(function (r) {
-      var P = r[0] || {}, S = r[1] || {}, OK = r[2] || {};
-      members = Object.keys(P).map(function (id) { return { id: id, p: P[id] || {}, s: S[id] || null, ok: OK[id] || null }; })
+    return Promise.all([B.admin.get('profiles'), B.admin.get('summaries'), B.admin.get('bayah_ok').catch(function () { return null; }), B.admin.get('bayah_req').catch(function () { return null; })]).then(function (r) {
+      var P = r[0] || {}, S = r[1] || {}, OK = r[2] || {}, RQ = r[3] || {};
+      members = Object.keys(P).map(function (id) { return { id: id, p: P[id] || {}, s: S[id] || null, ok: OK[id] || null, rq: RQ[id] || null }; })
         .sort(function (a, b) { return String(a.p.name || '').localeCompare(String(b.p.name || '')); });
       paint();
     });
@@ -78,6 +78,16 @@
     var v = approve ? { approved: true, with: (m.p.bayah && m.p.bayah.with) || '', by: u.email, at: Date.now() } : { rejected: true, by: u.email, at: Date.now() };
     B.admin.put('bayah_ok/' + id, v).then(function () { m.ok = v; paint(); }, function (e) { if (btn) btn.disabled = false; alert('Could not save (' + (e && e.message) + '). Check the database rules include "bayah_ok".'); });
   }
+  // Requests to take Bai'at: the member writes profiles/<uid>/bayah_request; "Mark contacted" writes bayah_req/<uid>.
+  function hasReq(m) { return !!(m.p.bayah_request && m.p.bayah_request.at) && !(m.p.bayah && m.p.bayah.taken); }
+  function contacted(m) { return !!(m.rq && m.rq.contacted && (m.rq.at || 0) >= (m.p.bayah_request.at || 0)); }
+  function markContacted(id, on, btn) {
+    var m = members.filter(function (x) { return x.id === id; })[0]; if (!m) return;
+    if (btn) btn.disabled = true;
+    var v = on ? { contacted: true, by: u.email, at: Date.now() } : null;
+    (on ? B.admin.put('bayah_req/' + id, v) : B.admin.del('bayah_req/' + id)).then(function () { m.rq = v; paint(); },
+      function (e) { if (btn) btn.disabled = false; alert('Could not save (' + (e && e.message) + '). Check the database rules include "bayah_req".'); });
+  }
   function fresh(m) { return m.s && m.s.updated && Date.now() - m.s.updated < 7 * 86400000; }
   function paint() {
     var q = (document.getElementById('q') || {}).value || '';
@@ -89,11 +99,22 @@
       '<div class="stat"><b>' + (active.length ? avg : '–') + '</b><span>average Iman Health</span></div>' +
       '<div class="stat"><b>' + members.filter(function (m) { return bstat(m) === 'approved'; }).length + '</b><span>Bai\u2019at approved 🤝</span></div>' +
       '<div class="stat"><b>' + pend.length + '</b><span>waiting for approval ⏳</span></div>' +
+      '<div class="stat"><b>' + members.filter(function (m) { return hasReq(m) && !contacted(m); }).length + '</b><span>Bai\u2019at requests 📨</span></div>' +
       '<div class="stat"><b>' + members.filter(function (m) { return m.p.remind && m.p.remind.gather; }).length + '</b><span>get gathering emails</span></div></div>';
     if (pend.length) h += '<div class="card" style="border-color:var(--gold)"><b>🤝 Waiting for Bai\u2019at approval (' + pend.length + ')</b>' + pend.map(function (m) {
       return '<div class="pend" style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);flex-wrap:wrap"><div style="flex:1;min-width:180px"><b>' + esc(m.p.name || '') + '</b><div class="muted">With ' + esc((m.p.bayah && m.p.bayah.with) || '?') +
         (m.p.bayah && m.p.bayah.at ? ' · marked ' + esc(new Date(m.p.bayah.at).toLocaleDateString()) : '') + ' · ' + esc(m.p.email || '') + (m.p.phone ? ' · ' + esc(m.p.phone) : '') + '</div></div>' +
         '<button class="pri" data-ok="' + esc(m.id) + '">Approve</button><button data-no="' + esc(m.id) + '">Not approved</button></div>';
+    }).join('') + '</div>';
+    var reqs = members.filter(hasReq).sort(function (a, b) { return (contacted(a) - contacted(b)) || (b.p.bayah_request.at - a.p.bayah_request.at); }), waitN = reqs.filter(function (m) { return !contacted(m); }).length;
+    if (reqs.length) h += '<div class="card" style="border-color:var(--gold)"><b>🤝 Bai\u2019at requests (' + waitN + ')</b>' + (reqs.length > waitN ? ' <span class="muted">· ' + (reqs.length - waitN) + ' contacted</span>' : '') + reqs.map(function (m) {
+      var q = m.p.bayah_request, c = contacted(m), ph = q.phone || m.p.phone || '';
+      return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);flex-wrap:wrap' + (c ? ';opacity:.65' : '') + '"><div style="flex:1;min-width:200px"><b>' + esc(m.p.name || '') + '</b>' + (m.p.city ? ' <span class="muted">· ' + esc(m.p.city) + '</span>' : '') +
+        '<div class="muted">With ' + esc(q.with === 'Any' || !q.with ? 'any / whoever you suggest' : q.with) + ' · ' + esc(new Date(q.at).toLocaleDateString()) + (q.edited ? ' (edited)' : '') + '</div>' +
+        '<div class="muted">' + (ph ? '<a href="tel:' + esc(ph.replace(/\s/g, '')) + '">' + esc(ph) + '</a> · ' : '') + '<a href="mailto:' + esc(m.p.email || '') + '">' + esc(m.p.email || '') + '</a></div>' +
+        (q.note ? '<div style="font-size:13.5px;margin-top:4px">“' + esc(q.note) + '”</div>' : '') +
+        (c ? '<div class="muted" style="margin-top:2px">Contacted ✓ ' + esc(m.rq.by || '') + ', ' + esc(new Date(m.rq.at).toLocaleDateString()) + '</div>' : '') + '</div>' +
+        (c ? '<button data-unc="' + esc(m.id) + '">Undo</button>' : '<button class="pri" data-con="' + esc(m.id) + '">Mark contacted</button>') + '</div>';
     }).join('') + '</div>';
     h += '<div class="bar"><input type="search" id="q" placeholder="Search name, email, city" value="' + esc(q) + '"><button id="csv">Download CSV</button></div><div class="list">';
     var ql = q.toLowerCase();
@@ -115,6 +136,9 @@
     var ok = e.target.closest && e.target.closest('[data-ok]'), no = e.target.closest && e.target.closest('[data-no]');
     if (ok) { decide(ok.getAttribute('data-ok'), true, ok); return; }
     if (no) { decide(no.getAttribute('data-no'), false, no); return; }
+    var con = e.target.closest && e.target.closest('[data-con]'), unc = e.target.closest && e.target.closest('[data-unc]');
+    if (con) { markContacted(con.getAttribute('data-con'), true, con); return; }
+    if (unc) { markContacted(unc.getAttribute('data-unc'), false, unc); return; }
     var b = e.target.closest && e.target.closest('.m'); if (!b) return;
     var id = b.getAttribute('data-id'); open = open === id ? '' : id; paint();
   });
@@ -133,6 +157,7 @@
           ' · <b>' + ({ approved: 'Approved', pending: 'Waiting for approval', rejected: 'Not approved' }[bstat(m)]) + '</b>' + (m.ok && m.ok.by ? ' <span class="muted">(' + esc(m.ok.by) + ', ' + esc(new Date(m.ok.at).toLocaleDateString()) + ')</span>' : '') +
           '<div style="margin-top:6px;display:flex;gap:8px">' + (bstat(m) !== 'approved' ? '<button class="pri" data-ok="' + esc(m.id) + '">Approve</button>' : '') + (bstat(m) !== 'rejected' ? '<button data-no="' + esc(m.id) + '">' + (bstat(m) === 'approved' ? 'Withdraw approval' : 'Not approved') + '</button>' : '') + '</div>'
           : 'Not marked') + '</div>' +
+        (m.p.bayah_request && m.p.bayah_request.at ? '<span>Bai\u2019at request</span><div>Sent ' + esc(new Date(m.p.bayah_request.at).toLocaleDateString()) + ' · with ' + esc(m.p.bayah_request.with === 'Any' ? 'any' : m.p.bayah_request.with || 'any') + (m.p.bayah_request.phone ? ' · ' + esc(m.p.bayah_request.phone) : '') + (m.p.bayah_request.note ? '<br>“' + esc(m.p.bayah_request.note) + '”' : '') + (m.rq && m.rq.contacted ? ' <span class="muted">(contacted ' + esc(new Date(m.rq.at).toLocaleDateString()) + ')</span>' : '') + '</div>' : '') +
         '<span>Reminders</span><div>' + (rem.gather ? '<span class="pill">gathering emails</span>' : '') + (rem.weekly ? '<span class="pill">Friday summary</span>' : '') + (rem.push ? '<span class="pill">app notifications</span>' : '') + (!rem.gather && !rem.weekly && !rem.push ? 'none' : '') + '</div>' +
         '<span>Last 7 days</span><div><b>' + lv.score + '</b> · ' + esc(lv.label) + ' — prayer ' + Math.round(lv.parts.prayer * 100) + '%, fasting ' + Math.round(lv.parts.fast * 100) + '%, dhikr ' + Math.round(lv.parts.dhikr * 100) + '%, good deeds ' + Math.round(lv.parts.deeds * 100) + '%</div>' +
         '<span>This week</span><div>' + sm.onTime + ' on time (' + sm.masjid + ' at the masjid), ' + sm.late + ' late, ' + sm.fasts + ' fasts, ' + sm.dhikr.toLocaleString() + ' dhikr, ' + sm.deeds + ' good deeds</div>' +
@@ -148,10 +173,14 @@
   }
 
   function csv() {
-    var rows = [['Name', 'Email', 'Mobile', 'City', 'Joined', 'Iman Health (last 7 days)', 'Level', 'Updated', 'Gathering emails', 'Friday summary', 'App notifications', "Bai'at", "Bai'at with", 'Approval']];
+    var rows = [['Name', 'Email', 'Mobile', 'City', 'Joined', 'Iman Health (last 7 days)', 'Level', 'Updated', 'Gathering emails', 'Friday summary', 'App notifications', "Bai'at", "Bai'at with", 'Approval', "Bai'at request", 'Request with', 'Request mobile', 'Request message', 'Request date', 'Contacted', 'Contacted by', 'Contacted on']];
     members.forEach(function (m) {
       var r = m.p.remind || {};
-      rows.push([m.p.name, m.p.email, m.p.phone, m.p.city, m.p.joined ? new Date(m.p.joined).toISOString().slice(0, 10) : '', m.s ? m.s.score : '', m.s ? m.s.label : '', m.s && m.s.updated ? new Date(m.s.updated).toISOString().slice(0, 10) : '', r.gather ? 'yes' : 'no', r.weekly ? 'yes' : 'no', r.push ? 'yes' : 'no', m.p.bayah && m.p.bayah.taken ? 'yes' : 'no', (m.p.bayah && m.p.bayah.with) || '', bstat(m)]);
+      rows.push([m.p.name, m.p.email, m.p.phone, m.p.city, m.p.joined ? new Date(m.p.joined).toISOString().slice(0, 10) : '', m.s ? m.s.score : '', m.s ? m.s.label : '', m.s && m.s.updated ? new Date(m.s.updated).toISOString().slice(0, 10) : '', r.gather ? 'yes' : 'no', r.weekly ? 'yes' : 'no', r.push ? 'yes' : 'no', m.p.bayah && m.p.bayah.taken ? 'yes' : 'no', (m.p.bayah && m.p.bayah.with) || '', bstat(m)].concat((function () {
+        var q = m.p.bayah_request; if (!q || !q.at) return ['no', '', '', '', '', '', '', ''];
+        var c = !!(m.rq && m.rq.contacted && (m.rq.at || 0) >= q.at);
+        return ['yes', q.with || '', q.phone || '', q.note || '', new Date(q.at).toISOString().slice(0, 10), c ? 'yes' : 'no', c ? m.rq.by || '' : '', c ? new Date(m.rq.at).toISOString().slice(0, 10) : ''];
+      })()));
     });
     var text = rows.map(function (r) { return r.map(function (v) { v = String(v == null ? '' : v); if (/^[=+\-@]/.test(v)) v = "'" + v; return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(','); }).join('\r\n');
     var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + text], { type: 'text/csv' })); a.download = 'noor-members-' + new Date().toISOString().slice(0, 10) + '.csv'; a.click();

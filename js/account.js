@@ -79,13 +79,19 @@
   }
   // Approval (written only by an admin to bayah_ok/<uid>): 'none' | 'pending' | 'approved' | 'rejected'
   var bayOk = jget('noor_bayah_ok');
+  // A request to take Bai'at: the member writes profiles/<uid>/bayah_request; the admin marks it in bayah_req/<uid>.
+  var bayReq = jget('noor_bayah_req'), WKEY = 'noor_bayah_want';
+  function myRequest() { return (profile && profile.bayah_request) || null; }
+  function reqContacted() { var r = myRequest(); return !!(r && bayReq && bayReq.contacted && (bayReq.at || 0) >= (r.at || 0)); }
   function bayStatus() {
     if (!(profile && profile.bayah && profile.bayah.taken)) return 'none';
     return bayOk && bayOk.approved ? 'approved' : bayOk && bayOk.rejected ? 'rejected' : 'pending';
   }
   function loadBayOk() {
     if (!A.user()) return Promise.resolve();
-    return B.mine.get('bayah_ok').then(function (v) { bayOk = v || null; sset('noor_bayah_ok', v ? JSON.stringify(v) : null); emit(); if (s.classList.contains('active')) paint(); }, function () {});
+    var r1 = B.mine.get('bayah_ok').then(function (v) { bayOk = v || null; sset('noor_bayah_ok', v ? JSON.stringify(v) : null); }, function () {});
+    var r2 = B.mine.get('bayah_req').then(function (v) { bayReq = v || null; sset('noor_bayah_req', v ? JSON.stringify(v) : null); }, function () {});
+    return Promise.all([r1, r2]).then(function () { emit(); if (s.classList.contains('active')) paint(); });
   }
   function bayahCard() {
     var st = bayStatus(), pill = { none: ['Not marked', '#9aa5a1'], pending: ['Waiting for approval', '#d39b1e'], approved: ['Approved ✓', '#2f9e63'], rejected: ['Not approved', '#d0564c'] }[st];
@@ -93,10 +99,16 @@
       : st === 'approved' ? 'The full dars and the dhikr-practice Shorts are open for you.'
       : st === 'rejected' ? 'Your Bai’at could not be confirmed yet. Please contact Alhaj Rasheed Khan (Ayub) (More → About & Support), then save again.'
       : 'If you have taken Bai’at with a Shaykh or his Khalifa, mark it here. After the admin approves it, the full dars and the dhikr practices open for you.';
+    var rq = myRequest(), reqH = '';
+    if (st === 'none') reqH = rq
+      ? '<div class="ac-msg" style="background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin:10px 0 0"><b>🤝 Request to take Bai’at sent</b> on ' + esc(fmtDay(rq.at)) + (rq.with && rq.with !== 'Any' ? ' (' + esc(rq.with) + ')' : '') + '. ' +
+          (reqContacted() ? 'The Khalifa’s side has been in touch with you.' : 'The Khalifa will contact you, in shaa Allah.') + ' <a href="#" id="acBayReq">View or change →</a></div>'
+      : '<div class="ac-msg" style="background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin:10px 0 0"><b>Not taken Bai’at yet?</b> Submit a request and the Khalifa will contact you, in shaa Allah. <a href="#" id="acBayReq">Request to take Bai’at →</a></div>';
     return '<div class="ac-card" style="border-color:var(--gold)"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><b style="font-size:15px">🤝 Bai’at</b>' +
-      '<span class="ac-pill" style="background:' + pill[1] + '">' + pill[0] + '</span></div><div class="ac-sub" style="margin:6px 0 0">' + esc(note) + '</div>' +
+      '<span class="ac-pill" style="background:' + (st === 'none' && rq ? '#2f7f9e' : pill[1]) + '">' + (st === 'none' && rq ? 'Request sent' : pill[0]) + '</span></div><div class="ac-sub" style="margin:6px 0 0">' + esc(note) + '</div>' + reqH +
       bayahFields(profile || {}, true) + '<button class="ac-btn" id="acBaySave" type="button">Save Bai’at</button><div class="ac-msg" id="acBayMsg"></div></div>';
   }
+  function fmtDay(t) { try { return new Date(t).toLocaleDateString([], { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } }
   function readFields() {
     var v = function (id) { var e = body.querySelector('#' + id); return e ? e.value.trim() : ''; }, c = function (id) { var e = body.querySelector('#' + id); return !!(e && e.checked); };
     return { name: v('acName').slice(0, 60), phone: v('acPhone').replace(/[^\d+ -]/g, '').slice(0, 20), city: v('acCity').slice(0, 40), remind: { gather: c('acGather'), weekly: c('acWeekly'), push: c('acPush') },
@@ -138,6 +150,7 @@
       body.innerHTML = h; return;
     }
     h += '<div class="ac-tabs"><button type="button" data-mode="signin">Sign in</button><button type="button" class="on" data-mode="signup">Create account</button></div>';
+    if (sget(WKEY)) h += '<div class="ac-card" id="acWant" style="border-color:var(--gold)"><div class="ac-msg" style="margin:0"><b>🤝 Request to take Bai’at</b><br>Create your free account first. After you open the sign-in link, the app takes you back to Taking Bai’at to submit your request.</div></div>';
     h += '<div class="ac-hero"><b>Create your free account</b><p>Optional. Everything in Noor works without it. With an account:</p><ul><li>Your Iman Health is kept safe, even on a new phone</li><li>Email reminders before our gatherings</li><li>Your Iman Health summary each Friday</li></ul></div>' +
       '<div class="ac-card"><label class="ac-f"><span>Email</span><input id="acEmail" type="email" autocomplete="email" inputmode="email" maxlength="120" value="' + esc(pend.email || '') + '"></label>' + fields(pend) +
       '<label class="ac-ck" style="border-top:1px solid var(--line);margin-top:4px;padding-top:12px"><input type="checkbox" id="acConsent"' + (pend.consent ? ' checked' : '') + '><div>I agree that my Iman Health is saved to my account and that the Noor-ul-Hasrat admin can see it.<small>Prayers, fasting, dhikr, good deeds and zakat (paid or not, never an amount). Your location is never sent.</small></div></label>' +
@@ -166,6 +179,7 @@
     var bay = nb.taken ? { taken: true, with: nb.with || '', at: ob.taken && ob.at ? ob.at : Date.now() } : { taken: false };
     var full = { name: p.name, email: u.email, phone: p.phone || '', city: p.city || '', remind: p.remind, bayah: bay,
       consent: (profile && profile.consent) || { admin: true, at: Date.now() }, joined: (profile && profile.joined) || Date.now(), updated: Date.now() };
+    if (profile && profile.bayah_request) full.bayah_request = profile.bayah_request;
     return B.mine.put('profiles', '', full).then(function () { profile = full; sset(PRKEY, JSON.stringify(full)); emit(); return full; });
   }
 
@@ -192,7 +206,7 @@
   body.addEventListener('click', function (e) {
     var md = e.target.closest && e.target.closest('[data-mode]');
     if (md) { e.preventDefault(); mode = md.getAttribute('data-mode'); msg = ''; paint(); return; }
-    if (e.target && e.target.id === 'acBayHow') { e.preventDefault(); N.route('bayah'); return; }
+    if (e.target && (e.target.id === 'acBayHow' || e.target.id === 'acBayReq')) { e.preventDefault(); N.route('bayah'); if (e.target.id === 'acBayReq') scrollReq(); return; }
     var t = e.target.closest ? e.target.closest('button') : null; if (!t) return;
     if (t.id === 'acSignIn') {
       var em = (body.querySelector('#acEmail').value || '').trim().toLowerCase();
@@ -258,7 +272,10 @@
     setTimeout(function () { N.showScreen('account'); }, 300);
     A.completeLink(m[1]).then(function (u) { state = ''; msg = ''; return afterSignIn(u); }, function (er) {
       state = ''; msg = '!' + (er && er.message || 'Could not sign you in. Try again.');
-    }).then(function () { paint(); });
+    }).then(function () {
+      paint();
+      if (A.user() && sget(WKEY) && profile && profile.name && doc.getElementById('screen-bayah')) { sset(WKEY, null); setTimeout(function () { N.route('bayah'); scrollReq(); }, 600); }
+    });
   } else if (A.user()) {
     // Signed in earlier: refresh the profile and admin flag quietly.
     B.mine.get('profiles').then(function (p) { if (p) { profile = p; sset(PRKEY, JSON.stringify(p)); emit(); } }).catch(function () {});
@@ -304,7 +321,37 @@
   setTimeout(paintHome, 0);
   N.onScreen(function (id) { if (id === 'home') paintHome(); });
 
+  function scrollReq() { setTimeout(function () { var c = doc.getElementById('byReq'); if (c && c.scrollIntoView) c.scrollIntoView({ block: 'start', behavior: 'smooth' }); }, 150); }
+  function saveRequest(r) {
+    if (!A.user()) return Promise.reject(new Error('not signed in'));
+    var old = myRequest(), v = { with: String(r.with || 'Any').slice(0, 80), phone: String(r.phone || '').replace(/[^\d+ -]/g, '').slice(0, 20), note: String(r.note || '').trim().slice(0, 300),
+      at: old && old.at ? old.at : Date.now(), status: 'sent' };
+    if (old) v.edited = Date.now();
+    return B.mine.put('profiles', 'bayah_request', v).then(function () {
+      profile = Object.assign({}, profile || {}, { bayah_request: v, updated: Date.now() }); sset(PRKEY, JSON.stringify(profile)); sset(WKEY, null); emit(); return v;
+    });
+  }
+  function withdrawRequest() {
+    if (!A.user()) return Promise.reject(new Error('not signed in'));
+    return B.mine.put('profiles', 'bayah_request', null).then(function () {
+      profile = Object.assign({}, profile || {}); delete profile.bayah_request; sset(PRKEY, JSON.stringify(profile)); emit();
+    });
+  }
+
   root.NoorAccount = {
+    // Taking Bai'at: open My Account on "Create account" and come back to the request after the sign-in link
+    openSignup: function () {
+      sset(WKEY, '1');
+      if (A.user()) { N.route('bayah'); scrollReq(); return; }
+      mode = 'signup'; msg = ''; N.showScreen('account');
+      setTimeout(function () { var t = body.querySelector('.ac-tabs'); if (t && t.scrollIntoView) t.scrollIntoView({ block: 'start' }); }, 80);
+    },
+    guides: GUIDES_NOW.slice(),
+    bayahRequest: function () { return A.user() ? myRequest() : null; },
+    bayahContacted: function () { return A.user() && reqContacted(); },
+    saveBayahRequest: saveRequest,
+    withdrawBayahRequest: withdrawRequest,
+    openAccount: function () { N.showScreen('account'); },
     on: !!(A.available && accountsOn),
     hasBayah: function () { return !!A.user() && bayStatus() === 'approved'; },
     bayahStatus: function () { return A.user() ? bayStatus() : 'signin'; },

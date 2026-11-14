@@ -75,7 +75,11 @@
     '.by-ar{font-family:Amiri,"Scheherazade New",serif;font-size:22px;line-height:1.9;direction:rtl;text-align:center;color:var(--teal);margin:6px 0}.by-tr{font-size:13px;text-align:center;color:var(--ink);font-style:italic;margin-bottom:4px}.by-mn{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.5}' +
     '.by-vid{display:flex;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:10px;margin-bottom:12px}.by-vid .fm-sth{flex:none;width:92px;height:164px;border-radius:12px;overflow:hidden;position:relative;cursor:pointer;background:#000}.by-vid .fm-sth img{width:100%;height:100%;object-fit:cover}' +
     '.by-vid .fm-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6)}.by-vid b{display:block;font-size:16px;color:var(--ink)}.by-vid p{margin:4px 0 8px;font-size:13px;line-height:1.5;color:var(--muted)}.by-vid .go{display:inline-block;background:var(--teal);color:#fff;border-radius:10px;padding:8px 12px;font-size:13.5px;font-weight:600;cursor:pointer}' +
-    '.by-src{font-size:11.5px;color:var(--muted);line-height:1.5;margin:6px 2px 14px}';
+    '.by-src{font-size:11.5px;color:var(--muted);line-height:1.5;margin:6px 2px 14px}' +
+    '.by-req{background:var(--panel);border:1.5px solid var(--gold);border-radius:16px;padding:14px;margin-bottom:12px;scroll-margin-top:70px}.by-req>b{display:block;font-size:16.5px;color:var(--ink)}.by-req>p{margin:4px 0 10px;font-size:13.5px;line-height:1.55;color:var(--muted)}.by-req a{color:var(--teal);font-weight:600}' +
+    '.by-req .ac-f textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--cream);color:var(--ink);border-radius:10px;padding:10px 12px;font:inherit;font-size:14.5px;min-height:72px;resize:vertical}' +
+    '.by-req .st{display:flex;gap:10px;align-items:flex-start;background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.5;color:var(--ink)}.by-req .st i{font-style:normal;font-size:20px;line-height:1.2}' +
+    '.by-req .row{display:flex;gap:8px;margin-top:8px}.by-req .row .ac-btn{margin-top:0}.by-req .ac-btn.sm{font-size:14px;padding:11px}';
   doc.head.appendChild(css);
 
   var s = N.el('div', 'screen', '<div class="subhead"><div class="backbtn" id="byBack">←</div><div class="subtitle">Taking Bai’at</div></div><div id="byBody"></div>');
@@ -88,6 +92,7 @@
     if (!cfg.bayahOn) h += '<div class="by-draft"><b>Draft for review.</b> Only phones opened with ?bayah=1 see this page. Members still see “coming soon” until it is approved.</div>';
     h += '<div class="by-hero"><b>Taking Bai’at</b><p>Bai’at (iradat) is a covenant with Allah at the hand of a murshid. These are the steps as Hazrat Azam Pasha R.A. explained them in the dars Haqeeqat-e-Bai’at. Your shaykh or his khalifa will guide you through them.</p>' +
       '<div class="ur">' + esc(F && F.BAYAH_UR || '') + '</div></div>';
+    h += reqCard(false);
     var v = STEPS_SHORT;
     h += '<div class="by-vid"><div class="fm-sth" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg\'"><div class="fm-play">▶</div></div>' +
       '<div><b>Watch the steps</b><p>All the steps of Bai’at in Hazrat Azam Pasha R.A.’s own voice, with pictures (about 3 minutes).</p><span class="go by-play">▶ Play the video</span></div></div>';
@@ -97,10 +102,90 @@
         (st.q ? '<p class="q" style="margin-top:8px">' + esc(st.q) + '</p>' : '') + '</div></div>';
     });
     if (F && F.shortsGrid) h += '<h2 class="section-title" style="margin-top:6px">Hear it from Hazrat Azam Pasha R.A.</h2>' + F.shortsGrid(SHORTS);
+    h += reqCard(true);
     h += '<div class="by-src">From the dars Haqeeqat-e-Bai’at of Hazrat Azam Pasha R.A. The words of the istighfar and the pledge may differ a little from one silsila to another: follow what your shaykh or khalifa teaches.</div>';
     body.innerHTML = h;
   }
+  // ---- "Request to take Bai'at": sign up (free), then a short request saved to the member's own profile (profiles/<uid>/bayah_request)
+  var editing = false, rmsg = '';
+  function fmtDay(t) { try { return new Date(t).toLocaleDateString([], { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } }
+  function reqCard(bottom) {
+    var A = root.NoorAccount, st = A && A.on ? A.bayahStatus() : 'signin', head = '<b>🤝 Request to take Bai’at</b><p>Sign up (free) and submit a request; the Khalifa will contact you, in shaa Allah.</p>';
+    if (bottom) {   // a short repeat at the end of the page
+      if (st === 'signin') return '<div class="by-req">' + head + '<button class="ac-btn by-signup" type="button">Sign up and request Bai’at</button></div>';
+      if (st === 'none' && !(A.bayahRequest())) return '<div class="by-req">' + head + '<button class="ac-btn alt by-totop" type="button">↑ Submit your request</button></div>';
+      return '';
+    }
+    var h = '<div class="by-req" id="byReq">';
+    if (st === 'signin') return h + head + '<button class="ac-btn by-signup" type="button">Sign up and request Bai’at</button><div class="ac-sub" style="margin-top:8px">Already have an account? <a href="#" class="by-signin">Sign in</a></div></div>';
+    if (st === 'pending' || st === 'approved' || st === 'rejected') {
+      var p = A.profile() || {}, w = p.bayah && p.bayah.with;
+      var t = st === 'approved' ? ['✅', 'Your Bai’at' + (w ? ' with ' + esc(w) : '') + ' is approved. The full dars and the dhikr practices are open for you.']
+        : st === 'pending' ? ['⏳', 'You have marked that you took Bai’at' + (w ? ' with ' + esc(w) : '') + '. Waiting for the admin’s approval.']
+        : ['ℹ️', 'Your Bai’at could not be confirmed yet. Please contact Alhaj Rasheed Khan (Ayub) (More → About &amp; Support).'];
+      return h + '<b>🤝 Your Bai’at</b><div class="st" style="margin-top:8px"><i>' + t[0] + '</i><div>' + t[1] + '</div></div><button class="ac-btn alt sm by-acct" type="button">Open My Account</button></div>';
+    }
+    var pr = A.profile() || {}, rq = A.bayahRequest();
+    head = '<b>🤝 Request to take Bai’at</b><p>Submit a request; the Khalifa will contact you, in shaa Allah.</p>';
+    if (!pr.name) return h + head + '<div class="st"><i>✍️</i><div>One more step: add your name in My Account to finish your account, then come back here.</div></div><button class="ac-btn by-acct" type="button">Finish my account</button></div>';
+    if (rq && !editing) {
+      return h + '<b>🤝 Request to take Bai’at</b><div class="st" style="margin-top:8px"><i>📨</i><div><b>Request sent on ' + esc(fmtDay(rq.at)) + '.</b> ' +
+        (A.bayahContacted() ? 'The Khalifa’s side has been in touch with you.' : 'The Khalifa will contact you, in shaa Allah.') +
+        '<div class="ac-sub" style="margin-top:4px">With: ' + esc(rq.with === 'Any' ? 'Whoever you suggest' : rq.with) + ' · Mobile: ' + esc(rq.phone || '–') + (rq.note ? '<br>“' + esc(rq.note) + '”' : '') + '</div></div></div>' +
+        '<div class="row"><button class="ac-btn alt sm by-edit" type="button">Edit</button><button class="ac-btn alt sm by-withdraw" type="button">Withdraw</button></div>' +
+        '<div class="ac-msg' + (/^!/.test(rmsg) ? ' err' : '') + '" id="byMsg">' + esc(rmsg.replace(/^!/, '')) + '</div>' +
+        '<div class="ac-sub" style="margin-top:4px">Already taken it? Mark it in <a href="#" class="by-acct">My Account</a>.</div></div>';
+    }
+    var cur = rq ? rq.with : '', gs = (A.guides || []).slice();
+    var opts = gs.map(function (g) { return '<option' + (g === cur ? ' selected' : '') + '>' + esc(g) + '</option>'; }).join('') + '<option value="Any"' + (!cur || cur === 'Any' ? ' selected' : '') + '>Any / whoever you suggest</option>';
+    return h + head +
+      '<label class="ac-f"><span>Shaykh / Khalifa</span><select id="byWith" class="ac-sel">' + opts + '</select></label>' +
+      '<label class="ac-f"><span>Mobile number</span><input id="byPhone" type="tel" autocomplete="tel" maxlength="20" placeholder="+91 …" value="' + esc((rq && rq.phone) || pr.phone || '') + '"></label>' +
+      '<label class="ac-f"><span>Message (optional)</span><textarea id="byNote" maxlength="300" placeholder="e.g. best time to call, your city">' + esc((rq && rq.note) || '') + '</textarea></label>' +
+      '<button class="ac-btn by-send" type="button">' + (rq ? 'Save changes' : 'Submit request') + '</button>' + (rq ? '<button class="ac-link by-cancel" type="button">Cancel</button>' : '') +
+      '<div class="ac-msg' + (/^!/.test(rmsg) ? ' err' : '') + '" id="byMsg">' + esc(rmsg.replace(/^!/, '')) + '</div>' +
+      '<div class="ac-sub">Your name, email and this request are seen only by the Noor-ul-Hasrat admin and the Khalifa. Already taken Bai’at? Mark it in <a href="#" class="by-acct">My Account</a>.</div></div>';
+  }
+  function rsay(t) { rmsg = t; var m = body.querySelector('#byMsg'); if (m) { m.textContent = t.replace(/^!/, ''); m.className = 'ac-msg' + (/^!/.test(t) ? ' err' : ''); } }
+  body.addEventListener('click', function (e) {
+    var A = root.NoorAccount, c = e.target.closest && e.target.closest('.by-signup,.by-signin,.by-acct,.by-totop,.by-edit,.by-cancel,.by-withdraw,.by-send');
+    if (!c || !A) return;
+    e.preventDefault(); e.stopPropagation();
+    var k = c.classList;
+    if (k.contains('by-signup')) { A.openSignup(); return; }
+    if (k.contains('by-signin')) { A.openSignup(); setTimeout(function () { var b = doc.querySelector('#screen-account [data-mode="signin"]'); if (b) b.click(); }, 60); return; }
+    if (k.contains('by-acct')) { A.openAccount(); return; }
+    if (k.contains('by-totop')) { var r = body.querySelector('#byReq'); if (r && r.scrollIntoView) r.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
+    if (k.contains('by-edit')) { editing = true; rmsg = ''; paint(); scrollTo(); return; }
+    if (k.contains('by-cancel')) { editing = false; rmsg = ''; paint(); scrollTo(); return; }
+    if (k.contains('by-withdraw')) {
+      if (!root.confirm('Withdraw your request to take Bai’at?')) return;
+      c.disabled = true; rsay('Withdrawing…');
+      A.withdrawBayahRequest().then(function () { editing = false; rmsg = 'Your request was withdrawn.'; paint(); scrollTo(); }, function () { c.disabled = false; rsay('!Could not withdraw. Check your internet and try again.'); });
+      return;
+    }
+    if (k.contains('by-send')) {
+      var w = (body.querySelector('#byWith') || {}).value || 'Any', ph = ((body.querySelector('#byPhone') || {}).value || '').trim(), nt = ((body.querySelector('#byNote') || {}).value || '').trim();
+      if (ph.replace(/\D/g, '').length < 7) { rsay('!Please add your mobile number so the Khalifa can contact you.'); return; }
+      c.disabled = true; rsay('Sending…');
+      A.saveBayahRequest({ with: w, phone: ph, note: nt }).then(function () { editing = false; rmsg = 'JazakAllah khair. Your request was sent.'; paint(); scrollTo(); },
+        function () { c.disabled = false; rsay('!Could not send. Check your internet and try again.'); });
+    }
+  });
+  function scrollTo() { var r = body.querySelector('#byReq'); if (r && r.scrollIntoView) r.scrollIntoView({ block: 'start' }); }
+  // sign-in / profile / approval changed: refresh just the request cards (not while the person is typing in the form)
+  function repaintReq() {
+    if (!s.classList.contains('active')) return;
+    var top = body.querySelector('#byReq'), ae = doc.activeElement;
+    if (!top || (ae && top.contains(ae) && /INPUT|TEXTAREA|SELECT/.test(ae.tagName))) return;
+    var nt = reqCard(false); if (top.outerHTML === nt) return;
+    top.outerHTML = nt;
+    var all = body.querySelectorAll('.by-req'), last = all.length > 1 ? all[all.length - 1] : null, nb = reqCard(true), src = body.querySelector('.by-src');
+    if (last) { if (nb) last.outerHTML = nb; else last.parentNode.removeChild(last); } else if (nb && src) src.insertAdjacentHTML('beforebegin', nb);
+  }
+  if (root.NoorAccount && root.NoorAccount.onChange) root.NoorAccount.onChange(repaintReq);
+
   body.addEventListener('click', function (e) { var th = e.target.closest && (e.target.closest('.fm-sth') || (e.target.closest('.by-play') && body.querySelector('.by-vid .fm-sth'))); if (th && root.NoorFamily) root.NoorFamily.playShort(th); });
-  N.onScreen(function (id) { if (id === 'bayah') paint(); });
+  N.onScreen(function (id) { if (id === 'bayah') { editing = false; rmsg = ''; paint(); } });
   root.NoorBayah = { ready: true, NISA_AR: NISA_AR, ISTIGHFAR_AR: ISTIGHFAR_AR };
 })(typeof self !== 'undefined' ? self : this);
