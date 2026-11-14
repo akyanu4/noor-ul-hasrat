@@ -97,13 +97,16 @@
   var cur = 0, held = false, resume = 0, EVERY = 5000;
 
   function adj() { var a = parseInt(cfg.hijriAdj, 10) || 0; try { var o = localStorage.getItem('noor_hijri_adj'); if (o != null && o !== '') a = parseInt(o, 10) || 0; } catch (e) {} return a < -2 || a > 2 ? 0 : a; }
-  function localDays(day) { var ln = new Date(), lday = Date.UTC(ln.getFullYear(), ln.getMonth(), ln.getDate()); return Math.round((day - lday) / 86400000); }
+  // Days are counted on the Hyderabad (IST) calendar, the community's, wherever the phone is.
+  function istToday() { var w = new Date(Date.now() + 330 * 60000); return Date.UTC(w.getUTCFullYear(), w.getUTCMonth(), w.getUTCDate()); }
+  function istDayOf(ms) { var w = new Date(ms + 330 * 60000); return Date.UTC(w.getUTCFullYear(), w.getUTCMonth(), w.getUTCDate()); }
+  function localDays(day) { return Math.round((day - istToday()) / 86400000); }
 
   var data = { feat: null, rows: [] };
   function collect() {
     var now = Date.now(), G = root.NoorGatherings, F = root.NoorFaith, items = [];
     var h = C.nextHalqa(now), ht = halqaText(h, C.formatCountdown(h.msUntilStart));
-    var halqaToday = h.state !== 'upcoming' || localDays(Date.UTC(new Date(h.start).getFullYear(), new Date(h.start).getMonth(), new Date(h.start).getDate())) === 0;
+    var halqaToday = h.state !== 'upcoming' || localDays(istDayOf(h.start)) === 0;
     if (G) {
       try {
         var seen = {};
@@ -116,7 +119,7 @@
     }
     if (F && F.supported && F.supported()) {
       try {
-        var up = F.upcoming(F.dayStart(now, new Date().getTimezoneOffset()), adj(), 400)[0];
+        var up = F.upcoming(F.dayStart(now, -330), adj(), 400)[0];
         if (up) items.push({ id: 'islamic', g: { name: up.name, note: up.d + ' ' + F.MONTHS[up.m - 1].n + ' ' + up.y + ' AH', ic: '🌙' }, days: up.days, theme: 'moon',
           when: new Date(up.ms).toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }), hd: '' });
       } catch (e) {}

@@ -183,7 +183,7 @@
     // The date under "Noor" at the top uses the same calculation and the same moon-sighting adjustment as the calendar, so they always agree.
     function paintHeader() {
       var hd = doc.getElementById('hijriDate'); if (!hd || !api.supported()) return;
-      var h = hijriAt(dayStart(Date.now(), new Date().getTimezoneOffset()), adj);
+      var h = hijriAt(dayStart(Date.now(), -330), adj);
       if (h) hd.textContent = h.d + ' ' + MONTHS[h.m - 1].n + ' ' + h.y + ' AH';
     }
     paintHeader();
@@ -192,8 +192,9 @@
     var MON3 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     function paintCal() {
       if (!api.supported()) { calBox.innerHTML = '<div class="placeholder-note">This browser can\'t calculate Hijri dates. Updating your browser should fix it.</div>'; return; }
-      var tzo = new Date().getTimezoneOffset(), todayMs = dayStart(Date.now(), tzo), h = hijriAt(todayMs, adj), days = monthDays(todayMs, adj), up = upcoming(todayMs, adj, 400);
+      var tzo = -330, todayMs = dayStart(Date.now(), tzo)   /* today on the Hyderabad (IST) calendar */, h = hijriAt(todayMs, adj), days = monthDays(todayMs, adj), up = upcoming(todayMs, adj, 400);
       var g = new Date(todayMs), html = '<div class="fhero"><div class="h">' + h.d + ' ' + esc(MONTHS[h.m - 1].n) + ' ' + h.y + '</div><div class="ar">' + esc(MONTHS[h.m - 1].ar) + '</div><div class="g">' + WD[g.getUTCDay()] + ' ' + g.getUTCDate() + ' ' + MON3[g.getUTCMonth()] + ' ' + g.getUTCFullYear() + '</div>' +
+        '<div style="font-size:12px;opacity:.85;margin:4px 0 8px">Dates follow Hyderabad time (IST). Gathering times are IST.</div>' +
         '<div class="fadj"><button id="hMinus" aria-label="Move Hijri date one day earlier">−</button><span>Moon sighting adjustment: ' + (adj > 0 ? '+' : '') + adj + ' day' + (Math.abs(adj) === 1 ? '' : 's') + '</span><button id="hPlus" aria-label="Move Hijri date one day later">+</button></div></div>';
       var evDays = {}; up.forEach(function (e) { if (e.m === h.m && e.y === h.y) evDays[e.d] = 1; });
       EVENTS.forEach(function (e) { if (e[0] === h.m) evDays[e[1]] = 1; });
@@ -216,7 +217,7 @@
 
     /* ----- months ----- */
     function paintMonths() {
-      var cur = api.supported() ? (hijriAt(dayStart(Date.now(), new Date().getTimezoneOffset()), adj) || {}).m : 0;
+      var cur = api.supported() ? (hijriAt(dayStart(Date.now(), -330), adj) || {}).m : 0;
       monBox.innerHTML = '<div class="fnote" style="margin-top:0">Four months are sacred: Muharram, Rajab, Dhul Qa\'dah and Dhul Hijjah. Hadith sources are named so you can check them with your teachers.</div>' +
         MONTHS.map(function (m, i) {
           return '<div class="fcard fmonth' + (cur === i + 1 ? ' now' : '') + '"><h3><span>' + (i + 1) + '. ' + esc(m.n) + (m.sacred ? ' <span class="tag">Sacred</span>' : '') + (cur === i + 1 ? ' <span class="tag" style="background:var(--teal);color:#fff">Now</span>' : '') + '</span><span class="ar">' + esc(m.ar) + '</span></h3><ul>' + m.pts.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div>';
