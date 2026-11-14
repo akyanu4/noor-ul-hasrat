@@ -75,7 +75,24 @@
     '.fm-sub{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;color:#fff;background:#c4302b;border-radius:999px;padding:6px 12px;text-decoration:none;white-space:nowrap}' +
     '.fm-toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);background:#1a2421;color:#fff;font-size:13px;padding:9px 14px;border-radius:999px;z-index:9999;box-shadow:0 4px 14px rgba(0,0,0,.25)}' +
     '.fm-stat{padding:0 10px;font-size:12px;color:var(--muted);min-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fm-like{display:block;margin:6px 10px 10px;padding:6px 0;text-align:center;font-size:12px;font-weight:600;color:var(--teal);border:1px solid var(--line);border-radius:10px;text-decoration:none}' +
-    '.fm-st{padding:8px 10px 4px;font-size:12.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}';
+    '.fm-st{padding:8px 10px 4px;font-size:12.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}' +
+    // Shorts hub: Short of the Day, Continue, Start here, series with progress, NEW badges, WhatsApp
+    '.fm-new{position:absolute;right:6px;top:6px;background:#c4302b;color:#fff;border-radius:999px;padding:2px 7px;font-size:10px;font-weight:800;letter-spacing:.05em}' +
+    '.fm-done{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.65);color:#e8c46b;border-radius:999px;padding:1px 7px;font-size:11px;font-weight:700}' +
+    '.fm-acts .fm-wa,.sh-wa{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:5px;background:#25D366;color:#fff;border-radius:10px;text-decoration:none;font-weight:700}.fm-acts .fm-wa{width:32px}.fm-acts .fm-wa svg,.sh-wa svg{width:16px;height:16px}' +
+    '.fm-acts .fm-like{white-space:nowrap}.fm-hs .fm-acts .fm-like{font-size:14px;padding:5px 0}.fm-hs .fm-acts .fm-like span{display:none}' +
+    '.sh-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:16px 0 8px;font-size:15px;font-weight:700;color:var(--ink)}.sh-h small{font-size:11.5px;font-weight:500;color:var(--muted)}.sh-h:first-child{margin-top:4px}' +
+    '.sh-sotd{display:flex;gap:12px;background:linear-gradient(135deg,var(--teal),var(--teal-deep));border-radius:16px;padding:10px;color:#f5f1e2;margin:0 0 6px;cursor:pointer;box-shadow:0 6px 18px rgba(10,43,44,.18)}' +
+    '.sh-sotd .sh-th{position:relative;flex:none;width:112px;aspect-ratio:9/16;border-radius:12px;overflow:hidden;background:#000}.sh-th img{width:100%;height:100%;object-fit:cover;display:block}.sh-sotd .fm-play{width:40px;height:40px;font-size:16px}' +
+    '.sh-tx{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}.sh-k{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:#e8c46b;font-weight:700}' +
+    '.sh-tt{font-family:Amiri,serif;font-size:21px;line-height:1.25;margin:6px 0 4px;font-weight:700;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.sh-by{font-size:12px;opacity:.8}' +
+    '.sh-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.sh-go{background:#e8c46b;color:#1c1a12;border:0;border-radius:999px;padding:8px 14px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}.sh-btns .sh-wa{border-radius:999px;padding:8px 12px;font-size:13px}' +
+    '.sh-cont,.sh-ser{display:flex;gap:10px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px 10px 8px 8px;margin:8px 0;cursor:pointer}.sh-cont{border-color:var(--gold)}' +
+    '.sh-sth{position:relative;flex:none;width:46px;aspect-ratio:9/16;border-radius:8px;overflow:hidden;background:#000}.sh-ci{flex:1;min-width:0}.sh-ck{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sh-ct{font-size:14px;font-weight:700;line-height:1.3;margin:2px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.sh-cm{font-size:12px;color:var(--muted)}.sh-cm b{color:var(--ink)}' +
+    '.sh-bar{height:5px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:6px}.sh-bar i{display:block;height:100%;background:var(--gold);border-radius:3px}.sh-chev{flex:none;color:var(--muted);font-size:20px}.sh-cont .sh-chev{color:var(--gold);font-size:22px}' +
+    '.sh-back{display:inline-block;margin:0 0 10px;color:var(--teal);font-weight:700;font-size:13.5px;cursor:pointer}.sh-req{border:0;background:var(--gold);color:#1a2421;font:inherit;font-size:12.5px;font-weight:700;border-radius:999px;padding:6px 12px;cursor:pointer;white-space:nowrap}' +
+    '.sh-row{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer}.sh-row:last-child{border-bottom:0}.sh-n{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--muted)}.sh-row.done .sh-n{background:var(--teal);border-color:var(--teal);color:#fff}' +
+    '.sh-rt{flex:1;min-width:0;font-size:13.5px;font-weight:600;line-height:1.35}.sh-rt small{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:2px}.sh-list{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:2px 12px;margin-bottom:12px}';
   doc.head.appendChild(css);
 
   var s = N.el('div', 'screen', '<div class="subhead"><div class="backbtn" id="fmBack">←</div><div class="subtitle" id="fmTitle">Poetry &amp; Naat</div></div><div id="fmBody"></div>');
@@ -219,8 +236,9 @@
   function nfmt(n) { n = +n || 0; return n >= 1e6 ? (n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace(/\.0$/, '') + 'M' : n >= 1e3 ? (n / 1e3).toFixed(n >= 1e4 ? 0 : 1).replace(/\.0$/, '') + 'K' : String(n); }
   function statText(id) { var x = STATS && STATS.v[id]; return x ? '👁 ' + nfmt(x.v) + '  ·  👍 ' + nfmt(x.l) : ''; }
   function fillStats() { Array.prototype.forEach.call(doc.querySelectorAll('.fm-stat[data-sid]'), function (e) { var t = statText(e.getAttribute('data-sid')); if (t) e.textContent = t; }); }
+  function statInit() { if (STATS === null) { try { STATS = JSON.parse(sget('noor_short_stats_v1') || 'null'); } catch (e) {} if (!STATS || !STATS.v) STATS = { t: 0, v: {} }; } return STATS; }
   function ensureStats(list) {
-    if (STATS === null) { try { STATS = JSON.parse(sget('noor_short_stats_v1') || 'null'); } catch (e) {} if (!STATS || !STATS.v) STATS = { t: 0, v: {} }; }
+    statInit();
     var ids = (list || []).map(function (v) { return v.id; }).filter(validId), fresh = Date.now() - STATS.t < TTL;
     var missing = ids.filter(function (id) { return !STATS.v[id]; });
     fillStats();
@@ -233,15 +251,24 @@
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
         .then(function (d) { (d.items || []).forEach(function (it) { var st = it.statistics || {}; STATS.v[it.id] = { v: +st.viewCount || 0, l: +st.likeCount || 0 }; }); });
     })).then(function () { if (!fresh) STATS.t = Date.now(); sset('noor_short_stats_v1', JSON.stringify(STATS)); }, function () {})
-      .then(function () { statsBusy = false; fillStats(); });
+      .then(function () { statsBusy = false; fillStats(); statsHook(); });
   }
+  function thumb(id) { return '<img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + id + '/oardefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg\'">'; }
+  // WhatsApp: a ready message with the Short's YouTube link and the app's address.
+  var WA_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3.6 20.4l1.3-4.1A8.4 8.4 0 1 1 8 19.3z"/><path d="M9.1 7.6c-.5 3.6 3.4 7.6 7 7.1l.6-1.8-2.1-1-1 1c-1.1-.5-2-1.4-2.5-2.5l1-1-1-2.1z" fill="currentColor" stroke="none"/></svg>';
+  function waUrl(id, title) {
+    return 'https://wa.me/?text=' + encodeURIComponent((clean(title || '') || 'A Short') + ' — Hazrat Azam Pasha R.A. https://youtube.com/shorts/' + id + '  Noor-ul-Hasrat app: https://noor-ul-hasrat.vercel.app');
+  }
+  function waLink(id, title, cls, label) { return '<a class="' + cls + '" target="_blank" rel="noopener" href="' + esc(waUrl(id, title)) + '" aria-label="Share on WhatsApp">' + WA_SVG + (label || '') + '</a>'; }
+  function isNew(v) { var t = Date.parse(v && v.at || ''); return !!t && Date.now() - t < 7 * 86400000; }
   function shortTile(v) {
     return '<div class="fm-sc"><div class="fm-sth" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '">' +
-      '<img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg\'"><div class="fm-play">▶</div>' + (isPractice(v) ? '<div class="fm-prac">' + (locked(v) ? '🔒 Murids' : '🤝 Bay\u2019ah') + '</div>' : '') + '</div>' +
+      thumb(v.id) + '<div class="fm-play">▶</div>' + (isPractice(v) ? '<div class="fm-prac">' + (locked(v) ? '🔒 Murids' : '🤝 Bay\u2019ah') + '</div>' : '') +
+      (isNew(v) ? '<div class="fm-new">NEW</div>' : '') + (isWatched(v.id) ? '<div class="fm-done">✓</div>' : '') + '</div>' +
       '<div class="fm-st">' + esc(v.title) + '</div>' +
       '<div class="fm-stat" data-sid="' + v.id + '">' + esc(statText(v.id)) + '</div>' +
-      '<div class="fm-acts"><a class="fm-like" target="_blank" rel="noopener" href="https://www.youtube.com/shorts/' + v.id + '">👍 Like</a>' +
-      '<button type="button" class="fm-like fm-share" data-sid="' + v.id + '" data-t="' + esc(v.title) + '">↗ Share</button></div></div>';
+      '<div class="fm-acts"><a class="fm-like" target="_blank" rel="noopener" href="https://www.youtube.com/shorts/' + v.id + '" aria-label="Like on YouTube">👍<span> Like</span></a>' +
+      '<button type="button" class="fm-like fm-share" data-sid="' + v.id + '" data-t="' + esc(v.title) + '" aria-label="Share">↗<span> Share</span></button>' + waLink(v.id, v.title, 'fm-wa') + '</div></div>';
   }
   // Share a Short: the phone's share sheet (WhatsApp, Messages…), or copy the link where that isn't available.
   function ftoast(t) { var o = doc.querySelector('.fm-toast'); if (o) o.remove(); var e = doc.createElement('div'); e.className = 'fm-toast'; e.textContent = t; doc.body.appendChild(e); setTimeout(function () { e.remove(); }, 2500); }
@@ -259,17 +286,41 @@
   doc.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.fm-share'); if (b) { e.preventDefault(); e.stopPropagation(); shareShort(b.getAttribute('data-sid'), b.getAttribute('data-t')); } }, true);
   function subscribeLink() { return '<a class="fm-sub" target="_blank" rel="noopener" href="https://www.youtube.com/channel/' + esc(AZAM.id) + '?sub_confirmation=1">🔔 Subscribe</a>'; }
   function shortsGrid(list) { setTimeout(function () { ensureStats(list); }, 0); return '<div class="fm-grid">' + list.map(shortTile).join('') + '</div>'; }
+  // Azam Pasha Shorts page: topic chips, New this week, Most loved, Series (with progress), For murids, then All (filtered by chip).
+  // A series opens as its own ordered list. Every row hides itself when it has nothing to show.
   function paintShorts(list) {
-    var h = '<div style="margin:0 0 8px">' + subscribeLink() + '</div><div class="fm-note" style="margin-top:0">Dars and zikr Shorts of Azam Pasha from the ' + esc(AZAM.name) + ' channel. New Shorts appear here by themselves. Tap one to play it.</div>';
+    var h = '<div style="margin:0 0 8px">' + subscribeLink() + '</div>';
+    if (ser != null) { var sr = seriesAll().filter(function (x) { return x.key === ser; })[0]; if (sr) { body.innerHTML = seriesView(sr); return; } ser = null; }
+    h += '<div class="fm-note" style="margin-top:0">Dars and zikr Shorts of Azam Pasha from the ' + esc(AZAM.name) + ' channel. New Shorts appear here by themselves. Tap one to play it.</div>';
     if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest Shorts…</div>';
     else if (state.error === 'unconfigured') h += '<div class="fm-note">The live list is not connected yet (add <b>youtubeApiKey</b> in js/config.js).</div>';
     else if (state.error && state.error !== 'stale') h += '<div class="fm-note">Could not load the Shorts (' + esc(state.error) + '). <a href="#" id="fmRetry">Try again</a></div>';
     else if (!list.length) h += '<div class="fm-note">No Shorts yet.</div>';
+    var tps = list.length ? STOPICS.filter(function (t) { return list.some(function (v) { return topicsOf(v).indexOf(t.name) >= 0; }); }) : [];
+    if (stopic && !tps.some(function (t) { return t.name === stopic; })) stopic = '';
+    if (tps.length) h += '<div class="fm-chips"><div class="fm-chip' + (stopic ? '' : ' on') + '" data-st="">All</div>' + tps.map(function (t) { return '<div class="fm-chip' + (stopic === t.name ? ' on' : '') + '" data-st="' + esc(t.name) + '">' + esc(t.label) + '</div>'; }).join('') + '</div>';
+    if (stopic) {
+      list = list.filter(function (v) { return topicsOf(v).indexOf(stopic) >= 0; });
+      h += '<div class="sh-h"><span>' + esc(topicLabel(stopic)) + '</span><small>' + list.length + ' Short' + (list.length === 1 ? '' : 's') + '</small></div>';
+    } else if (list.length) {
+      var nw = list.filter(isNew);
+      if (nw.length) h += '<div class="sh-h"><span>New this week</span><small>' + nw.length + ' new</small></div>' + rowHtml(nw);
+      h += lovedHtml(list);
+      var ss = seriesAll();
+      if (ss.length) h += '<div class="sh-h"><span>Series</span><small>watch in order</small></div>' + ss.map(seriesCard).join('');
+      var pr = list.filter(isPractice);
+      if (pr.length) {
+        var anyLock = pr.some(locked);
+        h += '<div class="sh-h"><span>For murids ' + (anyLock ? '🔒' : '🤝') + '</span>' + (anyLock ? '<button type="button" class="sh-req">🤝 Request Bai\u2019at</button>' : '<small>practices of dhikr</small>') + '</div>' + rowHtml(pr);
+      }
+      h += '<div class="sh-h"><span>All Shorts</span><small>newest first</small></div>';
+    }
     var total = list.length; list = list.slice(0, limit);
     h += shortsGrid(list);
     if (total > list.length) h += '<button class="fm-btn fm-more" type="button" style="border:0;cursor:pointer">Show more (' + (total - list.length) + ' left)</button>';
     h += '<div class="fm-note">' + total + ' Short' + (total === 1 ? '' : 's') + (state.error === 'stale' ? ' (Showing the saved list: you appear to be offline.)' : '') + ' <a href="#" id="fmRefresh">Refresh ↻</a></div>';
     body.innerHTML = h;
+    if (!stopic && state.items && state.items.length) ensureStats(state.items);   // Most loved needs every Short's likes
     if (pendingShort && !state.loading) {   // opened from a notification: play that Short once the list is in
       var pth = body.querySelector('.fm-sth[data-id="' + pendingShort + '"]');
       if (pth) { pendingShort = null; if (pth.scrollIntoView) pth.scrollIntoView({ block: 'center' }); playShort(pth); }
@@ -317,15 +368,27 @@
     viewer.querySelector('.fv-like').href = 'https://www.youtube.com/shorts/' + it.id;   // likes count only when given on YouTube itself
     viewer.querySelector('.fv-sub').href = 'https://www.youtube.com/channel/' + AZAM.id + '?sub_confirmation=1';
     viewer.querySelector('.fv-stat').textContent = statText(it.id) || '';
+    var wa = viewer.querySelector('.fv-wa'); wa.hidden = !!it.wide; wa.href = waUrl(it.id, it.title);
+    if (!it.wide && !locked(it)) markWatched(it.id);
     var fb = viewer.querySelector('.fv-full'), fd = it.wide ? null : fullFor(it.id);
     fb.hidden = !fd; fb.textContent = '🎧 Full dars'; fb.__fd = fd;
     if (fd) azamFull(function (items) { if (fb.__fd === fd && !fullVideo(fd, items)) fb.textContent = '🎧 Full dars · soon'; });
     viewer.querySelector('.fv-prev').disabled = vpos <= 0;
-    viewer.querySelector('.fv-next').disabled = vpos >= vlist.length - 1;
+    var nt = nextTarget(), nb = viewer.querySelector('.fv-next');
+    nb.disabled = !nt; nb.title = nt && nt.series ? 'Next in ' + nt.series : 'Next Short';
   }
+  // Next: the next Short of the same series when the playing Short belongs to one, otherwise the next in the list it was opened from.
+  function nextTarget() {
+    var it = vlist[vpos]; if (!it) return null;
+    var sr = it.wide ? null : seriesOf(it.id);
+    if (sr) { var i = indexIn(sr.items, it.id); if (i >= 0 && i < sr.items.length - 1) return { list: sr.items, pos: i + 1, series: sr.title }; }
+    return vpos < vlist.length - 1 ? { list: vlist, pos: vpos + 1 } : null;
+  }
+  function vnext() { var nt = nextTarget(); if (!nt) return; vlist = nt.list; vpos = nt.pos; vshow(); }
   function vclose(fromBack) {
     if (!viewer || viewer.hidden) return;
     viewer.hidden = true; viewer.querySelector('.fv-frame').innerHTML = ''; doc.documentElement.style.overflow = '';
+    if (hubDirty) { hubDirty = false; refreshHub(); }
     if (!fromBack && root.history && root.history.state && root.history.state.fv) { try { root.history.replaceState(null, ''); } catch (e) {} }   // never leave the app
   }
   function vopen(list, pos) {
@@ -334,7 +397,7 @@
       st.textContent = '.fv[hidden]{display:none!important}.fv{position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center}' +
         '.fv-frame{position:relative;height:calc(100% - 168px);max-height:calc(100vw * 16 / 9);aspect-ratio:9/16;max-width:100vw;background:#000}.fv-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}' +
         '.fv-top{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:10px;padding:10px 12px;padding-top:max(10px,env(safe-area-inset-top));color:#f3e7c9;font-size:14px;z-index:2}' +
-        '.fv-t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fv button,.fv-bar a{background:rgba(255,255,255,.12);color:#f3e7c9;border:0;border-radius:999px;padding:9px 14px;font-size:15px;cursor:pointer;text-decoration:none;font-family:inherit}.fv-bar a.fv-sub{background:#c4302b;color:#fff}' +
+        '.fv-t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fv button,.fv-bar a{background:rgba(255,255,255,.12);color:#f3e7c9;border:0;border-radius:999px;padding:9px 14px;font-size:15px;cursor:pointer;text-decoration:none;font-family:inherit}.fv-bar a.fv-sub{background:#c4302b;color:#fff}.fv-bar a.fv-wa{background:#25D366;color:#fff;display:inline-flex;align-items:center;padding:9px 13px}.fv-wa svg{width:19px;height:19px}.fv-bar a.fv-wa[hidden]{display:none}.fv .fv-next{background:#e8c46b;color:#1c1a12;font-weight:700}' +
         '.fv button:disabled{opacity:.35}.fv-bar{display:flex;flex-wrap:wrap;gap:8px 10px;justify-content:center;padding:8px 8px 0}.fv-bar2{padding-bottom:max(10px,env(safe-area-inset-bottom))}.fv-stat{width:100%;text-align:center;color:#cbbf9f;font-size:12px}.fv-x{font-size:18px!important;padding:6px 13px!important}' +
         '.fv-bayah{position:relative;margin:52px 10px 0;max-width:560px;z-index:2;background:rgba(232,196,107,.16);border:1px solid rgba(232,196,107,.5);color:#f3e7c9;border-radius:12px;padding:7px 12px;font-size:12.5px;line-height:1.45;text-align:center}.fv-bayah[hidden]{display:none}.fv-bayah:not([hidden])+.fv-frame{margin-top:6px;height:calc(100% - 260px)}.fv-bayah .ur,.fv-gate .ur{font-family:"Noto Nastaliq Urdu",Amiri,serif;font-size:14px;line-height:2;margin:2px 0 0}' +
         '.fv-gate{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;color:#f3e7c9;background:linear-gradient(160deg,#0f3d3e,#1c1a12);overflow:auto}.fv-gate b{font-size:18px;color:#e8c46b}.fv-gate p{font-size:13.5px;line-height:1.55;margin:8px 0}.fv-gi{font-size:34px}.fv .fv-signin{background:#e8c46b;color:#1c1a12;font-weight:700;margin-top:6px}.fv .fv-how{background:none;text-decoration:underline;color:#e7d4a3;margin-top:4px}' +
@@ -342,8 +405,8 @@
       doc.head.appendChild(st);
       viewer = doc.createElement('div'); viewer.className = 'fv'; viewer.hidden = true; viewer.setAttribute('role', 'dialog'); viewer.setAttribute('aria-label', 'Short');
       viewer.innerHTML = '<div class="fv-top"><span class="fv-t"></span><button type="button" class="fv-x" aria-label="Close">✕</button></div><div class="fv-bayah" hidden>🤝 ' + esc(BAYAH_EN) + '<div class="ur" dir="rtl" lang="ur">' + esc(BAYAH_UR) + '</div></div><div class="fv-frame"></div>' +
-        '<div class="fv-bar"><span class="fv-stat"></span><a class="fv-like" target="_blank" rel="noopener">👍 Like</a><a class="fv-sub" target="_blank" rel="noopener">🔔 Subscribe</a><button type="button" class="fv-share">↗ Share</button><button type="button" class="fv-full" hidden>🎧 Full dars</button></div>' +
-        '<div class="fv-bar fv-bar2"><button type="button" class="fv-prev">‹ Previous</button><button type="button" class="fv-next">Next ›</button></div>';
+        '<div class="fv-bar"><span class="fv-stat"></span><a class="fv-like" target="_blank" rel="noopener">👍 Like</a><a class="fv-sub" target="_blank" rel="noopener">🔔 Subscribe</a><button type="button" class="fv-share">↗ Share</button><a class="fv-wa" target="_blank" rel="noopener" aria-label="Share on WhatsApp">' + WA_SVG + '</a><button type="button" class="fv-full" hidden>🎧 Full dars</button></div>' +
+        '<div class="fv-bar fv-bar2"><button type="button" class="fv-prev">‹ Previous</button><button type="button" class="fv-next">Next →</button></div>';
       doc.body.appendChild(viewer);
       viewer.addEventListener('click', function (e) {
         var b = e.target.closest && e.target.closest('button'); if (!b) return;
@@ -352,7 +415,7 @@
         else if (b.classList.contains('fv-signin')) { vclose(); N.route('account'); }
         else if (b.classList.contains('fv-how')) { vclose(); N.route('bayah'); }
         else if (b.classList.contains('fv-prev') && vpos > 0) { vpos--; vshow(); }
-        else if (b.classList.contains('fv-next') && vpos < vlist.length - 1) { vpos++; vshow(); }
+        else if (b.classList.contains('fv-next')) vnext();
         else if (b.classList.contains('fv-share')) { var it = vlist[vpos]; if (it) shareShort(it.id, it.title); }
         else if (b.classList.contains('fv-full') && b.__fd) {
           var fd = b.__fd;
@@ -363,7 +426,7 @@
           });
         }
       });
-      doc.addEventListener('keydown', function (e) { if (viewer.hidden) return; if (e.key === 'Escape') vclose(); else if (e.key === 'ArrowRight' && vpos < vlist.length - 1) { vpos++; vshow(); } else if (e.key === 'ArrowLeft' && vpos > 0) { vpos--; vshow(); } });
+      doc.addEventListener('keydown', function (e) { if (viewer.hidden) return; if (e.key === 'Escape') vclose(); else if (e.key === 'ArrowRight') vnext(); else if (e.key === 'ArrowLeft' && vpos > 0) { vpos--; vshow(); } });
       root.addEventListener('popstate', function () { vclose(true); });
     }
     vlist = list; vpos = pos; viewer.classList.toggle('fv-wide', !!(list[0] && list[0].wide)); viewer.hidden = false; doc.documentElement.style.overflow = 'hidden';
@@ -392,7 +455,7 @@
     if (e.target.id === 'fmRetry' || e.target.id === 'fmRefresh') { e.preventDefault(); if (STATS) STATS.t = 0; load(true); }
   });
 
-  api.ZIKR = ZIKR; api.AZAM = AZAM; api.open = function (which) { if (kalaam === null) loadKalaam(); if (pinned === null) loadPinned(); if (which === 'poetry' || which === 'dars' || which === 'zikr' || which === 'azam') { if (tab !== which) { who = 0; topic = 0; limit = SHOW; } tab = which; } state = stateFor(tab); paint(); N.showScreen('family'); if (state.items === null) load(false); };
+  api.ZIKR = ZIKR; api.AZAM = AZAM; api.open = function (which) { if (kalaam === null) loadKalaam(); if (pinned === null) loadPinned(); if (which === 'poetry' || which === 'dars' || which === 'zikr' || which === 'azam') { if (tab !== which) { who = 0; topic = 0; limit = SHOW; } tab = which; } if (which === 'azam') ser = null; state = stateFor(tab); paint(); N.showScreen('family'); if (state.items === null) load(false); };
   // For Azam Pasha's profile page: calls back with the Shorts list (loaded once, then cached for 30 minutes).
   api.azamShorts = function (cb) {
     if (astate.items !== null && !astate.loading) { cb(astate); return; }
@@ -443,25 +506,157 @@
     var p2 = /part/i.test(f.title) && /2/.test(f.title);
     return (items || []).filter(function (v) { return re.test(v.title) && (p2 ? /part\s*2|\b2\b/i.test(v.title) : !/part\s*2/i.test(v.title)); })[0] || null;
   }
+  /* ---------- Shorts hub: Short of the Day, Start here, series with progress, topics, Most loved ----------
+     Everything here is built from the live Shorts list (astate.items); a row with nothing to show is left out. */
+  var ser = null, stopic = '', hubDirty = false, homeWrap = null;
+  var RW = {}; Object.keys(WATERMARKED).forEach(function (k) { RW[WATERMARKED[k]] = k; });
+  // Topic chips. A Short gets a topic from the ids listed here (the original upload or its watermarked copy) or by a word in its title.
+  var STOPICS = [
+    { name: 'tawbah', label: 'Tawbah', re: /tawb|tauba|repent|newly born|توبہ/i, ids: ['u6BHgjCPuCo', '_l27DFmjd6w', 'ta6pdvvmJBQ'] },
+    { name: 'khatrat', label: 'Khatrat', re: /khatr|passing thought|good thoughts|thought leaves|whisper|waswas|خطرات/i, ids: ['cfKWk-fq-BQ', 'Tv8U5Rk8kF4', 'EbnxYFqNhXI', 'SBy10BJdsdk', 'QKlEyf9c7tg'] },
+    { name: 'tasawwur', label: 'Tasawwur', re: /tasawwur|my picture|every form|تصور/i, ids: ['dyHUfOLlVTs', '2zH6zC_Z8P4', 'z698TQzQjQg', '3githsE0o6Y'] },
+    { name: 'sabr', label: 'Sabr', re: /\bsabr|tasleem|\braza\b|patien|صبر/i, ids: ['mwPT8CFRfR0', 'Imuwo7g6UzE', '7CIgqlzMN1E'] },
+    { name: 'baiat', label: 'Bai’at', re: /bai['’]?at|bay['’]?ah|\bpir\b|murids?\b|murshid|trusted guide|wali recognises|بیعت/i,
+      ids: ['g8-0WIXYjcM', 'r3x7LQru71I', '7wB9EQldsew', 'E7xb4BR6IPQ', 'kziC4lPGmgU', 'Rno3f3mGjyg', 'jRK1SIkPkV0', '3githsE0o6Y', 'ENBkebr3nJI', 'RFLGxcbYBCM', 'cbWGnUMd530', '77ZE201Hbjw', 'Fq8X-k08A5Y', '0yhKLLlv5ww', 'U2KoTd5rDSI'] },
+    { name: 'nazar', label: 'Nazar (gaze)', re: /\bgaze\b|eyes are hunters|nazar|نظر/i, ids: ['PvTqdGvfuQw', 'UFGrLXEdwmk'] },
+    { name: 'taqwa', label: 'Taqwa', re: /taqwa|eat less|sleep less|speak less|tawakkul|تقوی/i, ids: ['oWZt1YfJ3io', 'le1EA7cNRAA', 'EIcNQnQ_TkQ', 'KCmXwBTioD4', 'B-NjNa3UUJ4', 'SHyAucT3ojs', 'Vz_I-E521r8', 'iYb70KSdYD4', 'ta6pdvvmJBQ'] },
+    { name: 'tawheed', label: 'Tawheed', re: /tawh?eed|tauh?eed|توحید/i, ids: ['trMoVHtadHI', 'z698TQzQjQg', 'Rk6u-LffRrg', '2yjNqJo659g', 'g8-0WIXYjcM'] },
+    { name: 'love', label: 'Love', re: /\blove\b|\bishq|mahabb|عشق|محبت/i, ids: ['EQbitUdOKqQ', 'cl0bggXGqRk', 'eNHL-OsPxgQ', 'z698TQzQjQg'] }
+  ];
+  var TOPIC_IDS = {};
+  STOPICS.forEach(function (t) { t.ids.forEach(function (id) { [id, WATERMARKED[id], RW[id]].forEach(function (k) { if (k) (TOPIC_IDS[k] = TOPIC_IDS[k] || []).push(t.name); }); }); });
+  function topicsOf(v) { var out = (TOPIC_IDS[v.id] || []).slice(); STOPICS.forEach(function (t) { if (out.indexOf(t.name) < 0 && t.re.test(v.title || '')) out.push(t.name); }); return out; }
+  function topicLabel(n) { var t = STOPICS.filter(function (x) { return x.name === n; })[0]; return t ? t.label : n; }
+
+  // Watched Shorts are kept on this phone only (localStorage), with the time they were played.
+  var WKEY = 'noor_shorts_watched_v1';
+  function watchedMap() { try { return JSON.parse(sget(WKEY) || '{}') || {}; } catch (e) { return {}; } }
+  function isWatched(id) { var w = watchedMap(); return !!(w[id] || (RW[id] && w[RW[id]]) || (WATERMARKED[id] && w[WATERMARKED[id]])); }
+  function watchedAt(id) { var w = watchedMap(); return w[id] || (RW[id] && w[RW[id]]) || (WATERMARKED[id] && w[WATERMARKED[id]]) || 0; }
+  function markWatched(id) { if (!validId(id)) return; var w = watchedMap(); w[id] = Date.now(); sset(WKEY, JSON.stringify(w)); hubDirty = true; }
+
+  function live() { return astate.items || []; }
+  function liveMap() { var m = {}; live().forEach(function (v) { m[v.id] = v; }); return m; }
+  function resolve(id, m) { return m[WATERMARKED[id]] ? WATERMARKED[id] : m[id] ? id : m[RW[id]] ? RW[id] : null; }
+  function indexIn(list, id) { for (var i = 0; i < list.length; i++) if (list[i].id === id || list[i].id === WATERMARKED[id] || list[i].id === RW[id]) return i; return -1; }
+  // Series (from FULLDARS), in course order: the dars in the order they were given, Nizam-ul-Amal by part number.
+  function seriesAll() {
+    var m = liveMap(), out = [];
+    FULLDARS.forEach(function (f, k) {
+      var seen = {}, items = [];
+      (f.shorts || []).forEach(function (id) { var r = resolve(id, m); if (r && !seen[r]) { seen[r] = 1; items.push(m[r]); } });
+      if (!items.length) return;
+      var pm = /^(.*?),?\s*Part\s*(\d+)\s*$/i.exec(f.title || '');
+      out.push({ key: k, title: f.title, name: pm ? pm[1] : f.title, part: pm ? 'Part ' + pm[2] : '', pn: pm ? +pm[2] : 0, items: items });
+    });
+    var first = {}; out.forEach(function (x, i) { if (!(x.name in first)) first[x.name] = i; });
+    return out.sort(function (a, b) { return (first[a.name] - first[b.name]) || (a.pn - b.pn) || (a.key - b.key); });
+  }
+  function seriesOf(id) { return seriesAll().filter(function (x) { return indexIn(x.items, id) >= 0; })[0] || null; }
+  function progress(sr) { var d = 0, last = 0; sr.items.forEach(function (v) { var t = watchedAt(v.id); if (t) { d++; if (t > last) last = t; } }); return { done: d, last: last }; }
+  function nextIn(sr) { var i; for (i = 0; i < sr.items.length; i++) if (!isWatched(sr.items[i].id) && !locked(sr.items[i])) return i; return -1; }
+  function seriesCard(sr) {
+    var p = progress(sr), n = sr.items.length, ni = nextIn(sr), th = sr.items[ni >= 0 ? ni : 0];
+    return '<div class="sh-ser" role="button" data-ser="' + sr.key + '"><div class="sh-sth">' + thumb(th.id) + '</div><div class="sh-ci">' +
+      (sr.part ? '<div class="sh-ck">' + esc(sr.name) + '</div>' : '') + '<div class="sh-cm"><b>' + esc(sr.part || sr.name) + '</b> · ' + p.done + ' of ' + n + ' watched' + (p.done ? ' ✓' : '') + '</div>' +
+      '<div class="sh-bar"><i style="width:' + Math.round(100 * p.done / n) + '%"></i></div></div><div class="sh-chev">›</div></div>';
+  }
+  function seriesView(sr) {
+    var p = progress(sr), n = sr.items.length, ni = nextIn(sr);
+    return '<div class="sh-back" role="button">‹ All Shorts</div><h2 class="section-title" style="margin-top:0">' + esc(sr.title) + '</h2>' +
+      '<div class="sh-cm" style="margin:-4px 0 0">' + p.done + ' of ' + n + ' watched' + (p.done === n ? ' · complete ✓' : '') + '</div><div class="sh-bar" style="margin-bottom:12px"><i style="width:' + Math.round(100 * p.done / n) + '%"></i></div>' +
+      (ni >= 0 ? '<button type="button" class="sh-go" data-sx="' + ni + '" style="margin-bottom:12px">▶ ' + (p.done ? 'Continue' : 'Start') + ': ' + esc(clean(sr.items[ni].title)) + '</button>' : '') +
+      '<div class="sh-list">' + sr.items.map(function (v, i) {
+        var w = isWatched(v.id), lk = locked(v);
+        return '<div class="sh-row' + (w ? ' done' : '') + '" role="button" data-sx="' + i + '"><div class="sh-n">' + (w ? '✓' : i + 1) + '</div><div class="sh-sth">' + thumb(v.id) + '</div>' +
+          '<div class="sh-rt">' + esc(clean(v.title)) + '<small>' + (lk ? '🔒 For murids' : w ? 'Watched' : isNew(v) ? 'NEW' : '') + '</small></div>' + waLink(v.id, v.title, 'sh-wa', '') + '</div>';
+      }).join('') + '</div>';
+  }
+  function rowHtml(list, more) { setTimeout(function () { ensureStats(list); }, 0); return '<div class="fm-hs">' + list.map(shortTile).join('') + (more ? '<div class="fm-all" role="button">All Shorts ›</div>' : '') + '</div>'; }
+  function lovedHtml(list) {
+    var st = statInit().v, pool = list.filter(function (v) { return !isPractice(v) && st[v.id]; });
+    if (pool.length < 3) return '<div id="shLoved"></div>';
+    pool = pool.slice().sort(function (a, b) { return (st[b.id].l - st[a.id].l) || (st[b.id].v - st[a.id].v); }).slice(0, 10);
+    return '<div id="shLoved"><div class="sh-h"><span>Most loved</span><small>by likes</small></div>' + rowHtml(pool) + '</div>';
+  }
+  function statsHook() {
+    var lv = state === astate && body.querySelector('#shLoved'); if (lv) { var d = doc.createElement('div'); d.innerHTML = lovedHtml(live()); lv.replaceWith(d.firstChild); }
+  }
+  // Short of the Day: the same for everyone on a date; walks through every public Short that is not a practice, oldest first.
+  function sotdPool() { return live().filter(function (v) { return !isPractice(v); }).sort(function (a, b) { return ((Date.parse(a.at || 0) || 0) - (Date.parse(b.at || 0) || 0)) || (a.id < b.id ? -1 : 1); }); }
+  function dayNumber(d) { d = d || new Date(); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000); }
+  function sotd() { var p = sotdPool(); if (!p.length) return null; var i = dayNumber() % p.length; return { list: p.slice(i).concat(p.slice(0, i)), v: p[i] }; }
+  // Start here: the order a newcomer should watch in (config.js startHere). Practice Shorts are left out while locked.
+  var START = (Array.isArray(cfg.startHere) && cfg.startHere.length ? cfg.startHere : ['TkSFt5BlMzs', '0yhKLLlv5ww', 'u6BHgjCPuCo', '2yjNqJo659g', 'iYb70KSdYD4', 'oWZt1YfJ3io', 'cfKWk-fq-BQ', 'trMoVHtadHI']);
+  function startList() { var m = liveMap(), seen = {}; return START.map(function (id) { var r = resolve(id, m); if (!r || seen[r]) return null; seen[r] = 1; return m[r]; }).filter(function (v) { return v && !locked(v); }); }
+  // Continue: the series watched most recently that still has a Short left to watch.
+  function continueSeries() {
+    var best = null;
+    seriesAll().forEach(function (sr) { var p = progress(sr), ni = nextIn(sr); if (p.done && ni >= 0 && (!best || p.last > best.p.last)) best = { sr: sr, p: p, ni: ni }; });
+    return best;
+  }
+  var MON3 = MON, DAY3 = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function homeHtml() {
+    var h = '', sd = sotd(), cs = continueSeries(), sh = startList(), all = live();
+    if (sd) {
+      var d = new Date(), v = sd.v;
+      h += '<div class="sh-sotd" role="button" aria-label="Play the Short of the Day: ' + esc(clean(v.title)) + '"><div class="sh-th">' + thumb(v.id) + '<div class="fm-play">▶</div>' + (isNew(v) ? '<div class="fm-new">NEW</div>' : '') + '</div>' +
+        '<div class="sh-tx"><div class="sh-k">☀ Short of the Day · ' + DAY3[d.getDay()] + ' ' + d.getDate() + ' ' + MON3[d.getMonth()] + '</div><div class="sh-tt">' + esc(clean(v.title)) + '</div><div class="sh-by">Hazrat Azam Pasha R.A.' + (isWatched(v.id) ? ' · ✓ watched' : '') + '</div>' +
+        '<div class="sh-btns"><button type="button" class="sh-go">▶ Watch</button>' + waLink(v.id, v.title, 'sh-wa', 'WhatsApp') + '</div></div></div>';
+    }
+    if (cs) {
+      var nx = cs.sr.items[cs.ni], n = cs.sr.items.length;
+      h += '<div class="sh-cont" role="button" data-ser="' + cs.sr.key + '"><div class="sh-sth">' + thumb(nx.id) + '</div><div class="sh-ci"><div class="sh-ck">Continue: ' + esc(cs.sr.title) + '</div>' +
+        '<div class="sh-ct">Next: ' + esc(clean(nx.title)) + '</div><div class="sh-cm">' + cs.p.done + ' of ' + n + ' watched ✓</div><div class="sh-bar"><i style="width:' + Math.round(100 * cs.p.done / n) + '%"></i></div></div><div class="sh-chev">▶</div></div>';
+    }
+    if (sh.length) h += '<div class="sh-h"><span>Start here</span><small>watch in this order</small></div>' + rowHtml(sh);
+    var nw = all.filter(isNew);
+    h += '<div class="sh-h"><span>' + (nw.length ? 'New this week' : 'Latest Shorts') + '</span></div>' + rowHtml(all.slice(0, Math.max(12, nw.length)), true);
+    return h;
+  }
+  function refreshHub() {
+    if (homeWrap && !homeWrap.hidden) { var hub = homeWrap.querySelector('#homeHub'); if (hub) hub.innerHTML = homeHtml(); }
+    if (state === astate) paint();
+  }
+  function playList(list, pos) { if (list && list.length) vopen(list, Math.max(0, Math.min(pos || 0, list.length - 1))); }
+  function playSeries(key, i) {
+    var sr = seriesAll().filter(function (x) { return x.key === key; })[0]; if (!sr) return;
+    if (i == null) { i = nextIn(sr); if (i < 0) i = 0; }
+    playList(sr.items, i);
+  }
+  body.addEventListener('click', function (e) {
+    var t = e.target, c;
+    if (!t.closest || t.closest('a')) return;
+    if ((c = t.closest('[data-st]'))) { e.stopImmediatePropagation(); stopic = c.getAttribute('data-st') || ''; limit = SHOW; paint(); return; }
+    if ((c = t.closest('[data-sx]'))) { e.stopImmediatePropagation(); playSeries(ser, +c.getAttribute('data-sx')); return; }
+    if ((c = t.closest('.sh-ser'))) { e.stopImmediatePropagation(); ser = +c.getAttribute('data-ser'); paint(); if (s.scrollIntoView) s.scrollIntoView({ block: 'start' }); return; }
+    if (t.closest('.sh-back')) { e.stopImmediatePropagation(); ser = null; paint(); return; }
+    if (t.closest('.sh-req')) { e.stopImmediatePropagation(); N.route('bayah'); return; }
+  }, true);
+  if (root.NoorAccount && root.NoorAccount.onChange) root.NoorAccount.onChange(function () { setTimeout(refreshHub, 0); });
+
   api.azamFull = azamFull;
-  api.shortsGrid = shortsGrid; api.playShort = playShort; api.subscribeLink = subscribeLink;
-  // Home page: a sideways-scrolling row of the newest Azam Pasha Zikr Shorts. The section stays hidden until there are Shorts.
+  api.shortsGrid = shortsGrid; api.playShort = playShort; api.subscribeLink = subscribeLink; api.playList = playList; api.waUrl = waUrl;
+  api.isWatched = isWatched; api.series = seriesAll; api.topicsOf = topicsOf; api.sotd = sotd;
+  // Home page: Short of the Day, Continue (series in progress), Start here, and New this week. Hidden until there are Shorts.
   api.homeStrip = function (wrap) {
     if (!wrap) return;
-    var row = wrap.querySelector('.fm-hs');
+    homeWrap = wrap;
+    var hub = wrap.querySelector('#homeHub');
+    if (!hub) { hub = doc.createElement('div'); hub.id = 'homeHub'; var old = wrap.querySelector('.fm-hs'); if (old) old.replaceWith(hub); else wrap.appendChild(hub); }
     api.azamShorts(function (st) {
-      var list = (st.items || []).slice(0, 12);
-      if (!list.length) { wrap.hidden = true; return; }
+      if (!(st.items || []).length) { wrap.hidden = true; return; }
       var hs = doc.getElementById('homeSub'); if (hs && !hs.firstChild) hs.innerHTML = subscribeLink();
-      row.innerHTML = list.map(shortTile).join('') + '<div class="fm-all" role="button">All Shorts ›</div>'; ensureStats(list);
-      wrap.hidden = false;
+      wrap.hidden = false; hub.innerHTML = homeHtml(); ensureStats((st.items || []).slice(0, 12));
     });
-    if (!row.__wired) {
-      row.__wired = true;
-      row.addEventListener('click', function (e) {
-        if (e.target.closest && e.target.closest('.fm-all')) { api.open('azam'); return; }
-        var th = e.target.closest && e.target.closest('.fm-sth');
-        if (th) { Array.prototype.forEach.call(row.querySelectorAll('.fm-sth iframe'), function (f) { var t = f.parentNode; if (t !== th) { t.innerHTML = '<img alt="" src="https://i.ytimg.com/vi/' + t.getAttribute('data-id') + '/hqdefault.jpg"><div class="fm-play">▶</div>'; } }); playShort(th); }
+    if (!hub.__wired) {
+      hub.__wired = true;
+      hub.addEventListener('click', function (e) {
+        var t = e.target; if (!t.closest || t.closest('a')) return;
+        if (t.closest('.fm-all')) { ser = null; stopic = ''; api.open('azam'); return; }
+        if (t.closest('.sh-sotd')) { var sd = sotd(); if (sd) playList(sd.list, 0); return; }
+        var c = t.closest('.sh-cont'); if (c) { playSeries(+c.getAttribute('data-ser')); return; }
+        var th = t.closest('.fm-sth'); if (th) playShort(th);
       });
     }
   };
