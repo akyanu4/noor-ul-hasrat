@@ -77,7 +77,11 @@ def caption_track(segs):
         if sg["kind"] != "voice": continue
         for s, e, txt in CAPTIONS:
             if s >= sg["b"] or e <= sg["a"]: continue
-            for cs, ce, g in L.split_chunks(max(s, sg["a"]), min(e, sg["b"]), txt):
+            # split the whole caption once over its own time, then keep the pieces that fall in this segment, so a
+            # caption running across a scene cut carries on where it was instead of starting again
+            for cs, ce, g in L.split_chunks(s, e, txt):
+                cs, ce = max(cs, sg["a"]), min(ce, sg["b"])
+                if ce - cs < 0.15: continue
                 out.append([sg["T"] + cs - sg["a"], sg["T"] + ce - sg["a"], g, sg["T"] + sg["d"]])
     out.sort(key=lambda x: x[0])
     for i, c in enumerate(out):
