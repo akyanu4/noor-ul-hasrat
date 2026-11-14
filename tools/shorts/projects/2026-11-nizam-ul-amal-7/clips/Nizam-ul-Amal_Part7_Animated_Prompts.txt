@@ -1,0 +1,377 @@
+ANIMATED SHORTS: NIZAM-UL-AMAL-E-FUQARA, PART 7 (NAF007.mp3)
+Hazrat Azam Pasha R.A.'s own voice. Five Shorts, 64 scenes. One scene per sentence or short thought.
+For each scene: (1) the IMAGE (most are already in this folder), then (2) animate it into a VIDEO CLIP with the MOTION prompt.
+
+====================================================================
+HOW TO DO IT
+====================================================================
+1. IMAGE: every scene already has a starting picture in this folder:  N7S1-01.png ... N7S5-12.png  (9:16, 1080x1920).
+   - Scenes marked  IMAGE: NEW  have only a stand-in picture (small or not quite right). Paste the image prompt
+     into ChatGPT or Gemini, ask for portrait 9:16, and save it OVER the stand-in with the same name (N7S1-01.png ...).
+   - All other scenes: use the png as it is.
+2. CLIP: open an image-to-video tool, for example:
+     - Gemini app -> Video (Veo): upload the image, paste the motion prompt  (8-second clips)
+     - Kling AI (klingai.com) -> Image to Video                           (5 or 10 seconds)
+     - Hailuo (hailuoai.video) or Runway also work
+   Choose 9:16 if asked. Save it as  N7S1-01.mp4, N7S1-02.mp4 ...  in this same folder
+   (tools/shorts/projects/2026-11-nizam-ul-amal-7/clips/).
+   Any sound or music the tool adds is ignored; Hazrat's voice is used.
+   Until a clip exists, the Short uses the png with a slow zoom, so it always renders.
+3. Tell me when clips are in; I re-render (voice, captions, title, end card, credits, watermark).
+
+Length: a 10 s clip covers up to about 16 s of voice (it is slowed down to 0.6x, then the last frame holds).
+Scenes over 10 s: choose 10 s in Kling. Scenes under 8 s: 5 s in Kling or 8 s in Veo is fine.
+
+CHECK EVERY CLIP before keeping it: the shaykh's and the wali's faces must stay covered by light the whole time,
+the dark smoke must stay plain smoke (no faces, horns, eyes or figures in it), no extra hands or fingers,
+NO WRITING of any kind (no letters, no Arabic, no Qur'an pages with script, no signs), nobody changing clothes.
+If a clip goes wrong, generate it again (or tell me and I keep the still image with a slow zoom).
+
+RULES (keep in every prompt)
+- Never draw the Prophet (peace be upon him). No companions shown: for the companions' pact, hands only.
+- The shaykh and any wali: face ALWAYS hidden by soft white glowing light, no facial features.
+- Shaytan / bad thoughts (khatrat): only as thin dark grey smoke or shadow. Never a figure, never a face.
+- No writing made by the AI: no calligraphy, no Arabic or Urdu letters, no book pages with script, no shop signs.
+  The real words (Ud'uni astajib lakum, ad-du'a mukhkh al-'ibadah, Allah, panah, the verse
+  "wa ya'ti bi-khalqin jadid") are NOT drawn by the AI; the captions carry them (see the note at the end).
+- No symbols of other traditions. Short 5 stays light and abstract: no people except scene 12 (seen from behind).
+- Other people: seen from behind or the side, or ordinary faces; never the shaykh.
+
+====================================================================
+RECURRING CHARACTERS (copy into a prompt whenever they appear)
+====================================================================
+THE MURID = "a young South Asian Muslim man with a short dark beard, plain white kurta and white skullcap,
+calm and sincere"   (as in N7S4-05.png / N7S1-02.png)
+
+THE TROUBLED MAN = "a young South Asian man with dark curly hair, white kurta and grey waistcoat, sitting with
+his chin on his hand, worried"   (as in N7S1-01.png)
+
+THE SHAYKH = "an elderly Sufi shaykh in a white kurta, dark waistcoat and a cream shawl, white skullcap,
+his face completely hidden by a soft white glowing light"   (as in N7S3-01.png)
+
+KHATRAT (stray thoughts) = "thin wisps of dark grey smoke, shapeless, no faces"
+
+STYLE (end of every image prompt) =
+"photorealistic, cinematic, old Hyderabad, warm golden lamp light and soft haze, rich detail, vertical 9:16,
+no text, no letters, no calligraphy, no signs, no logos"
+
+====================================================================
+SHORT 1: NAF7_Short1_Ask_Allah_for_Good_Thoughts   "ASK FOR GOOD THOUGHTS"   (12 scenes)
+====================================================================
+
+--- N7S1-01  "At the time of khatrat, this too is a way: whatever useless thought comes at the wrong time..."  (12 s)
+IMAGE: NEW. THE TROUBLED MAN sitting on a mat in a lamp-lit masjid courtyard, chin on his hand, KHATRAT swirling
+       above his head, other men blurred in the background. + STYLE
+MOTION: The dark smoke slowly curls and thickens above his head, he lowers his eyes and sighs, lamp light flickers,
+        slow push in.
+
+--- N7S1-02  "...useless, useless thought... ask for that same thought in its positive form."  (13 s)
+IMAGE: N7S1-02.png (a man praying at a moonlit window)
+MOTION: He slowly raises both hands in du'a, a few wisps of dark smoke drift out of the window and fade, and small
+        golden motes of light float in toward his hands. Slow, calm, gentle push in.
+
+--- N7S1-03  "Ask for the same thought. All these unwanted thoughts keep coming..."  (8.5 s)
+IMAGE: N7S1-03.png (an old man with prayer beads in window light)
+MOTION: The prayer beads move slowly through his fingers, he closes his eyes, dust drifts in the light beam,
+        very slow push in.
+
+--- N7S1-04  "...now ask Allah for the thoughts we need."  (8 s)
+IMAGE: N7S1-04.png (a man in du'a on a prayer mat before a lit masjid at night, light falling from above)
+MOTION: The column of golden light from the sky grows brighter and slowly descends onto him, his hands rise a
+        little higher, the crescent moon glows. Slow tilt down.
+
+--- N7S1-05  "Useless thoughts are coming: what should we do? O Master, we are waiting for Your grace."  (12.5 s)
+IMAGE: NEW. THE MURID seen from behind among dark storm clouds and KHATRAT, reaching up with one hand to grasp a
+       rope of golden light hanging from a bright opening in the clouds. + STYLE
+MOTION: His hand closes around the golden rope, the dark smoke around him slowly pulls back, the light above
+        widens. Slow tilt up along the rope.
+
+--- N7S1-06  "Take away these useless thoughts, and give us good thoughts."  (6 s)
+IMAGE: N7S1-06.png (a man in du'a in a golden masjid courtyard, smoke and light above)
+MOTION: The dark smoke above him thins and dissolves into golden light, his raised hands glow softly. Slow push in.
+
+--- N7S1-07  "At the time of khatrat, whatever useless thought comes, ask for that same thought in its positive form."  (17 s)
+IMAGE: N7S1-07.png (an old farmer sowing seeds in a field at sunrise)
+MOTION: He scatters seeds in a slow arc, the seeds catch the sunlight and glow like small golden lights as they
+        fall, small green shoots appear in the soil. Slow motion, camera follows his hand.
+
+--- N7S1-08  "And pray to be saved from bad thoughts. Because it is Allah's command: Ud'uni astajib lakum."  (11 s)
+IMAGE: N7S1-08.png (a man in sajda on a prayer mat, lamp light)
+MOTION: He stays in sajda, the lamp flame flickers, a soft beam of warm light slowly falls across his back.
+        Very slow push in.
+
+--- N7S1-09  "Ud'u means ask, ni means of Me: ask of Me."  (11 s)
+IMAGE: N7S1-09.png (a column of golden light falling from the night sky onto still water)
+MOTION: The column of light pours down, gold ripples spread slowly across the water, sparkles rise. Slow tilt up.
+
+--- N7S1-10  "Astajib: I will give; lakum: to you."  (6 s)
+IMAGE: N7S1-10.png (a golden door of light in the night sky above a dark path)
+MOTION: The golden door slowly opens wider, light spills down the path toward the camera. Slow push forward.
+
+--- N7S1-11  "So it is important for us to make du'a. Ad-du'a mukhkh al-'ibadah: du'a is the core of our worship."  (11 s)
+IMAGE: N7S1-11.png (a man seated alone in a great lamp-lit hall of arches)
+MOTION: He slowly raises his hands in du'a, the hanging lamps sway very gently, warm light grows around him.
+        Slow push in.
+
+--- N7S1-12  "...the purpose of our worship is fulfilled; the worship we do is completed by du'a."  (11 s)
+IMAGE: N7S1-12.png (golden rays pouring through clouds)
+MOTION: The clouds slowly part, the rays brighten and spread, the whole frame fills with soft gold light. Slow tilt up.
+
+====================================================================
+SHORT 2: NAF7_Short2_The_Pact_of_Remembrance   "YAAD-FARAMOSH"   (14 scenes)
+====================================================================
+
+--- N7S2-01  "There was a pact of yaad-faramosh."  (8 s)
+IMAGE: NEW. Close view of several men's hands in plain white and cream sleeves placed one on top of another in
+       the middle of a circle, a pact, warm golden light glowing between the hands, old Arabia, no faces. + STYLE
+       (Stand-in N7S2-01.png is small; the new picture should be the same idea, full size.)
+MOTION: One more hand comes in and rests on top, the golden light between the hands grows. Slow push in.
+
+--- N7S2-02  "A pact of yaad-faramosh had been made: the remembrance of Allah must go on; never forget."  (8.5 s)
+IMAGE: N7S2-02.png (old man with prayer beads)
+MOTION: The beads pass slowly through his fingers one by one, his lips move silently, dust drifts in the light.
+
+--- N7S2-03  "We had agreed on it among ourselves. We would sit together, talk, and go about our work."  (11 s)
+IMAGE: N7S2-03.png (men sitting in rows inside a white masjid, seen from behind)
+MOTION: Slow sideways camera move across the men, they talk quietly and nod, one turns his head to his neighbour.
+
+--- N7S2-04  "One of them would call out: Allah! Whoever's heart was present would say Alhamdulillah."  (8 s)
+IMAGE: N7S2-04.png (men walking in an old Hyderabad lane)
+MOTION: The men walk slowly; the man in front stops and lifts his head as if calling out, the others pause and
+        place a hand on their chest. Slow push in.
+
+--- N7S2-05  "...whoever had become heedless would say Astaghfirullah."  (5.5 s)
+IMAGE: N7S2-05.png (man at a moonlit window, hands raised)
+MOTION: He lowers his head in regret and slowly places his right hand on his chest. Gentle push in.
+
+--- N7S2-06  "Whoever had become heedless: Astaghfirullah, meaning: Allah, forgive our sin."  (6.5 s)
+IMAGE: N7S2-06.png (man in sajda)
+MOTION: He bows lower in sajda, the lamp flame flickers, a soft warm glow spreads over him.
+
+--- N7S2-07  "The connection with Allah must not break; one must not forget Allah."  (6 s)
+IMAGE: NEW. A hand in a white sleeve holding firmly onto a rope of golden light that rises straight up into a
+       bright sky, dark grey smoke drifting below, no face shown. + STYLE
+MOTION: The hand tightens on the golden rope, the rope glows brighter along its length, the smoke below drifts away.
+        Slow tilt up along the rope.
+
+--- N7S2-08  "One of them would call out Allah! Whoever's heart was present would say Alhamdulillah."  (7.5 s)
+IMAGE: N7S2-08.png (a busy Hyderabad street, one man in du'a inside a dome of golden light)
+MOTION: The golden dome around the man glows and pulses softly, people walk past around it. Slow push in.
+
+--- N7S2-09  "Whoever had faramoshi, meaning heedlessness: he had forgotten. Faramoshi means forgetting."  (12 s)
+IMAGE: N7S2-09.png (a crowded bazaar street toward the Charminar)
+MOTION: The crowd hurries past in slow motion, everyone busy; the camera drifts forward slowly through the crowd,
+        the light dims a little.
+
+--- N7S2-10  "Whoever had forgotten would say Astaghfirullah: istighfar, meaning: O my Allah, forgive me."  (9.5 s)
+IMAGE: N7S2-10.png (man in du'a before a lit masjid, light from above)
+MOTION: He lowers his head, his raised hands tremble slightly, the light from above slowly falls onto him.
+
+--- N7S2-11  "Through this pact... help toward constant presence... one also has to admit one's own mistake."  (11 s)
+IMAGE: NEW. Men in white kurtas sitting in a circle on a carpet in a lamp-lit room, seen from behind and the side,
+       each with his right hand on his chest, heads slightly bowed, no faces in focus. + STYLE
+MOTION: One by one the men slowly place their right hand on their chest and bow their heads, lamp light flickers,
+        slow circling camera.
+
+--- N7S2-12  "...and your work becomes lillah, fillah."  (5 s)
+IMAGE: N7S2-12.png (the farmer sowing at sunrise)
+MOTION: He scatters seeds, the seeds glow gold as they fall, the sun rises a little. Slow motion.
+
+--- N7S2-13  "So this yaad-faramosh means: we will not forget Allah... that we admit our own mistake..."  (10 s)
+IMAGE: N7S2-13.png (a man seated alone in the lamp-lit hall)
+MOTION: He bows his head and places a hand on his chest, the lamps glow brighter. Slow push in.
+
+--- N7S2-14  "...and then our bond with Allah is established, for the sake of Allah."  (7.5 s)
+IMAGE: N7S2-14.png (a column of light from the sky onto water)
+MOTION: The column of light becomes steady and bright, ripples spread, sparkles rise up the beam. Slow tilt up.
+
+====================================================================
+SHORT 3: NAF7_Short3_Stand_Up_and_the_Thought_Leaves   "DRIVING AWAY STRAY THOUGHTS"   (14 scenes)
+====================================================================
+
+--- N7S3-01  "Now he tells the methods: to drive away khatrat, what should one do?... I am reading them to you."  (10 s)
+IMAGE: NEW. THE SHAYKH seated at a low wooden book-stand, reading from an open book with BLANK pages (no writing),
+       murids in white skullcaps listening in the foreground seen from behind, lamp light, his face completely hidden
+       by soft white light. + STYLE
+MOTION: He slowly turns a page, the murids lean in slightly; the glow stays over his face the whole time.
+        Slow push in.
+
+--- N7S3-02  "Number 1: when khatrat come in great numbers, change your state."  (6 s)
+IMAGE: NEW (may be the same picture as N7S1-01). THE TROUBLED MAN seated, KHATRAT thick around his head. + STYLE
+MOTION: The dark smoke thickens around his head, he lifts his face and straightens his back, ready to rise.
+
+--- N7S3-03  "If you are sitting, stand up; if standing, walk; or sit down."  (12 s)
+IMAGE: NEW. THE MURID halfway rising from a prayer mat in a lamp-lit hall of arches, one knee up, about to stand,
+       seen from the side. + STYLE
+MOTION: He stands up fully and takes two slow steps forward. Slow motion, camera follows him.
+
+--- N7S3-04  "The root principle here is movement. As soon as we move, the khatrat are driven away."  (15 s)
+IMAGE: N7S3-04.png (men walking in an old Hyderabad lane)
+MOTION: The man in front walks steadily forward with his stick, thin dark smoke behind him trails off and fades
+        as he moves. Slow push forward.
+
+--- N7S3-05  "We sit, and khatrat keep coming; we sit and sit, and they do not leave."  (7 s)
+IMAGE: NEW (may be the same picture as N7S1-01). THE TROUBLED MAN seated, KHATRAT circling him. + STYLE
+MOTION: The dark smoke circles slowly around his head again and again, he does not move. Very slow push in.
+
+--- N7S3-06  "The moment we stand up and change our state, the khatrat vanish."  (10 s)
+IMAGE: N7S3-06.png (a man on a mountain path above the mist, a plain wooden signpost)
+MOTION: He walks forward up the path, the mist behind him clears and sinks away, the sky grows brighter.
+        (The signpost must stay plain wood, no writing.)
+
+--- N7S3-07  "Number 2: when a khatra comes into your heart, into your thoughts, run from it."  (7 s)
+IMAGE: NEW. THE MURID seen from behind on a path through a dark forest at night under the moon, a wisp of dark
+       grey smoke at his shoulder, full size. + STYLE
+MOTION: He quickens his pace, the wisp of smoke falls behind him. Camera follows from behind.
+
+--- N7S3-08  "As soon as it comes, drive yourself away from it: leave it behind, and run."  (12 s)
+IMAGE: NEW. The same forest path from the side, THE MURID walking fast, almost running, toward a moonlit clearing,
+       a small cloud of dark smoke left far behind him on the path. + STYLE
+MOTION: He walks fast out of frame toward the light, the smoke stays behind and thins away. Slow motion.
+
+--- N7S3-09  "When a khatra comes, run from it. In a little while the thought will be left behind..."  (9 s)
+IMAGE: N7S3-09.png (footprints on a dark path leading to a golden door in the night sky)
+MOTION: Slow push forward along the footprints toward the door, the door glows brighter.
+
+--- N7S3-10  "...you will get out and be freed from it."  (9 s)
+IMAGE: N7S3-10.png (a white dove caught in a net over the night city)
+MOTION: The dove beats its wings, the net breaks open and falls away, the dove rises. Slow motion.
+
+--- N7S3-11  "We who were captives of the thought get out of that captivity... be free of it."  (12.5 s)
+IMAGE: N7S3-11.png (a white dove flying free over the masjid at night)
+MOTION: The dove flies slowly across the sky toward the moon, wings beating, the city lights twinkle below.
+
+--- N7S3-12  "Or imagine that this thought is running away from you, in the world of imagination."  (8 s)
+IMAGE: NEW. THE MURID seated cross-legged with eyes closed in soft golden light, a thin wisp of dark smoke
+       streaming away from him into the distance and thinning out. + STYLE
+MOTION: The wisp of smoke slowly flows away from him and vanishes in the distance, the light around him brightens.
+
+--- N7S3-13  "That is another way: think, This thought is running from me."  (10 s)
+IMAGE: N7S3-13.png (THE MURID meditating, the shaykh behind him in glowing light)
+MOTION: The murid breathes slowly, the golden light behind him glows and pulses gently; the glow stays over the
+        shaykh's face. Very slow push in.
+
+--- N7S3-14  "Aalam-e-takhayyul means the world of imagination... By this too the khatra is removed."  (11 s)
+IMAGE: N7S3-14.png (a crystal of light)
+MOTION: The crystal slowly turns, light glows from its centre, motes drift around it.
+
+====================================================================
+SHORT 4: NAF7_Short4_Take_Refuge_in_Allah   "IN ALLAH'S REFUGE"   (12 scenes)
+====================================================================
+
+--- N7S4-01  "Come into the refuge of Allah. The way to come into Allah's refuge is this:"  (7 s)
+IMAGE: N7S4-01.png (man at a moonlit window, hands raised)
+MOTION: He raises his hands higher, moonlight grows soft and bright on him. Slow push in.
+
+--- N7S4-02  "Allah Mian, these khatrat keep coming... help me... I want to come into Your refuge."  (10 s)
+IMAGE: N7S4-02.png (man in du'a in a golden courtyard, smoke and light above)
+MOTION: The light from above grows and pushes the dark smoke away, his hands glow. Slow tilt down.
+
+--- N7S4-03  "If these trouble us, where else will we find refuge? ...the khatrat keep coming..."  (14 s)
+IMAGE: NEW (may be the same picture as N7S1-01). THE TROUBLED MAN seated, KHATRAT pressing around him. + STYLE
+MOTION: The dark smoke presses in around him, he looks up toward a soft light above. Slow push in.
+
+--- N7S4-04  "So save us from these khatrat; take us into Your refuge."  (6.5 s)
+IMAGE: N7S4-04.png (man in a dome of golden light in a busy street)
+MOTION: The golden dome closes and brightens around him, the street around him dims and slows.
+
+--- N7S4-05  "Number 4: saying hoon, hoon, breathe out forcefully, outward."  (9.5 s)
+IMAGE: N7S4-05.png (THE MURID meditating, the shaykh's glow behind him)
+MOTION: His chest rises with a deep breath and he breathes out strongly through the mouth; the glow stays over the
+        shaykh's face. Very slow push in.
+
+--- N7S4-06  "Hoon... hoon... hoon... hoon. That is what to do."  (7 s)
+IMAGE: NEW. Close view from the side of THE MURID, eyes closed, breathing out strongly, a small puff of dark grey
+       smoke leaving him and dissolving into warm lamp light. + STYLE
+MOTION: Four slow strong out-breaths; with each one a puff of dark smoke leaves and dissolves into the light.
+
+--- N7S4-07  "To drive away khatrat, what should you do? Saying hoon, hoon, breathe out forcefully."  (10 s)
+IMAGE: NEW. THE TROUBLED MAN now sitting upright, breathing out, the dark smoke around his head breaking up and
+       drifting away, warm light returning. + STYLE
+MOTION: He breathes out, the smoke breaks apart and drifts away, his face relaxes, light grows.
+
+--- N7S4-08  "Even great people are troubled by khatrat... The Awliya Allah are troubled too."  (11 s)
+IMAGE: N7S4-08.png (an old wali walking in the rain, his face hidden in light)
+MOTION: Rain falls steadily, he walks slowly forward with his head bowed; the glow stays over his face.
+
+--- N7S4-09  "...then they come into Allah's refuge, and they adopt all these methods."  (5 s)
+IMAGE: N7S4-09.png (the dome of golden light in the street)
+MOTION: The dome of light glows and grows brighter. Slow push in.
+
+--- N7S4-10  "Number 6: by reciting this verse too, khatrat lessen. What is it?"  (9 s)
+IMAGE: N7S4-10.png (a man seated alone in the lamp-lit hall)
+MOTION: He sits still, lips moving in quiet recitation, the lamps glow brighter one by one. Slow push in.
+        (No book or page with writing appears.)
+
+--- N7S4-11  "If He wills, He will take you away and bring a new creation."  (6 s)
+IMAGE: N7S4-11.png (a burst of light in space)
+MOTION: The burst of light expands, new stars and light streams form out of it. Slow push in.
+
+--- N7S4-12  "And that is not difficult for Allah."  (4 s)
+IMAGE: N7S4-12.png (sun over a sea of clouds)
+MOTION: The sun rises slowly over the clouds, golden light spreads.
+
+====================================================================
+SHORT 5: NAF7_Short5_I_Recognise_You_in_Every_Form   "THE REAL EXISTENCE IS HIS"   (12 scenes, light only)
+====================================================================
+
+--- N7S5-01  "Number 5: when a khatra comes, the great ones say: Very well, you have come."  (7 s)
+IMAGE: N7S5-01.png (a field of coloured lights in space)
+MOTION: The lights drift slowly toward the centre and gather. Slow push in.
+
+--- N7S5-02  "You came in changing forms: so what? I certainly recognise you."  (6.5 s)
+IMAGE: N7S5-02.png (spheres of golden light)
+MOTION: The spheres slowly turn and change shape into one another, light threads connect them.
+
+--- N7S5-03  "The real existence is You. Asl-e-wujood, the real existence."  (10 s)
+IMAGE: N7S5-03.png (a column of light onto water)
+MOTION: The column of light grows brighter and steadier, ripples spread. Slow tilt up.
+
+--- N7S5-04  "Whose is the real existence? Allah's."  (5 s)
+IMAGE: N7S5-04.png (a sun of light in space)
+MOTION: The light glows and pulses softly, slow push in.
+
+--- N7S5-05  "Existence is His, and it is He who grants the honour of existence."  (9 s)
+IMAGE: N7S5-05.png (streams of golden lights flowing down)
+MOTION: Streams of light pour down from the top and each small light glows as it arrives. Slow tilt down.
+
+--- N7S5-06  "In everything, whose is the existence? Allah's."  (8 s)
+IMAGE: N7S5-06.png (a dome of countless lights)
+MOTION: Slow push in over the field of lights, they twinkle in waves.
+
+--- N7S5-07  "Nothing has an existence of its own; existence is His alone."  (11.5 s)
+IMAGE: N7S5-07.png (sun over the clouds)
+MOTION: The clouds move slowly, all light gathers toward the single sun. Slow push in.
+
+--- N7S5-08  "Who is bad, and who is good? This is Hazrat's rubai."  (11 s)
+IMAGE: N7S5-08.png (curtains of golden light)
+MOTION: The curtains of light slowly sway and part, a path of light opens. Slow push forward.
+
+--- N7S5-09  "You are perfect in every state."  (8 s)
+IMAGE: N7S5-09.png (rays through clouds)
+MOTION: The rays brighten and spread slowly. Slow tilt up.
+
+--- N7S5-10  "In whatever colour You come, it does not matter; I recognise You by this grace."  (8 s)
+IMAGE: N7S5-10.png (a crystal of light)
+MOTION: The crystal slowly turns and the light inside changes colour softly: gold, rose, blue, back to gold.
+
+--- N7S5-11  "That is: whose is the real existence? Allah's alone."  (6 s)
+IMAGE: N7S5-11.png (a sun of light on water, beam from above)
+MOTION: The beam and the sun glow together, ripples spread outward.
+
+--- N7S5-12  "One has to rise very high for it. It is no ordinary thing; it belongs to a very great station."  (13.5 s)
+IMAGE: NEW. A lone traveller in a white kurta and dark shawl seen from behind, climbing a steep mountain path above a
+       sea of clouds toward a high peak glowing with soft golden light at sunrise. + STYLE
+MOTION: He climbs slowly upward, the camera rises behind him and the glowing peak comes into view, clouds below.
+
+====================================================================
+THE URDU / ARABIC WORDS ON SCREEN
+====================================================================
+The AI must draw no writing (see RULES). In the old picture version, slides.py added real words over the pictures
+(for example پناہ, خیالات خیر, یاد فراموش, ہوں ہوں, the verse وَيَأْتِ بِخَلْقٍ جَدِيدٍ, اُدْعُوْنِیْ اَسْتَجِبْ لَکُمْ, اَلدُّعَاءُ مُخُّ الْعِبَادَةِ).
+In the animated scenes the engine does not add them yet; the English captions still carry the meaning.
+
+TIPS
+- If the tool lets you set "start frame", use the png as the start frame.
+- If THE MURID or THE TROUBLED MAN looks different from scene to scene, upload the earlier picture too and say
+  "same man, same clothes as in this image".

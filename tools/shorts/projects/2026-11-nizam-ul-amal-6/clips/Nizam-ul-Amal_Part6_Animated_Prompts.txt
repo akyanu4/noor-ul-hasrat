@@ -1,0 +1,348 @@
+ANIMATED SHORTS: NIZAM-UL-AMAL-E-FUQARA, PART 6 (NAF006.mp3)
+Hazrat Azam Pasha R.A.'s own voice. 5 Shorts, 51 scenes, one scene for each sentence or short thought.
+For each scene: (1) use the IMAGE named (it is already in this folder as <CODE>.png), or make a new one from the
+prompt, then (2) animate it into a VIDEO CLIP with the MOTION prompt.
+
+====================================================================
+HOW TO DO IT
+====================================================================
+1. IMAGE: most scenes already have their starting picture here: N6S1-01.png, N6S1-02.png ... (9:16, cropped
+   from the pictures of the earlier Shorts). Scenes marked  NEW IMAGE  have only a stand-in picture: paste the
+   image prompt (+ STYLE) into ChatGPT or Gemini, ask for portrait 9:16, and save it over the stand-in with the
+   same name (for example N6S1-03.png).
+2. CLIP: open an image-to-video tool, for example:
+     - Kling AI (klingai.com) -> Image to Video   (choose 10 seconds; 5 s is enough for scenes under 8 s)
+     - Gemini app -> Video (Veo): upload the image, paste the motion prompt  (8-second clips)
+     - Hailuo (hailuoai.video) or Runway also work
+   Choose 9:16. Save it as  N6S1-01.mp4, N6S1-02.mp4 ...  in this same folder:
+     tools/shorts/projects/2026-11-nizam-ul-amal-6/clips/
+   Any sound or music the tool adds is ignored; Hazrat's voice is used.
+   A clip shorter than its scene is slowed (down to 0.6x), then its last frame holds with a slow zoom. So a
+   10 s clip covers up to about 16.5 s. Scenes marked (long) are a little longer than that; a 10 s clip is fine.
+3. Until a clip is made, the Short uses the still picture with a slow zoom, so it always renders.
+   Tell me when the clips are in; I render the Shorts with the voice, captions, title, end card and credits.
+
+CHECK EVERY CLIP before keeping it: the shaykh's face must stay covered by light from the first frame to the
+last, no extra hands or fingers, no letters or signs appearing anywhere, no women appearing in the crowds,
+nobody suddenly changing clothes. If a clip goes wrong, generate it again (or delete it: the still is used).
+
+RULES (keep in every prompt)
+- Never draw the Prophet (peace be upon him). Never draw Allah's name or any calligraphy.
+- NO WRITING AT ALL. The AI must not draw letters, Arabic, Urdu, book titles, shop signs or captions. The words
+  of the dars (Ya Khaliqu, Ya Bari'u, Ya Musawwiru; Allah; Tawheed; the verse) are NOT drawn by the AI.
+- HAZRAT (the shaykh): face ALWAYS hidden by soft white glowing light. No facial features. The glow stays over
+  his face in every frame of the clip.
+- Shaytan and bad thoughts: ONLY as dark smoke or shadow. Never a figure, never a face in the smoke.
+- People in streets and crowds: only men, seen from behind or the side, faces out of focus.
+- No symbols of other religions (no temples, crosses, idols, Sikh or Hindu signs).
+
+====================================================================
+THE CHARACTERS (copy into a prompt whenever they appear)
+====================================================================
+SEEKER = "a young Hyderabadi man in his twenties in a plain white kurta-pajama and a white crochet skullcap,
+short dark beard, seen from behind or from the side"
+
+HAZRAT = "an elderly Sufi shaykh in a long dark green robe over a white kurta, a white turban, a long white
+beard, prayer beads in his hand, his face completely hidden by a soft white glowing light"
+
+DOVE = "a white dove" (the gaze; the red threads are the net of the eyes)
+
+STYLE (end of every image prompt) =
+"photorealistic, cinematic, old Hyderabad, warm natural light, soft golden haze, rich detail, vertical 9:16,
+no text, no letters, no writing, no signs, no logos, no women"
+
+####################################################################
+SHORT 1  "A PASSING THOUGHT OR A RESOLVE"   (NAF6_Short1_A_Passing_Thought_or_a_Resolve, 11 scenes)
+####################################################################
+
+--- N6S1-01  "A khatra is what comes and goes. A bad thought came, or a good thought came, and it left."  (16.8 s, long)
+IMAGE:  N6S1-01.png (a stone dropping into golden water).
+MOTION: A small stone drops into still golden water, rings of ripples spread out slowly and fade away, the water
+        becomes calm and smooth again, sunlight sparkling. Slow motion, camera still.
+
+--- N6S1-02  "When you make a firm intention, it is no longer a khatra; it becomes 'azm, a resolve."  (15.6 s)
+IMAGE:  N6S1-02.png (a man sitting by a moonlit window, seen from behind).
+MOTION: The man straightens his back and slowly lowers his raised hands onto his knees, firm and decided; the
+        lamp flame stops flickering and burns tall and steady. Slow push in.
+
+--- N6S1-03  "A bad thought came and we resolved on it: 'I will do this.' We became sinners."  (18.9 s, long)   NEW IMAGE
+IMAGE:  SEEKER sitting alone on a low wooden bench in a dim room at night, a single oil lamp, a thin curl of dark
+        smoke rising behind his shoulder, his hand closing into a fist on his knee. + STYLE
+MOTION: The dark smoke curls slowly around his shoulders, he clenches his fist and stands up, the lamp gutters
+        and the room grows darker, his shadow stretches long across the wall. Slow, heavy.
+
+--- N6S1-04  "And a good thought came and we resolved on it: then we are given its guidance."  (8.3 s)
+IMAGE:  N6S1-04.png (a road of golden light through the hills).
+MOTION: Camera glides slowly forward along the glowing road, the light runs ahead along the path toward the
+        white building on the hill, golden dust in the air.
+
+--- N6S1-05  "Remember one thing: a khatra comes and goes. A firm intention is no longer a khatra; it becomes 'azm."  (13.1 s)
+IMAGE:  N6S1-05.png (a sphere of golden light among the stars).
+MOTION: Tiny sparks of light drift past the glowing sphere and fade away; one spark turns, enters the sphere and
+        stays, and the sphere glows a little brighter. Slow, calm.
+
+--- N6S1-06  "A khatra is forgiven: the bad thought that came. But the resolve is not forgiven."  (12.7 s)
+IMAGE:  N6S1-06.png (a man praying in a mosque courtyard under a beam of light).
+MOTION: The man raises his hands in dua, the beam of light from above grows brighter and wider, the smoky wisps
+        in the light dissolve upward and vanish. Slow push in.
+
+--- N6S1-07  "When a bad thought comes and we make a firm intention, we become sinners; if there is no intention, it is forgiven."  (16.5 s)   NEW IMAGE
+IMAGE:  SEEKER seen from behind, standing where an old Hyderabad lane divides in two at dusk: the left lane dark
+        and smoky, the right lane warm with hanging lamps. + STYLE
+MOTION: He stands still, looks toward the dark lane, then slowly turns and walks into the warm lit lane; the dark
+        smoke on the left thins and drifts away. Camera follows slowly.
+
+--- N6S1-08  "A person made a firm intention to do a bad deed, but things happened so that he could not carry it out."  (12.9 s)   NEW IMAGE
+IMAGE:  A man in a dark shawl seen from behind, walking quickly down a narrow old lane at night, ahead of him a
+        heavy wooden door in an archway, half open. + STYLE
+MOTION: The man walks fast toward the door; the heavy door swings shut in front of him, he stops, his shawl
+        settles. Camera behind him, slow.
+
+--- N6S1-09  "This resolve is a sin. He will be punished for it, but less than for the bad deed."  (7.6 s)   NEW IMAGE
+IMAGE:  An old brass balance scale on a dark wooden table, lit by one oil lamp, a small dark pebble in one pan,
+        the other pan empty, the beam almost level. + STYLE
+MOTION: The small dark pebble settles in its pan, the beam dips only a little and stops. Lamp flame flickers.
+        Camera still, slow.
+
+--- N6S1-10  "He did not do the bad deed; things came in between. Still he is answerable, but not as much as for doing it."  (17.6 s, long)
+IMAGE:  N6S1-10.png (a man kneeling at the water's edge at sunset, seen from behind).
+MOTION: The man slowly bows his head and opens his hands, the evening light softens and warms around him,
+        gentle ripples on the water. Slow pull back.
+
+--- N6S1-11  "Good and bad thoughts come and go from morning to evening; no one is held to account for them."  (9.8 s)
+IMAGE:  N6S1-11.png (the sun over the water and the city, ripples).
+MOTION: Time-lapse: clouds drift across the sky, the sun moves slowly down toward the city, small ripples appear
+        on the water and fade, again and again. Camera still.
+
+####################################################################
+SHORT 2  "NAZAR BAR QADAM"   (NAF6_Short2_Keep_Your_Gaze_on_Your_Steps, 10 scenes)
+####################################################################
+
+--- N6S2-01  "How can these passing thoughts be driven away? One important principle: nazar bar qadam."  (12.8 s)   NEW IMAGE
+IMAGE:  SEEKER walking calmly through a busy old Hyderabad bazaar lane in the morning, his eyes lowered to the
+        stones in front of his feet, the men around him soft and out of focus. + STYLE
+MOTION: He walks slowly toward the camera with his gaze on his steps, the crowd flows past him blurred, he does
+        not look up. Camera moves backward with him.
+        (Stand-in is the blurred bazaar NA4-15b. The old picture NA4-17 is not used: it has women's faces, a
+        Sikh turban and shop signs.)
+
+--- N6S2-02  "Keep your gaze on your feet, on your steps, and khalwat dar anjuman."  (10.0 s)
+IMAGE:  N6S2-02.png (a foot in a simple leather jooti stepping onto old stone steps).
+MOTION: One foot steps up onto the next stone step, then the other, slow motion, dust in a sunbeam.
+
+--- N6S2-03  "Keep your attention in your heart. The gathering is within our own heart."  (7.1 s)
+IMAGE:  N6S2-03.png (a man standing in a sphere of golden light in the bazaar; the crowd around is blurred).
+        Optional better image: SEEKER standing still with raised hands inside a soft dome of golden light in the
+        middle of a crowded bazaar, the men around him blurred and passing. + STYLE
+MOTION: The crowd moves past blurred outside the dome; inside, everything is still, the golden light pulses
+        gently like a heartbeat. Slow push in.
+
+--- N6S2-04  "Always keep your gaze lowered. Always keep your gaze lowered. Do not look here and there."  (16.3 s)
+IMAGE:  N6S2-04.png (an old man with prayer beads, gaze lowered, light through a lattice window).
+MOTION: He keeps his eyes lowered, the beads slip slowly through his fingers one by one, sunbeams move gently
+        across his shoulder. Very slow push in.
+
+--- N6S2-05  "There is great attraction in the human face. Whoever you look at, his face will come into your heart through your eyes."  (18.2 s, long)
+IMAGE:  N6S2-05.png (the bazaar under the arch, the crowd softly blurred).
+MOTION: The blurred crowd moves along the lane, lamps glow, the camera drifts slowly forward through the
+        moving figures, everything soft and out of focus. Keep every face blurred.
+
+--- N6S2-06  "If you keep looking all around, your heart will be scattered. The human face is a trial, a qiyamat."  (13.5 s)   NEW IMAGE
+IMAGE:  SEEKER sitting on the steps of an old courtyard, seen from the side, his head in his hands, blurred men
+        passing all around him, scattered golden dust whirling in the air. + STYLE
+MOTION: The passing figures swirl faster around him as a blur, the golden dust scatters in all directions, he
+        presses his hands to his head. Slow circling camera.
+
+--- N6S2-07  "For a few days, guard your gaze. This is the practical teaching he is giving."  (11.5 s)
+IMAGE:  N6S2-07.png (a man sitting alone in a vast arched hall at night, lamps).
+MOTION: The man sits still with lowered eyes, the lamp flames flicker; the light in the arches slowly changes from
+        night blue to dawn gold, days passing. Slow push in.
+
+--- N6S2-08  "Guard your gaze, and protect yourself from the gaze of others."  (8.9 s)   NEW IMAGE
+IMAGE:  SEEKER walking through an old lane, drawing the end of his white shawl over his head, eyes lowered, men
+        passing blurred on both sides. + STYLE
+MOTION: He lifts the shawl over his head and walks on with his gaze down, the passing men are a soft blur.
+        Camera moves slowly beside him.
+
+--- N6S2-09  "When the heart is fixed on one point, the reality will come before you. We keep our gaze lowered."  (11.5 s)
+IMAGE:  N6S2-09.png (a crystal heart with a single light inside).
+MOTION: Scattered motes of light circle around the crystal, then slowly gather into the one bright point at its
+        centre, which glows steady and strong. Slow push in.
+
+--- N6S2-10  "Then, when the heart is fixed on one point, the reality will come before you, and we will come to know it."  (13.0 s)
+IMAGE:  N6S2-10.png (rays of light pouring down through the clouds).
+MOTION: The clouds part slowly and the column of light grows brighter, the camera rises gently into the light.
+
+####################################################################
+SHORT 3  "THE EYES ARE HUNTERS"   (NAF6_Short3_The_Eyes_Are_Hunters, 10 scenes)
+####################################################################
+
+--- N6S3-01  "These eyes are great hunters. What are these red threads? A net that has been spread."  (12.2 s)
+IMAGE:  N6S3-01.png (the DOVE flying over the moonlit city).
+MOTION: The white dove flies freely and slowly across the moonlit sky above the minarets, wings beating in slow
+        motion, the moon glowing.
+
+--- N6S3-02  "The red threads in the eyes, the red lines that stay in the eyes: that is what he is speaking of."  (12.4 s)
+IMAGE:  N6S3-02.png (red threads crossing the night sky like a net).
+MOTION: The thin red threads draw themselves slowly across the night sky one by one, weaving into a wide net over
+        the city. Camera still.
+
+--- N6S3-03  "These eyes are great hunters; these red threads are a net spread out."  (7.9 s)   NEW IMAGE
+IMAGE:  The DOVE flying over the moonlit old city toward a faint web of thin red threads stretched across the sky
+        ahead of it. + STYLE
+MOTION: The dove flies on toward the net without seeing it, the red threads catch the moonlight. Camera follows
+        behind the dove.
+
+--- N6S3-04  "If a bird sits in a net, what happens? It is caught in it. Bird or animal, whatever it is, it is caught."  (11.5 s)
+IMAGE:  N6S3-04.png (the dove caught in the red threads).
+MOTION: The dove's wings press against the threads, it flutters slowly and the threads wind around its wings,
+        it is held fast. Slow motion.
+
+--- N6S3-05  "So what are these red threads? A net that has been spread."  (9.3 s)
+IMAGE:  N6S3-05.png (the red net over the whole city).
+MOTION: Slow pull back: the red net is seen stretching over the whole night sky above the city, the moon behind it.
+
+--- N6S3-06  "Laal dore hain band-e-pa-e-nazar, sayd karti hain yaar ki aankhen."  (11.5 s)   (the verse)
+IMAGE:  N6S3-06.png (a sphere of golden light among the stars).
+MOTION: Golden threads of light curl slowly out of the sphere and drift through the stars like fine silk, sparks
+        rise. Calm, slow.
+
+--- N6S3-07  "They seize the gaze and hold it fast."  (8.2 s)
+IMAGE:  N6S3-07.png (close view of the dove in the red threads).
+MOTION: The threads tighten gently around the dove, its wings fold and it goes still. Slow push in.
+
+--- N6S3-08  "Band-e-pa: pa means the foot; band means to seize it. The foot of the gaze is seized."  (19.0 s, long)
+IMAGE:  N6S3-08.png (the dove with a red thread knotted round its feet).
+MOTION: The red thread winds once more around the dove's feet and knots; the dove beats its wings but is held by
+        the foot, the thread pulls taut. Slow motion.
+
+--- N6S3-09  "Red threads, fetters on the gaze. Sayd means hunting: the Beloved's eyes hunt."  (8.1 s)   NEW IMAGE
+IMAGE:  The DOVE rising into a tall column of golden light in the night sky, the red threads on its feet turning
+        to gold. + STYLE
+MOTION: The threads turn from red to gold and the dove is drawn gently upward into the light, wings open, calm.
+
+--- N6S3-10  "Who is the Beloved? Allah."  (9.0 s)
+IMAGE:  N6S3-10.png (a pillar of light, rings of light at its base).
+MOTION: The pillar of light brightens, rings of light ripple slowly outward at its base, sparks rise. Camera tilts
+        up slowly. (The AI draws no word; the name is said by Hazrat.)
+
+####################################################################
+SHORT 4  "TASAWWUR AND KASHF"   (NAF6_Short4_What_Opened_My_Eyes, 11 scenes)
+####################################################################
+
+--- N6S4-01  "Whichever elder you hold in your thought, the states in that elder's blessed chest will begin to appear to you."  (15.1 s)
+IMAGE:  N6S4-01.png (a young man meditating, a glowing elder above him; the elder's face is already in light).
+MOTION: The young man sits still with closed eyes; the warm light above him grows and flows slowly down into his
+        chest, his chest glows softly. The glow stays over the elder's face. Slow push in.
+
+--- N6S4-02  "Allahu Akbar, what a great thing is being taught! I spent so much of my life in heedlessness."  (11.7 s)
+IMAGE:  N6S4-02.png (an old man holding an hourglass; his face is in light).
+MOTION: The sand runs slowly through the hourglass, he turns it over in his hands, the evening sun sinks behind
+        him. The glow stays over his face.
+
+--- N6S4-03  "'Baba, does my tasawwur come to you?' 'No, it does not.'"  (9.5 s)   NEW IMAGE
+IMAGE:  HAZRAT sitting on a carpet in a lamp-lit room, SEEKER kneeling before him seen from behind, Hazrat's hand
+        raised gently as if asking a question. + STYLE
+MOTION: Hazrat lowers his hand to his knee, the seeker shakes his head slowly, lamp light flickers. The glow
+        stays over Hazrat's face in every frame.
+
+--- N6S4-04  "'Then do this, Baba: read Ya Khaliqu, Ya Bari'u, Ya Musawwiru.' Musawwir comes from tasveer, image."  (12.2 s)
+IMAGE:  N6S4-04.png (a man in a mosque courtyard with raised hands, golden light pouring down).
+MOTION: He raises his hands and recites, the golden light pours down and swirls slowly around him. No letters in
+        the light.
+
+--- N6S4-05  "'Look at me in your tasawwur.' So I held Hazrat in my thought, and I was looking within Hazrat."  (14.1 s)   NEW IMAGE
+IMAGE:  SEEKER sitting cross-legged with closed eyes, seen from the side, and before him in the air a soft
+        figure of HAZRAT made of golden light, the face only a glow. + STYLE
+MOTION: The golden figure brightens, its light reaches toward the seeker and surrounds him, the seeker becomes
+        calm and still. The face stays only light.
+
+--- N6S4-06  "And what happened to me? Kashf opened for me. When? Very long ago. Remember this."  (15.5 s)
+IMAGE:  N6S4-06.png (veils of golden light).
+MOTION: The golden veils part slowly from the centre, revealing a path of sparkling light beyond. Camera moves
+        gently forward through the opening.
+
+--- N6S4-07  "I had a book this thick."  (8.9 s)   NEW IMAGE
+IMAGE:  A very thick old leather-bound book on a low wooden desk, plain cover with no title and no letters, an oil
+        lamp and prayer beads beside it, night. + STYLE
+MOTION: Dust motes drift in the lamp light, the heavy cover slowly opens by itself. Slow push in.
+
+--- N6S4-08  "Muraqaba aur Kashf: this thick, five hundred pages. When would I read it? When would you read it?"  (14.4 s)   NEW IMAGE
+IMAGE:  The same thick book lying open, hundreds of pages, the lamp beside it burning low; the pages are blank or
+        blurred, no writing. + STYLE
+MOTION: The pages turn over and over by themselves, the lamp burns down, the light at the window changes from
+        night to day and back. Camera still.
+
+--- N6S4-09  "What did my pir do for me? 'Baba, does my tasawwur come to you?' 'No.' 'All right, do this.'"  (14.9 s)   NEW IMAGE (same picture as N6S4-03)
+IMAGE:  Use the new N6S4-03 picture again (save a copy as N6S4-09.png).
+MOTION: Hazrat leans forward and gently places his hand on the seeker's head, the lamp light grows warmer around
+        them both. The glow stays over Hazrat's face in every frame.
+
+--- N6S4-10  "'Do this: read Ya Khaliqu, Ya Bari'u, Ya Musawwiru.' I have told you; see for yourselves."  (18.6 s, long)
+IMAGE:  N6S4-10.png (a man praying in the mosque courtyard under the light).
+MOTION: He keeps his hands raised in dua, the beam of light from above slowly widens and spirals around him,
+        stars shine. No letters in the light. Slow push in.
+
+--- N6S4-11  "This is what opened my eyes. I did not need to read books."  (7.2 s)
+IMAGE:  N6S4-11.png (the sun above the clouds).
+MOTION: The sun breaks fully through the clouds, a bright wave of light floods the frame. Slow tilt up.
+
+####################################################################
+SHORT 5  "WHERE WILL YOU FIND TAWHEED?"   (NAF6_Short5_Where_Will_You_Find_Tawheed, 9 scenes)
+####################################################################
+
+--- N6S5-01  "Look, there is one more thing: do not eat many kinds of food."  (13.3 s)   NEW IMAGE (9:16 version)
+IMAGE:  A long low dastarkhwan crowded with many different dishes, biryani, curries, kebabs, sweets, fruit,
+        lantern light, no people, seen from one end. + STYLE
+        (The stand-in is a narrow crop of NA6-01; a 9:16 version will look much sharper.)
+MOTION: Steam rises from the dishes, the camera glides slowly along the long spread, more and more dishes.
+
+--- N6S5-02  "Many-coloured food brings impurity into the thoughts. Hazrat has put it in verse."  (13.3 s)   NEW IMAGE
+IMAGE:  SEEKER seen from the side, sitting before a crowded spread of rich dishes, a thin curl of dark smoke rising
+        from the plates toward his head. + STYLE
+MOTION: The dark smoke rises slowly from the dishes and curls around his head, he lifts a hand to his forehead.
+
+--- N6S5-03  (the verse again)  "Many-coloured food brings impurity into the thoughts."  (6.5 s)
+IMAGE:  N6S5-03.png (a simple bowl and one roti on a mat, lamp light): the simple meal, the other way.
+MOTION: Soft steam rises from the bowl, the lamp light glows, calm and still. Slow push in.
+
+--- N6S5-04  "What does it mean? It brings impurity."  (14.7 s)   NEW IMAGE
+IMAGE:  SEEKER sitting alone on a prayer mat at night trying to do dhikr, prayer beads in his hand, wisps of dark
+        smoke drifting around his head, a lamp beside him. + STYLE
+MOTION: He tries to move the beads but stops, the dark smoke drifts across his face and around his head, the lamp
+        flickers. Slow push in.
+
+--- N6S5-05  "When will you reach your Murad, your goal? Where will you find Tawheed?"  (11.3 s)   NEW IMAGE
+IMAGE:  SEEKER seen from behind as a small lone traveller on a long winding mountain path at dawn, a soft light far
+        away on the summit. + STYLE
+MOTION: He walks slowly up the winding path toward the distant light, morning mist drifting across. Camera
+        behind him, slow.
+
+--- N6S5-06  "Instead of thinking in one direction, you are thinking about everything."  (8.8 s)
+IMAGE:  N6S5-06.png (the blurred bazaar under the arch).
+MOTION: The blurred crowd rushes in every direction, the camera turns slowly this way and that, everything
+        moving. Keep every face blurred.
+
+--- N6S5-07  "Where will you find Tawheed? Tawheed is one: Allah is one."  (6.9 s)
+IMAGE:  N6S5-07.png (one pillar of light).
+MOTION: Scattered sparks from all sides are drawn into the single column of light, which grows bright and still.
+
+--- N6S5-08  "When will you reach your goal? Where will you find Tawheed? This is what is being said."  (13.2 s)
+IMAGE:  N6S5-08.png (one road of light through the hills).
+MOTION: Camera glides steadily forward along the single straight road of light toward the white building on the
+        hill, never turning aside.
+
+--- N6S5-09  "When will you reach your goal? Where will you find Tawheed?"  (13.9 s)
+IMAGE:  N6S5-09.png (the sun rising above the clouds).
+MOTION: The sun rises slowly above the sea of clouds and its one light fills the whole sky. Slow tilt up.
+
+====================================================================
+NEW IMAGES TO MAKE (17), all saved in tools/shorts/projects/2026-11-nizam-ul-amal-6/clips/
+====================================================================
+N6S1-03  N6S1-07  N6S1-08  N6S1-09
+N6S2-01  N6S2-06  N6S2-08
+N6S3-03  N6S3-09
+N6S4-03 (copy it as N6S4-09 too)  N6S4-05  N6S4-07  N6S4-08
+N6S5-01  N6S5-02  N6S5-04  N6S5-05
+Optional, sharper versions: N6S2-03 (the man in the dome of light), and the small crops N6S1-02, N6S1-04,
+N6S1-10, N6S2-07, N6S5-08 (prompt: describe the picture in the .png + STYLE).

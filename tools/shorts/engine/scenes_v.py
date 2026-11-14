@@ -3,7 +3,9 @@ Veo or Kling) filling the segment, under the usual captions, header and brand li
 - The clip is slowed (down to 0.6x) to fill a longer segment; after its last frame the last frame holds with a slow zoom.
 - No clip yet but <project>/clips/<name>.png (or images/<name>.png) exists: the still image with a slow Ken Burns move.
 - Neither: a dark placeholder card with the scene name, so a test render works before all clips are in.
-Timeline entry: ("voice", a, b, "clip:AN1-01")."""
+Timeline entry: ("voice", a, b, "clip:AN1-01").
+Words on a clip: <project>/clip_words.py with WORDS = {"AN1-01": {"text": "...", "text_at": (fx, fy),
+"surprise": [(t, fx, fy, "...")]}} - the same options as slides (scenes_g.py); surprise times are recording times."""
 import os, math
 import cv2
 from PIL import Image, ImageDraw
@@ -63,9 +65,27 @@ def _shaded(im):   # soft dark band at the top (heading) and bottom (brand line)
         _shade = Image.fromarray(m)
     out = im.convert("RGBA"); out.alpha_composite(_shade); return out.convert("RGB")
 
+_words = None
+def _clip_words():
+    global _words
+    if _words is None:
+        _words = {}
+        p = os.path.join(cfg.PROJECT, "clip_words.py")
+        if os.path.exists(p):
+            ns = {}; exec(open(p, encoding="utf-8").read(), ns); _words = ns.get("WORDS", {})
+    return _words
+
 _dur = {}
-def clip(name, tl, d):
-    return _shaded(_clip(name, tl, d))
+def clip(name, tl, d, ot=None):
+    img = _shaded(_clip(name, tl, d))
+    w = _clip_words().get(name)
+    if w:
+        import scenes_g as G
+        if w.get("surprise") and ot is not None: img = G.apply_surprise(img, ot, w["surprise"])
+        if w.get("text"):
+            tx, ty = w.get("text_at", (0.5, 0.13))
+            img = L.paste_center(img, L.urdu(w["text"], 92), L.W * tx, L.H * ty, alpha=min(1, tl / 0.8))
+    return img
 
 def _clip(name, tl, d):
     p = _find(name, (".mp4", ".mov", ".webm"))
