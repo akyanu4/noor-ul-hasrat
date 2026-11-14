@@ -96,7 +96,7 @@
   var featEl = wrap.querySelector('#evFeat'), listEl = wrap.querySelector('#evList'), dotsEl = wrap.querySelector('#evDots'), rollEl = wrap.querySelector('#evRoll');
   var cur = 0, held = false, resume = 0, EVERY = 5000;
 
-  function adj() { var a = 0; try { a = parseInt(localStorage.getItem('noor_hijri_adj'), 10) || 0; } catch (e) {} return a < -2 || a > 2 ? 0 : a; }
+  function adj() { var a = parseInt(cfg.hijriAdj, 10) || 0; try { var o = localStorage.getItem('noor_hijri_adj'); if (o != null && o !== '') a = parseInt(o, 10) || 0; } catch (e) {} return a < -2 || a > 2 ? 0 : a; }
   function localDays(day) { var ln = new Date(), lday = Date.UTC(ln.getFullYear(), ln.getMonth(), ln.getDate()); return Math.round((day - lday) / 86400000); }
 
   var data = { feat: null, rows: [] };

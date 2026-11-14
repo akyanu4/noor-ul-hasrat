@@ -13,6 +13,10 @@
   oneSignalAppId: "46d22dc3-ea76-4e2f-aaf7-1eeb250efa84",
   // Optional accounts (More → My Account). Turn on after the Firebase service account and Gmail are set in Vercel (tools/firebase/ACCOUNTS-SETUP.md).
   accountsOn: true,
+  // Moon-sighting correction for everyone (-2..2 days), so the app follows the local announcement.
+  // Jumada al-Akhira 1448 began on Thu 12 Nov 2026 in our region (calculation said Wed 11), so -1. Check again at each new moon.
+  // A member's own +/- in the Calendar still overrides this on their phone. The reminder jobs read data/hijri-adj.json (keep both the same).
+  hijriAdj: -1,
   bayahOn: true,      // "Taking Bai'at" steps (More → Bay'ah), approved 8 Nov 2026
   // Living Shaykhs / Khalifas who give Bai'at: the choices under My Account → Bai'at ("Other" stays for anyone else).
   bayahGuides: ["Alhaj Rasheed Khan (Ayub), Khalifa", "Nooruddin (Nayeem Pasha)"],

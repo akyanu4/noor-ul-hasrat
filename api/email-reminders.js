@@ -62,7 +62,7 @@ function weeklyEmail(p, s, site, nowMs) {
 
 async function run(env, nowMs, fetchFn, dry) {
   const site = (env.SITE_URL || 'https://noor-ul-hasrat.vercel.app').replace(/\/$/, '');
-  let adj = parseInt(env.HIJRI_ADJ, 10) || 0; if (adj < -2 || adj > 2) adj = 0;
+  let adj = parseInt(env.HIJRI_ADJ != null && env.HIJRI_ADJ !== '' ? env.HIJRI_ADJ : require('../data/hijri-adj.json').adj, 10) || 0; if (adj < -2 || adj > 2) adj = 0;
   const d = GG.db(env, fetchFn);
   const profiles = (await d.get('profiles')) || {};
   const people = Object.keys(profiles).map(id => ({ id, p: profiles[id] || {} })).filter(x => x.p.email && x.p.remind);

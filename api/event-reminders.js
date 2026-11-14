@@ -42,7 +42,7 @@ async function send(it, env, site, fetchFn) {
 
 async function run(env, nowMs, fetchFn) {
   const site = (env.SITE_URL || 'https://noor-ul-hasrat.vercel.app').replace(/\/$/, '');
-  let adj = parseInt(env.HIJRI_ADJ, 10) || 0; if (adj < -2 || adj > 2) adj = 0;
+  let adj = parseInt(env.HIJRI_ADJ != null && env.HIJRI_ADJ !== '' ? env.HIJRI_ADJ : require('../data/hijri-adj.json').adj, 10) || 0; if (adj < -2 || adj > 2) adj = 0;
   const items = plan(nowMs, adj), res = { planned: items.map(i => i.heading + ' @ ' + new Date(i.at).toISOString()), ok: 0, failed: 0, errors: [] };
   for (const it of items) { const o = await send(it, env, site, fetchFn).catch(e => 'fail:' + e.message); if (o === 'ok') res.ok++; else { res.failed++; res.errors.push(o); } }
   return res;

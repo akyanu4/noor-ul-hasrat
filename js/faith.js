@@ -179,7 +179,7 @@
         duaBox = mk('duas', 'Duas', 'duaBody'), donBox = mk('donate', 'Donate', 'donBody');
 
     /* ----- calendar ----- */
-    var adj = parseInt(sget('noor_hijri_adj'), 10) || 0; if (adj < -2 || adj > 2) adj = 0;
+    var own = sget('noor_hijri_adj'), adj = own != null && own !== '' ? (parseInt(own, 10) || 0) : (parseInt((cfg || {}).hijriAdj, 10) || 0); if (adj < -2 || adj > 2) adj = 0;   // the member's own setting, else the community's
     // The date under "Noor" at the top uses the same calculation and the same moon-sighting adjustment as the calendar, so they always agree.
     function paintHeader() {
       var hd = doc.getElementById('hijriDate'); if (!hd || !api.supported()) return;
