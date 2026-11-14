@@ -36,7 +36,7 @@
   azamChannel: { id: "UCn5J7zggR3cV4sCYlEjgZJA", name: "Azam Pasha Zikr", url: "https://www.youtube.com/channel/UCn5J7zggR3cV4sCYlEjgZJA/shorts" },
   // "Start here" on Home: the Shorts a newcomer should watch first, in order (YouTube ids; the watermarked copy is used when it exists).
   // Shorts that are not public yet are skipped, and practice Shorts are skipped while they are locked for that member.
-  startHere: ["TkSFt5BlMzs", "0yhKLLlv5ww", "u6BHgjCPuCo", "2yjNqJo659g", "iYb70KSdYD4", "oWZt1YfJ3io", "cfKWk-fq-BQ", "trMoVHtadHI"],
+  startHere: ["TkSFt5BlMzs", "0yhKLLlv5ww", "U2KoTd5rDSI", "JfQsTHE7VrU", "tayZJTuWGkU", "NSWYCYR-Tlo", "u6BHgjCPuCo", "2yjNqJo659g", "iYb70KSdYD4", "oWZt1YfJ3io", "cfKWk-fq-BQ", "trMoVHtadHI"],
 
   // Shaykh filters on the Dars & Tafseer screen. "match" is a word (or words separated by |) that appears in that shaykh's video titles.
   // Example: familyShaykhs: [ { name: "Shaykh Name", match: "Shaykh Name|short name" } ],
