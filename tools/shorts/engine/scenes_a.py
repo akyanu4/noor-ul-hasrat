@@ -73,7 +73,7 @@ def portrait(size):
 def bg_night():
     return cached("bg_night", lambda: L.rgrad(L.W / 2, L.H * 0.4, (18, 50, 42), (4, 12, 11), max(L.W, L.H) * 0.75))
 
-BAYAH_EN = ["Take Bay\u2019ah with a Shaykh or his Khalifa,", "and follow their guidance to reach the right station."]
+BAYAH_EN = ["These practices benefit after Bay\u2019ah with a Shaykh or Khalifa.", "How to take Bay\u2019ah: Noor-ul-Hasrat app, Bay\u2019ah section"]
 BAYAH_UR = "\u06a9\u0633\u06cc \u0634\u06cc\u062e \u06cc\u0627 \u062e\u0644\u06cc\u0641\u06c1 \u0633\u06d2 \u0628\u06cc\u0639\u062a \u06a9\u0631\u06cc\u06ba \u0627\u0648\u0631 \u0627\u0646 \u06a9\u06cc \u0631\u06c1\u0646\u0645\u0627\u0626\u06cc \u0645\u06cc\u06ba \u0686\u0644\u06cc\u06ba"
 def bayah_urdu(size): return cached(("bayah_ur", size), lambda: L.urdu(BAYAH_UR, size, (232, 200, 120), path=L.URDU_R))
 

@@ -16,7 +16,10 @@ Upload, one video at a time (the page cannot pick a local file, so it fetches th
    page's `input[type=file]` with a DataTransfer and dispatch `change`.
 3. "Reuse details" from the latest Short of the same series, UNTICK Title and Tags, Reuse. Then set the title
    (`<Topic> | Hazrat Azam Pasha R.A. #shorts`, under 100 characters), the description (same layout as the series'
-   other Shorts: topic summary, one quote, the book line, Urdu lines, credits, hashtags), tags (one comma-separated
+   other Shorts: topic summary, one quote, the book line, Urdu lines, credits, hashtags; for a Short that teaches a
+   practice or meditation (listed in project.json "bayah_shorts") add after the quote: "These practices bring their
+   benefit after you take Bay'ah with a Shaykh or his Khalifa and follow their guidance.\nHow to take Bay'ah:
+   https://noor-ul-hasrat.vercel.app/?bayah=1\nAll of Hazrat's meditations: https://noor-ul-hasrat.vercel.app/?meditations=1"), tags (one comma-separated
    paste + Enter), Not made for kids, Altered content YES, language Urdu, category Education.
 4. Next to the Visibility step, read the Shorts link (the video id) and "Checks complete" status, and STOP. Never
    choose Public/Unlisted or press Save/Publish: the user publishes. Report a Content ID claim if Checks shows one.
