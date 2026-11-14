@@ -5,7 +5,7 @@ Veo or Kling) filling the segment, under the usual captions, header and brand li
 - Neither: a dark placeholder card with the scene name, so a test render works before all clips are in.
 Timeline entry: ("voice", a, b, "clip:AN1-01").
 Words on a clip: <project>/clip_words.py with WORDS = {"AN1-01": {"text": "...", "text_at": (fx, fy),
-"surprise": [(t, fx, fy, "...")]}} - the same options as slides (scenes_g.py); surprise times are recording times."""
+"from": t, "surprise": [(t, fx, fy, "...")]}} - the same options as slides (scenes_g.py); surprise times are recording times."""
 import os, math
 import cv2
 from PIL import Image, ImageDraw
@@ -82,9 +82,10 @@ def clip(name, tl, d, ot=None):
     if w:
         import scenes_g as G
         if w.get("surprise") and ot is not None: img = G.apply_surprise(img, ot, w["surprise"])
-        if w.get("text"):
+        if w.get("text"):          # "from": recording time the words appear (when he says them); default: scene start
             tx, ty = w.get("text_at", (0.5, 0.13))
-            img = L.paste_center(img, L.urdu(w["text"], 92), L.W * tx, L.H * ty, alpha=min(1, tl / 0.8))
+            al = min(1, tl / 0.8) if w.get("from") is None or ot is None else min(1, max(0, (ot - w["from"]) / 0.8))
+            if al > 0: img = L.paste_center(img, L.urdu(w["text"], 92), L.W * tx, L.H * ty, alpha=al)
     return img
 
 def _clip(name, tl, d):

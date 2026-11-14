@@ -86,7 +86,7 @@ def caption_track(segs):
     out.sort(key=lambda x: x[0])
     for i, c in enumerate(out):
         nxt = out[i + 1][0] if i + 1 < len(out) else 1e9
-        c[1] = min(nxt, c[1] + 0.6, c[3])
+        c[1] = nxt if nxt - c[1] < 0.6 else min(c[1] + 0.6, c[3])   # no blink between pieces across a cut
     return out
 
 def vignette():
