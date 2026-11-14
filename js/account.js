@@ -146,12 +146,12 @@
         '<div class="ac-card"><div class="ac-sub" style="margin:0 0 10px">Already a member? Enter your email and we will send you a sign-in link. No password.</div>' +
         '<label class="ac-f"><span>Email</span><input id="acEmail" type="email" autocomplete="email" inputmode="email" maxlength="120" value="' + esc(pend.email || sget('noor_last_email') || '') + '"></label>' +
         '<button class="ac-btn" id="acSignIn" type="button">Email me a sign-in link</button><div class="ac-msg' + (/^!/.test(msg) ? ' err' : '') + '" id="acMsg">' + esc(msg.replace(/^!/, '')) + '</div>' +
-        '<div class="ac-sub">New here? <a href="#" data-mode="signup">Create a free account</a></div></div>';
+        '<div class="ac-sub">New here? <a href="#" data-mode="signup">Create a free account</a>: 🎁 gifts, rewards and member discounts.</div></div>';
       body.innerHTML = h; return;
     }
     h += '<div class="ac-tabs"><button type="button" data-mode="signin">Sign in</button><button type="button" class="on" data-mode="signup">Create account</button></div>';
     if (sget(WKEY)) h += '<div class="ac-card" id="acWant" style="border-color:var(--gold)"><div class="ac-msg" style="margin:0"><b>🤝 Request to take Bai’at</b><br>Create your free account first. After you open the sign-in link, the app takes you back to Taking Bai’at to submit your request.</div></div>';
-    h += '<div class="ac-hero"><b>Create your free account</b><p>Optional. Everything in Noor works without it. With an account:</p><ul><li>Your Iman Health is kept safe, even on a new phone</li><li>Email reminders before our gatherings</li><li>Your Iman Health summary each Friday</li></ul></div>' +
+    h += '<div class="ac-hero"><b>Create your free account</b><p>Optional. Everything in Noor works without it. With an account:</p><ul><li>Your Iman Health is kept safe, even on a new phone</li><li>Email reminders before our gatherings</li><li>Your Iman Health summary each Friday</li><li>🎁 Gifts, rewards and member discounts, in shaa Allah</li></ul></div>' +
       '<div class="ac-card"><label class="ac-f"><span>Email</span><input id="acEmail" type="email" autocomplete="email" inputmode="email" maxlength="120" value="' + esc(pend.email || '') + '"></label>' + fields(pend) +
       '<label class="ac-ck" style="border-top:1px solid var(--line);margin-top:4px;padding-top:12px"><input type="checkbox" id="acConsent"' + (pend.consent ? ' checked' : '') + '><div>I agree that my Iman Health is saved to my account and that the Noor-ul-Hasrat admin can see it.<small>Prayers, fasting, dhikr, good deeds and zakat (paid or not, never an amount). Your location is never sent.</small></div></label>' +
       '<button class="ac-btn" id="acSend" type="button">Email me a sign-in link</button><div class="ac-msg' + (/^!/.test(msg) ? ' err' : '') + '" id="acMsg">' + esc(msg.replace(/^!/, '')) + '</div>' +
@@ -310,7 +310,7 @@
     }
     var home = doc.getElementById('screen-home'), after = home && home.querySelector('.bay-home');
     if (!hcard && home) {
-      hcard = N.el('div', 'acc-home', '<div class="ic" aria-hidden="true">👤</div><div class="tx"><b>Create your free account</b><small>Keep your Iman Health safe · email reminders · members’ videos</small></div><span class="bt">Sign up / Sign in</span>');
+      hcard = N.el('div', 'acc-home', '<div class="ic" aria-hidden="true">👤</div><div class="tx"><b>Create your free account</b><small>Iman Health · reminders · members’ videos · 🎁 gifts, rewards &amp; discounts</small></div><span class="bt">Sign up / Sign in</span>');
       hcard.setAttribute('role', 'button'); hcard.tabIndex = 0;
       hcard.addEventListener('click', function () { N.showScreen('account'); });
       if (after && after.nextSibling) home.insertBefore(hcard, after.nextSibling); else if (after) home.appendChild(hcard); else home.insertBefore(hcard, home.firstChild);
