@@ -25,7 +25,7 @@ async function handle(env, body, nowMs, fetchFn, ip) {
   if (TOPICS.indexOf(r.topic) === -1) r.topic = 'Something else';
   if (!r.name) return { status: 400, error: 'Please write your name.' };
   if (r.contact.length < 5) return { status: 400, error: 'Please give a phone/WhatsApp number or an email so we can reply.' };
-  if (r.message.length < 5) return { status: 400, error: 'Please tell us a little about the problem.' };
+  if (r.message.length < 5) return { status: 400, error: r.topic === 'Feedback / suggestion' ? 'Please write your feedback.' : 'Please tell us a little about the problem.' };
 
   const d = G.db(env, fetchFn), day = new Date(nowMs).toISOString().slice(0, 10), hour = Math.floor(nowMs / 3600000);
   const ipKey = crypto.createHash('sha256').update('noor-help:' + (ip || '?')).digest('hex').slice(0, 20);
@@ -46,12 +46,12 @@ async function handle(env, body, nowMs, fetchFn, ip) {
   if (M.ready(env) && to) {
     const site = (env.SITE_URL || 'https://noor-ul-hasrat.vercel.app').replace(/\/$/, '');
     const row = (k, v) => v ? '<p style="margin:0 0 6px;line-height:1.5"><b>' + M.esc(k) + ':</b> ' + M.esc(v) + '</p>' : '';
-    const html = M.layout('Help request: ' + r.topic,
+    const html = M.layout((r.topic === 'Feedback / suggestion' ? 'Feedback: ' : 'Help request: ') + r.topic,
       row('Name', r.name) + row('Contact', r.contact) + row('Topic', r.topic) + row('Phone / browser', r.device) + row('Signed in', r.uid ? 'yes (' + r.uid + ')' : 'no') +
       '<p style="margin:10px 0 0;line-height:1.55;white-space:pre-wrap;background:#f7f2e3;border-radius:10px;padding:10px">' + M.esc(r.message) + '</p>' +
       M.button(site + '/admin.html', 'Open the admin page'),
       site, 'Sent by the Help form in the Noor-ul-Hasrat app.');
-    const msg = { to, subject: '[Noor help] ' + r.topic + ' · ' + r.name, html,
+    const msg = { to, subject: (r.topic === 'Feedback / suggestion' ? '[Noor feedback] ' : '[Noor help] ') + r.topic + ' · ' + r.name, html,
       text: r.name + ' (' + r.contact + ')\n' + r.topic + '\n' + r.device + '\n\n' + r.message };
     if (EMAIL_RE.test(r.contact)) msg.replyTo = r.contact;
     try { await M.send(env, msg); } catch (e) { console.error('help mail', e && e.message); }

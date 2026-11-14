@@ -35,11 +35,11 @@
       '<a class="ab-btn" href="https://wa.me/' + PHONE.replace('+', '') + '" target="_blank" rel="noopener">💬 WhatsApp</a>' +
       '<button class="ab-btn" type="button" id="abCopy">📋 Copy number</button></div>' +
       '</div>' +
-    '<div class="ab-card" id="abHelp"><h3>Ask for technical help</h3><div class="ab-note" style="margin:0">App not installing, cannot sign in, a video not playing? Send us a request and we will reply on WhatsApp or email, in shaa Allah. No sign-in needed.</div>' +
+    '<div class="ab-card" id="abHelp"><h3>Technical help &amp; feedback</h3><div class="ab-note" style="margin:0"><b>🌱 Soft launch:</b> the app is new and still growing. Something not working, or an idea to make it better? Tell us and we will reply on WhatsApp or email, in shaa Allah. No sign-in needed.</div>' +
       '<form class="hp-f" id="hpForm" novalidate>' +
       '<label for="hpName">Your name</label><input id="hpName" maxlength="60" autocomplete="name" required>' +
       '<label for="hpContact">WhatsApp / phone or email (to reply)</label><input id="hpContact" maxlength="80" autocomplete="email" inputmode="email" required>' +
-      '<label for="hpTopic">What is it about?</label><select id="hpTopic"><option>Installing the app</option><option>Signing in / account</option><option>Prayer times / Qibla</option><option>Videos / Shorts</option><option>Notifications / reminders</option><option>Bai&rsquo;at request</option><option>Something else</option></select>' +
+      '<label for="hpTopic">What is it about?</label><select id="hpTopic"><option>Installing the app</option><option>Signing in / account</option><option>Prayer times / Qibla</option><option>Videos / Shorts</option><option>Notifications / reminders</option><option>Bai&rsquo;at request</option><option>Feedback / suggestion</option><option>Something else</option></select>' +
       '<label for="hpMsg">What happened?</label><textarea id="hpMsg" maxlength="1000" placeholder="e.g. On my iPhone I cannot find Add to Home Screen" required></textarea>' +
       '<div class="hp-hp" aria-hidden="true"><label for="hpWeb">Website</label><input id="hpWeb" tabindex="-1" autocomplete="off"></div>' +
       '<div class="ab-btns" style="margin-top:12px"><button class="ab-btn pri" type="submit" id="hpSend">📨 Send request</button></div>' +
@@ -104,11 +104,36 @@
     fetch('/api/help', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(b) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, d: d }; }); })
       .then(function (x) {
-        if (x.ok && x.d.ok) { hMsg('✓ JazakAllah khair, your request is sent. We will reply on ' + esc(b.contact.trim()) + ', in shaa Allah.', 'ok'); s.querySelector('#hpMsg').value = ''; }
+        if (x.ok && x.d.ok) { hMsg(b.topic === 'Feedback / suggestion' ? '✓ JazakAllah khair for your feedback. It helps us improve the app, in shaa Allah.' : '✓ JazakAllah khair, your request is sent. We will reply on ' + esc(b.contact.trim()) + ', in shaa Allah.', 'ok'); s.querySelector('#hpMsg').value = ''; }
         else hMsg(esc(x.d.error || 'Could not send. Please try again, or call/WhatsApp ' + PHONE_SHOW + '.'), 'err');
       }, function () { hMsg('Could not send. Please check your internet, or call/WhatsApp ' + esc(PHONE_SHOW) + '.', 'err'); })
       .then(function () { hSend.disabled = false; hSend.textContent = '📨 Send request'; });
   });
+  var hTopic = s.querySelector('#hpTopic'), hTxt = s.querySelector('#hpMsg');
+  function setPh() { hTxt.placeholder = hTopic.value === 'Feedback / suggestion' ? 'What do you like? What should we add or change?' : 'e.g. On my iPhone I cannot find Add to Home Screen'; }
+  hTopic.addEventListener('change', setPh);
+  function openForm(feedback) {
+    N.showScreen('about');
+    if (feedback) { hTopic.value = 'Feedback / suggestion'; setPh(); }
+    setTimeout(function () { var c = s.querySelector('#abHelp'); if (c) c.scrollIntoView({ block: 'start' }); }, 60);
+  }
+  N.openHelp = openForm;
+  // Home: a small "Soft launch" note with a feedback button (can be closed; comes back after 30 days)
+  var SLKEY = 'noor_softlaunch_hide';
+  if (home) {
+    var hid = 0; try { hid = +localStorage.getItem(SLKEY) || 0; } catch (er) {}
+    if (Date.now() - hid > 30 * 864e5) {
+      var sc = doc.createElement('style');
+      sc.textContent = '.sl-note{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px dashed var(--gold)}.sl-note .t{flex:1;font-size:13px;line-height:1.45;color:var(--ink)}.sl-note .t b{color:var(--teal)}' +
+        '.sl-note .fb{flex:none;border:0;border-radius:10px;background:var(--teal);color:#fff;font:inherit;font-size:13px;font-weight:600;padding:9px 12px;cursor:pointer;min-height:40px}.sl-note .x{flex:none;border:0;background:none;color:var(--muted);font-size:18px;cursor:pointer;min-width:36px;min-height:40px}';
+      doc.head.appendChild(sc);
+      var sl = N.el('div', 'sl-note', '<div class="t"><b>🌱 Soft launch</b> · The app is new. Your feedback helps us make it better.</div><button type="button" class="fb">Give feedback</button><button type="button" class="x" aria-label="Close">×</button>');
+      sl.querySelector('.fb').addEventListener('click', function () { openForm(true); });
+      sl.querySelector('.x').addEventListener('click', function () { try { localStorage.setItem(SLKEY, String(Date.now())); } catch (er) {} sl.remove(); });
+      var dtop = home.querySelector('.don-top');
+      home.insertBefore(sl, dtop ? dtop.nextSibling : home.firstChild);
+    }
+  }
   // ?help=1 opens this page at the form (used by the printed cards and the WhatsApp invite)
-  try { if (/[?&]help=1/.test(root.location.search)) setTimeout(function () { N.showScreen('about'); var c = s.querySelector('#abHelp'); c && c.scrollIntoView({ block: 'start' }); }, 600); } catch (er) {}
+  try { var qs = root.location.search; if (/[?&](help|feedback)=1/.test(qs)) setTimeout(function () { openForm(/[?&]feedback=1/.test(qs)); }, 600); } catch (er) {}
 })(typeof self !== 'undefined' ? self : this);
