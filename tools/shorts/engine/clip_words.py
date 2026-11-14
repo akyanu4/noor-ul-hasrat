@@ -5,7 +5,7 @@ Usage: python3 engine/clip_words.py <project folder>"""
 import os, sys, pprint
 
 def load(p):
-    ns = {}; exec(open(p, encoding="utf-8").read(), ns); return ns
+    ns = {"__file__": os.path.abspath(p), "__name__": "x"}; exec(open(p, encoding="utf-8").read(), ns); return ns
 
 def main(proj):
     slides = load(os.path.join(proj, "slides.py"))["SLIDES"]
