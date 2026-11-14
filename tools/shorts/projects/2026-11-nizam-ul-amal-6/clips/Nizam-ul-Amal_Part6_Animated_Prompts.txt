@@ -29,7 +29,7 @@ nobody suddenly changing clothes. If a clip goes wrong, generate it again (or de
 RULES (keep in every prompt)
 - Never draw the Prophet (peace be upon him). Never draw Allah's name or any calligraphy.
 - NO WRITING AT ALL. The AI must not draw letters, Arabic, Urdu, book titles, shop signs or captions. The words
-  of the dars (Ya Khaliqu, Ya Bari'u, Ya Musawwiru; Allah; Tawheed; the verse) are NOT drawn by the AI.
+  of the dars (Ya Khallaqu, Ya Fa''alu, Ya Musawwiru; Allah; Tawheed; the verse) are NOT drawn by the AI.
 - HAZRAT (the shaykh): face ALWAYS hidden by soft white glowing light. No facial features. The glow stays over
   his face in every frame of the clip.
 - Shaytan and bad thoughts: ONLY as dark smoke or shadow. Never a figure, never a face in the smoke.
@@ -246,7 +246,7 @@ IMAGE:  HAZRAT sitting on a carpet in a lamp-lit room, SEEKER kneeling before hi
 MOTION: Hazrat lowers his hand to his knee, the seeker shakes his head slowly, lamp light flickers. The glow
         stays over Hazrat's face in every frame.
 
---- N6S4-04  "'Then do this, Baba: read Ya Khaliqu, Ya Bari'u, Ya Musawwiru.' Musawwir comes from tasveer, image."  (12.2 s)
+--- N6S4-04  "'Then do this, Baba: read Ya Khallaqu, Ya Fa''alu, Ya Musawwiru.' Musawwir comes from tasveer, image."  (12.2 s)
 IMAGE:  N6S4-04.png (a man in a mosque courtyard with raised hands, golden light pouring down).
 MOTION: He raises his hands and recites, the golden light pours down and swirls slowly around him. No letters in
         the light.
@@ -278,7 +278,7 @@ IMAGE:  Use the new N6S4-03 picture again (save a copy as N6S4-09.png).
 MOTION: Hazrat leans forward and gently places his hand on the seeker's head, the lamp light grows warmer around
         them both. The glow stays over Hazrat's face in every frame.
 
---- N6S4-10  "'Do this: read Ya Khaliqu, Ya Bari'u, Ya Musawwiru.' I have told you; see for yourselves."  (18.6 s, long)
+--- N6S4-10  "'Do this: read Ya Khallaqu, Ya Fa''alu, Ya Musawwiru.' I have told you; see for yourselves."  (18.6 s, long)
 IMAGE:  N6S4-10.png (a man praying in the mosque courtyard under the light).
 MOTION: He keeps his hands raised in dua, the beam of light from above slowly widens and spirals around him,
         stars shine. No letters in the light. Slow push in.

@@ -132,10 +132,10 @@
       d: 'Whichever elder you hold in your thought, the states that are in that elder’s blessed chest will begin to appear to you.',
       steps: [
         'Hazrat’s pir asked him: “Baba, does my tasawwur come to you?” He said: “No, it does not.”',
-        'His pir said: “Then do this, Baba: read Ya Khaliqu, Ya Bari’u, Ya Musawwiru. Look at me in your tasawwur.” (Musawwir comes from tasveer, image.)',
+        'His pir said: “Then do this, Baba: read Ya Khallaqu, Ya Fa’’alu, Ya Musawwiru. Look at me in your tasawwur.” (Musawwir comes from tasveer, image.)',
         'Hazrat held his pir in his thought and was looking within him, and kashf opened for him: “This is what opened my eyes. I did not need to read books.”'
       ],
-      ar: [{ ar: 'يَا خَالِقُ يَا بَارِئُ يَا مُصَوِّرُ', tr: 'Ya Khaliqu, Ya Bari’u, Ya Musawwiru.', mn: 'O Creator, O Maker, O Fashioner of forms.' }],
+      ar: [{ ar: 'يَا خَلَّاقُ يَا فَعَّالُ يَا مُصَوِّرُ', tr: 'Ya Khallaqu, Ya Fa’’alu, Ya Musawwiru.', mn: 'O Great Creator, O Doer of all He wills, O Fashioner of forms.' }],
       q: 'This is what Hazrat’s own pir taught him. Take such a practice from your own shaykh.',
       shorts: [] },
     { slug: 'one-point', t: 'One point: where will you find Tawheed?', ur: 'یکسوئی',
