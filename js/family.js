@@ -453,23 +453,6 @@
           });
         }
       });
-      // Like / Subscribe open YouTube (it cannot be shown inside the app). Say how to come back, and welcome them back.
-      var ytAway = 0;
-      viewer.addEventListener('click', function (e) {
-        var a = e.target.closest && e.target.closest('.fv-like, .fv-sub'); if (!a) return;
-        e.preventDefault();   // show the note first, then open YouTube
-        var href = a.href, t = doc.createElement('div'); t.className = 'fv-toast fv-yt';
-        t.innerHTML = '<b>' + (a.classList.contains('fv-sub') ? '🔔 Subscribe' : '👍 Like') + ' on YouTube</b><br>When you are done, press <b>Back</b> (or ✕ / Done) to come back here.<br><button type="button" class="fv-ytgo">Open YouTube</button>';
-        viewer.appendChild(t);
-        var go = function () { if (!t.parentNode) return; t.remove(); ytAway = Date.now(); root.open(href, '_blank', 'noopener'); };
-        t.querySelector('.fv-ytgo').addEventListener('click', go);   // a tap, so the phone lets it open
-        setTimeout(function () { if (t.parentNode) t.remove(); }, 12000);
-      });
-      doc.addEventListener('visibilitychange', function () {
-        if (doc.hidden || !ytAway || viewer.hidden) return;
-        if (Date.now() - ytAway > 1500) { var t = doc.createElement('div'); t.className = 'fv-toast'; t.textContent = 'JazakAllah khair 🤲 Welcome back.'; viewer.appendChild(t); setTimeout(function () { t.remove(); }, 2500); }
-        ytAway = 0;
-      });
       doc.addEventListener('keydown', function (e) { if (viewer.hidden) return; if (e.key === 'Escape') vclose(); else if (e.key === 'ArrowRight') vnext(); else if (e.key === 'ArrowLeft' && vpos > 0) { vpos--; vshow(); } });
       root.addEventListener('popstate', function () { vclose(true); });
     }
