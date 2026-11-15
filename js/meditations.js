@@ -31,7 +31,7 @@
       'Good and bad thoughts come and go from morning to evening; no one is held to account for them.',
       'For daf’-e-khatrat, driving away passing thoughts, the book gives “tried and tested” (mujarrab) methods: they are below.'
     ],
-    shorts: [{ id: 'cfKWk-fq-BQ', title: 'A Passing Thought or a Resolve' }]
+    shorts: [{ id: '2Uv3prgEqqg', title: 'A Passing Thought or a Resolve' }]
   };
   var CARDS = [
     { slug: 'good-thoughts', t: 'Turn the thought into du’a', ur: 'اچھے خیالات کی دعا',
@@ -46,7 +46,7 @@
         { ar: 'ٱدْعُونِيٓ أَسْتَجِبْ لَكُمْ', tr: 'Ud‘uni astajib lakum.', mn: 'Call upon Me; I will answer you. (Surah Ghafir 40:60)' },
         { ar: 'اَلدُّعَاءُ مُخُّ الْعِبَادَةِ', tr: 'Ad-du‘a mukhkh al-‘ibadah.', mn: 'Du’a is the core of worship. (Hadith)' }
       ],
-      shorts: [{ id: 'Tv8U5Rk8kF4', title: 'Ask Allah for Good Thoughts' }] },
+      shorts: [{ id: 'AEXCqRRUUhk', title: 'Ask Allah for Good Thoughts' }] },
     { slug: 'yaad-faramosh', t: 'The pact of remembrance', ur: 'یاد فراموش',
       d: 'A pact made among companions so that the remembrance of Allah goes on and is never forgotten, even while they sit together, talk and go about their work.',
       steps: [
@@ -56,7 +56,7 @@
         'Through this pact one gets help toward constant presence, one admits one’s own mistake, and the work becomes lillah, fillah: for the sake of Allah, and in Allah.'
       ],
       ar: [{ ar: 'اَللّٰه ۔ اَلْحَمْدُ لِلّٰهِ ۔ أَسْتَغْفِرُ اللّٰهَ', tr: 'Allah! · Alhamdulillah · Astaghfirullah', mn: 'The call; the answer of the heart that was present; the answer of the heart that had forgotten.' }],
-      shorts: [{ id: 'EbnxYFqNhXI', title: 'The Pact of Remembrance' }] },
+      shorts: [{ id: 'OT27WmUbKP4', title: 'The Pact of Remembrance' }] },
     { slug: 'change-state', t: 'Change your state', ur: 'حالت بدلنا',
       d: 'When khatrat come in great numbers, change your state. The root principle here is movement.',
       steps: [
@@ -94,7 +94,7 @@
         'Saying “hoon, hoon”, breathe out forcefully, outward.',
         'Hoon… hoon… hoon… hoon: “that is what to do.”'
       ],
-      shorts: [{ id: 'QKlEyf9c7tg', title: 'Take Refuge in Allah' }] },
+      shorts: [{ id: 'LMFTVIx55EE', title: 'Hoon, Hoon: Breathe Out the Khatra' }, { id: 'QKlEyf9c7tg', title: 'Take Refuge in Allah' }] },
     { slug: 'new-creation', t: 'Recite the verse', ur: 'آیت کی تلاوت',
       d: 'By reciting this verse too, khatrat lessen.',
       steps: [
@@ -111,14 +111,14 @@
         'There is great attraction in the human face: whoever you look at, his face comes into your heart through your eyes.',
         'If you keep looking all around, your heart will be scattered.'
       ],
-      shorts: [{ id: 'PvTqdGvfuQw', title: 'Keep Your Gaze on Your Steps' }] },
+      shorts: [{ id: 'oLbjVJ22CrU', title: 'Keep Your Gaze on Your Steps' }] },
     { slug: 'khalwat-dar-anjuman', t: 'Solitude in the crowd', ur: 'خلوت در انجمن',
       d: 'Khalwat dar anjuman: even in the middle of people, keep your attention in your heart.',
       steps: [
         'Keep your attention in your heart. The gathering is within our own heart.',
         'Together with it, keep your gaze on your steps (nazar bar qadam) and your eyes lowered.'
       ],
-      shorts: [{ id: 'PvTqdGvfuQw', title: 'Keep Your Gaze on Your Steps' }] },
+      shorts: [{ id: 'oLbjVJ22CrU', title: 'Keep Your Gaze on Your Steps' }] },
     { slug: 'guard-the-gaze', t: 'Guard your gaze', ur: 'حفاظتِ نظر',
       d: 'The practical teaching: for a few days, guard your gaze, and protect yourself from the gaze of others.',
       steps: [
@@ -127,7 +127,7 @@
         'When the heart is fixed on one point, the reality will come before you, and we will come to know it.'
       ],
       q: '“Laal dore hain band-e-pa-e-nazar, sayd karti hain yaar ki aankhen”: the red threads are fetters on the feet of the gaze; the Beloved’s eyes go hunting. Who is the Beloved? Allah.',
-      shorts: [{ id: 'UFGrLXEdwmk', title: 'The Eyes Are Hunters' }] },
+      shorts: [{ id: '-Icei0dP5ag', title: 'The Eyes Are Hunters' }] },
     { slug: 'tasawwur-e-shaykh', t: 'Holding the shaykh in your thought', ur: 'تصورِ شیخ',
       d: 'Whichever elder you hold in your thought, the states that are in that elder’s blessed chest will begin to appear to you.',
       steps: [
@@ -137,7 +137,7 @@
       ],
       ar: [{ ar: 'يَا خَلَّاقُ يَا فَعَّالُ يَا مُصَوِّرُ', tr: 'Ya Khallaqu, Ya Fa’’alu, Ya Musawwiru.', mn: 'O Great Creator, O Doer of all He wills, O Fashioner of forms.' }],
       q: 'This is what Hazrat’s own pir taught him. Take such a practice from your own shaykh.',
-      shorts: [{ id: '2zH6zC_Z8P4', title: 'What Opened My Eyes' }, { id: 'dyHUfOLlVTs', title: 'Hold My Picture in Your Heart' }] },
+      shorts: [{ id: 'sdcWOMEVUDI', title: 'Tasawwur-e-Shaykh: Hold Your Shaykh in Your Heart' }, { id: '4ZpXrUzIlJw', title: 'What Opened My Eyes' }, { id: 'dyHUfOLlVTs', title: 'Hold My Picture in Your Heart' }] },
     { slug: 'one-point', t: 'One point: where will you find Tawheed?', ur: 'یکسوئی',
       d: 'Instead of thinking in one direction, we think about everything. When will you reach your goal (Murad)? Where will you find Tawheed? Tawheed is one: Allah is one.',
       steps: [
@@ -145,7 +145,7 @@
         'Do not eat many kinds of food: “many-coloured food brings impurity into the thoughts.”',
         'When the heart is fixed on one point, the reality will come before you.'
       ],
-      shorts: [{ id: 'trMoVHtadHI', title: 'Where Will You Find Tawheed?' }] },
+      shorts: [{ id: 'iZVgwvJvp1Y', title: 'Where Will You Find Tawheed?' }] },
     { slug: 'asl-e-wujood', t: 'Recognise Him in every form', ur: 'اصلِ وجود',
       d: 'This is the matter of very great people: it belongs to a very high station, it is no ordinary thing, and not every person can understand it.',
       steps: [

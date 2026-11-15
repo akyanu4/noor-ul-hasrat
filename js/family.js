@@ -22,7 +22,8 @@
     '2yjNqJo659g': 'JCBJ2SK79Q8', 'eNHL-OsPxgQ': 'X4CTCYjFU3o', 'g8-0WIXYjcM': 'VlU4EcJGVgQ', 'Fq8X-k08A5Y': 'mWwJL6BTEZY',
     '7wB9EQldsew': 'ObW6ccXEwn4',
     E7xb4BR6IPQ: 'gkYbWlFLc3w', kziC4lPGmgU: '56xW_CnWB0w', Rno3f3mGjyg: '883RmkRT9mE', jRK1SIkPkV0: 'T4cTs3h1QoI',
-    '3githsE0o6Y': '50SwaP11-vk', cbWGnUMd530: 'TkSFt5BlMzs', '77ZE201Hbjw': 'ufZ_iEByRmI' };
+    '3githsE0o6Y': '50SwaP11-vk', cbWGnUMd530: 'TkSFt5BlMzs', '77ZE201Hbjw': 'ufZ_iEByRmI',
+    'cfKWk-fq-BQ': '2Uv3prgEqqg', 'PvTqdGvfuQw': 'oLbjVJ22CrU', 'UFGrLXEdwmk': '-Icei0dP5ag', '2zH6zC_Z8P4': '4ZpXrUzIlJw', 'trMoVHtadHI': 'iZVgwvJvp1Y', 'Tv8U5Rk8kF4': 'AEXCqRRUUhk', 'EbnxYFqNhXI': 'OT27WmUbKP4' };   // Part 6 & 7, re-rendered 15 Nov 2026 (old ones unlisted)
   function toItems(pages) {
     var seen = {}, out = [];
     pages.forEach(function (data) {
@@ -334,7 +335,7 @@
      sleep less, speak less; Sabr, Tasleem, Raza) carry a reminder to take Bay'ah and follow a guide. In the app they
      play for signed-in members once accounts are switched on (More → My Account). They stay public on YouTube. */
   var PRACTICE_IDS = { dyHUfOLlVTs: 1, '3githsE0o6Y': 1, '50SwaP11-vk': 1, oWZt1YfJ3io: 1, mwPT8CFRfR0: 1,
-    PvTqdGvfuQw: 1, UFGrLXEdwmk: 1, '2zH6zC_Z8P4': 1, Tv8U5Rk8kF4: 1, EbnxYFqNhXI: 1, SBy10BJdsdk: 1, QKlEyf9c7tg: 1, z698TQzQjQg: 1 };   // + Nizam-ul-Amal 6 and 7 meditations
+    oLbjVJ22CrU: 1, '-Icei0dP5ag': 1, '4ZpXrUzIlJw': 1, AEXCqRRUUhk: 1, OT27WmUbKP4: 1, SBy10BJdsdk: 1, QKlEyf9c7tg: 1, z698TQzQjQg: 1, sdcWOMEVUDI: 1, LMFTVIx55EE: 1 };   // + Nizam-ul-Amal 6 and 7 meditations
   var PRACTICE_RE = /tasawwur|zarb[-\s]*e[-\s]*haidari|you have become my teacher|eat less,? sleep less|sabr,? tasleem|\bmuraqaba|\bpractice of (zikr|dhikr)/i;
   (cfg.practiceShorts || []).forEach(function (id) { PRACTICE_IDS[id] = 1; });
   function isPractice(it) { return !!(it && (it.wide || PRACTICE_IDS[it.id] || PRACTICE_RE.test(it.title || ''))); }
@@ -479,6 +480,8 @@
     if (e.target.id === 'fmRetry' || e.target.id === 'fmRefresh') { e.preventDefault(); if (STATS) STATS.t = 0; load(true); }
   });
 
+  // Play any one video in the app's own player (e.g. the App Guide from Help & feedback).
+  api.playVideo = function (id, title) { playList([{ id: id, title: title || '' }], 0); };
   api.ZIKR = ZIKR; api.AZAM = AZAM; api.open = function (which) { if (kalaam === null) loadKalaam(); if (pinned === null) loadPinned(); if (which === 'poetry' || which === 'dars' || which === 'zikr' || which === 'azam') { if (tab !== which) { who = 0; topic = 0; limit = SHOW; } tab = which; } if (which === 'azam') ser = null; state = stateFor(tab); paint(); N.showScreen('family'); if (state.items === null) load(false); };
   // For Azam Pasha's profile page: calls back with the Shorts list (loaded once, then cached for 30 minutes).
   api.azamShorts = function (cb) {
@@ -513,9 +516,9 @@
     { title: 'Nizam-ul-Amal-e-Fuqra, Part 1', match: 'nizam.*part\\s*1(?!\\d)',
       shorts: ['iYb70KSdYD4', 'cl0bggXGqRk', 'Rk6u-LffRrg'] },
   { title: 'Nizam-ul-Amal-e-Fuqra, Part 6', match: 'nizam.*part\\s*6(?!\\d)',
-    shorts: ['cfKWk-fq-BQ', 'PvTqdGvfuQw', 'UFGrLXEdwmk', '2zH6zC_Z8P4', 'trMoVHtadHI'] },
+    shorts: ['2Uv3prgEqqg', 'oLbjVJ22CrU', '-Icei0dP5ag', '4ZpXrUzIlJw', 'iZVgwvJvp1Y', 'sdcWOMEVUDI'] },
   { title: 'Nizam-ul-Amal-e-Fuqra, Part 7', match: 'nizam.*part\\s*7(?!\\d)',
-    shorts: ['Tv8U5Rk8kF4', 'EbnxYFqNhXI', 'SBy10BJdsdk', 'QKlEyf9c7tg', 'z698TQzQjQg'] },
+    shorts: ['AEXCqRRUUhk', 'OT27WmUbKP4', 'SBy10BJdsdk', 'QKlEyf9c7tg', 'z698TQzQjQg', 'LMFTVIx55EE'] },
     { title: 'Nizam-ul-Amal-e-Fuqra, Part 2', match: 'nizam.*part\\s*2',
       shorts: ['u6BHgjCPuCo', '_l27DFmjd6w', 'pqjEFcL1Nlo', 'SHyAucT3ojs', 'ta6pdvvmJBQ', 'dyHUfOLlVTs'] },
     { title: 'Nizam-ul-Amal-e-Fuqra, Part 3', match: 'nizam.*part\\s*3',
@@ -537,14 +540,14 @@
   // Topic chips. A Short gets a topic from the ids listed here (the original upload or its watermarked copy) or by a word in its title.
   var STOPICS = [
     { name: 'tawbah', label: 'Tawbah', re: /tawb|tauba|repent|newly born|توبہ/i, ids: ['u6BHgjCPuCo', '_l27DFmjd6w', 'ta6pdvvmJBQ'] },
-    { name: 'khatrat', label: 'Khatrat', re: /khatr|passing thought|good thoughts|thought leaves|whisper|waswas|خطرات/i, ids: ['cfKWk-fq-BQ', 'Tv8U5Rk8kF4', 'EbnxYFqNhXI', 'SBy10BJdsdk', 'QKlEyf9c7tg'] },
-    { name: 'tasawwur', label: 'Tasawwur', re: /tasawwur|my picture|every form|تصور/i, ids: ['dyHUfOLlVTs', '2zH6zC_Z8P4', 'z698TQzQjQg', '3githsE0o6Y'] },
+    { name: 'khatrat', label: 'Khatrat', re: /khatr|passing thought|good thoughts|thought leaves|whisper|waswas|خطرات/i, ids: ['2Uv3prgEqqg', 'AEXCqRRUUhk', 'OT27WmUbKP4', 'SBy10BJdsdk', 'QKlEyf9c7tg'] },
+    { name: 'tasawwur', label: 'Tasawwur', re: /tasawwur|my picture|every form|تصور/i, ids: ['dyHUfOLlVTs', '4ZpXrUzIlJw', 'z698TQzQjQg', '3githsE0o6Y'] },
     { name: 'sabr', label: 'Sabr', re: /\bsabr|tasleem|\braza\b|patien|صبر/i, ids: ['mwPT8CFRfR0', 'Imuwo7g6UzE', '7CIgqlzMN1E'] },
     { name: 'baiat', label: 'Bai’at', re: /bai['’]?at|bay['’]?ah|\bpir\b|murids?\b|murshid|trusted guide|wali recognises|بیعت/i,
       ids: ['g8-0WIXYjcM', 'r3x7LQru71I', '7wB9EQldsew', 'E7xb4BR6IPQ', 'kziC4lPGmgU', 'Rno3f3mGjyg', 'jRK1SIkPkV0', '3githsE0o6Y', 'ENBkebr3nJI', 'RFLGxcbYBCM', 'cbWGnUMd530', '77ZE201Hbjw', 'Fq8X-k08A5Y', '0yhKLLlv5ww', 'U2KoTd5rDSI'] },
-    { name: 'nazar', label: 'Nazar (gaze)', re: /\bgaze\b|eyes are hunters|nazar|نظر/i, ids: ['PvTqdGvfuQw', 'UFGrLXEdwmk'] },
+    { name: 'nazar', label: 'Nazar (gaze)', re: /\bgaze\b|eyes are hunters|nazar|نظر/i, ids: ['oLbjVJ22CrU', '-Icei0dP5ag'] },
     { name: 'taqwa', label: 'Taqwa', re: /taqwa|eat less|sleep less|speak less|tawakkul|تقوی/i, ids: ['oWZt1YfJ3io', 'le1EA7cNRAA', 'EIcNQnQ_TkQ', 'KCmXwBTioD4', 'B-NjNa3UUJ4', 'SHyAucT3ojs', 'Vz_I-E521r8', 'iYb70KSdYD4', 'ta6pdvvmJBQ'] },
-    { name: 'tawheed', label: 'Tawheed', re: /tawh?eed|tauh?eed|توحید/i, ids: ['trMoVHtadHI', 'z698TQzQjQg', 'Rk6u-LffRrg', '2yjNqJo659g', 'g8-0WIXYjcM'] },
+    { name: 'tawheed', label: 'Tawheed', re: /tawh?eed|tauh?eed|توحید/i, ids: ['iZVgwvJvp1Y', 'z698TQzQjQg', 'Rk6u-LffRrg', '2yjNqJo659g', 'g8-0WIXYjcM'] },
     { name: 'love', label: 'Love', re: /\blove\b|\bishq|mahabb|عشق|محبت/i, ids: ['EQbitUdOKqQ', 'cl0bggXGqRk', 'eNHL-OsPxgQ', 'z698TQzQjQg'] }
   ];
   var TOPIC_IDS = {};
@@ -641,7 +644,7 @@
       '<div class="sh-bar" style="margin:-2px 0 8px"><i style="width:' + Math.round(100 * done / sd.of) + '%"></i></div>' + rowHtml(list);
   }
   // Start here: the order a newcomer should watch in (config.js startHere). Practice Shorts are left out while locked.
-  var START = (Array.isArray(cfg.startHere) && cfg.startHere.length ? cfg.startHere : ['TkSFt5BlMzs', '0yhKLLlv5ww', 'u6BHgjCPuCo', '2yjNqJo659g', 'iYb70KSdYD4', 'oWZt1YfJ3io', 'cfKWk-fq-BQ', 'trMoVHtadHI']);
+  var START = (Array.isArray(cfg.startHere) && cfg.startHere.length ? cfg.startHere : ['TkSFt5BlMzs', '0yhKLLlv5ww', 'u6BHgjCPuCo', '2yjNqJo659g', 'iYb70KSdYD4', 'oWZt1YfJ3io', '2Uv3prgEqqg', 'iZVgwvJvp1Y']);
   function startList() { var m = liveMap(), seen = {}; return START.map(function (id) { var r = resolve(id, m); if (!r || seen[r]) return null; seen[r] = 1; return m[r]; }).filter(function (v) { return v && !locked(v); }); }
   // Continue: the series watched most recently that still has a Short left to watch.
   function continueSeries() {
