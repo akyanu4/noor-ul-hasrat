@@ -70,3 +70,28 @@ Voice style: AI Studio "Friendly" (warm and neutral, normal pace). Captions in E
 14. Tasbeeh، Duas، Prayer Times، Qibla finder اور Islamic Calendar، سب ایک جگہ۔
 15. Notifications on کیجیے، تاکہ halqa اور mehfil کا reminder ملتا رہے۔
 16. Noor-ul-Hasrat بالکل free ہے، سب کے لیے۔ اللہ ہم سب کے دلوں کو اپنی یاد سے آباد رکھے۔ آمین۔
+
+# Version 3: adds Quran (reading, bookmarks, recitation), Tasbeeh with the community total, and sign-up benefits
+Same voice and style as Version 2 (AI Studio, Daro, "Friendly"). Only the NEW lines (marked NEW) need recording; the rest reuse the Version 2 audio.
+
+## A3. Short (new lines go after A2 line 5, and after A2 line 9)
+1–5. same as A2 1–5.
+6. NEW: Quran پڑھیے، tajweed والے صفحات کے ساتھ۔ Bookmark لگائیے، اور تلاوت سنیے، page خود آگے بڑھتا ہے۔
+7. NEW: Tasbeeh پڑھیے، اور Collective dhikr میں پوری community کا total count دیکھیے، آپ کا ہر tap اس میں شامل۔
+8–11. same as A2 6–9.
+12. NEW: Free account بنائیے، members کے لیے gifts، rewards اور vendors کی طرف سے discounts، ان شاء اللہ۔
+13–14. same as A2 10–11.
+
+## B3. Walkthrough (B2 with these changes)
+- After B2 line 11, NEW 11b: Free account کے ساتھ members کو gifts، rewards اور vendors کی طرف سے special discounts ملیں گے، ان شاء اللہ۔
+- B2 line 14 is replaced by:
+  - NEW 14a: Quran میں تیرہ سطروں والا tajweed mushaf ہے۔ Surah یا Juz چنیں، bookmark کا button دبا کر page save کریں، اور Progress میں اپنی streak دیکھیں۔
+  - NEW 14b: Headphones والا button دبا کر Mishary Alafasy یا Maher Al-Muaiqly کی تلاوت سنیں، صفحے تلاوت کے ساتھ ساتھ پلٹتے جاتے ہیں۔
+  - NEW 14c: Tasbeeh میں اپنا ذکر گنیں، اور Collective dhikr میں پوری community کا total count دیکھیں، آپ کا ہر tap اس میں شامل ہوتا ہے۔
+  - NEW 14d: Duas، Prayer Times، Qibla finder اور Islamic Calendar، سب ایک جگہ۔
+
+English captions for the new lines:
+- A3-6 / B3-14a,b: "Read the Quran on tajweed pages, bookmark a page, and listen to the recitation as the pages turn."
+- A3-7 / B3-14c: "Tasbeeh, and Collective dhikr: see the whole community's total. Every tap counts."
+- A3-12 / B3-11b: "Free account: gifts, rewards and discounts from vendors for members, in shaa Allah."
+- B3-14d: "Duas, Prayer Times, Qibla finder and the Islamic Calendar, all in one place."
