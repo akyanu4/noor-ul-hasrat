@@ -398,14 +398,14 @@
         // the video fills the screen like YouTube Shorts; everything else floats over it
         '.fv-frame{position:relative;height:100%;max-height:100%;aspect-ratio:9/16;max-width:100vw;background:#000}.fv-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}' +
         '.fv.fv-wide .fv-frame{aspect-ratio:16/9;width:100vw;height:auto;max-height:100%}' +
-        '.fv-top{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;gap:8px;padding:8px 10px 18px;padding-top:max(8px,env(safe-area-inset-top));color:#fff;font-size:13.5px;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,0));pointer-events:none}' +
-        '.fv-top>*{pointer-events:auto}.fv-t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;text-shadow:0 1px 3px #000;pointer-events:none}' +
+        '.fv-top{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;gap:8px;padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top));color:#fff;font-size:13.5px;pointer-events:none;flex-direction:row-reverse}' +
+        '.fv-top>*{pointer-events:auto}.fv-t{flex:1;min-width:0;visibility:hidden}' +
         '.fv button,.fv-rail a{font-family:inherit;cursor:pointer}.fv-x{flex:none;width:38px;height:38px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:#fff;font-size:18px;line-height:1}' +
         '.fv-bayah{flex:none;max-width:55vw;color:#f3e7c9;font-size:12px}.fv-bayah[hidden]{display:none}.fv-bayah summary{list-style:none;cursor:pointer;background:rgba(232,196,107,.28);border:1px solid rgba(232,196,107,.6);border-radius:999px;padding:6px 10px;white-space:nowrap}.fv-bayah summary::-webkit-details-marker{display:none}' +
         '.fv-bayah[open]{position:absolute;top:calc(max(8px,env(safe-area-inset-top)) + 44px);left:10px;right:10px;max-width:none}.fv-bayah[open] summary{display:inline-block}.fv-bayah .bt{margin-top:6px;background:rgba(0,0,0,.82);border:1px solid rgba(232,196,107,.5);border-radius:12px;padding:9px 12px;line-height:1.5}' +
         '.fv-bayah .ur,.fv-gate .ur{font-family:"Noto Nastaliq Urdu",Amiri,serif;font-size:14px;line-height:2;margin:2px 0 0}' +
         // right-hand rail of small round buttons, as on YouTube Shorts
-        '.fv-rail{position:absolute;right:max(6px,calc((100vw - min(100vw, 100vh * 9 / 16)) / 2 + 6px));bottom:calc(84px + env(safe-area-inset-bottom));z-index:3;display:flex;flex-direction:column;align-items:center;gap:12px}' +
+        '.fv-rail{position:absolute;right:max(6px,calc((100vw - min(100vw, 100vh * 9 / 16)) / 2 + 6px));bottom:calc(112px + env(safe-area-inset-bottom));z-index:3;display:flex;flex-direction:column;align-items:center;gap:10px}' +
         '.fv-rail>*{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;padding:0;color:#fff;text-decoration:none;font-size:11px;font-weight:600;text-shadow:0 1px 3px #000}' +
         '.fv-rail .i{width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1}.fv-rail .fv-sub .i{background:#c4302b}.fv-rail .fv-wa .i{background:#25D366}.fv-wa svg{width:22px;height:22px}.fv-rail .fv-next .i{background:#e8c46b;color:#1c1a12}.fv-rail .fv-full .i{background:#e8c46b;color:#1c1a12}' +
         '.fv-rail [hidden]{display:none!important}.fv-rail button:disabled{opacity:.3}.fv.fv-wide .fv-rail{bottom:calc(16px + env(safe-area-inset-bottom))}' +
