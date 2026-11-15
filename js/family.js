@@ -462,8 +462,8 @@
         t.innerHTML = '<b>' + (a.classList.contains('fv-sub') ? '🔔 Subscribe' : '👍 Like') + ' on YouTube</b><br>When you are done, press <b>Back</b> (or ✕ / Done) to come back here.<br><button type="button" class="fv-ytgo">Open YouTube</button>';
         viewer.appendChild(t);
         var go = function () { if (!t.parentNode) return; t.remove(); ytAway = Date.now(); root.open(href, '_blank', 'noopener'); };
-        t.querySelector('.fv-ytgo').addEventListener('click', go);
-        setTimeout(go, 2500);
+        t.querySelector('.fv-ytgo').addEventListener('click', go);   // a tap, so the phone lets it open
+        setTimeout(function () { if (t.parentNode) t.remove(); }, 12000);
       });
       doc.addEventListener('visibilitychange', function () {
         if (doc.hidden || !ytAway || viewer.hidden) return;
