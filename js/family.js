@@ -452,6 +452,19 @@
           });
         }
       });
+      // Like / Subscribe open YouTube (it cannot be shown inside the app). Say how to come back, and welcome them back.
+      var ytAway = 0;
+      viewer.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('.fv-like, .fv-sub'); if (!a) return;
+        ytAway = Date.now();
+        var t = doc.createElement('div'); t.className = 'fv-toast'; t.textContent = 'Opening YouTube… When you are done, press Back (or ✕ / Done) to come back here.';
+        viewer.appendChild(t); setTimeout(function () { t.remove(); }, 4000);
+      });
+      doc.addEventListener('visibilitychange', function () {
+        if (doc.hidden || !ytAway || viewer.hidden) return;
+        if (Date.now() - ytAway > 1500) { var t = doc.createElement('div'); t.className = 'fv-toast'; t.textContent = 'JazakAllah khair 🤲 Welcome back.'; viewer.appendChild(t); setTimeout(function () { t.remove(); }, 2500); }
+        ytAway = 0;
+      });
       doc.addEventListener('keydown', function (e) { if (viewer.hidden) return; if (e.key === 'Escape') vclose(); else if (e.key === 'ArrowRight') vnext(); else if (e.key === 'ArrowLeft' && vpos > 0) { vpos--; vshow(); } });
       root.addEventListener('popstate', function () { vclose(true); });
     }
