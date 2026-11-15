@@ -366,7 +366,7 @@
     } else viewer.querySelector('.fv-frame').innerHTML = '<iframe src="https://www.youtube.com/embed/' + it.id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
     viewer.querySelector('.fv-t').textContent = clean(it.title || '');
     viewer.querySelector('.fv-like').href = 'https://www.youtube.com/shorts/' + it.id;   // likes count only when given on YouTube itself
-    viewer.querySelector('.fv-sub').href = 'https://www.youtube.com/channel/' + AZAM.id + '?sub_confirmation=1';
+    viewer.querySelector('.fv-subl').href = 'https://www.youtube.com/channel/' + AZAM.id + '?sub_confirmation=1'; viewer.querySelector('.fv-subp').hidden = true;
     viewer.querySelector('.fv-stat').textContent = statText(it.id) || '';
     var wa = viewer.querySelector('.fv-wa'); wa.hidden = !!it.wide; wa.href = waUrl(it.id, it.title);
     if (!it.wide && !locked(it)) markWatched(it.id);
@@ -398,7 +398,7 @@
         // the video fills the screen like YouTube Shorts; everything else floats over it
         '.fv-frame{position:relative;height:100%;max-height:100%;aspect-ratio:9/16;max-width:100vw;background:#000}.fv-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}' +
         '.fv.fv-wide .fv-frame{aspect-ratio:16/9;width:100vw;height:auto;max-height:100%}' +
-        '.fv-top{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;gap:8px;padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top));color:#fff;font-size:13.5px;pointer-events:none;flex-direction:row-reverse}' +
+        '.fv-top{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;gap:8px;padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top));color:#fff;font-size:13.5px;pointer-events:none}' +
         '.fv-top>*{pointer-events:auto}.fv-t{flex:1;min-width:0;visibility:hidden}' +
         '.fv button,.fv-rail a{font-family:inherit;cursor:pointer}.fv-x{flex:none;width:38px;height:38px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:#fff;font-size:18px;line-height:1}' +
         '.fv-bayah{flex:none;max-width:55vw;color:#f3e7c9;font-size:12px}.fv-bayah[hidden]{display:none}.fv-bayah summary{list-style:none;cursor:pointer;background:rgba(232,196,107,.28);border:1px solid rgba(232,196,107,.6);border-radius:999px;padding:6px 10px;white-space:nowrap}.fv-bayah summary::-webkit-details-marker{display:none}' +
@@ -412,6 +412,7 @@
         '.fv-stat{position:absolute;left:12px;bottom:calc(64px + env(safe-area-inset-bottom));z-index:2;color:#fff;font-size:11.5px;text-shadow:0 1px 3px #000;pointer-events:none;opacity:.85}' +
         '.fv-gate{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 70px 18px 18px;color:#f3e7c9;background:linear-gradient(160deg,#0f3d3e,#1c1a12);overflow:auto}.fv-gate b{font-size:18px;color:#e8c46b}.fv-gate p{font-size:13.5px;line-height:1.55;margin:8px 0}.fv-gi{font-size:34px}' +
         '.fv .fv-signin{background:#e8c46b;color:#1c1a12;font-weight:700;margin-top:6px;border:0;border-radius:999px;padding:10px 16px;font-size:15px}.fv .fv-how{background:none;border:0;text-decoration:underline;color:#e7d4a3;margin-top:4px;font-size:14px}' +
+        '.fv-subp{position:absolute;right:66px;bottom:calc(112px + env(safe-area-inset-bottom));z-index:4;background:rgba(15,15,15,.94);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:12px 14px;color:#fff;font-size:13px;min-width:200px;text-align:center}.fv-subp[hidden]{display:none}.fv-subp .h{font-weight:600;margin-bottom:8px}.fv-subp .w{min-height:28px;display:flex;justify-content:center}.fv-subp a{display:block;margin-top:8px;color:#bbb;font-size:12px}' +
         '.fv-toast{position:absolute;bottom:140px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#f3e7c9;padding:10px 16px;border-radius:12px;font-size:14px;max-width:86vw;text-align:center;z-index:4}' +
         '@media (min-aspect-ratio:3/4){.fv-rail{right:calc((100vw - 100vh * 9 / 16) / 2 - 64px)}}.fv.fv-wide .fv-rail{right:8px}';
       doc.head.appendChild(st);
@@ -420,13 +421,14 @@
         '<div class="fv-top"><button type="button" class="fv-x" aria-label="Close">✕</button><span class="fv-t"></span>' +
           '<details class="fv-bayah" hidden><summary>🤝 After Bai’at ⓘ</summary><div class="bt">' + esc(BAYAH_EN) + '<div class="ur" dir="rtl" lang="ur">' + esc(BAYAH_UR) + '</div></div></details></div>' +
         '<span class="fv-stat"></span>' +
+        '<div class="fv-subp" hidden><div class="h">Subscribe to Azam Pasha Zikr</div><div class="w"></div><a class="fv-subl" target="_blank" rel="noopener">Open on YouTube instead</a></div>' +
         '<div class="fv-rail">' +
           '<button type="button" class="fv-prev" aria-label="Previous Short"><span class="i">▲</span></button>' +
           '<a class="fv-like" target="_blank" rel="noopener" aria-label="Like on YouTube"><span class="i">👍</span>Like</a>' +
           '<button type="button" class="fv-share" aria-label="Share"><span class="i">↗</span>Share</button>' +
           '<a class="fv-wa" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><span class="i">' + WA_SVG + '</span>WhatsApp</a>' +
           '<button type="button" class="fv-full" hidden aria-label="Full dars"><span class="i">🎧</span><span class="lb">Full dars</span></button>' +
-          '<a class="fv-sub" target="_blank" rel="noopener" aria-label="Subscribe on YouTube"><span class="i">🔔</span>Subscribe</a>' +
+          '<button type="button" class="fv-sub" aria-label="Subscribe"><span class="i">🔔</span>Subscribe</button>' +
           '<button type="button" class="fv-next" aria-label="Next Short"><span class="i">▼</span>Next</button>' +
         '</div>';
       doc.body.appendChild(viewer);
@@ -438,6 +440,7 @@
         else if (b.classList.contains('fv-how')) { vclose(); N.route('bayah'); }
         else if (b.classList.contains('fv-prev') && vpos > 0) { vpos--; vshow(); }
         else if (b.classList.contains('fv-next')) vnext();
+        else if (b.classList.contains('fv-sub')) subPanel();
         else if (b.classList.contains('fv-share')) { var it = vlist[vpos]; if (it) shareShort(it.id, it.title); }
         else if (b.classList.contains('fv-full') && b.__fd) {
           var fd = b.__fd;
@@ -454,6 +457,18 @@
     vlist = list; vpos = pos; viewer.classList.toggle('fv-wide', !!(list[0] && list[0].wide)); viewer.hidden = false; doc.documentElement.style.overflow = 'hidden';
     try { if (!(root.history.state && root.history.state.fv)) root.history.pushState({ fv: 1 }, ''); } catch (e) {}
     vshow();
+  }
+  // Subscribe without leaving the app: YouTube's own Subscribe button (it counts on the channel directly; if the person
+  // is not signed in to YouTube on this phone, YouTube shows its own sign-in window). The link below is the fallback.
+  var ytPlat = null;
+  function subPanel() {
+    var p = viewer.querySelector('.fv-subp'); p.hidden = !p.hidden; if (p.hidden) return;
+    var w = p.querySelector('.w');
+    if (!w.firstChild) {
+      w.innerHTML = '<div class="g-ytsubscribe" data-channelid="' + esc(AZAM.id) + '" data-layout="default" data-theme="dark" data-count="default"></div>';
+      if (!ytPlat) { ytPlat = doc.createElement('script'); ytPlat.src = 'https://apis.google.com/js/platform.js'; ytPlat.async = true; doc.head.appendChild(ytPlat); }
+      else if (root.gapi && root.gapi.ytsubscribe) try { root.gapi.ytsubscribe.go(w); } catch (e) {}
+    }
   }
   function playShort(th) {
     if (!th || !validId(th.getAttribute('data-id'))) return false;
