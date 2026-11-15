@@ -519,7 +519,7 @@
   var FULLDARS = (cfg.fullDars || [
     { title: "The Soul's Journey, Death, the Scale and the Blessed Malida", match: 'soul|malida',
       shorts: ['JfQsTHE7VrU', 'tayZJTuWGkU', 'NSWYCYR-Tlo', 'EQbitUdOKqQ', '2yjNqJo659g', 'eNHL-OsPxgQ', 'ZHg4XMwt3Ok'] },
-    { title: "Haqeeqat-e-Bai'at", match: 'haqeeqat|haqiqat',   // both recordings joined into one full dars
+    { title: "Haqeeqat-e-Bai'at", match: 'haqeeqat|haqiqat', pin: true, ic: '🤝', sub: 'Bai’at: what it is, and why a murid needs a Shaykh',   // both recordings joined into one full dars
       shorts: ['g8-0WIXYjcM', 'r3x7LQru71I', '7wB9EQldsew', 'E7xb4BR6IPQ', 'kziC4lPGmgU', 'Rno3f3mGjyg', 'jRK1SIkPkV0', '3githsE0o6Y', 'ENBkebr3nJI', 'RFLGxcbYBCM', 'cbWGnUMd530', '77ZE201Hbjw', 'Fq8X-k08A5Y'] },
     // Nizam-ul-Amal-e-Fuqra: the full dars of each part shows here once it is on the channel (title with "Nizam" and "Part N").
     { title: 'Nizam-ul-Amal-e-Fuqra, Part 1', match: 'nizam.*part\\s*1(?!\\d)',
@@ -583,10 +583,10 @@
       (f.shorts || []).forEach(function (id) { var r = resolve(id, m); if (r && !seen[r]) { seen[r] = 1; items.push(m[r]); } });
       if (!items.length) return;
       var pm = /^(.*?),?\s*Part\s*(\d+)\s*$/i.exec(f.title || '');
-      out.push({ key: k, title: f.title, name: pm ? pm[1] : f.title, part: pm ? 'Part ' + pm[2] : '', pn: pm ? +pm[2] : 0, items: items });
+      out.push({ key: k, title: f.title, name: pm ? pm[1] : f.title, part: pm ? 'Part ' + pm[2] : '', pn: pm ? +pm[2] : 0, items: items, pin: !!f.pin, ic: f.ic || '', sub: f.sub || '' });
     });
     var first = {}; out.forEach(function (x, i) { if (!(x.name in first)) first[x.name] = i; });
-    return out.sort(function (a, b) { return (first[a.name] - first[b.name]) || (a.pn - b.pn) || (a.key - b.key); });
+    return out.sort(function (a, b) { return (b.pin - a.pin) || (first[a.name] - first[b.name]) || (a.pn - b.pn) || (a.key - b.key); });
   }
   function seriesOf(id) { return seriesAll().filter(function (x) { return indexIn(x.items, id) >= 0; })[0] || null; }
   function progress(sr) { var d = 0, last = 0; sr.items.forEach(function (v) { var t = watchedAt(v.id); if (t) { d++; if (t > last) last = t; } }); return { done: d, last: last }; }
@@ -594,12 +594,13 @@
   function seriesCard(sr) {
     var p = progress(sr), n = sr.items.length, ni = nextIn(sr), th = sr.items[ni >= 0 ? ni : 0];
     return '<div class="sh-ser" role="button" data-ser="' + sr.key + '"><div class="sh-sth">' + thumb(th.id) + '</div><div class="sh-ci">' +
-      (sr.part ? '<div class="sh-ck">' + esc(sr.name) + '</div>' : '') + '<div class="sh-cm"><b>' + esc(sr.part || sr.name) + '</b> · ' + p.done + ' of ' + n + ' watched' + (p.done ? ' ✓' : '') + '</div>' +
+      (sr.part ? '<div class="sh-ck">' + esc(sr.name) + '</div>' : '') + '<div class="sh-cm"><b>' + (sr.ic ? sr.ic + ' ' : '') + esc(sr.part || sr.name) + '</b> · ' + p.done + ' of ' + n + ' watched' + (p.done ? ' ✓' : '') + '</div>' +
+      (sr.sub ? '<div class="sh-ck" style="text-transform:none;letter-spacing:0">' + esc(sr.sub) + '</div>' : '') +
       '<div class="sh-bar"><i style="width:' + Math.round(100 * p.done / n) + '%"></i></div></div><div class="sh-chev">›</div></div>';
   }
   function seriesView(sr) {
     var p = progress(sr), n = sr.items.length, ni = nextIn(sr);
-    return '<div class="sh-back" role="button">‹ All Shorts</div><h2 class="section-title" style="margin-top:0">' + esc(sr.title) + '</h2>' +
+    return '<div class="sh-back" role="button">‹ All Shorts</div><h2 class="section-title" style="margin-top:0">' + (sr.ic ? sr.ic + ' ' : '') + esc(sr.title) + '</h2>' + (sr.sub ? '<div class="sh-cm" style="margin:-6px 0 6px">' + esc(sr.sub) + '</div>' : '') +
       '<div class="sh-cm" style="margin:-4px 0 0">' + p.done + ' of ' + n + ' watched' + (p.done === n ? ' · complete ✓' : '') + '</div><div class="sh-bar" style="margin-bottom:12px"><i style="width:' + Math.round(100 * p.done / n) + '%"></i></div>' +
       (ni >= 0 ? '<button type="button" class="sh-go" data-sx="' + ni + '" style="margin-bottom:12px">▶ ' + (p.done ? 'Continue' : 'Start') + ': ' + esc(clean(sr.items[ni].title)) + '</button>' : '') +
       '<div class="sh-list">' + sr.items.map(function (v, i) {
