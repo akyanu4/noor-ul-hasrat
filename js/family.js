@@ -366,7 +366,7 @@
     } else viewer.querySelector('.fv-frame').innerHTML = '<iframe src="https://www.youtube.com/embed/' + it.id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
     viewer.querySelector('.fv-t').textContent = clean(it.title || '');
     viewer.querySelector('.fv-like').href = 'https://www.youtube.com/shorts/' + it.id;   // likes count only when given on YouTube itself
-    viewer.querySelector('.fv-subl').href = 'https://www.youtube.com/channel/' + AZAM.id + '?sub_confirmation=1'; viewer.querySelector('.fv-subp').hidden = true;
+    viewer.querySelector('.fv-sub').href = viewer.querySelector('.fv-subl').href = 'https://www.youtube.com/channel/' + AZAM.id + '?sub_confirmation=1'; viewer.querySelector('.fv-subp').hidden = true;
     viewer.querySelector('.fv-stat').textContent = statText(it.id) || '';
     var wa = viewer.querySelector('.fv-wa'); wa.hidden = !!it.wide; wa.href = waUrl(it.id, it.title);
     if (!it.wide && !locked(it)) markWatched(it.id);
@@ -428,7 +428,7 @@
           '<button type="button" class="fv-share" aria-label="Share"><span class="i">↗</span>Share</button>' +
           '<a class="fv-wa" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><span class="i">' + WA_SVG + '</span>WhatsApp</a>' +
           '<button type="button" class="fv-full" hidden aria-label="Full dars"><span class="i">🎧</span><span class="lb">Full dars</span></button>' +
-          '<button type="button" class="fv-sub" aria-label="Subscribe"><span class="i">🔔</span>Subscribe</button>' +
+          '<a class="fv-sub" target="_blank" rel="noopener" aria-label="Subscribe on YouTube"><span class="i">🔔</span>Subscribe</a>' +
           '<button type="button" class="fv-next" aria-label="Next Short"><span class="i">▼</span>Next</button>' +
         '</div>';
       doc.body.appendChild(viewer);
@@ -440,7 +440,6 @@
         else if (b.classList.contains('fv-how')) { vclose(); N.route('bayah'); }
         else if (b.classList.contains('fv-prev') && vpos > 0) { vpos--; vshow(); }
         else if (b.classList.contains('fv-next')) vnext();
-        else if (b.classList.contains('fv-sub')) subPanel();
         else if (b.classList.contains('fv-share')) { var it = vlist[vpos]; if (it) shareShort(it.id, it.title); }
         else if (b.classList.contains('fv-full') && b.__fd) {
           var fd = b.__fd;
