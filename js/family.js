@@ -353,7 +353,7 @@
   function vshow() {
     var it = vlist[vpos]; if (!it) return;
     var prac = isPractice(it), bn = viewer.querySelector('.fv-bayah');
-    bn.hidden = !prac || locked(it);
+    bn.hidden = !prac || locked(it); bn.open = false;
     if (locked(it)) {
       var why = lockReason(it), what = it.wide ? 'full dars' : 'Short';
       viewer.querySelector('.fv-frame').innerHTML = '<div class="fv-gate"><div class="fv-gi">🤝</div><b>For murids who have taken Bai\u2019at</b><p>' + esc(BAYAH_EN) + '</p><p class="ur" dir="rtl" lang="ur">' + esc(BAYAH_UR) + '</p>' +
@@ -371,8 +371,8 @@
     var wa = viewer.querySelector('.fv-wa'); wa.hidden = !!it.wide; wa.href = waUrl(it.id, it.title);
     if (!it.wide && !locked(it)) markWatched(it.id);
     var fb = viewer.querySelector('.fv-full'), fd = it.wide ? null : fullFor(it.id);
-    fb.hidden = !fd; fb.textContent = '🎧 Full dars'; fb.__fd = fd;
-    if (fd) azamFull(function (items) { if (fb.__fd === fd && !fullVideo(fd, items)) fb.textContent = '🎧 Full dars · soon'; });
+    fb.hidden = !fd; fb.querySelector('.lb').textContent = 'Full dars'; fb.__fd = fd;
+    if (fd) azamFull(function (items) { if (fb.__fd === fd && !fullVideo(fd, items)) fb.querySelector('.lb').textContent = 'Soon'; });
     viewer.querySelector('.fv-prev').disabled = vpos <= 0;
     var nt = nextTarget(), nb = viewer.querySelector('.fv-next');
     nb.disabled = !nt; nb.title = nt && nt.series ? 'Next in ' + nt.series : 'Next Short';
@@ -394,19 +394,41 @@
   function vopen(list, pos) {
     if (!viewer) {
       var st = doc.createElement('style');
-      st.textContent = '.fv[hidden]{display:none!important}.fv{position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center}' +
-        '.fv-frame{position:relative;height:calc(100% - 168px);max-height:calc(100vw * 16 / 9);aspect-ratio:9/16;max-width:100vw;background:#000}.fv-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}' +
-        '.fv-top{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:10px;padding:10px 12px;padding-top:max(10px,env(safe-area-inset-top));color:#f3e7c9;font-size:14px;z-index:2}' +
-        '.fv-t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fv button,.fv-bar a{background:rgba(255,255,255,.12);color:#f3e7c9;border:0;border-radius:999px;padding:9px 14px;font-size:15px;cursor:pointer;text-decoration:none;font-family:inherit}.fv-bar a.fv-sub{background:#c4302b;color:#fff}.fv-bar a.fv-wa{background:#25D366;color:#fff;display:inline-flex;align-items:center;padding:9px 13px}.fv-wa svg{width:19px;height:19px}.fv-bar a.fv-wa[hidden]{display:none}.fv .fv-next{background:#e8c46b;color:#1c1a12;font-weight:700}' +
-        '.fv button:disabled{opacity:.35}.fv-bar{display:flex;flex-wrap:wrap;gap:8px 10px;justify-content:center;padding:8px 8px 0}.fv-bar2{padding-bottom:max(10px,env(safe-area-inset-bottom))}.fv-stat{width:100%;text-align:center;color:#cbbf9f;font-size:12px}.fv-x{font-size:18px!important;padding:6px 13px!important}' +
-        '.fv-bayah{position:relative;margin:52px 10px 0;max-width:560px;z-index:2;background:rgba(232,196,107,.16);border:1px solid rgba(232,196,107,.5);color:#f3e7c9;border-radius:12px;padding:7px 12px;font-size:12.5px;line-height:1.45;text-align:center}.fv-bayah[hidden]{display:none}.fv-bayah:not([hidden])+.fv-frame{margin-top:6px;height:calc(100% - 260px)}.fv-bayah .ur,.fv-gate .ur{font-family:"Noto Nastaliq Urdu",Amiri,serif;font-size:14px;line-height:2;margin:2px 0 0}' +
-        '.fv-gate{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;color:#f3e7c9;background:linear-gradient(160deg,#0f3d3e,#1c1a12);overflow:auto}.fv-gate b{font-size:18px;color:#e8c46b}.fv-gate p{font-size:13.5px;line-height:1.55;margin:8px 0}.fv-gi{font-size:34px}.fv .fv-signin{background:#e8c46b;color:#1c1a12;font-weight:700;margin-top:6px}.fv .fv-how{background:none;text-decoration:underline;color:#e7d4a3;margin-top:4px}' +
-        '.fv-full{background:#e8c46b!important;color:#1c1a12!important;font-weight:700}.fv-full[hidden]{display:none}.fv-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#f3e7c9;padding:10px 16px;border-radius:12px;font-size:14px;max-width:86vw;text-align:center;z-index:3}.fv-frame{margin-top:52px}.fv.fv-wide .fv-frame{aspect-ratio:16/9;width:100vw;height:auto;max-height:calc(100% - 168px)}';
+      st.textContent = '.fv[hidden]{display:none!important}.fv{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}' +
+        // the video fills the screen like YouTube Shorts; everything else floats over it
+        '.fv-frame{position:relative;height:100%;max-height:100%;aspect-ratio:9/16;max-width:100vw;background:#000}.fv-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}' +
+        '.fv.fv-wide .fv-frame{aspect-ratio:16/9;width:100vw;height:auto;max-height:100%}' +
+        '.fv-top{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;gap:8px;padding:8px 10px 18px;padding-top:max(8px,env(safe-area-inset-top));color:#fff;font-size:13.5px;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,0));pointer-events:none}' +
+        '.fv-top>*{pointer-events:auto}.fv-t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;text-shadow:0 1px 3px #000;pointer-events:none}' +
+        '.fv button,.fv-rail a{font-family:inherit;cursor:pointer}.fv-x{flex:none;width:38px;height:38px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:#fff;font-size:18px;line-height:1}' +
+        '.fv-bayah{flex:none;max-width:55vw;color:#f3e7c9;font-size:12px}.fv-bayah[hidden]{display:none}.fv-bayah summary{list-style:none;cursor:pointer;background:rgba(232,196,107,.28);border:1px solid rgba(232,196,107,.6);border-radius:999px;padding:6px 10px;white-space:nowrap}.fv-bayah summary::-webkit-details-marker{display:none}' +
+        '.fv-bayah[open]{position:absolute;top:calc(max(8px,env(safe-area-inset-top)) + 44px);left:10px;right:10px;max-width:none}.fv-bayah[open] summary{display:inline-block}.fv-bayah .bt{margin-top:6px;background:rgba(0,0,0,.82);border:1px solid rgba(232,196,107,.5);border-radius:12px;padding:9px 12px;line-height:1.5}' +
+        '.fv-bayah .ur,.fv-gate .ur{font-family:"Noto Nastaliq Urdu",Amiri,serif;font-size:14px;line-height:2;margin:2px 0 0}' +
+        // right-hand rail of small round buttons, as on YouTube Shorts
+        '.fv-rail{position:absolute;right:max(6px,calc((100vw - min(100vw, 100vh * 9 / 16)) / 2 + 6px));bottom:calc(84px + env(safe-area-inset-bottom));z-index:3;display:flex;flex-direction:column;align-items:center;gap:12px}' +
+        '.fv-rail>*{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;padding:0;color:#fff;text-decoration:none;font-size:11px;font-weight:600;text-shadow:0 1px 3px #000}' +
+        '.fv-rail .i{width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1}.fv-rail .fv-sub .i{background:#c4302b}.fv-rail .fv-wa .i{background:#25D366}.fv-wa svg{width:22px;height:22px}.fv-rail .fv-next .i{background:#e8c46b;color:#1c1a12}.fv-rail .fv-full .i{background:#e8c46b;color:#1c1a12}' +
+        '.fv-rail [hidden]{display:none!important}.fv-rail button:disabled{opacity:.3}.fv.fv-wide .fv-rail{bottom:calc(16px + env(safe-area-inset-bottom))}' +
+        '.fv-stat{position:absolute;left:12px;bottom:calc(64px + env(safe-area-inset-bottom));z-index:2;color:#fff;font-size:11.5px;text-shadow:0 1px 3px #000;pointer-events:none;opacity:.85}' +
+        '.fv-gate{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 70px 18px 18px;color:#f3e7c9;background:linear-gradient(160deg,#0f3d3e,#1c1a12);overflow:auto}.fv-gate b{font-size:18px;color:#e8c46b}.fv-gate p{font-size:13.5px;line-height:1.55;margin:8px 0}.fv-gi{font-size:34px}' +
+        '.fv .fv-signin{background:#e8c46b;color:#1c1a12;font-weight:700;margin-top:6px;border:0;border-radius:999px;padding:10px 16px;font-size:15px}.fv .fv-how{background:none;border:0;text-decoration:underline;color:#e7d4a3;margin-top:4px;font-size:14px}' +
+        '.fv-toast{position:absolute;bottom:140px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#f3e7c9;padding:10px 16px;border-radius:12px;font-size:14px;max-width:86vw;text-align:center;z-index:4}' +
+        '@media (min-aspect-ratio:3/4){.fv-rail{right:calc((100vw - 100vh * 9 / 16) / 2 - 64px)}}.fv.fv-wide .fv-rail{right:8px}';
       doc.head.appendChild(st);
       viewer = doc.createElement('div'); viewer.className = 'fv'; viewer.hidden = true; viewer.setAttribute('role', 'dialog'); viewer.setAttribute('aria-label', 'Short');
-      viewer.innerHTML = '<div class="fv-top"><span class="fv-t"></span><button type="button" class="fv-x" aria-label="Close">✕</button></div><div class="fv-bayah" hidden>🤝 ' + esc(BAYAH_EN) + '<div class="ur" dir="rtl" lang="ur">' + esc(BAYAH_UR) + '</div></div><div class="fv-frame"></div>' +
-        '<div class="fv-bar"><span class="fv-stat"></span><a class="fv-like" target="_blank" rel="noopener">👍 Like</a><a class="fv-sub" target="_blank" rel="noopener">🔔 Subscribe</a><button type="button" class="fv-share">↗ Share</button><a class="fv-wa" target="_blank" rel="noopener" aria-label="Share on WhatsApp">' + WA_SVG + '</a><button type="button" class="fv-full" hidden>🎧 Full dars</button></div>' +
-        '<div class="fv-bar fv-bar2"><button type="button" class="fv-prev">‹ Previous</button><button type="button" class="fv-next">Next →</button></div>';
+      viewer.innerHTML = '<div class="fv-frame"></div>' +
+        '<div class="fv-top"><button type="button" class="fv-x" aria-label="Close">✕</button><span class="fv-t"></span>' +
+          '<details class="fv-bayah" hidden><summary>🤝 After Bai’at ⓘ</summary><div class="bt">' + esc(BAYAH_EN) + '<div class="ur" dir="rtl" lang="ur">' + esc(BAYAH_UR) + '</div></div></details></div>' +
+        '<span class="fv-stat"></span>' +
+        '<div class="fv-rail">' +
+          '<button type="button" class="fv-prev" aria-label="Previous Short"><span class="i">▲</span></button>' +
+          '<a class="fv-like" target="_blank" rel="noopener" aria-label="Like on YouTube"><span class="i">👍</span>Like</a>' +
+          '<button type="button" class="fv-share" aria-label="Share"><span class="i">↗</span>Share</button>' +
+          '<a class="fv-wa" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><span class="i">' + WA_SVG + '</span>WhatsApp</a>' +
+          '<button type="button" class="fv-full" hidden aria-label="Full dars"><span class="i">🎧</span><span class="lb">Full dars</span></button>' +
+          '<a class="fv-sub" target="_blank" rel="noopener" aria-label="Subscribe on YouTube"><span class="i">🔔</span>Subscribe</a>' +
+          '<button type="button" class="fv-next" aria-label="Next Short"><span class="i">▼</span>Next</button>' +
+        '</div>';
       doc.body.appendChild(viewer);
       viewer.addEventListener('click', function (e) {
         var b = e.target.closest && e.target.closest('button'); if (!b) return;
