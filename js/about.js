@@ -132,8 +132,9 @@
       sc.textContent = '.sl-note{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px dashed var(--gold)}.sl-note .t{flex:1;font-size:13px;line-height:1.45;color:var(--ink)}.sl-note .t b{color:var(--teal)}' +
         '.sl-note .fb{flex:none;border:0;border-radius:10px;background:var(--teal);color:#fff;font:inherit;font-size:13px;font-weight:600;padding:9px 12px;cursor:pointer;min-height:40px}.sl-note .x{flex:none;border:0;background:none;color:var(--muted);font-size:18px;cursor:pointer;min-width:36px;min-height:40px}';
       doc.head.appendChild(sc);
-      var sl = N.el('div', 'sl-note', '<div class="t"><b>🌱 Soft launch</b> · The app is new. Your feedback helps us make it better.</div><button type="button" class="fb">Give feedback</button><button type="button" class="x" aria-label="Close">×</button>');
+      var sl = N.el('div', 'sl-note', '<div class="t"><b>🌱 Soft launch</b> · The app is new. Your feedback helps us make it better. <a href="#" class="gd" style="color:var(--teal);font-weight:600">▶ How to use the app</a></div><button type="button" class="fb">Give feedback</button><button type="button" class="x" aria-label="Close">×</button>');
       sl.querySelector('.fb').addEventListener('click', function () { openForm(true); });
+      sl.querySelector('.gd').addEventListener('click', function (e) { e.preventDefault(); if (root.NoorFamily && root.NoorFamily.playVideo) root.NoorFamily.playVideo('ukIe78h3lHM', 'How to use the Noor-ul-Hasrat app'); });
       sl.querySelector('.x').addEventListener('click', function () { try { localStorage.setItem(SLKEY, String(Date.now())); } catch (er) {} sl.remove(); });
       home.insertBefore(sl, home.firstChild);
     }
