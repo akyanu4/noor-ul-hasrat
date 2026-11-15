@@ -415,6 +415,7 @@
         '.fv-gate{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 70px 18px 18px;color:#f3e7c9;background:linear-gradient(160deg,#0f3d3e,#1c1a12);overflow:auto}.fv-gate b{font-size:18px;color:#e8c46b}.fv-gate p{font-size:13.5px;line-height:1.55;margin:8px 0}.fv-gi{font-size:34px}' +
         '.fv .fv-signin{background:#e8c46b;color:#1c1a12;font-weight:700;margin-top:6px;border:0;border-radius:999px;padding:10px 16px;font-size:15px}.fv .fv-how{background:none;border:0;text-decoration:underline;color:#e7d4a3;margin-top:4px;font-size:14px}' +
         '.fv-subp{position:absolute;right:66px;bottom:calc(112px + env(safe-area-inset-bottom));z-index:4;background:rgba(15,15,15,.94);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:12px 14px;color:#fff;font-size:13px;min-width:200px;text-align:center}.fv-subp[hidden]{display:none}.fv-subp .h{font-weight:600;margin-bottom:8px}.fv-subp .w{min-height:28px;display:flex;justify-content:center}.fv-subp a{display:block;margin-top:8px;color:#bbb;font-size:12px}' +
+        '.fv-yt{line-height:1.5;padding:14px 16px!important}.fv .fv-ytgo{margin-top:10px;background:#c4302b;color:#fff;border:0;border-radius:999px;padding:9px 16px;font-size:14px;font-weight:600}' +
         '.fv-toast{position:absolute;bottom:140px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#f3e7c9;padding:10px 16px;border-radius:12px;font-size:14px;max-width:86vw;text-align:center;z-index:4}' +
         '@media (min-aspect-ratio:3/4){.fv-rail{right:calc((100vw - 100vh * 9 / 16) / 2 - 64px)}}.fv.fv-wide .fv-rail{right:8px}';
       doc.head.appendChild(st);
@@ -456,9 +457,13 @@
       var ytAway = 0;
       viewer.addEventListener('click', function (e) {
         var a = e.target.closest && e.target.closest('.fv-like, .fv-sub'); if (!a) return;
-        ytAway = Date.now();
-        var t = doc.createElement('div'); t.className = 'fv-toast'; t.textContent = 'Opening YouTube… When you are done, press Back (or ✕ / Done) to come back here.';
-        viewer.appendChild(t); setTimeout(function () { t.remove(); }, 4000);
+        e.preventDefault();   // show the note first, then open YouTube
+        var href = a.href, t = doc.createElement('div'); t.className = 'fv-toast fv-yt';
+        t.innerHTML = '<b>' + (a.classList.contains('fv-sub') ? '🔔 Subscribe' : '👍 Like') + ' on YouTube</b><br>When you are done, press <b>Back</b> (or ✕ / Done) to come back here.<br><button type="button" class="fv-ytgo">Open YouTube</button>';
+        viewer.appendChild(t);
+        var go = function () { if (!t.parentNode) return; t.remove(); ytAway = Date.now(); root.open(href, '_blank', 'noopener'); };
+        t.querySelector('.fv-ytgo').addEventListener('click', go);
+        setTimeout(go, 2500);
       });
       doc.addEventListener('visibilitychange', function () {
         if (doc.hidden || !ytAway || viewer.hidden) return;
