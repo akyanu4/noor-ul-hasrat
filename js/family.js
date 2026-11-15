@@ -303,9 +303,8 @@
       list = list.filter(function (v) { return topicsOf(v).indexOf(stopic) >= 0; });
       h += '<div class="sh-h"><span>' + esc(topicLabel(stopic)) + '</span><small>' + list.length + ' highlight' + (list.length === 1 ? '' : 's') + '</small></div>';
     } else if (list.length) {
-      var nw = list.filter(isNew);
-      if (nw.length) h += '<div class="sh-h"><span>New this week</span><small>' + nw.length + ' new</small></div>' + rowHtml(nw);
-      h += lovedHtml(list);
+      var sdp = sotd();
+      if (sdp && sdp.path) h += pathRow(sdp, 8);
       var ss = seriesAll();
       if (ss.length) h += '<div class="sh-h"><span>Series</span><small>watch in order</small></div>' + ss.map(seriesCard).join('');
       var pr = list.filter(isPractice);
@@ -313,6 +312,9 @@
         var anyLock = pr.some(locked);
         h += '<div class="sh-h"><span>For murids ' + (anyLock ? '🔒' : '🤝') + '</span>' + (anyLock ? '<button type="button" class="sh-req">🤝 Request Bai\u2019at</button>' : '<small>practices of dhikr</small>') + '</div>' + rowHtml(pr);
       }
+      var nw = list.filter(isNew);
+      if (nw.length) h += '<div class="sh-h"><span>New this week</span><small>' + nw.length + ' new</small></div>' + rowHtml(nw);
+      h += lovedHtml(list);
       h += '<div class="sh-h"><span>All highlights</span><small>newest first</small></div>';
     }
     var total = list.length; list = list.slice(0, limit);
@@ -622,7 +624,36 @@
   // Short of the Day: the same for everyone on a date; walks through every public Short that is not a practice, oldest first.
   function sotdPool() { return live().filter(function (v) { return !isPractice(v); }).sort(function (a, b) { return ((Date.parse(a.at || 0) || 0) - (Date.parse(b.at || 0) || 0)) || (a.id < b.id ? -1 : 1); }); }
   function dayNumber(d) { d = d || new Date(); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000); }
-  function sotd() { var p = sotdPool(); if (!p.length) return null; var i = dayNumber() % p.length; return { list: p.slice(i).concat(p.slice(0, i)), v: p[i] }; }
+  // Highlight of the Day follows each person's own path, from step 1: Start here, then the series in order
+  // (Bai'at first, then The Soul's Journey, then Nizam-ul-Amal Part 1, 2, 3…). One new step a day: today's pick stays
+  // until tomorrow; then the next step not yet watched. Missed days don't skip anything. After the path, the old rotation.
+  var HKEY = 'noor_hotd_v1';
+  function pathList() {
+    var seen = {}, out = [];
+    function add(v) { if (!v || locked(v) || isPractice(v)) return; var k = RW[v.id] || v.id; if (seen[k]) return; seen[k] = 1; out.push(v); }
+    startList().forEach(add);
+    seriesAll().forEach(function (sr) { sr.items.forEach(add); });
+    return out;
+  }
+  function sotd() {
+    var path = pathList(), today = dayNumber(), st = {};
+    try { st = JSON.parse(sget(HKEY) || '{}') || {}; } catch (e) {}
+    var i = -1, k;
+    if (st.day === today) for (k = 0; k < path.length; k++) if (path[k].id === st.id) { i = k; break; }
+    if (i < 0) {
+      for (k = 0; k < path.length; k++) if (!isWatched(path[k].id) && path[k].id !== (st.day !== today ? '' : st.id)) { i = k; break; }
+      if (i >= 0) sset(HKEY, JSON.stringify({ day: today, id: path[i].id }));
+    }
+    if (i >= 0) return { list: path.slice(i), v: path[i], step: i + 1, of: path.length, path: path };
+    var p = sotdPool(); if (!p.length) return null; var j = today % p.length; return { list: p.slice(j).concat(p.slice(0, j)), v: p[j] };
+  }
+  // The next few steps of the path (for "Your path" rows), watched ones ticked.
+  function pathRow(sd, n) {
+    if (!sd || !sd.path) return '';
+    var from = Math.max(0, sd.step - 1), list = sd.path.slice(from, from + (n || 6)), done = sd.path.filter(function (v) { return isWatched(v.id); }).length;
+    return '<div class="sh-h"><span>Your path</span><small>' + done + ' of ' + sd.of + ' watched · one new each day</small></div>' +
+      '<div class="sh-bar" style="margin:-2px 0 8px"><i style="width:' + Math.round(100 * done / sd.of) + '%"></i></div>' + rowHtml(list);
+  }
   // Start here: the order a newcomer should watch in (config.js startHere). Practice Shorts are left out while locked.
   var START = (Array.isArray(cfg.startHere) && cfg.startHere.length ? cfg.startHere : ['TkSFt5BlMzs', '0yhKLLlv5ww', 'u6BHgjCPuCo', '2yjNqJo659g', 'iYb70KSdYD4', 'oWZt1YfJ3io', 'cfKWk-fq-BQ', 'trMoVHtadHI']);
   function startList() { var m = liveMap(), seen = {}; return START.map(function (id) { var r = resolve(id, m); if (!r || seen[r]) return null; seen[r] = 1; return m[r]; }).filter(function (v) { return v && !locked(v); }); }
@@ -638,7 +669,7 @@
     if (sd) {
       var d = new Date(), v = sd.v;
       h += '<div class="sh-sotd" role="button" aria-label="Play the Highlight of the Day: ' + esc(clean(v.title)) + '"><div class="sh-th">' + thumb(v.id) + '<div class="fm-play">▶</div>' + (isNew(v) ? '<div class="fm-new">NEW</div>' : '') + '</div>' +
-        '<div class="sh-tx"><div class="sh-k">☀ Highlight of the Day · ' + DAY3[d.getDay()] + ' ' + d.getDate() + ' ' + MON3[d.getMonth()] + '</div><div class="sh-tt">' + esc(clean(v.title)) + '</div><div class="sh-by">Hazrat Azam Pasha R.A.' + (isWatched(v.id) ? ' · ✓ watched' : '') + '</div>' +
+        '<div class="sh-tx"><div class="sh-k">☀ Highlight of the Day · ' + (sd.step ? 'Step ' + sd.step + ' of ' + sd.of : DAY3[d.getDay()] + ' ' + d.getDate() + ' ' + MON3[d.getMonth()]) + '</div><div class="sh-tt">' + esc(clean(v.title)) + '</div><div class="sh-by">Hazrat Azam Pasha R.A.' + (isWatched(v.id) ? ' · ✓ watched' : '') + '</div>' +
         '<div class="sh-btns"><button type="button" class="sh-go">▶ Watch</button>' + waLink(v.id, v.title, 'sh-wa', 'WhatsApp') + '</div></div></div>';
     }
     if (cs) {
@@ -646,9 +677,9 @@
       h += '<div class="sh-cont" role="button" data-ser="' + cs.sr.key + '"><div class="sh-sth">' + thumb(nx.id) + '</div><div class="sh-ci"><div class="sh-ck">Continue: ' + esc(cs.sr.title) + '</div>' +
         '<div class="sh-ct">Next: ' + esc(clean(nx.title)) + '</div><div class="sh-cm">' + cs.p.done + ' of ' + n + ' watched ✓</div><div class="sh-bar"><i style="width:' + Math.round(100 * cs.p.done / n) + '%"></i></div></div><div class="sh-chev">▶</div></div>';
     }
-    if (sh.length) h += '<div class="sh-h"><span>Start here</span><small>watch in this order</small></div>' + rowHtml(sh);
-    var nw = all.filter(isNew);
-    h += '<div class="sh-h"><span>' + (nw.length ? 'New this week' : 'Latest highlights') + '</span></div>' + rowHtml(all.slice(0, Math.max(12, nw.length)), true);
+    if (sd && sd.path) h += pathRow(sd, 6);
+    else if (sh.length) h += '<div class="sh-h"><span>Start here</span><small>watch in this order</small></div>' + rowHtml(sh);
+    h += '<button type="button" class="fm-all sh-browse" style="display:block;width:100%;margin-top:6px;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:11px;font:inherit;font-weight:600;color:var(--teal);cursor:pointer">Browse all highlights ›</button>';
     return h;
   }
   function refreshHub() {
