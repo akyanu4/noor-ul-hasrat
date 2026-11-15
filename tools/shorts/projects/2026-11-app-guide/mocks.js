@@ -1,6 +1,12 @@
 // Network mocks for recording the app offline: YouTube Data API (the Shorts list from /tmp/shtest/test.js), real
 // thumbnails for i.ytimg.com (work/thumbs, built by thumbs.py), Firebase Auth + Realtime Database (in memory),
 // Google Fonts served from work/fonts (fetch with: npm pack @fontsource/inter @fontsource/amiri; Nastaliq from tools/shorts/.fonts).
+// Version 3 adds: the Qur'an page images (cdn.jsdelivr.net/.../quran/pages/NNN.avif) served from the repo's own quran/pages,
+// the recitation (cdn.mp3quran.net) as a short silent WAV (opts.reciteSecs, so the 📖 follow-along turns the pages within
+// a few seconds on screen; a real surah takes minutes), and a database kept as a tree that applies Firebase's
+// {".sv":{"increment":n}} like the server, seeded from opts.seed ({path: value}). Nothing ever leaves the machine: every
+// request to a host other than localhost is answered here or aborted, so the Collective dhikr taps and every other write
+// go only into this in-memory copy (install() returns {writes}: the list of writes answered here).
 const fs = require('fs'), path = require('path');
 const HERE = __dirname, TH = path.join(HERE, 'work', 'thumbs'), FD = path.join(HERE, 'work', 'fonts');
 const now = Date.now(), day = 86400000;
@@ -22,13 +28,34 @@ const FONTS = [['Inter', 400, 'inter-latin-400'], ['Inter', 500, 'inter-latin-50
 const FONT_CSS = FONTS.map(([f, w, n]) => `@font-face{font-family:'${f}';font-weight:${w};font-style:normal;font-display:block;src:url(/__fonts/${n}-normal.woff2) format('woff2')}`).join('\n');
 
 // signedIn: put a member session in localStorage before the app loads (email link sign-in done)
+const REPO = path.resolve(HERE, '../../../..');
+function silentWav(secs, sr = 8000) {   // 8-bit mono PCM silence
+  const n = Math.round(secs * sr), b = Buffer.alloc(44 + n, 128);
+  b.write('RIFF', 0); b.writeUInt32LE(36 + n, 4); b.write('WAVEfmt ', 8); b.writeUInt32LE(16, 16); b.writeUInt16LE(1, 20); b.writeUInt16LE(1, 22);
+  b.writeUInt32LE(sr, 24); b.writeUInt32LE(sr, 28); b.writeUInt16LE(1, 32); b.writeUInt16LE(8, 34); b.write('data', 36); b.writeUInt32LE(n, 40); return b;
+}
 async function install(ctx, opts = {}) {
-  const db = {};   // in-memory Realtime Database: path -> value
+  const tree = {}, writes = [];   // in-memory Realtime Database (a tree, like the real one)
+  const segs = p => p.split('/').filter(Boolean);
+  const getAt = p => { let o = tree; for (const k of segs(p)) { if (o == null || typeof o !== 'object') return null; o = o[k]; } return o === undefined ? null : o; };
+  const setAt = (p, v) => {
+    const s = segs(p), last = s.pop(); let o = tree;
+    for (const k of s) { if (typeof o[k] !== 'object' || o[k] === null) o[k] = {}; o = o[k]; }
+    if (v && typeof v === 'object' && v['.sv'] && v['.sv'].increment != null) v = (Number(o[last]) || 0) + Number(v['.sv'].increment);
+    if (v === null) delete o[last]; else o[last] = v; return v;
+  };
+  for (const [p, v] of Object.entries(opts.seed || {})) setAt(p, JSON.parse(JSON.stringify(v)));
+  const RECITE = silentWav(opts.reciteSecs || 6);
   const tok = { idToken: 'demo-id', refreshToken: 'demo-refresh', expiresIn: '3600', localId: 'demo-uid' };
   await ctx.route(/^https?:\/\/(?!localhost)/, async r => {
     const req = r.request(), u = req.url(), m = req.method();
     if (u.includes('/__fonts/')) return r.fulfill({ status: 200, contentType: 'font/woff2', headers: { 'access-control-allow-origin': '*' }, body: fs.readFileSync(path.join(FD, path.basename(new URL(u).pathname))) });
     if (u.includes('fonts.googleapis.com')) return r.fulfill({ status: 200, contentType: 'text/css', body: FONT_CSS });
+    if (u.includes('cdn.jsdelivr.net') && /\/quran\/pages\/\d+\.avif$/.test(u)) {
+      const f = path.join(REPO, 'quran', 'pages', path.basename(new URL(u).pathname));
+      return fs.existsSync(f) ? r.fulfill({ status: 200, contentType: 'image/avif', headers: { 'access-control-allow-origin': '*' }, body: fs.readFileSync(f) }) : r.abort();
+    }
+    if (u.includes('mp3quran.net')) return r.fulfill({ status: 200, contentType: 'audio/wav', headers: { 'access-control-allow-origin': '*', 'accept-ranges': 'none' }, body: RECITE });
     if (u.includes('i.ytimg.com')) { const id = (u.match(/\/vi\/([\w-]{11})\//) || [])[1]; return r.fulfill({ status: 200, contentType: 'image/jpeg', body: thumb(id) }); }
     if (u.includes('googleapis.com/youtube/v3/playlistItems')) {
       const json = u.includes('UUSHn5J7zggR3cV4sCYlEjgZJA') ? { items } : { items: [] };
@@ -43,12 +70,15 @@ async function install(ctx, opts = {}) {
     if (u.includes('securetoken.googleapis.com')) return r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ id_token: 'demo-id', refresh_token: 'demo-refresh', expires_in: '3600', user_id: 'demo-uid' }) });
     if (u.includes('firebaseio.com')) {
       const p = new URL(u).pathname.replace(/\.json$/, '');
-      if (m === 'GET') return r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(p in db ? db[p] : null) });
+      if (m === 'GET') return r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(getAt(p)) });
       let v = null; try { v = JSON.parse(req.postData() || 'null'); } catch (e) {}
-      if (m === 'PUT') db[p] = v; else if (m === 'PATCH') db[p] = Object.assign({}, db[p] || {}, v);
-      return r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(m === 'POST' ? { name: '-demo' + Date.now() } : v) });
+      writes.push(m + ' ' + p); let out = v;
+      if (m === 'PUT') out = setAt(p, v); else if (m === 'PATCH') { for (const k of Object.keys(v || {})) setAt(p + '/' + k, v[k]); out = v; }
+      else if (m === 'POST') { const id = '-demo' + Date.now(); setAt(p + '/' + id, v); out = { name: id }; } else if (m === 'DELETE') setAt(p, null);
+      return r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(out) });
     }
-    if (u.includes('/api/')) return r.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' });
+    if (u.includes('/api/')) { writes.push(m + ' ' + u); return r.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' }); }
+    if (m !== 'GET' && m !== 'HEAD' && m !== 'OPTIONS') writes.push('ABORTED ' + m + ' ' + u);
     return r.abort();
   });
   // the Shorts viewer's YouTube player: the Short's own picture, slowly moving, with a progress line (YouTube is not reachable here)
@@ -57,9 +87,10 @@ async function install(ctx, opts = {}) {
     r.fulfill({ status: 200, contentType: 'text/html', body: `<!doctype html><html><body style="margin:0;background:#000;overflow:hidden"><img src="https://i.ytimg.com/vi/${id}/oardefault.jpg" style="width:100%;height:100vh;object-fit:cover;animation:z 14s linear forwards"><div style="position:fixed;left:0;bottom:0;height:3px;background:#f00;animation:p 30s linear forwards"></div><style>@keyframes z{to{transform:scale(1.12)}}@keyframes p{from{width:0}to{width:100%}}</style></body></html>` });
   });
   await ctx.route(/^http:\/\/localhost:\d+\/__fonts\//, r => r.fulfill({ status: 200, contentType: 'font/woff2', body: fs.readFileSync(path.join(FD, path.basename(new URL(r.request().url()).pathname))) }));
-  await ctx.route(/^http:\/\/localhost:\d+\/api\//, r => r.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' }));
+  await ctx.route(/^http:\/\/localhost:\d+\/api\//, r => { writes.push(r.request().method() + ' ' + r.request().url()); r.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' }); });
   if (opts.signedIn) await ctx.addInitScript(() => {
     if (!localStorage.getItem('noor_auth')) localStorage.setItem('noor_auth', JSON.stringify({ uid: 'demo-uid', id: 'demo-id', refresh: 'demo-refresh', exp: Date.now() + 86400000, em: 'reader@example.com' }));
   });
+  return { writes, db: tree };
 }
 module.exports = { install, items, S };

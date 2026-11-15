@@ -57,11 +57,21 @@ const OVERLAY = () => {
     userAgent: 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Mobile Safari/537.36' });
   // Saturday evening, 10 minutes before the weekly halqa (8:30 PM India time), so Home shows "Tonight · Join online".
   await ctx.clock.install({ time: new Date('2026-11-14T20:18:00+05:30') });
-  await M.install(ctx);
+  // Version 3: a Collective dhikr campaign in the (in-memory) database. Illustrative figures, not the live count.
+  // Recitation audio: a silent stand-in, 3.2 s in the Short and 6 s in the walkthrough, so the pages visibly turn with it.
+  const mock = await M.install(ctx, { reciteSecs: SEC === 'A' ? 3.2 : 6,
+    seed: { 'collective/current': { title: 'Collective dhikr', arabic: 'سُبْحَانَ اللّٰه', target: 100000, endsOn: '', count: 41286 } } });
   await ctx.addInitScript(OVERLAY);
   await ctx.addInitScript(() => { localStorage.setItem('noor_apk_dismissed', String(Date.now())); });   // the "Get the Android app" banner was closed before
   await ctx.addInitScript(() => {   // a returning reader: three Shorts of Haqeeqat-e-Bai'at already watched
     if (!localStorage.getItem('noor_shorts_watched_v1')) { const t = Date.now(); localStorage.setItem('noor_shorts_watched_v1', JSON.stringify({ VlU4EcJGVgQ: t - 3e5, r3x7LQru71I: t - 2e5, ObW6ccXEwn4: t - 1e5 })); }
+  });
+  await ctx.addInitScript(() => {   // a returning Qur'an reader: last at page 786 (Al-Mulk), read 6 days running, one bookmark
+    if (localStorage.getItem('noor_quran')) return;
+    const read = {}, t = Date.now(); for (let p = 1; p <= 60; p++) read[p] = t - 9e8; for (let p = 770; p <= 785; p++) read[p] = t - 3e8;
+    const days = {}, n = [3, 2, 4, 2, 3, 1]; n.forEach((c, i) => { const d = new Date(t - (5 - i) * 864e5 + 5.5 * 36e5); days[d.toISOString().slice(0, 10)] = c; });
+    localStorage.setItem('noor_quran', JSON.stringify({ last: 786, read, days, goal: 2, marks: [407], khatam: 0, ver: 1 }));
+    localStorage.setItem('noor_reciter', 'afasy'); localStorage.setItem('noor_follow', '1');
   });
   const page = await ctx.newPage();
   const errors = []; page.on('pageerror', e => errors.push(String(e)));
@@ -118,6 +128,11 @@ const OVERLAY = () => {
         localStorage.removeItem('noor_bayah_want'); localStorage.removeItem('noor_signup');
       });
       await page.reload(); await startCast(); await sleep(2500);
+    },
+    signOut: async () => {   // a visitor without an account (nothing is sent: the session is only removed from this browser)
+      await page.evaluate(() => { localStorage.removeItem('noor_auth'); localStorage.removeItem('noor_profile'); localStorage.removeItem('noor_bayah_want'); localStorage.removeItem('noor_signup');
+        localStorage.removeItem('noor_signin_sent'); localStorage.removeItem('noor_last_email'); });   // never had an account on this phone
+      await page.reload(); await startCast(); await sleep(2500);
     }
   };
 
@@ -144,5 +159,6 @@ const OVERLAY = () => {
   fs.writeFileSync(path.join(OUT, 'timeline.json'), JSON.stringify({ section: SEC, duration: D, segments: marks, frames }, null, 0));
   console.log(`${frames.length} frames, ${marks.length} segments -> ${OUT}`);
   if (errors.length) console.log('page errors:', errors);
+  console.log(`writes answered by the mocks (none reached a real server): ${mock.writes.length}`, mock.writes.slice(0, 40));
   await browser.close();
 })().catch(e => { console.error(e); process.exit(1); });

@@ -2,7 +2,9 @@
 on a soft teal/gold background, a title strip on top, captions at the bottom (bilingual for version 1, English only for
 version 2); an opening card (2.5 s) and a closing card (4 s). Sound: the narration through a 70 Hz high-pass and gentle
 compression, the nasheed about 30 LU under it (20 LU on the cards), two-pass loudnorm to -13 LUFS, true peak -1.5 dB.
-    python3 compose.py A|B        -> out/App_Guide_Short.mp4 | out/App_Guide_Walkthrough.mp4
+    python3 compose.py A|B        -> out/App_Guide_Short_v3.mp4 | out/App_Guide_Walkthrough_v3.mp4 (version 3, the default;
+                                     NOOR_V=2 / NOOR_V=1 write the earlier names). Then the watermark:
+    python3 ../../engine/watermark.py out/App_Guide_Short_v3.mp4 out/App_Guide_Short_v3_wm.mp4
 Needs: work/times_<S>.json (align.py), work/rec_<S>/ (record.js)."""
 import bisect, json, math, os, re, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -12,7 +14,7 @@ import cfg, lib as L
 from PIL import Image, ImageDraw, ImageFilter
 import numpy as np
 from captions import CAPTIONS
-from align import wav_path
+from align import wav_path, V
 
 REPO = os.path.abspath(os.path.join(HERE, '../../../..'))
 W, H, FPS = 1080, 1920, 30
@@ -146,7 +148,7 @@ def caption_times(sec, wav, times):
     return out
 
 def main(sec):
-    name = 'App_Guide_Short' if sec == 'A' else 'App_Guide_Walkthrough'
+    name = ('App_Guide_Short' if sec == 'A' else 'App_Guide_Walkthrough') + ('_v3' if V == '3' else '')
     wav = wav_path(sec)
     times = json.load(open(os.path.join(HERE, 'work', f'times_{sec}.json')))
     D = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', wav], capture_output=True, text=True).stdout)

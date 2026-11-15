@@ -1,8 +1,8 @@
 # Captions: each script line (script.md) split into chunks of (Urdu as narrated, short faithful English).
 # Version 1 (script A/B) is bilingual. Version 2 (script A2/B2, everyday Urdu with English words) is English only, one
 # short faithful line per sentence or clause (the Nastaliq font has no Latin letters, so the mixed Urdu-English cannot
-# be shown in it); its Urdu slot is ''. A third item, where given, is the narration second the chunk starts (where the
-# English length alone would put the change on the wrong words). NOOR_V=1 picks the first version.
+# be shown in it); its Urdu slot is ''. Version 3 (the default) = version 2 plus the new lines (NEW_V3 below). A third item, where given, is the narration second the chunk starts (where the
+# English length alone would put the change on the wrong words). NOOR_V=1 / NOOR_V=2 pick the earlier versions.
 # The web address is written as it was read ("نورالحسرت ڈاٹ ورسل ڈاٹ ایپ"); the English line shows the address itself.
 import os
 URL_UR = 'نورالحسرت ڈاٹ ورسل ڈاٹ ایپ'
@@ -77,4 +77,28 @@ CAPTIONS_V2 = {
   _en('Noor-ul-Hasrat is completely free, for everyone.', 'May Allah keep all our hearts alive with His remembrance. Ameen.'),
  ],
 }
-CAPTIONS = CAPTIONS_V1 if os.environ.get('NOOR_V', '2') == '1' else CAPTIONS_V2
+
+# Version 3 (script.md "# Version 3"): the version 2 captions, with their hand-set starts moved as far as their line moved
+# in the spliced narration (work/order_<S>.json, times_v2_<S>.json, times_<S>.json from align.py), and the new lines.
+# Hand-set starts of new lines are version 3 seconds: the pauses inside them (silencedetect -36 dB, d 0.12).
+NEW_V3 = {
+ 'A6': _en('Read the Quran on tajweed pages,', ('bookmark a page,', 25.56), ('and listen to the recitation as the pages turn.', 26.99)),
+ 'A7': _en('Tasbeeh, and Collective dhikr:', ('see the whole community’s total.', 32.15), ('Every tap counts.', 34.57)),
+ 'A12': _en('Free account:', ('gifts, rewards and discounts from vendors for members, in shaa Allah.', 57.62)),
+ 'B11b': _en('Free account:', ('gifts, rewards and discounts from vendors for members, in shaa Allah.', 72.05)),
+ 'B14a': _en('The Quran: a 13-line tajweed mushaf.', ('Choose a Surah or Juz, bookmark a page,', 91.62), ('and see your streak in Progress.', 96.33)),
+ 'B14b': _en('Tap the headphones to listen to Mishary Alafasy or Maher Al-Muaiqly;', ('the pages turn with the recitation.', 103.29)),
+ 'B14c': _en('Tasbeeh: count your dhikr,', ('and see the whole community’s total in Collective dhikr.', 108.43), ('Every tap counts.', 112.46)),
+ 'B14d': _en('Duas, Prayer Times, Qibla finder and the Islamic Calendar,', ('all in one place.', 119.88)),
+}
+def _v3(sec):
+    import json
+    W = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'work'); J = lambda n: json.load(open(os.path.join(W, n + '.json')))
+    order, t2, t3 = J('order_' + sec), J('times_v2_' + sec), J('times_' + sec); out = []
+    for k, x in enumerate(order):
+        if isinstance(x, str): out.append(NEW_V3[x]); continue
+        d = t3[k][0] - t2[x - 1][0]
+        out.append([c if len(c) < 3 else (c[0], c[1], round(c[2] + d, 2)) for c in CAPTIONS_V2[sec][x - 1]])
+    return out
+V = os.environ.get('NOOR_V', '3')
+CAPTIONS = CAPTIONS_V1 if V == '1' else CAPTIONS_V2 if V == '2' else {'A': _v3('A'), 'B': _v3('B')}

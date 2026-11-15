@@ -95,3 +95,18 @@ English captions for the new lines:
 - A3-7 / B3-14c: "Tasbeeh, and Collective dhikr: see the whole community's total. Every tap counts."
 - A3-12 / B3-11b: "Free account: gifts, rewards and discounts from vendors for members, in shaa Allah."
 - B3-14d: "Duas, Prayer Times, Qibla finder and the Islamic Calendar, all in one place."
+
+Captions as used in the videos (captions.py NEW_V3; the lines above split at the pauses, and 14a/14b written to follow what is said):
+- A3-6: "Read the Quran on tajweed pages, | bookmark a page, | and listen to the recitation as the pages turn."
+- A3-7: "Tasbeeh, and Collective dhikr: | see the whole community’s total. | Every tap counts."
+- A3-12 and B3-11b: "Free account: | gifts, rewards and discounts from vendors for members, in shaa Allah."
+- B3-14a: "The Quran: a 13-line tajweed mushaf. | Choose a Surah or Juz, bookmark a page, | and see your streak in Progress."
+- B3-14b: "Tap the headphones to listen to Mishary Alafasy or Maher Al-Muaiqly; | the pages turn with the recitation."
+- B3-14c: "Tasbeeh: count your dhikr, | and see the whole community’s total in Collective dhikr. | Every tap counts."
+- B3-14d: "Duas, Prayer Times, Qibla finder and the Islamic Calendar, | all in one place."
+
+How Version 3 was made: the 9 new lines were generated one by one in AI Studio (single speaker, voice Daro, style preset
+"Friendly"), saved as audio/v3_lines/<A6|A7|A12|B11b|B14a|B14b|B14c|B14d>.wav, and spliced into the Version 2 narration
+by build_voice_v3.py (audio/voice_short_v3.wav 68.3 s, audio/voice_long_v3.wav 133.7 s); align.py, storyboard.js and
+captions.py then move the Version 2 timings with their lines.
+
