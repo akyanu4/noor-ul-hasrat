@@ -46,7 +46,7 @@ CAPTIONS = [
     (917.50, 924.70, "“Or imagine that this thought is *running away* from you, in the world of imagination: this too removes it.”"),
     (925.20, 945.70, "That is another way: think, “This thought is running from me.” *Aalam-e-takhayyul* means the world of imagination, of thought. By this too the khatra is *removed*."),
     (976.20, 992.90, "Come into the *refuge* of Allah. The way to come into Allah's refuge is this: “Allah Mian, these khatrat keep coming, so many. Please *help* me and take my khatrat away. I want to come into Your *refuge*.”"),
-    (993.30, 1012.70, "When a khatra comes, say: “If these trouble us, where else will we find refuge? Save us from these khatrat; take us into *Your refuge*.” That is how it is."),
+    (993.30, 1012.70, "When a khatra comes, say: “If You leave us troubled, where else will we find refuge? Save us from these khatrat; take us into *Your refuge*.” That is how it is."),
     (1014.20, 1028.90, "“*Number 4*: saying “*hoon, hoon*”, breathe out *forcefully*, outward.” Hoon… hoon… hoon… hoon. That is what to do."),
     (1030.30, 1039.30, "To drive away khatrat, what should you do? Saying “hoon, hoon”, breathe out *forcefully*, outward."),
     (1040.10, 1055.80, "You see? Even great people are *troubled* by khatrat. What do you think? The *Awliya Allah* are troubled too; then they come into Allah's refuge, and they adopt all these methods."),
