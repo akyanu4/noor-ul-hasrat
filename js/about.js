@@ -27,7 +27,7 @@
 
   function person(ic, name, sub) { return '<div class="ab-p"><div class="ab-av" aria-hidden="true">' + ic + '</div><div><b>' + esc(name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : '') + '</div></div>'; }
   s.querySelector('#abBody').innerHTML =
-    '<div class="ab-hero"><b>Noor-ul-Hasrat</b><p>The complete application, the Shorts and full dars videos, the transcripts, the editing and the visualisation were made by <b>GiraffeTech</b>.</p>' +
+    '<div class="ab-hero"><b>Noor-ul-Hasrat</b><p>The complete application, the dars highlights and full dars videos, the transcripts, the editing and the visualisation were made by <b>GiraffeTech</b>.</p>' +
       '<a class="ab-btn" style="display:inline-block;flex:none;margin-top:10px;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#f5f1e2" href="' + SITE + '" target="_blank" rel="noopener">🌐 ' + SITE_SHOW + '</a></div>' +
     '<div class="ab-card"><h3>Contact</h3><div class="ab-note" style="margin:0 0 4px">To support the application or for any help, call or message:</div>' +
       '<div class="ab-num">' + PHONE_SHOW + '</div><div class="ab-btns">' +
@@ -39,7 +39,7 @@
       '<form class="hp-f" id="hpForm" novalidate>' +
       '<label for="hpName">Your name</label><input id="hpName" maxlength="60" autocomplete="name" required>' +
       '<label for="hpContact">WhatsApp / phone or email (to reply)</label><input id="hpContact" maxlength="80" autocomplete="email" inputmode="email" required>' +
-      '<label for="hpTopic">What is it about?</label><select id="hpTopic"><option>Installing the app</option><option>Signing in / account</option><option>Prayer times / Qibla</option><option>Videos / Shorts</option><option>Notifications / reminders</option><option>Bai&rsquo;at request</option><option>Feedback / suggestion</option><option>Something else</option></select>' +
+      '<label for="hpTopic">What is it about?</label><select id="hpTopic"><option>Installing the app</option><option>Signing in / account</option><option>Prayer times / Qibla</option><option>Videos / highlights</option><option>Notifications / reminders</option><option>Bai&rsquo;at request</option><option>Feedback / suggestion</option><option>Something else</option></select>' +
       '<label for="hpMsg">What happened?</label><textarea id="hpMsg" maxlength="1000" placeholder="e.g. On my iPhone I cannot find Add to Home Screen" required></textarea>' +
       '<div class="hp-hp" aria-hidden="true"><label for="hpWeb">Website</label><input id="hpWeb" tabindex="-1" autocomplete="off"></div>' +
       '<div class="ab-btns" style="margin-top:12px"><button class="ab-btn pri" type="submit" id="hpSend">📨 Send request</button></div>' +
@@ -59,7 +59,7 @@
       '.gt-home .lg{flex:none;width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#e8c46b,#c9a24b);display:flex;align-items:center;justify-content:center;font-size:22px}' +
       '.gt-home .tx{flex:1;min-width:0}.gt-home b{display:block;font-size:14.5px;color:var(--ink)}.gt-home small{display:block;font-size:12px;color:var(--muted);line-height:1.4;margin-top:1px}.gt-home .go{color:var(--muted);font-size:20px}';
     doc.head.appendChild(hc);
-    var card = N.el('div', 'gt-home', '<div class="lg" aria-hidden="true">🦒</div><div class="tx"><b>Made by GiraffeTech</b><small>App, Shorts, full dars, transcripts and visuals. ' + SITE_SHOW + ' · ' + PHONE_SHOW + '</small></div><div class="go" aria-hidden="true">›</div>');
+    var card = N.el('div', 'gt-home', '<div class="lg" aria-hidden="true">🦒</div><div class="tx"><b>Made by GiraffeTech</b><small>App, dars highlights, full dars, transcripts and visuals. ' + SITE_SHOW + ' · ' + PHONE_SHOW + '</small></div><div class="go" aria-hidden="true">›</div>');
     card.setAttribute('role', 'button'); card.tabIndex = 0; card.setAttribute('aria-label', 'About GiraffeTech and support');
     card.addEventListener('click', function () { N.showScreen('about'); });
     // A slim Donate button at the very top of Home (opens Donate: charity, Dargah & Events)

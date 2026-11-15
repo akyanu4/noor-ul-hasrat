@@ -240,10 +240,10 @@
     h += bayBox(F);
     if (tp.card) {
       h += card(tp.card, tp.n, F);
-      if (!(tp.card.shorts && tp.card.shorts.length)) h += '<div class="md-src">Hazrat’s Short on this practice will appear here soon.</div>';
+      if (!(tp.card.shorts && tp.card.shorts.length)) h += '<div class="md-src">Hazrat’s highlight on this practice will appear here soon.</div>';
     } else {
       h += '<h2 class="section-title" style="margin-top:4px">' + esc(tp.video.title) + '</h2>' + (F && F.shortsGrid ? F.shortsGrid([tp.video]) : '') +
-        '<div class="md-src">A practice Hazrat Azam Pasha R.A. teaches in this Short. Practice Shorts open for members who have taken Bay’ah.</div>';
+        '<div class="md-src">A practice Hazrat Azam Pasha R.A. teaches in this highlight. Practice highlights open for members who have taken Bay’ah.</div>';
     }
     h += '<button type="button" class="go md-toidx">☰ All meditations</button>';
     body.innerHTML = h; s.querySelector('.subtitle').textContent = tp.card ? tp.card.t : 'Practice';

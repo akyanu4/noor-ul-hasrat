@@ -54,7 +54,7 @@
       ck('acPush', r.push, 'App notifications on this phone', 'Halqa and new classes. Your phone will ask to allow them.') +
       (noBay ? '' : bayahFields(p));
   }
-  // Bai'at: members who have taken it can watch the full dars and the dhikr-practice Shorts.
+  // Bai'at: members who have taken it can watch the full dars and the dhikr-practice highlights.
   // Shaykhs / Khalifas to choose from (config.js bayahGuides adds or replaces them), and "Other" to type a name.
   var GUIDES_NOW = (cfg.bayahGuides && cfg.bayahGuides.length) ? cfg.bayahGuides : ['Alhaj Rasheed Khan (Ayub), Khalifa'];
   var GUIDES_PAST = cfg.bayahGuidesPast || [];
@@ -96,7 +96,7 @@
   function bayahCard() {
     var st = bayStatus(), pill = { none: ['Not marked', '#9aa5a1'], pending: ['Waiting for approval', '#d39b1e'], approved: ['Approved ✓', '#2f9e63'], rejected: ['Not approved', '#d0564c'] }[st];
     var note = st === 'pending' ? 'JazakAllah khair. The admin will confirm your Bai’at, then the full dars and dhikr practices open here.'
-      : st === 'approved' ? 'The full dars and the dhikr-practice Shorts are open for you.'
+      : st === 'approved' ? 'The full dars and the dhikr-practice highlights are open for you.'
       : st === 'rejected' ? 'Your Bai’at could not be confirmed yet. Please contact Alhaj Rasheed Khan (Ayub) (More → About & Support), then save again.'
       : 'If you have taken Bai’at with a Shaykh or his Khalifa, mark it here. After the admin approves it, the full dars and the dhikr practices open for you.';
     var rq = myRequest(), reqH = '';
@@ -158,7 +158,7 @@
       '<label class="ac-ck" style="border-top:1px solid var(--line);margin-top:4px;padding-top:12px"><input type="checkbox" id="acConsent"' + (pend.consent ? ' checked' : '') + '><div>I agree that my Iman Health is saved to my account and that the Noor-ul-Hasrat admin can see it.<small>Prayers, fasting, dhikr, good deeds and zakat (paid or not, never an amount). Your location is never sent.</small></div></label>' +
       '<button class="ac-btn" id="acSend" type="button">Create account: email me a code</button><div class="ac-msg' + (/^!/.test(msg) ? ' err' : '') + '" id="acMsg">' + esc(msg.replace(/^!/, '')) + '</div>' +
       '<div class="ac-sub">No password. Already have an account? <a href="#" data-mode="signin">Sign in</a> · <a href="privacy.html">Privacy</a></div></div>' +
-      '<div class="ac-card" style="border-color:var(--gold)"><div class="ac-msg" style="margin:0"><b>🤝 Full dars and dhikr practices</b><br>Members can watch the full dars and the Shorts that teach a practice of dhikr. ' + esc((root.NoorFamily && root.NoorFamily.BAYAH_EN) || '') + '</div></div>';
+      '<div class="ac-card" style="border-color:var(--gold)"><div class="ac-msg" style="margin:0"><b>🤝 Full dars and dhikr practices</b><br>Members can watch the full dars and the highlights that teach a practice of dhikr. ' + esc((root.NoorFamily && root.NoorFamily.BAYAH_EN) || '') + '</div></div>';
     body.innerHTML = h;
   }
 

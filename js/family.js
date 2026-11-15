@@ -190,7 +190,7 @@
   function paint() {
     var h = '', list = (state.items || []).filter(function (v) { return tab === 'zikr' || tab === 'azam' || v.kind === tab; }), pn = pins();
     list = list.filter(function (v) { return !pn.some(function (p) { return p.id === v.id; }); });
-    s.querySelector('#fmTitle').textContent = tab === 'poetry' ? 'Poetry & Naat' : tab === 'zikr' ? 'Zikr & Sama' : tab === 'azam' ? 'Azam Pasha Shorts' : 'Dars & Tafseer';
+    s.querySelector('#fmTitle').textContent = tab === 'poetry' ? 'Poetry & Naat' : tab === 'zikr' ? 'Zikr & Sama' : tab === 'azam' ? 'Dars Highlights' : 'Dars & Tafseer';
     if (tab === 'azam') return paintShorts(list);
     if (tab === 'zikr') {
       h += '<div class="fm-note" style="margin-top:0">Zikr, sama and more from the ' + esc(ZIKR.name) + ' channel. Tap a video to play it here.</div>';
@@ -257,7 +257,7 @@
   // WhatsApp: a ready message with the Short's YouTube link and the app's address.
   var WA_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3.6 20.4l1.3-4.1A8.4 8.4 0 1 1 8 19.3z"/><path d="M9.1 7.6c-.5 3.6 3.4 7.6 7 7.1l.6-1.8-2.1-1-1 1c-1.1-.5-2-1.4-2.5-2.5l1-1-1-2.1z" fill="currentColor" stroke="none"/></svg>';
   function waUrl(id, title) {
-    return 'https://wa.me/?text=' + encodeURIComponent((clean(title || '') || 'A Short') + ' — Hazrat Azam Pasha R.A. https://youtube.com/shorts/' + id + '  Noor-ul-Hasrat app: https://noor-ul-hasrat.vercel.app');
+    return 'https://wa.me/?text=' + encodeURIComponent((clean(title || '') || 'A dars highlight') + ' — Hazrat Azam Pasha R.A. https://youtube.com/shorts/' + id + '  Noor-ul-Hasrat app: https://noor-ul-hasrat.vercel.app');
   }
   function waLink(id, title, cls, label) { return '<a class="' + cls + '" target="_blank" rel="noopener" href="' + esc(waUrl(id, title)) + '" aria-label="Share on WhatsApp">' + WA_SVG + (label || '') + '</a>'; }
   function isNew(v) { var t = Date.parse(v && v.at || ''); return !!t && Date.now() - t < 7 * 86400000; }
@@ -291,17 +291,17 @@
   function paintShorts(list) {
     var h = '<div style="margin:0 0 8px">' + subscribeLink() + '</div>';
     if (ser != null) { var sr = seriesAll().filter(function (x) { return x.key === ser; })[0]; if (sr) { body.innerHTML = seriesView(sr); return; } ser = null; }
-    h += '<div class="fm-note" style="margin-top:0">Dars and zikr Shorts of Azam Pasha from the ' + esc(AZAM.name) + ' channel. New Shorts appear here by themselves. Tap one to play it.</div>';
-    if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest Shorts…</div>';
+    h += '<div class="fm-note" style="margin-top:0">Dars Highlights: short clips from the dars of Hazrat Azam Pasha R.A., from the ' + esc(AZAM.name) + ' channel. New ones appear here by themselves. Tap one to play it.</div>';
+    if (state.loading && !state.items) h += '<div class="fm-note">Loading the latest highlights…</div>';
     else if (state.error === 'unconfigured') h += '<div class="fm-note">The live list is not connected yet (add <b>youtubeApiKey</b> in js/config.js).</div>';
-    else if (state.error && state.error !== 'stale') h += '<div class="fm-note">Could not load the Shorts (' + esc(state.error) + '). <a href="#" id="fmRetry">Try again</a></div>';
-    else if (!list.length) h += '<div class="fm-note">No Shorts yet.</div>';
+    else if (state.error && state.error !== 'stale') h += '<div class="fm-note">Could not load the highlights (' + esc(state.error) + '). <a href="#" id="fmRetry">Try again</a></div>';
+    else if (!list.length) h += '<div class="fm-note">No highlights yet.</div>';
     var tps = list.length ? STOPICS.filter(function (t) { return list.some(function (v) { return topicsOf(v).indexOf(t.name) >= 0; }); }) : [];
     if (stopic && !tps.some(function (t) { return t.name === stopic; })) stopic = '';
     if (tps.length) h += '<div class="fm-chips"><div class="fm-chip' + (stopic ? '' : ' on') + '" data-st="">All</div>' + tps.map(function (t) { return '<div class="fm-chip' + (stopic === t.name ? ' on' : '') + '" data-st="' + esc(t.name) + '">' + esc(t.label) + '</div>'; }).join('') + '</div>';
     if (stopic) {
       list = list.filter(function (v) { return topicsOf(v).indexOf(stopic) >= 0; });
-      h += '<div class="sh-h"><span>' + esc(topicLabel(stopic)) + '</span><small>' + list.length + ' Short' + (list.length === 1 ? '' : 's') + '</small></div>';
+      h += '<div class="sh-h"><span>' + esc(topicLabel(stopic)) + '</span><small>' + list.length + ' highlight' + (list.length === 1 ? '' : 's') + '</small></div>';
     } else if (list.length) {
       var nw = list.filter(isNew);
       if (nw.length) h += '<div class="sh-h"><span>New this week</span><small>' + nw.length + ' new</small></div>' + rowHtml(nw);
@@ -313,7 +313,7 @@
         var anyLock = pr.some(locked);
         h += '<div class="sh-h"><span>For murids ' + (anyLock ? '🔒' : '🤝') + '</span>' + (anyLock ? '<button type="button" class="sh-req">🤝 Request Bai\u2019at</button>' : '<small>practices of dhikr</small>') + '</div>' + rowHtml(pr);
       }
-      h += '<div class="sh-h"><span>All Shorts</span><small>newest first</small></div>';
+      h += '<div class="sh-h"><span>All highlights</span><small>newest first</small></div>';
     }
     var total = list.length; list = list.slice(0, limit);
     h += shortsGrid(list);
@@ -355,7 +355,7 @@
     var prac = isPractice(it), bn = viewer.querySelector('.fv-bayah');
     bn.hidden = !prac || locked(it); bn.open = false;
     if (locked(it)) {
-      var why = lockReason(it), what = it.wide ? 'full dars' : 'Short';
+      var why = lockReason(it), what = it.wide ? 'full dars' : 'highlight';
       viewer.querySelector('.fv-frame').innerHTML = '<div class="fv-gate"><div class="fv-gi">🤝</div><b>For murids who have taken Bai\u2019at</b><p>' + esc(BAYAH_EN) + '</p><p class="ur" dir="rtl" lang="ur">' + esc(BAYAH_UR) + '</p>' +
         (why === 'signin'
           ? '<p>This ' + what + ' teaches a practice of dhikr. Sign up (free), then tell us in My Account that you have taken Bai\u2019at, and it opens here.</p><button type="button" class="fv-signin">Sign up or sign in</button>'
@@ -375,7 +375,7 @@
     if (fd) azamFull(function (items) { if (fb.__fd === fd && !fullVideo(fd, items)) fb.querySelector('.lb').textContent = 'Soon'; });
     viewer.querySelector('.fv-prev').disabled = vpos <= 0;
     var nt = nextTarget(), nb = viewer.querySelector('.fv-next');
-    nb.disabled = !nt; nb.title = nt && nt.series ? 'Next in ' + nt.series : 'Next Short';
+    nb.disabled = !nt; nb.title = nt && nt.series ? 'Next in ' + nt.series : 'Next highlight';
   }
   // Next: the next Short of the same series when the playing Short belongs to one, otherwise the next in the list it was opened from.
   function nextTarget() {
@@ -423,13 +423,13 @@
         '<span class="fv-stat"></span>' +
         '<div class="fv-subp" hidden><div class="h">Subscribe to Azam Pasha Zikr</div><div class="w"></div><a class="fv-subl" target="_blank" rel="noopener">Open on YouTube instead</a></div>' +
         '<div class="fv-rail">' +
-          '<button type="button" class="fv-prev" aria-label="Previous Short"><span class="i">▲</span></button>' +
+          '<button type="button" class="fv-prev" aria-label="Previous highlight"><span class="i">▲</span></button>' +
           '<a class="fv-like" target="_blank" rel="noopener" aria-label="Like on YouTube"><span class="i">👍</span>Like</a>' +
           '<button type="button" class="fv-share" aria-label="Share"><span class="i">↗</span>Share</button>' +
           '<a class="fv-wa" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><span class="i">' + WA_SVG + '</span>WhatsApp</a>' +
           '<button type="button" class="fv-full" hidden aria-label="Full dars"><span class="i">🎧</span><span class="lb">Full dars</span></button>' +
           '<a class="fv-sub" target="_blank" rel="noopener" aria-label="Subscribe on YouTube"><span class="i">🔔</span>Subscribe</a>' +
-          '<button type="button" class="fv-next" aria-label="Next Short"><span class="i">▼</span>Next</button>' +
+          '<button type="button" class="fv-next" aria-label="Next highlight"><span class="i">▼</span>Next</button>' +
         '</div>';
       doc.body.appendChild(viewer);
       viewer.addEventListener('click', function (e) {
@@ -600,7 +600,7 @@
   }
   function seriesView(sr) {
     var p = progress(sr), n = sr.items.length, ni = nextIn(sr);
-    return '<div class="sh-back" role="button">‹ All Shorts</div><h2 class="section-title" style="margin-top:0">' + (sr.ic ? sr.ic + ' ' : '') + esc(sr.title) + '</h2>' + (sr.sub ? '<div class="sh-cm" style="margin:-6px 0 6px">' + esc(sr.sub) + '</div>' : '') +
+    return '<div class="sh-back" role="button">‹ All highlights</div><h2 class="section-title" style="margin-top:0">' + (sr.ic ? sr.ic + ' ' : '') + esc(sr.title) + '</h2>' + (sr.sub ? '<div class="sh-cm" style="margin:-6px 0 6px">' + esc(sr.sub) + '</div>' : '') +
       '<div class="sh-cm" style="margin:-4px 0 0">' + p.done + ' of ' + n + ' watched' + (p.done === n ? ' · complete ✓' : '') + '</div><div class="sh-bar" style="margin-bottom:12px"><i style="width:' + Math.round(100 * p.done / n) + '%"></i></div>' +
       (ni >= 0 ? '<button type="button" class="sh-go" data-sx="' + ni + '" style="margin-bottom:12px">▶ ' + (p.done ? 'Continue' : 'Start') + ': ' + esc(clean(sr.items[ni].title)) + '</button>' : '') +
       '<div class="sh-list">' + sr.items.map(function (v, i) {
@@ -609,7 +609,7 @@
           '<div class="sh-rt">' + esc(clean(v.title)) + '<small>' + (lk ? '🔒 For murids' : w ? 'Watched' : isNew(v) ? 'NEW' : '') + '</small></div>' + waLink(v.id, v.title, 'sh-wa', '') + '</div>';
       }).join('') + '</div>';
   }
-  function rowHtml(list, more) { setTimeout(function () { ensureStats(list); }, 0); return '<div class="fm-hs">' + list.map(shortTile).join('') + (more ? '<div class="fm-all" role="button">All Shorts ›</div>' : '') + '</div>'; }
+  function rowHtml(list, more) { setTimeout(function () { ensureStats(list); }, 0); return '<div class="fm-hs">' + list.map(shortTile).join('') + (more ? '<div class="fm-all" role="button">All highlights ›</div>' : '') + '</div>'; }
   function lovedHtml(list) {
     var st = statInit().v, pool = list.filter(function (v) { return !isPractice(v) && st[v.id]; });
     if (pool.length < 3) return '<div id="shLoved"></div>';
@@ -637,8 +637,8 @@
     var h = '', sd = sotd(), cs = continueSeries(), sh = startList(), all = live();
     if (sd) {
       var d = new Date(), v = sd.v;
-      h += '<div class="sh-sotd" role="button" aria-label="Play the Short of the Day: ' + esc(clean(v.title)) + '"><div class="sh-th">' + thumb(v.id) + '<div class="fm-play">▶</div>' + (isNew(v) ? '<div class="fm-new">NEW</div>' : '') + '</div>' +
-        '<div class="sh-tx"><div class="sh-k">☀ Short of the Day · ' + DAY3[d.getDay()] + ' ' + d.getDate() + ' ' + MON3[d.getMonth()] + '</div><div class="sh-tt">' + esc(clean(v.title)) + '</div><div class="sh-by">Hazrat Azam Pasha R.A.' + (isWatched(v.id) ? ' · ✓ watched' : '') + '</div>' +
+      h += '<div class="sh-sotd" role="button" aria-label="Play the Highlight of the Day: ' + esc(clean(v.title)) + '"><div class="sh-th">' + thumb(v.id) + '<div class="fm-play">▶</div>' + (isNew(v) ? '<div class="fm-new">NEW</div>' : '') + '</div>' +
+        '<div class="sh-tx"><div class="sh-k">☀ Highlight of the Day · ' + DAY3[d.getDay()] + ' ' + d.getDate() + ' ' + MON3[d.getMonth()] + '</div><div class="sh-tt">' + esc(clean(v.title)) + '</div><div class="sh-by">Hazrat Azam Pasha R.A.' + (isWatched(v.id) ? ' · ✓ watched' : '') + '</div>' +
         '<div class="sh-btns"><button type="button" class="sh-go">▶ Watch</button>' + waLink(v.id, v.title, 'sh-wa', 'WhatsApp') + '</div></div></div>';
     }
     if (cs) {
@@ -648,7 +648,7 @@
     }
     if (sh.length) h += '<div class="sh-h"><span>Start here</span><small>watch in this order</small></div>' + rowHtml(sh);
     var nw = all.filter(isNew);
-    h += '<div class="sh-h"><span>' + (nw.length ? 'New this week' : 'Latest Shorts') + '</span></div>' + rowHtml(all.slice(0, Math.max(12, nw.length)), true);
+    h += '<div class="sh-h"><span>' + (nw.length ? 'New this week' : 'Latest highlights') + '</span></div>' + rowHtml(all.slice(0, Math.max(12, nw.length)), true);
     return h;
   }
   function refreshHub() {

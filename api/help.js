@@ -10,7 +10,7 @@ const G = require('./_google.js');
 const M = require('./_mail.js');
 
 const PER_HOUR_IP = 3, PER_DAY_ALL = 80;
-const TOPICS = ['Installing the app', 'Signing in / account', 'Prayer times / Qibla', 'Videos / Shorts', 'Notifications / reminders', 'Bai’at request', 'Something else'];
+const TOPICS = ['Installing the app', 'Signing in / account', 'Prayer times / Qibla', 'Videos / highlights', 'Notifications / reminders', 'Bai’at request', 'Something else'];
 const EMAIL_RE = /^[^\s@<>"',;]{1,64}@[A-Za-z0-9.-]{1,180}\.[A-Za-z]{2,24}$/;
 
 const clip = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '').trim().slice(0, n);
