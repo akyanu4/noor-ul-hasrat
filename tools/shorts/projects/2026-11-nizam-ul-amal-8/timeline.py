@@ -107,8 +107,8 @@ SHORTS = {
         ("voice", 2324.10, 2332.50, "clip:N8S8-08"),
         ("voice", 2332.50, 2341.80, "clip:N8S8-09"),
         ("voice", 2341.80, 2354.80, "clip:N8S8-10"),
-        ("voice", 2354.80, 2369.50, "clip:N8S8-11"),
-        ("voice", 2409.00, 2419.70, "clip:N8S8-12"),
+        ("voice", 2354.80, 2367.30, "clip:N8S8-11"),   # ends before the left-out remark (39:28)
+        ("voice", 2409.25, 2419.70, "clip:N8S8-12"),   # starts on "Qur'an mein"; the tail of the left-out remark stays out
         ("voice", 2419.70, 2429.30, "clip:N8S8-13"),
         ("voice", 2429.30, 2439.00, "clip:N8S8-14"),
         ("endcard", 5.5)]),
