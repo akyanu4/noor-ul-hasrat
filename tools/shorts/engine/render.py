@@ -92,6 +92,12 @@ def caption_track(segs):
         c[1] = nxt if nxt - c[1] < 0.6 else min(c[1] + 0.6, c[3])   # no blink between pieces across a cut
     return out
 
+@functools.lru_cache(maxsize=512)
+def ink_bottom(g):
+    """Lowest row of a caption's letters (shadow ignored), in caption_img pixels."""
+    a = np.asarray(L.caption_img(g).getchannel("A")); rows = np.where((a > 200).any(1))[0]
+    return int(rows[-1]) + 1 if len(rows) else 0
+
 def vignette():
     W, H = L.W, L.H
     yy, xx = np.mgrid[0:H, 0:W]; r = np.hypot((xx - W / 2) / (W / 2), (yy - H / 2) / (H / 2))
@@ -124,7 +130,11 @@ class Renderer:
             if a <= T < b:
                 ci = L.caption_img(g); p = min(1, (T - a) / 0.12); sc = 0.84 + 0.16 * (1 - (1 - p) ** 3)
                 if sc < 0.999: ci = ci.resize((int(ci.width * sc), int(ci.height * sc)), Image.BICUBIC)
-                im.alpha_composite(ci, (int((L.W - ci.width) / 2), int(self.capy - ci.height / 2)))
+                y = self.capy - ci.height / 2
+                if L.PORTRAIT:   # a caption of 4+ lines would run under the watermark bar (top at 0.835 H): lift it just enough
+                    ib = ink_bottom(g) * ci.height / L.caption_img(g).height
+                    y -= max(0, y + ib - L.H * 0.835)
+                im.alpha_composite(ci, (int((L.W - ci.width) / 2), int(y)))
                 break
         # Shorts: his photo glows at the top for the opening seconds and on the closing card
         if self.header and last["kind"] == "endcard" and T >= last["T"]:

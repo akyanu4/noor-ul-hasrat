@@ -123,34 +123,54 @@ CAP = None
 def cap_font(): return font(BOLD, (70 if not PORTRAIT else 84) * U)
 @functools.lru_cache(maxsize=512)
 def caption_img(words):
-    """words: tuple of tokens; '*x*' gold; tokens containing ﷺ are drawn with the Urdu font."""
-    f = cap_font(); fu = font(URDU_B, (52 if not PORTRAIT else 66) * U, True)
+    """words: tuple of tokens; '*x*' gold; tokens containing ﷺ are drawn with the Urdu font.
+    A word wider than the safe width (e.g. TASAWWUR-E-SHAYKH) would run off the frame: then this caption's font is
+    reduced until the widest word fits; if that would need less than 75 %, long hyphenated words are first broken
+    after a hyphen. Captions whose words all fit are laid out exactly as before."""
     tmp = ImageDraw.Draw(Image.new("L", (1, 1)))
-    toks = []
-    for w_ in words:
-        gold = w_.startswith("*") or w_.rstrip(",.?!:\"").endswith("*")
-        t_ = w_.replace("*", "")
-        if "ﷺ" in t_:
-            pre = t_.replace("ﷺ", "").upper()
-            if pre: toks.append((pre, gold, f, tmp.textlength(pre, font=f)))
-            toks.append(("ﷺ", True, fu, tmp.textlength("ﷺ", font=fu) + f.size * 0.25))
-        else:
-            t_ = t_.upper(); toks.append((t_, gold, f, tmp.textlength(t_, font=f)))
-    sp = tmp.textlength(" ", font=f); maxw = W * (0.84 if PORTRAIT else 0.74)
+    maxw = W * (0.84 if PORTRAIT else 0.74)
+    def tokens(scale, split_hyphens):
+        f = font(BOLD, (70 if not PORTRAIT else 84) * U * scale); fu = font(URDU_B, (52 if not PORTRAIT else 66) * U * scale, True)
+        toks = []   # (text, gold, font, width, glued to the previous token)
+        for w_ in words:
+            gold = w_.startswith("*") or w_.rstrip(",.?!:\"").endswith("*")
+            t_ = w_.replace("*", "")
+            if "ﷺ" in t_:
+                pre = t_.replace("ﷺ", "").upper()
+                if pre: toks.append((pre, gold, f, tmp.textlength(pre, font=f), False))
+                toks.append(("ﷺ", True, fu, tmp.textlength("ﷺ", font=fu) + f.size * 0.25, False))
+            else:
+                t_ = t_.upper()
+                if split_hyphens and "-" in t_.strip("-") and tmp.textlength(t_, font=f) > maxw:
+                    parts = re.findall(r"[^-]+-*|-+", t_)
+                    for k, pt in enumerate(parts): toks.append((pt, gold, f, tmp.textlength(pt, font=f), k > 0))
+                else: toks.append((t_, gold, f, tmp.textlength(t_, font=f), False))
+        return f, fu, toks
+    scale, split = 1.0, False
+    f, fu, toks = tokens(1.0, False)
+    widest = max(tk[3] for tk in toks)
+    if widest > maxw:
+        scale = maxw / widest * 0.98
+        if scale < 0.75 and any("-" in w_ for w_ in words):
+            split = True; f, fu, toks = tokens(1.0, True); scale = min(1.0, maxw / max(tk[3] for tk in toks) * 0.98)
+        f, fu, toks = tokens(scale, split)
+    sp = tmp.textlength(" ", font=f)
     lines, cur, cw = [], [], 0
     for tk in toks:
-        if cur and cw + sp + tk[3] > maxw: lines.append(cur); cur, cw = [], 0
-        cur.append(tk); cw += (sp if len(cur) > 1 else 0) + tk[3]
+        gap = 0 if (tk[4] or not cur) else sp
+        if cur and cw + gap + tk[3] > maxw: lines.append(cur); cur, cw, gap = [], 0, 0
+        cur.append(tk); cw += gap + tk[3]
     if cur: lines.append(cur)
     lh = int(f.size * 1.18)
     im = Image.new("RGBA", (W, lh * len(lines) + int(60 * U)), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
     for li, ln in enumerate(lines):
-        tw = sum(x[3] for x in ln) + sp * (len(ln) - 1); x = (W - tw) / 2; y = 30 * U + li * lh
-        for t_, gold, ff, ww in ln:
+        tw = sum(x[3] for x in ln) + sum(sp for k, x in enumerate(ln) if k > 0 and not x[4]); x = (W - tw) / 2; y = 30 * U + li * lh
+        for k, (t_, gold, ff, ww, glued) in enumerate(ln):
+            if k > 0 and not glued: x += sp
             yy = y - (0.18 * ff.size if ff is fu else 0)
-            d.text((x, yy), t_, font=ff, fill=GOLD if gold else (255, 255, 255), stroke_width=max(3, int(6 * U)), stroke_fill=(0, 0, 0),
+            d.text((x, yy), t_, font=ff, fill=GOLD if gold else (255, 255, 255), stroke_width=max(3, int(6 * U * scale)), stroke_fill=(0, 0, 0),
                    **({"direction": "rtl"} if ff is fu else {}))
-            x += ww + sp
+            x += ww
     sh = Image.new("RGBA", im.size, (0, 0, 0, 0)); sh.putalpha(im.getchannel("A").filter(ImageFilter.GaussianBlur(12 * U)).point(lambda v: int(v * 0.7)))
     return Image.alpha_composite(sh, im)
 
