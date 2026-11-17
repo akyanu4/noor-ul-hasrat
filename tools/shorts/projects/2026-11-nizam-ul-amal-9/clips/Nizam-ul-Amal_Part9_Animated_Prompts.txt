@@ -1,0 +1,505 @@
+ANIMATED SHORTS: NIZAM-UL-AMAL-E-FUQARA, PART 9 (NAF009.mp3)
+Hazrat Azam Pasha R.A.'s own voice. 7 Shorts, 78 scenes. One scene per sentence or short thought.
+For each scene: (1) the IMAGE, then (2) animate it into a VIDEO CLIP with the MOTION prompt.
+
+====================================================================
+HOW TO DO IT
+====================================================================
+1. IMAGE: 60 scenes already have their starting picture in this folder (N9S1-01.png ...), 9:16, 1080x1920,
+   chosen from the pictures of the earlier dars.
+   18 scenes are marked  IMAGE: NEW  and have NO picture yet (the Short shows a dark "missing" card there).
+   For each NEW one: open a NEW Gemini chat (one picture per chat), paste the prompt from "NEW PICTURES TO MAKE"
+   at the end of this file, ask for portrait 9:16, a single image; save it here with the exact name
+   (for example N9S2-04.png).
+2. CLIP: open an image-to-video tool, for example:
+     - Gemini app -> Video (Veo): upload the image, paste the motion prompt  (8-second clips)
+     - Kling AI (klingai.com) -> Image to Video                           (5 or 10 seconds)
+     - Hailuo (hailuoai.video) or Runway also work
+   Choose 9:16 if asked. Save it as  <CODE>.mp4  in this same folder
+   (tools/shorts/projects/2026-11-nizam-ul-amal-9/clips/).
+   Any sound or music the tool adds is ignored; Hazrat's voice is used.
+   Until a clip exists, the Short uses the png with a slow zoom, so it always renders.
+3. Tell me when pictures or clips are in; I re-render (voice, captions, title, end card, credits, watermark).
+
+Length: a 10 s clip covers up to about 16 s of voice (it is slowed down to 0.6x, then the last frame holds).
+Scenes over 10 s: choose 10 s in Kling. Scenes under 8 s: 5 s in Kling or 8 s in Veo is fine.
+
+CHECK EVERY PICTURE AND CLIP before keeping it: faces of the shaykh, the pir, the awliya, the elders and Hazrat Musa
+Pasha must stay fully covered by opaque light the whole time (face, beard and ears); dark smoke must stay plain smoke
+(no faces, horns, eyes or figures in it); no women anywhere; no extra hands or fingers; NO WRITING of any kind (no
+letters, no Arabic, no Qur'an pages with script, no signs, no numbers); no oil lamps, diyas or flames on floors or
+ledges; nobody changing clothes. If it goes wrong, make it again (or tell me and I keep the still image).
+
+RULES (keep in every prompt)
+- Never draw the Prophet (peace be upon him): only light, the Green Dome, the Jali with no one behind it. No dream
+  scene of him. No other prophet is drawn either (Hazrat Zakariya, Hazrat Yahya): only places, objects and light.
+- Never draw Allah or anything that reads as Allah in a form: no single central orb or disc under the word Allah or
+  under His Names; the search-light comes from clouds, with no visible source.
+- No women at all. Bibi Maryam is never shown, not even veiled or from behind: only the room, the curtain, the
+  fruit and the light.
+- The shaykh, the pir, any wali or elder, Hazrat Musa Pasha: face, beard and ears ALWAYS hidden by soft opaque
+  white light. People on the ship: only small, from far away or from behind.
+- Shaytan, the mu'akkils, khatrat: only thin dark grey smoke or shadow. Never a figure, never a face.
+- No diyas or oil-lamp flames on floors or ledges, no kalava threads, no figurines, no symbols of other traditions.
+- No writing made by the AI. The real words (the four Names يَا عَلِيمُ  يَا خَبِيرُ  يَا سَمِيعُ  يَا بَصِيرُ ...) are drawn
+  by the engine over the clip from clip_words.py, never by the AI.
+- No Mushaf (Qur'an) on the ground.
+
+====================================================================
+RECURRING CHARACTERS (copy into a prompt whenever they appear)
+====================================================================
+THE MURID = "a young South Asian Muslim man with a short dark beard, plain white kurta and white skullcap,
+calm and sincere"   (as in N7S4-05 / the seated man in golden light)
+THE TROUBLED MAN = "a young South Asian man with dark curly hair, white kurta and grey waistcoat"
+THE SHAYKH = "an elderly Sufi shaykh in a white kurta, dark waistcoat and a cream shawl, white skullcap,
+his face, beard and ears completely hidden by a soft opaque white glowing light"
+DARK SMOKE (mu'akkils, khatrat) = "thin wisps of dark grey smoke, shapeless, no faces"
+
+STYLE (end of every image prompt) =
+"photorealistic, cinematic, old Hyderabad / Arabia as the scene needs, warm golden light and soft haze, rich detail, vertical 9:16 portrait, one single image (not a grid, not a contact sheet, no panels), no text, no letters, no calligraphy, no signs, no logos, no oil lamps or flames on the floor or on ledges"
+
+====================================================================
+SHORT 1: NAF9_Short1_The_Purpose_of_Tasawwur_e_Shaykh   "THE THOUGHT ON ONE POINT"   (8 scenes)
+====================================================================
+
+--- N9S1-01  "“The purpose of Tasawwur-e-Shaykh.” Bahr-ul-Uloom is telling us. Shaykh means the murshid: the one you have taken bay'ah with."  (14.9 s)
+IMAGE: N9S1-01.png (men seated in a circle on a carpet, seen from behind; from N7S2-11)
+MOTION: They sit listening, one places a hand on his heart, the light warms slowly. Slow push in.
+
+--- N9S1-02  "“The purpose of Tasawwur-e-Shaykh”: holding the shaykh in your thought, thinking of his face, in imagination, in tasawwur, “is that the thought becomes fixed on one point.”"  (8.6 s)
+IMAGE: N9S1-02.png (THE MURID seated before THE SHAYKH, whose face is a soft glow; from N6S4-03)
+MOTION: The murid sits with lowered eyes, soft light from the shaykh grows over him; the glow stays over the
+        shaykh's face. Slow push in.
+
+--- N9S1-03  "“The purpose of Tasawwur-e-Shaykh”: holding the shaykh in your thought, thinking of his face, in imagination, in tasawwur, “is that the thought becomes fixed on one point.”"  (8.7 s)
+IMAGE: N9S1-03.png (a column of light onto water; from N6S3-10)
+MOTION: The column of light pours down steadily, golden ripples spread slowly. Slow tilt up.
+
+--- N9S1-04  "See, I read it again: “The purpose of Tasawwur-e-Shaykh is that the thought becomes fixed on one point.” The thought, there where we are doing tasawwur, is to be held on one point."  (9.4 s)
+IMAGE: N9S1-04.png (men seated in rows under white arches; from AN1-04)
+MOTION: The men sit still and attentive, morning light moves slowly across the floor. Slow push in.
+
+--- N9S1-05  "See, I read it again: “The purpose of Tasawwur-e-Shaykh is that the thought becomes fixed on one point.” The thought, there where we are doing tasawwur, is to be held on one point."  (11.7 s)
+IMAGE: N9S1-05.png (THE MURID kneeling in a lane, a figure of light standing beside him; from N6S4-05)
+MOTION: The figure of light glows softly, the murid's eyes stay closed and calm; no face appears in the light. Slow
+        push in.
+
+--- N9S1-06  "That is: we are sitting in tasawwur of Qadeer Pia. Now you are not going anywhere else; your thought is not going anywhere else: it has become one point. Our thought is fixed on one point: only and only the tasawwur of Qadeer P..."  (10.7 s)
+IMAGE: N9S1-06.png (THE MURID seated with eyes closed in golden light; from N7S4-05)
+MOTION: He sits still, eyes closed, the golden light around him slowly brightens and pulses softly. Very slow push
+        in.
+
+--- N9S1-07  "That is: we are sitting in tasawwur of Qadeer Pia. Now you are not going anywhere else; your thought is not going anywhere else: it has become one point. Our thought is fixed on one point: only and only the tasawwur of Qadeer P..."  (10.7 s)
+IMAGE: N9S1-07.png (a man sitting quietly in a dark room; from N6S1-03)
+MOTION: He sits silent and still, a little moonlight moves across the floor. Very slow push in.
+
+--- N9S1-08  "“The purpose of Tasawwur-e-Shaykh is that the thought becomes fixed on one point.”"  (6.8 s)
+IMAGE: N9S1-08.png (a crystal of light; from N6S2-09)
+MOTION: The crystal turns very slowly, the light inside glows brighter and calmer. Slow push in.
+
+====================================================================
+SHORT 2: NAF9_Short2_Ya_Aleemu_Ya_Khabeeru   "YA 'ALEEMU, YA KHABEERU"   (13 scenes)
+====================================================================
+
+--- N9S2-01  "“The following adhkar also help:”"  (12.5 s)
+IMAGE: N9S2-01.png (THE MURID seated on a carpet in a courtyard at night with prayer beads; from N7S3-12)
+MOTION: The beads move slowly through his fingers, he breathes calmly, the night air is still. Very slow push in.
+
+--- N9S2-02  "Ya 'Aleemu (O All-Knowing), Ya Khabeeru (O All-Aware), Ya Samee'u (O All-Hearing), Ya Baseeru (O All-Seeing)."  (13.1 s)
+IMAGE: N9S2-02.png (curtains of golden light; from N6S4-06)
+MOTION: The curtains of light slowly part, sparkles drift down through the opening. Slow push forward.
+
+--- N9S2-03  "Ya 'Aleemu (O All-Knowing), Ya Khabeeru (O All-Aware), Ya Samee'u (O All-Hearing), Ya Baseeru (O All-Seeing)."  (10.4 s)
+IMAGE: N9S2-03.png (a field of coloured lights; from N7S5-01)
+MOTION: The lights drift slowly and gather softly. Slow push in.
+
+--- N9S2-04  "“When you read Ya 'Aleemu, turn your attention toward the umm-ud-dimagh.”"  (14.5 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: The glow at the top of his head slowly brightens and settles, he stays still. Very slow push in.
+
+--- N9S2-05  "The umm-ud-dimagh is above your palate. Umm-ud-dimagh: the mother of the brain; umm means mother. Its root, the place it comes from."  (7.1 s)
+IMAGE: N9S2-05.png (THE MURID seated, eyes closed, a soft light above his head; from N6S4-01)
+MOTION: The light above his head slowly brightens and settles over him, he stays still. Very slow push in.
+
+--- N9S2-06  "The umm-ud-dimagh is above your palate. Umm-ud-dimagh: the mother of the brain; umm means mother. Its root, the place it comes from."  (9.0 s)
+IMAGE: N9S2-06.png (streams of golden lights; from N7S5-05)
+MOTION: Streams of light flow down from the top, each small light glows as it arrives. Slow tilt down.
+
+--- N9S2-07  "“When you read Ya 'Aleemu, turn toward the umm-ud-dimagh, because that is the centre of knowledge, so that the knowledge of the higher world may settle in your heart.”"  (13.2 s)
+IMAGE: N9S2-07.png (a column of light into a glowing pool; from N6S5-07)
+MOTION: The beam brightens and steadies on one point, rings of light spread from it. Slow push in.
+
+--- N9S2-08  "“When you read Ya 'Aleemu, turn toward the umm-ud-dimagh, because that is the centre of knowledge, so that the knowledge of the higher world may settle in your heart.”"  (10.3 s)
+IMAGE: N9S2-08.png (THE MURID seated with eyes closed in golden light; from N7S4-05)
+MOTION: He sits still, eyes closed, the golden light around him slowly brightens and pulses softly. Very slow push
+        in.
+
+--- N9S2-09  "“When you read Ya Khabeeru, turn toward your heart, or toward the middle of the chest, so that you become aware of the whole world.”"  (10.6 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: The light in his chest slowly grows and pulses gently like a heartbeat. Very slow push in.
+
+--- N9S2-10  "Do you see? I tell you this again and again. Ya Khabeeru: O One who keeps aware, O One who gives news."  (13.5 s)
+IMAGE: N9S2-10.png (a dome of countless lights; from N6S1-05)
+MOTION: The lights twinkle in slow waves across the dome. Slow push in.
+
+--- N9S2-11  "“When you read Ya Khabeeru, turn toward your heart, or toward the middle of the chest”: toward your heart, or the space between your chest, “so that you become aware of the whole world.”"  (10.9 s)
+IMAGE: N9S2-11.png (a crystal of light; from N6S2-09)
+MOTION: The crystal turns very slowly, the light inside glows brighter and calmer. Slow push in.
+
+--- N9S2-12  "“When you read Ya Khabeeru, turn toward your heart, or toward the middle of the chest”: toward your heart, or the space between your chest, “so that you become aware of the whole world.”"  (12.4 s)
+IMAGE: N9S2-12.png (a dome of countless lights; from N6S3-06)
+MOTION: The lights twinkle in slow waves. Slow push in.
+
+--- N9S2-13  "Allah will open to you the knowledge of the whole world; whatever is needed, He will keep opening it all."  (7.2 s)
+IMAGE: N9S2-13.png (a golden door of light in the night sky; from N7S1-10)
+MOTION: The golden door slowly opens wider, light spills down the path toward the camera. Slow push forward.
+
+====================================================================
+SHORT 3: NAF9_Short3_Ya_Sameeu_Ya_Baseeru   "YA SAMEE'U, YA BASEERU"   (9 scenes)
+====================================================================
+
+--- N9S3-01  "“And when you read Ya Samee'u, turn your attention toward both your ears.”"  (12.5 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: The rings of light around his ear widen slowly like soft sound waves. Very slow push in.
+
+--- N9S3-02  "“Your hearing will become strong”: whatever you hear will become very strong, “and you will hear what comes from the higher world.”"  (14.0 s)
+IMAGE: N9S3-02.png (a man praying at a moonlit window, seen from behind; from N6S1-02)
+MOTION: He stays still with his hands raised, moonlight brightens softly on him, the night is silent. Very slow push
+        in.
+
+--- N9S3-03  "The higher world, 'aalam-e-'ulwi: the loftiest station of all. What comes from there, you will hear."  (6.9 s)
+IMAGE: N9S3-03.png (a sun over a sea of clouds; from N6S4-11)
+MOTION: The clouds drift slowly below, the light rises and spreads. Slow push in.
+
+--- N9S3-04  "The higher world, 'aalam-e-'ulwi: the loftiest station of all. What comes from there, you will hear."  (9.1 s)
+IMAGE: N9S3-04.png (curtains of golden light; from N7S5-08)
+MOTION: The curtains of light slowly sway and part, soft light pours down between them. Slow push forward.
+
+--- N9S3-05  "Do you see? “Not only this: your outward hearing too will become strong.”"  (8.4 s)
+IMAGE: N9S3-05.png (a man in a hall, eyes closed, listening; from N7S4-06)
+MOTION: He tilts his head slightly as if hearing a far sound, the lamps glow. Very slow push in.
+
+--- N9S3-06  "So first: whatever voice comes from the higher world, you will begin to hear it; it will come to you. And whatever weakness there is in your ears' hearing, that too will become strong."  (11.3 s)
+IMAGE: N9S3-06.png (a man kneeling in a lamp-lit hall, looking up; from N7S3-03)
+MOTION: He slowly lifts his gaze, soft light falls on his face from above. Slow push in.
+
+--- N9S3-07  "So first: whatever voice comes from the higher world, you will begin to hear it; it will come to you. And whatever weakness there is in your ears' hearing, that too will become strong."  (9.0 s)
+IMAGE: N9S3-07.png (THE MURID seated with eyes closed in golden light; from N7S4-05)
+MOTION: He sits still, eyes closed, the golden light around him slowly brightens and pulses softly. Very slow push
+        in.
+
+--- N9S3-08  "“And when you read Ya Baseeru, press on the eyes and open them: you will see what you did not see until now.”"  (14.6 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: He presses gently on his closed eyes, lowers his hands and slowly opens his eyes, soft light brightens. Slow
+        push in.
+
+--- N9S3-09  "Ya Baseeru: O All-Seeing, O Giver of insight."  (10.2 s)
+IMAGE: N9S3-09.png (a dome of countless lights; from N6S3-06)
+MOTION: The lights twinkle in slow waves. Slow push in.
+
+====================================================================
+SHORT 4: NAF9_Short4_When_Aalam_e_Misaal_Opened   "ON THE ROAD AT YAKUTPURA"   (9 scenes)
+====================================================================
+
+--- N9S4-01  "“And when you read Ya Baseeru, press on the eyes and open them: you will see what you did not see until now.”"  (7.1 s)
+IMAGE: N9S4-01.png (THE MURID seated with eyes closed in golden light; from N7S4-05)
+MOTION: He sits still, eyes closed, the golden light around him slowly brightens and pulses softly. Very slow push
+        in.
+
+--- N9S4-02  "“And when you read Ya Baseeru, press on the eyes and open them: you will see what you did not see until now.”"  (8.3 s)
+IMAGE: N9S4-02.png (a man kneeling in a lamp-lit hall, looking up; from N7S3-03)
+MOTION: He slowly lifts his gaze, soft light falls on his face from above. Slow push in.
+
+--- N9S4-03  "See: he is saying that kashf opens. In kashf, Allah then shows whatever He wishes to show."  (9.6 s)
+IMAGE: N9S4-03.png (curtains of golden light; from N7S5-08)
+MOTION: The curtains of light slowly sway and part, soft light pours down between them. Slow push forward.
+
+--- N9S4-04  "What are its effects?"  (11.9 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: He rides slowly through the gateway away from the camera, the street lamps glow. Camera follows from behind.
+        His face never turns to the camera.
+
+--- N9S4-05  "I was riding my cycle, out through the gate of Yakutpura, toward Itebar Chowk, toward Kali Kaman. I was on the road, reading: Ya 'Aleemu, Ya Khabeeru, Ya Samee'u, Ya Baseeru."  (9.4 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: He rides on toward the great arch, people pass slowly. Camera follows from behind; his face never shows.
+
+--- N9S4-06  "Ya 'Aleemu, Ya Khabeeru, Ya Samee'u, Ya Baseeru. With it, this happened: the people were in view, the road was in view, I was going along the road, and from above every single thing was in view: 'aalam-e-misaal had opened. What..."  (14.7 s)
+IMAGE: N9S4-06.png (a dove in a column of light above the night city; from N6S3-09)
+MOTION: The camera rises over the city, the column of light reveals everything below. Slow tilt down.
+
+--- N9S4-07  "Ya 'Aleemu, Ya Khabeeru, Ya Samee'u, Ya Baseeru. With it, this happened: the people were in view, the road was in view, I was going along the road, and from above every single thing was in view: 'aalam-e-misaal had opened. What..."  (12.4 s)
+IMAGE: N9S4-07.png (a dome of countless lights; from N7S5-06)
+MOTION: The lights twinkle in slow waves, the dome glows. Slow push in.
+
+--- N9S4-08  "See what this is, what knowledge this is. All these people are blind; they do not know what any of it is."  (9.9 s)
+IMAGE: N9S4-08.png (a lane to the Charminar, the crowd softly blurred; from N6S2-05)
+MOTION: The blurred crowd moves on without looking up. Slow push forward.
+
+--- N9S4-09  "“Becoming aware of people's passing thoughts, and seeing faraway things: these are all matters of a low degree.”"  (11.4 s)
+IMAGE: N9S4-09.png (a traveller climbing toward a glowing peak above the clouds; from N7S5-12)
+MOTION: He climbs slowly upward, the glowing peak comes into view. Camera rises behind him.
+
+====================================================================
+SHORT 5: NAF9_Short5_Travelling_in_Tasawwur   "TRAVELLING IN TASAWWUR"   (16 scenes)
+====================================================================
+
+--- N9S5-01  "“Those linked to the Siddiqi line should close their eyes and, in tasawwur, come to Malakpet”: Malakpet, where Hazrat's house is."  (11.4 s)
+IMAGE: N9S5-01.png (a man walking a lantern-lit old lane at evening, seen from behind; from N6S1-07)
+MOTION: He walks slowly up the lane, shop lights glow, people pass. Camera follows from behind.
+
+--- N9S5-02  "“On the way, whatever houses come, let them look at them all.” Eyes closed, in tasawwur, they are going along."  (8.9 s)
+IMAGE: N9S5-02.png (an old Hyderabad street in morning haze, men walking; from AN1-02)
+MOTION: Men walk slowly along the street toward the masjid, the haze lifts. Slow push forward.
+
+--- N9S5-03  "“Let them look at them all; and whoever has reach as far as Qibla-e-Aalam, let him go on to Qazipura.” Qibla-e-Aalam is Khwaja Mian Sarkar. Whoever's reach goes that far, let him go to Qazipura."  (7.5 s)
+IMAGE: N9S5-03.png (a man in a dark shawl walking a lane toward a great old door; from N6S1-08)
+MOTION: He walks slowly toward the great old door, warm light glows at the door. Camera follows.
+
+--- N9S5-04  "“Let them look at them all; and whoever has reach as far as Qibla-e-Aalam, let him go on to Qazipura.” Qibla-e-Aalam is Khwaja Mian Sarkar. Whoever's reach goes that far, let him go to Qazipura."  (8.3 s)
+IMAGE: N9S5-04.png (THE MURID kneeling in a lane, a figure of light standing beside him; from N6S4-05)
+MOTION: The figure of light glows softly, the murid's eyes stay closed and calm; no face appears in the light. Slow
+        push in.
+
+--- N9S5-05  "Understand: let him go to Qazipura, “and after kissing the feet, return.”"  (10.0 s)
+IMAGE: N9S5-05.png (feet in green clothing stepping onto a stone step; from AN1-08)
+MOTION: The foot rests on the step, warm light grows on the stone. Very slow push in. (No face ever comes into
+        view.)
+
+--- N9S5-06  "“The God-fearing and pious should go to Makkah al-Mukarramah, pray two rakats facing the Ka'bah, and return.”"  (10.5 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: Very slow push in toward the Ka'bah, the tiny figures circle slowly around it.
+
+--- N9S5-07  "There, the Ka'bah is before you; you are to pray two rakats as well."  (8.1 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: He stands in prayer, then slowly bows; the camera stays behind him. Very slow push in.
+
+--- N9S5-08  "There, the Ka'bah is before you; you are to pray two rakats as well."  (9.6 s)
+IMAGE: N9S5-08.png (men seated in a circle on a carpet, seen from behind; from N7S2-11)
+MOTION: They sit listening, one places a hand on his heart, the light warms slowly. Slow push in.
+
+--- N9S5-09  "These are not empty words. Whoever has read this and is listening, present here: this command is being applied to all of them, to everyone present at this time."  (11.2 s)
+IMAGE: N9S5-09.png (men seated in rows under white arches; from AN1-04)
+MOTION: The men sit still and attentive, morning light moves slowly across the floor. Slow push in.
+
+--- N9S5-10  "Then what worlds are going to open for you, what you will see, what you will hear: Allah knows best. This command is a place of great honour."  (9.5 s)
+IMAGE: N9S5-10.png (curtains of golden light; from N6S4-06)
+MOTION: The curtains of light slowly part, sparkles drift down through the opening. Slow push forward.
+
+--- N9S5-11  "Then what worlds are going to open for you, what you will see, what you will hear: Allah knows best. This command is a place of great honour."  (6.8 s)
+IMAGE: N9S5-11.png (rays pouring through clouds; from N6S2-10)
+MOTION: The rays slowly brighten and widen, the clouds drift. Slow tilt up.
+
+--- N9S5-12  "“The lovers of Muhammad ﷺ should go to the musalla where the Prophet ﷺ used to pray, where there is a small arch, and picture that the Beloved of Allah ﷺ is looking from the blessed Jali.”"  (7.3 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: Soft light slowly brightens on the Green Dome. Very slow push in.
+
+--- N9S5-13  "“The lovers of Muhammad ﷺ should go to the musalla where the Prophet ﷺ used to pray, where there is a small arch, and picture that the Beloved of Allah ﷺ is looking from the blessed Jali.”"  (9.7 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: The warm glow through the grille slowly brightens. Very slow push in. Nobody appears.
+
+--- N9S5-14  "Picture this: that the Prophet ﷺ is looking. Do you see? “Pray two rakats, and after the namaz recite salat-o-salam, and return.”"  (14.8 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: He sits after prayer with his head lowered, soft light grows on the Green Dome ahead. Slow push in.
+
+--- N9S5-15  "“Here Bahr-ul-Uloom means his own murids; his house is in Malakpet, Hyderabad. What is meant is: every person, when doing muraqaba, should picture his own pir, and go along the way to his residence.”"  (10.7 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: The camera glides slowly forward along the misty lane following the golden glow.
+
+--- N9S5-16  "“Here Bahr-ul-Uloom means his own murids; his house is in Malakpet, Hyderabad. What is meant is: every person, when doing muraqaba, should picture his own pir, and go along the way to his residence.”"  (7.2 s)
+IMAGE: N9S5-16.png (an old street with a small white masjid; from AN1-03)
+MOTION: Morning light grows on the white masjid, a few pigeons land on the steps. Slow push in.
+
+====================================================================
+SHORT 6: NAF9_Short6_The_Search_Light_Tasawwur   "A LIGHT LIKE A SEARCH-LIGHT"   (9 scenes)
+====================================================================
+
+--- N9S6-01  "“When fixing the tasawwur, think this: from Allah, a strong light, like a search-light, is reaching the blessed heart of the Messenger of Allah ﷺ.”"  (13.2 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: The beam comes down steadily, the Green Dome glows brighter. Slow tilt down from the clouds to the dome.
+
+--- N9S6-02  "A search-light. “When fixing the tasawwur, think this: from Allah, a strong light, like a search-light, is reaching the blessed heart of the Messenger of Allah ﷺ.”"  (8.1 s)
+IMAGE: N9S6-02.png (a column of light into a glowing pool; from N6S5-07)
+MOTION: The beam brightens and steadies on one point, rings of light spread from it. Slow push in.
+
+--- N9S6-03  "A search-light. “When fixing the tasawwur, think this: from Allah, a strong light, like a search-light, is reaching the blessed heart of the Messenger of Allah ﷺ.”"  (11.1 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: The beam steadies on the dome and the light around it widens. Very slow push in.
+
+--- N9S6-04  "“And from there it is going into the shaykh's heart; and from the shaykh's heart it is reaching my heart.”"  (10.6 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: The ray travels from the dome to the shaykh's heart, then on to the murid's heart, which begins to glow; the
+        glow stays over the shaykh's face. Slow push in.
+
+--- N9S6-05  "“Draw this light, with full attention, toward your own heart.”"  (12.3 s)
+IMAGE: N9S6-05.png (THE MURID seated, eyes closed, a soft light above his head; from N6S4-01)
+MOTION: The light above his head slowly brightens and settles over him, he stays still. Very slow push in.
+
+--- N9S6-06  "Draw it toward the heart. “Do not take these as mere imaginings.”"  (7.0 s)
+IMAGE: N9S6-06.png (a crystal of light; from N6S2-09)
+MOTION: The crystal turns very slowly, the light inside glows brighter and calmer. Slow push in.
+
+--- N9S6-07  "“They are bab-e-futuh”: the door of opening, the door of success. Bab means door."  (11.6 s)
+IMAGE: N9S6-07.png (a golden door of light in the night sky; from N7S1-10)
+MOTION: The golden door slowly opens wider, light spills down the path toward the camera. Slow push forward.
+
+--- N9S6-08  "“Do not take these as mere imaginings; they are bab-e-futuh. They make one progress, and show wondrous sights.”"  (9.4 s)
+IMAGE: N9S6-08.png (a man walking a mountain path; from N6S5-05)
+MOTION: He walks on up the winding path, mist rises from the valley. Camera follows from behind.
+
+--- N9S6-09  "“Do not take these as mere imaginings; they are bab-e-futuh. They make one progress, and show wondrous sights.”"  (5.9 s)
+IMAGE: N9S6-09.png (spheres of golden light; from N7S5-02)
+MOTION: The spheres turn slowly, threads of light connect them. Slow push in.
+
+====================================================================
+SHORT 7: NAF9_Short7_In_the_Shaykhs_Form   "IN THE SHAYKH'S FORM"   (14 scenes)
+====================================================================
+
+--- N9S7-01  "“The thought grows stronger, and he begins to feel that he is in the shaykh's form.”"  (7.2 s)
+IMAGE: N9S7-01.png (THE MURID seated before THE SHAYKH, whose face is a soft glow; from N6S4-03)
+MOTION: The murid sits with lowered eyes, soft light from the shaykh grows over him; the glow stays over the
+        shaykh's face. Slow push in.
+
+--- N9S7-02  "Now look: he progressed further, and he forgot himself. Now in whose form does he take himself to be? He is sitting in the form of his murshid."  (7.9 s)
+IMAGE: N9S7-02.png (THE MURID seated with eyes closed in golden light; from N7S4-05)
+MOTION: He sits still, eyes closed, the golden light around him slowly brightens and pulses softly. Very slow push
+        in.
+
+--- N9S7-03  "Now look: he progressed further, and he forgot himself. Now in whose form does he take himself to be? He is sitting in the form of his murshid."  (8.4 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: The glowing outline slowly becomes clearer and settles around him. Very slow push in. No face appears in the
+        light.
+
+--- N9S7-04  "“He begins to feel: I am in the shaykh's form.” When he thinks of himself, he does not see himself: the shaykh's form is what he sees."  (8.5 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: The water stirs gently, the reflection of light glows brighter. Slow push in.
+
+--- N9S7-05  "“He begins to feel: I am in the shaykh's form.” When he thinks of himself, he does not see himself: the shaykh's form is what he sees."  (7.9 s)
+IMAGE: N9S7-05.png (THE MURID kneeling in a lane, a figure of light standing beside him; from N6S4-05)
+MOTION: The figure of light glows softly, the murid's eyes stay closed and calm; no face appears in the light. Slow
+        push in.
+
+--- N9S7-06  "“Even outwardly the effect is so great that in the murid's face a glimpse of the shaykh is seen.”"  (10.3 s)
+IMAGE: N9S7-06.png (THE MURID seated, eyes closed, a soft light above his head; from N6S4-01)
+MOTION: The light above his head slowly brightens and settles over him, he stays still. Very slow push in.
+
+--- N9S7-07  "When the murid has gone this deep into tasawwur of his shaykh, little by little his face begins to resemble the shaykh's face."  (7.4 s)
+IMAGE: N9S7-07.png (a pebble dropping into golden water; from N6S1-01)
+MOTION: The pebble drops, gold ripples spread slowly outward. Slow motion.
+
+--- N9S7-08  "When the murid has gone this deep into tasawwur of his shaykh, little by little his face begins to resemble the shaykh's face."  (10.9 s)
+IMAGE: N9S7-08.png (a man in du'a at a moonlit window, seen from behind; from N7S1-02)
+MOTION: He slowly raises his hands, small golden motes drift in through the window. Slow push in.
+
+--- N9S7-09  "Other people too feel a glimpse of his shaykh in him, “and even the voice becomes alike.”"  (8.1 s)
+IMAGE: N9S7-09.png (men seated in a circle on a carpet, seen from behind; from N7S2-11)
+MOTION: They sit listening, one places a hand on his heart, the light warms slowly. Slow push in.
+
+--- N9S7-10  "“If I say ‘I’, let only ‘You’ come from my tongue; whatever I look upon, let it be You I see.” Hasrat."  (8.8 s)
+IMAGE: N9S7-10.png (curtains of golden light; from N6S4-06)
+MOTION: The curtains of light slowly part, sparkles drift down through the opening. Slow push forward.
+
+--- N9S7-11  "Next is sair, the journey. Of how many kinds is it? Sair is of three kinds."  (6.6 s)
+IMAGE: N9S7-11.png (a man walking a mountain path; from N6S5-05)
+MOTION: He walks on up the winding path, mist rises from the valley. Camera follows from behind.
+
+--- N9S7-12  "“Number one: sair fi'sh-shaykh, the journey in the shaykh.”"  (8.7 s)
+IMAGE: N9S7-12.png (a golden road to a white domed building on a hill; from N6S1-04)
+MOTION: Light travels along the golden road toward the white building, which glows softly. Slow push forward.
+
+--- N9S7-13  "“Number two: sair lin-Nabi fi'sh-shaykh. In this, through the shaykh's mediation, the light of the perfections of Muhammad ﷺ falls upon him.” “Number three: sair lillah fi'sh-shaykh.”"  (17.4 s)
+IMAGE: NEW (no picture yet; prompt at the end of this file)
+MOTION: The column of light slowly reaches him and he glows softly. Slow push in.
+
+--- N9S7-14  "“In this, through the shaykh's mediation, comes knowledge of the tajalliyat-e-ilahi, the divine manifestations.”"  (5.5 s)
+IMAGE: N9S7-14.png (rays pouring through clouds; from N6S2-10)
+MOTION: The rays slowly brighten and widen, the clouds drift. Slow tilt up.
+
+====================================================================
+NEW PICTURES TO MAKE (18): one Gemini chat per picture, 9:16, a single image
+====================================================================
+Save each as tools/shorts/projects/2026-11-nizam-ul-amal-9/clips/<CODE>.png
+
+N9S2-04:
+THE MURID in side profile, seated in a dim plain room, eyes closed, a soft gentle white-gold glow at the top of his
+    head above the forehead. Calm. No lamps, no flames. + STYLE
+
+N9S2-09:
+THE MURID seated cross-legged, eyes closed, a soft white-gold light glowing in the centre of his chest over the
+    heart; dim plain room. + STYLE
+
+N9S3-01:
+THE MURID in side profile, eyes closed, faint soft rings of golden light around his ear as if listening to a far
+    sound; a night window behind him. + STYLE
+
+N9S3-08:
+THE MURID seated, gently pressing his fingertips on his closed eyelids, soft light around his eyes; dim plain room.
+    + STYLE
+
+N9S4-04:
+Old Hyderabad at night: a man seen from behind riding an old black bicycle through a tall old stone city gateway
+    with an arch, wearing a white kurta and a white cap, his face not visible; a quiet road, a few people far away.
+    No signs, no writing, no shop boards with letters. + STYLE
+
+N9S4-05:
+The same cyclist seen from behind riding along an old Hyderabad road at night toward a great old stone arch, street
+    lamps on poles, a few people walking. No signs, no letters. + STYLE
+
+N9S5-06:
+The Ka'bah in Masjid al-Haram seen from afar at night, in its black covering, the white marble courtyard glowing,
+    the arcades and minarets around. People only as tiny far figures. The gold band on the covering softly blurred,
+    nothing readable. + STYLE
+
+N9S5-07:
+A man in white seen from behind standing in prayer on the marble courtyard facing the Ka'bah in the distance at
+    night; his face not visible; other people tiny and far. The gold band softly blurred, nothing readable. + STYLE
+
+N9S5-12:
+Masjid-e-Nabawi in Madinah at night seen from far across the courtyard: the Green Dome softly lit, folded white
+    umbrellas, white minarets. No people close. No writing. + STYLE
+
+N9S5-13:
+The blessed golden Jali (grille) of Masjid-e-Nabawi seen from a respectful distance, glowing softly with warm light
+    from within. No figure, no silhouette, no person behind it. All inscriptions softly blurred, nothing readable. +
+    STYLE
+
+N9S5-14:
+A man in white seen from behind praying on a prayer rug in the courtyard of Masjid-e-Nabawi at night, the Green Dome
+    glowing ahead; his face not visible. + STYLE
+
+N9S5-15:
+Malakpet in old Hyderabad at night, seen as in a dream: a quiet lane of old houses with wooden balconies and
+    courtyard gates, soft mist, warm windows, a gentle golden glow along the road like a path. One small figure
+    walking far ahead, seen from behind. No signs, no writing. + STYLE
+
+N9S6-01:
+A single straight beam of soft white light like a search-light coming down from high in the night sky (its source
+    hidden in clouds: no orb, no disc, no sun) onto the Green Dome of Masjid-e-Nabawi, which glows. No figures, no
+    writing. + STYLE
+
+N9S6-03:
+Closer view of the Green Dome at night receiving the beam of soft white light from the sky, light glowing out softly
+    from it in all directions. No figures, no writing. + STYLE
+
+N9S6-04:
+The chain of light at night: in the far background the Green Dome glowing under a beam from the sky; a ray of light
+    goes from it to the chest of THE SHAYKH seated in the middle distance, and from his chest a ray continues to the
+    chest of THE MURID seated in the foreground, seen from behind. + STYLE
+
+N9S7-03:
+THE MURID seated cross-legged in a dim room, eyes closed; a soft glowing outline of light, a little larger than him,
+    surrounds his body like the shape of an elder in a shawl; no face visible in the light. No lamps on the floor. +
+    STYLE
+
+N9S7-04:
+THE MURID kneeling beside a still pool in a courtyard at dusk, looking down; in the water his reflection is a softly
+    glowing figure of white light without any features. + STYLE
+
+N9S7-13:
+THE MURID seen from behind seated far away in the courtyard of Masjid-e-Nabawi at night; a soft column of light
+    falls from the sky past the glowing Green Dome onto him. No figure in the light. + STYLE
+
+====================================================================
+THE URDU / ARABIC WORDS ON SCREEN
+====================================================================
+The engine draws them over the clips from clip_words.py (made from slides.py by engine/clip_words.py). Never ask
+the AI to draw them.

@@ -1,0 +1,23 @@
+"""Urdu/Arabic words over the animated clips (made by engine/clip_words.py from slides.py; edit freely).
+"from" (hand-set): the words appear when he says them."""
+WORDS = {'N8S1-01': {'text': 'چلہ کشی'},
+ 'N8S1-04': {'text': 'غار حرا'},
+ 'N8S1-08': {'text': 'ترک حیوانات'},
+ 'N8S1-09': {'text': 'اعتکاف'},
+ 'N8S2-01': {'text': 'صوم مریم'},
+ 'N8S2-10': {'text': 'خاموشی'},
+ 'N8S3-01': {'text': 'حزب البحر'},
+ 'N8S3-05': {'text': 'خاموشی'},
+ 'N8S4-07': {'text': 'حزب البحر'},
+ 'N8S5-01': {'text': 'اعتکاف'},
+ 'N8S5-07': {'text': 'ایک نقطہ'},
+ 'N8S5-08': {'text': 'توجہ تام'},
+ 'N8S5-14': {'text': 'صوم مریم'},
+ 'N8S6-03': {'text': 'چار دکانیں'},
+ 'N8S6-09': {'text': 'دل'},
+ 'N8S7-11': {'text': 'پھل'},
+ 'N8S7-13': {'text': 'بے موسم پھل'},
+ 'N8S7-16': {'text': 'هُوَ مِنْ عِنْدِ اللّٰهِ', 'from': 2033.0},
+ 'N8S8-03': {'text': 'دعا قبول'},
+ 'N8S8-10': {'text': 'دربار اولیاء'},
+ 'N8S8-14': {'text': 'دعا قبول'}}
