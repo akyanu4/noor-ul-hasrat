@@ -364,6 +364,24 @@
     });
   });
   paintRemind();
+  // Home: ask once for notifications (halqa reminders, new Dars Highlights, events). Shown only while the phone has not
+  // been asked yet; "Not now" hides it for 7 days. On iPhone it appears only in the installed app (Safari tabs cannot get pushes).
+  (function () {
+    var home = document.getElementById('screen-home'), KEY = 'noor_notif_card';
+    var ios = /iPad|iPhone|iPod/.test(navigator.userAgent), standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+    if (!home || !pushOn() || typeof Notification === 'undefined' || Notification.permission !== 'default' || (ios && !standalone)) return;
+    var t = 0; try { t = +localStorage.getItem(KEY) || 0; } catch (e) {}
+    if (Date.now() - t < 7 * 864e5) return;
+    var st = document.createElement('style');
+    st.textContent = '.nt-card{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding:12px;border-radius:12px;background:var(--panel);border:1px solid var(--line)}.nt-card .t{flex:1;font-size:13.5px;line-height:1.45;color:var(--ink)}.nt-card .t b{color:var(--teal)}' +
+      '.nt-card .on{flex:none;border:0;border-radius:10px;background:var(--teal);color:#fff;font:inherit;font-size:13.5px;font-weight:600;padding:10px 12px;min-height:42px;cursor:pointer}.nt-card .no{flex:none;border:0;background:none;color:var(--muted);font:inherit;font-size:12.5px;cursor:pointer;min-height:42px}';
+    document.head.appendChild(st);
+    var c = document.createElement('div'); c.className = 'nt-card';
+    c.innerHTML = '<div class="t"><b>🔔 Turn on notifications</b><br>Saturday halqa reminders, new Dars Highlights and events.</div><button type="button" class="on">Turn on</button><button type="button" class="no">Not now</button>';
+    c.querySelector('.on').addEventListener('click', function () { c.remove(); $('remindBtn').click(); });
+    c.querySelector('.no').addEventListener('click', function () { try { localStorage.setItem(KEY, String(Date.now())); } catch (e) {} c.remove(); });
+    home.insertBefore(c, home.firstChild);
+  })();
   if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.matchMedia('(display-mode: standalone)').matches && pushOn()) {
     $('remindBtn').textContent = '🔔 Remind me (add to Home Screen first)';
   }
