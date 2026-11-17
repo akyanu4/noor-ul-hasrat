@@ -386,6 +386,24 @@
     $('remindBtn').textContent = '🔔 Remind me (add to Home Screen first)';
   }
 
+  /* Anonymous usage count for the admin page: once a day per phone, a random id plus installed yes/no, the kind of phone
+     and whether it came from the QR card. No name, email or location (see privacy.html). */
+  (function () {
+    try {
+      var day = new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
+      if (localStorage.getItem('noor_hello_day') === day) return;
+      var d = localStorage.getItem('noor_dev');
+      if (!d) { var a = new Uint8Array(12); crypto.getRandomValues(a); d = Array.prototype.map.call(a, function (x) { return ('0' + x.toString(16)).slice(-2); }).join(''); localStorage.setItem('noor_dev', d); }
+      var ua = navigator.userAgent, plat = /Android/.test(ua) ? 'android' : /iPad|iPhone|iPod/.test(ua) ? 'ios' : /Windows|Macintosh|Linux|CrOS/.test(ua) ? 'desktop' : 'other';
+      var inst = !!((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone || /^android-app:/.test(document.referrer));
+      var src = /[?&]src=qr\b/.test(location.search) ? 'qr' : '';
+      setTimeout(function () {
+        fetch('/api/hello', { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true, body: JSON.stringify({ d: d, inst: inst, plat: plat, src: src }) })
+          .then(function (r) { if (r.ok) localStorage.setItem('noor_hello_day', day); }, function () {});
+      }, 4000);
+    } catch (e) {}
+  })();
+
   /* ================= Live class list ================= */
   function checkNew(items) {
     var seen = null; try { seen = JSON.parse(sget('noor_seen') || 'null'); } catch (e) {}

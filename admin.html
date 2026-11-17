@@ -52,7 +52,7 @@
   function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function ago(ms) { if (!ms) return 'never'; var d = Math.floor((Date.now() - ms) / 86400000); return d <= 0 ? 'today' : d === 1 ? 'yesterday' : d + ' days ago'; }
   function band(n) { return n >= 85 ? 'g' : n >= 40 ? 'y' : 'r'; }
-  var members = [], open = '', helps = [];
+  var members = [], open = '', helps = [], stats = null;
 
   var u = B.account.user();
   if (!u) { out.innerHTML = '<div class="card">Sign in first: open the app, go to <b>More → My Account</b>, sign in with your email, then come back to this page.</div>'; return; }
@@ -62,7 +62,8 @@
       document.getElementById('cp').onclick = function () { try { navigator.clipboard.writeText(u.uid); this.textContent = 'Copied'; } catch (e) {} };
       return;
     }
-    return Promise.all([B.admin.get('profiles'), B.admin.get('summaries'), B.admin.get('bayah_ok').catch(function () { return null; }), B.admin.get('bayah_req').catch(function () { return null; }), B.admin.get('helpreq').catch(function () { return null; })]).then(function (r) {
+    return Promise.all([B.admin.get('profiles'), B.admin.get('summaries'), B.admin.get('bayah_ok').catch(function () { return null; }), B.admin.get('bayah_req').catch(function () { return null; }), B.admin.get('helpreq').catch(function () { return null; }), B.admin.get('stats/total').catch(function () { return null; }), B.admin.get('stats/daily').catch(function () { return null; })]).then(function (r) {
+      stats = { total: r[5] || null, daily: r[6] || null };
       var P = r[0] || {}, S = r[1] || {}, OK = r[2] || {}, RQ = r[3] || {};
       helps = Object.keys(r[4] || {}).map(function (id) { return Object.assign({ id: id }, r[4][id]); }).sort(function (a, b) { return ((a.status === 'done') - (b.status === 'done')) || (b.at - a.at); });
       members = Object.keys(P).map(function (id) { return { id: id, p: P[id] || {}, s: S[id] || null, ok: OK[id] || null, rq: RQ[id] || null }; })
@@ -117,6 +118,17 @@
         (c ? '<div class="muted" style="margin-top:2px">Contacted ✓ ' + esc(m.rq.by || '') + ', ' + esc(new Date(m.rq.at).toLocaleDateString()) + '</div>' : '') + '</div>' +
         (c ? '<button data-unc="' + esc(m.id) + '">Undo</button>' : '<button class="pri" data-con="' + esc(m.id) + '">Mark contacted</button>') + '</div>';
     }).join('') + '</div>';
+    if (stats && (stats.total || stats.daily)) {
+      var T = stats.total || {}, D = stats.daily || {}, days = Object.keys(D).sort().slice(-14);
+      var mx = Math.max.apply(null, days.map(function (k) { return D[k]; }).concat([1]));
+      h += '<div class="card"><b>📈 App usage</b> <span class="muted">(anonymous, one count per phone)</span>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:18px;margin:10px 0">' +
+        [['Installed', T.installs || 0], ['Android', T.installs_android || 0], ['iPhone', T.installs_ios || 0], ['Computer', T.installs_desktop || 0], ['Phones that opened the app', T.visitors || 0], ['From the QR card', T.qr || 0], ['Members signed up', members.length]]
+          .map(function (x) { return '<div><div style="font-size:22px;font-weight:700;color:var(--teal)">' + x[1] + '</div><div class="muted">' + x[0] + '</div></div>'; }).join('') + '</div>' +
+        (days.length ? '<div class="muted" style="margin-bottom:4px">Phones that opened the app each day (IST)</div><div style="display:flex;align-items:flex-end;gap:4px;height:70px">' +
+          days.map(function (k) { return '<div title="' + esc(k) + ': ' + D[k] + '" style="flex:1;min-width:12px;background:var(--teal);opacity:.85;border-radius:3px 3px 0 0;height:' + Math.max(4, Math.round(64 * D[k] / mx)) + 'px"></div>'; }).join('') +
+          '</div><div class="muted" style="display:flex;justify-content:space-between;font-size:11px"><span>' + esc(days[0]) + '</span><span>' + esc(days[days.length - 1]) + '</span></div>' : '') + '</div>';
+    }
     var hOpen = helps.filter(function (x) { return x.status !== 'done'; }).length;
     if (helps.length) h += '<div class="card"' + (hOpen ? ' style="border-color:var(--gold)"' : '') + '><b>🛠️ Help requests (' + hOpen + ' open)</b>' + (helps.length > hOpen ? ' <span class="muted">· ' + (helps.length - hOpen) + ' done</span>' : '') + helps.slice(0, 40).map(function (x) {
       var dn = x.status === 'done', c = String(x.contact || ''), isMail = c.indexOf('@') !== -1, digits = c.replace(/[^0-9+]/g, '');
