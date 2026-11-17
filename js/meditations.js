@@ -64,7 +64,7 @@
         'As soon as we move, the khatrat are driven away.',
         'We sit and sit and they do not leave; the moment we stand up and change our state, the khatrat vanish.'
       ],
-      shorts: [{ id: 'SBy10BJdsdk', title: 'Stand Up and the Thought Leaves' }] },
+      shorts: [{ id: '-cGkzw6kzkg', title: 'Stand Up and the Thought Leaves' }] },
     { slug: 'run-from-it', t: 'Run from the thought', ur: 'خطرہ سے بھاگنا',
       d: 'When a khatra comes into your heart, into your thoughts, run from it.',
       steps: [
@@ -72,14 +72,14 @@
         'In a little while the thought will be left behind; you will get out and be freed from it.',
         'We who were captives of the thought get out of that captivity.'
       ],
-      shorts: [{ id: 'SBy10BJdsdk', title: 'Stand Up and the Thought Leaves' }] },
+      shorts: [{ id: '-cGkzw6kzkg', title: 'Stand Up and the Thought Leaves' }] },
     { slug: 'imagine-it-leaving', t: 'See the thought running away', ur: 'عالمِ تخیل',
       d: 'Or imagine, in the world of imagination (aalam-e-takhayyul), that the thought is running away from you: this too removes it.',
       steps: [
         'When the khatra comes, think: “This thought is running from me.”',
         'Aalam-e-takhayyul means the world of imagination, of thought. By this too the khatra is removed.'
       ],
-      shorts: [{ id: 'SBy10BJdsdk', title: 'Stand Up and the Thought Leaves' }] },
+      shorts: [{ id: '-cGkzw6kzkg', title: 'Stand Up and the Thought Leaves' }] },
     { slug: 'refuge', t: 'Come into Allah’s refuge', ur: 'اللہ کی پناہ',
       d: 'When the khatrat keep coming, come into the refuge of Allah and ask for His help.',
       steps: [
@@ -87,14 +87,14 @@
         'When a khatra comes, say: “If these trouble us, where else will we find refuge? Save us from these khatrat; take us into Your refuge.”',
         'Even great people are troubled by khatrat: the Awliya Allah too come into Allah’s refuge, and adopt these methods.'
       ],
-      shorts: [{ id: 'QKlEyf9c7tg', title: 'Take Refuge in Allah' }] },
+      shorts: [{ id: 'uuet4U0KRu4', title: 'Take Refuge in Allah' }] },
     { slug: 'hoon-hoon', t: 'Breathe out: “hoon, hoon”', ur: 'ہوں ہوں',
       d: 'One of the tried and tested methods for driving away khatrat, done with the breath.',
       steps: [
         'Saying “hoon, hoon”, breathe out forcefully, outward.',
         'Hoon… hoon… hoon… hoon: “that is what to do.”'
       ],
-      shorts: [{ id: 'LMFTVIx55EE', title: 'Hoon, Hoon: Breathe Out the Khatra' }, { id: 'QKlEyf9c7tg', title: 'Take Refuge in Allah' }] },
+      shorts: [{ id: 'LMFTVIx55EE', title: 'Hoon, Hoon: Breathe Out the Khatra' }, { id: 'uuet4U0KRu4', title: 'Take Refuge in Allah' }] },
     { slug: 'new-creation', t: 'Recite the verse', ur: 'آیت کی تلاوت',
       d: 'By reciting this verse too, khatrat lessen.',
       steps: [
@@ -103,7 +103,7 @@
       ],
       ar: [{ ar: 'إِن يَشَأْ يُذْهِبْكُمْ وَيَأْتِ بِخَلْقٍ جَدِيدٍ ۝ وَمَا ذٰلِكَ عَلَى اللّٰهِ بِعَزِيزٍ', tr: 'In yasha’ yudhhibkum wa ya’ti bi-khalqin jadid, wa ma dhalika ‘ala-llahi bi-‘aziz.',
         mn: 'If He wills, He will take you away and bring a new creation; and that is not difficult for Allah. (Surah Fatir 35:16-17; the same words are in Surah Ibrahim 14:19-20)' }],
-      shorts: [{ id: 'QKlEyf9c7tg', title: 'Take Refuge in Allah' }] },
+      shorts: [{ id: 'uuet4U0KRu4', title: 'Take Refuge in Allah' }] },
     { slug: 'nazar-bar-qadam', t: 'Gaze on your steps', ur: 'نظر بر قدم',
       d: 'In driving away khatrat there is one important principle: nazar bar qadam, keep your gaze on your feet, on your steps.',
       steps: [
@@ -154,7 +154,7 @@
         'They say it and fall silent: “Yes, I have understood; I have passed my test.”'
       ],
       q: 'Hazrat’s rubai: “Tu dar har shaan ba-kamaali… jis rang mein aao, kuch nahin hai parwa; is naaz-o-ada se tumko pehchanta hoon”: You are perfect in every state; in whatever colour You come, it does not matter; I recognise You by this grace.',
-      shorts: [{ id: 'z698TQzQjQg', title: 'I Recognise You in Every Form' }] }
+      shorts: [{ id: 'EzydokzUOyg', title: 'I Recognise You in Every Form' }] }
   ];
   var BAYAH_NOTE = 'These meditations bring their benefit after you have taken Bay’ah, under the guidance of your Shaykh or his Khalifa.';
 

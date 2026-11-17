@@ -23,7 +23,7 @@
     '7wB9EQldsew': 'ObW6ccXEwn4',
     E7xb4BR6IPQ: 'gkYbWlFLc3w', kziC4lPGmgU: '56xW_CnWB0w', Rno3f3mGjyg: '883RmkRT9mE', jRK1SIkPkV0: 'T4cTs3h1QoI',
     '3githsE0o6Y': '50SwaP11-vk', cbWGnUMd530: 'TkSFt5BlMzs', '77ZE201Hbjw': 'ufZ_iEByRmI',
-    'cfKWk-fq-BQ': '2Uv3prgEqqg', 'PvTqdGvfuQw': 'oLbjVJ22CrU', 'UFGrLXEdwmk': '-Icei0dP5ag', '2zH6zC_Z8P4': '4ZpXrUzIlJw', 'trMoVHtadHI': 'iZVgwvJvp1Y', 'Tv8U5Rk8kF4': 'AEXCqRRUUhk', 'EbnxYFqNhXI': 'OT27WmUbKP4' };   // Part 6 & 7, re-rendered 15 Nov 2026 (old ones unlisted)
+    'cfKWk-fq-BQ': '2Uv3prgEqqg', 'PvTqdGvfuQw': 'oLbjVJ22CrU', 'UFGrLXEdwmk': '-Icei0dP5ag', '2zH6zC_Z8P4': '4ZpXrUzIlJw', 'trMoVHtadHI': 'iZVgwvJvp1Y', 'Tv8U5Rk8kF4': 'AEXCqRRUUhk', 'EbnxYFqNhXI': 'OT27WmUbKP4' , 'SBy10BJdsdk': '-cGkzw6kzkg', 'QKlEyf9c7tg': 'uuet4U0KRu4', 'z698TQzQjQg': 'EzydokzUOyg' };   // Part 6 & 7, re-rendered 15 Nov 2026 (old ones unlisted)
   function toItems(pages) {
     var seen = {}, out = [];
     pages.forEach(function (data) {
@@ -335,7 +335,7 @@
      sleep less, speak less; Sabr, Tasleem, Raza) carry a reminder to take Bay'ah and follow a guide. In the app they
      play for signed-in members once accounts are switched on (More → My Account). They stay public on YouTube. */
   var PRACTICE_IDS = { dyHUfOLlVTs: 1, '3githsE0o6Y': 1, '50SwaP11-vk': 1, oWZt1YfJ3io: 1, mwPT8CFRfR0: 1,
-    oLbjVJ22CrU: 1, '-Icei0dP5ag': 1, '4ZpXrUzIlJw': 1, AEXCqRRUUhk: 1, OT27WmUbKP4: 1, SBy10BJdsdk: 1, QKlEyf9c7tg: 1, z698TQzQjQg: 1, sdcWOMEVUDI: 1, LMFTVIx55EE: 1 };   // + Nizam-ul-Amal 6 and 7 meditations
+    oLbjVJ22CrU: 1, '-Icei0dP5ag': 1, '4ZpXrUzIlJw': 1, AEXCqRRUUhk: 1, OT27WmUbKP4: 1, '-cGkzw6kzkg': 1, 'uuet4U0KRu4': 1, 'EzydokzUOyg': 1, sdcWOMEVUDI: 1, LMFTVIx55EE: 1 };   // + Nizam-ul-Amal 6 and 7 meditations
   var PRACTICE_RE = /tasawwur|zarb[-\s]*e[-\s]*haidari|you have become my teacher|eat less,? sleep less|sabr,? tasleem|\bmuraqaba|\bpractice of (zikr|dhikr)/i;
   (cfg.practiceShorts || []).forEach(function (id) { PRACTICE_IDS[id] = 1; });
   function isPractice(it) { return !!(it && (it.wide || PRACTICE_IDS[it.id] || PRACTICE_RE.test(it.title || ''))); }
@@ -518,7 +518,7 @@
   { title: 'Nizam-ul-Amal-e-Fuqra, Part 6', match: 'nizam.*part\\s*6(?!\\d)',
     shorts: ['2Uv3prgEqqg', 'oLbjVJ22CrU', '-Icei0dP5ag', '4ZpXrUzIlJw', 'iZVgwvJvp1Y', 'sdcWOMEVUDI'] },
   { title: 'Nizam-ul-Amal-e-Fuqra, Part 7', match: 'nizam.*part\\s*7(?!\\d)',
-    shorts: ['AEXCqRRUUhk', 'OT27WmUbKP4', 'SBy10BJdsdk', 'QKlEyf9c7tg', 'z698TQzQjQg', 'LMFTVIx55EE'] },
+    shorts: ['AEXCqRRUUhk', 'OT27WmUbKP4', '-cGkzw6kzkg', 'uuet4U0KRu4', 'EzydokzUOyg', 'LMFTVIx55EE'] },
     { title: 'Nizam-ul-Amal-e-Fuqra, Part 2', match: 'nizam.*part\\s*2',
       shorts: ['u6BHgjCPuCo', '_l27DFmjd6w', 'pqjEFcL1Nlo', 'SHyAucT3ojs', 'ta6pdvvmJBQ', 'dyHUfOLlVTs'] },
     { title: 'Nizam-ul-Amal-e-Fuqra, Part 3', match: 'nizam.*part\\s*3',
@@ -540,15 +540,15 @@
   // Topic chips. A Short gets a topic from the ids listed here (the original upload or its watermarked copy) or by a word in its title.
   var STOPICS = [
     { name: 'tawbah', label: 'Tawbah', re: /tawb|tauba|repent|newly born|توبہ/i, ids: ['u6BHgjCPuCo', '_l27DFmjd6w', 'ta6pdvvmJBQ'] },
-    { name: 'khatrat', label: 'Khatrat', re: /khatr|passing thought|good thoughts|thought leaves|whisper|waswas|خطرات/i, ids: ['2Uv3prgEqqg', 'AEXCqRRUUhk', 'OT27WmUbKP4', 'SBy10BJdsdk', 'QKlEyf9c7tg'] },
-    { name: 'tasawwur', label: 'Tasawwur', re: /tasawwur|my picture|every form|تصور/i, ids: ['dyHUfOLlVTs', '4ZpXrUzIlJw', 'z698TQzQjQg', '3githsE0o6Y'] },
+    { name: 'khatrat', label: 'Khatrat', re: /khatr|passing thought|good thoughts|thought leaves|whisper|waswas|خطرات/i, ids: ['2Uv3prgEqqg', 'AEXCqRRUUhk', 'OT27WmUbKP4', '-cGkzw6kzkg', 'uuet4U0KRu4'] },
+    { name: 'tasawwur', label: 'Tasawwur', re: /tasawwur|my picture|every form|تصور/i, ids: ['dyHUfOLlVTs', '4ZpXrUzIlJw', 'EzydokzUOyg', '3githsE0o6Y'] },
     { name: 'sabr', label: 'Sabr', re: /\bsabr|tasleem|\braza\b|patien|صبر/i, ids: ['mwPT8CFRfR0', 'Imuwo7g6UzE', '7CIgqlzMN1E'] },
     { name: 'baiat', label: 'Bai’at', re: /bai['’]?at|bay['’]?ah|\bpir\b|murids?\b|murshid|trusted guide|wali recognises|بیعت/i,
       ids: ['g8-0WIXYjcM', 'r3x7LQru71I', '7wB9EQldsew', 'E7xb4BR6IPQ', 'kziC4lPGmgU', 'Rno3f3mGjyg', 'jRK1SIkPkV0', '3githsE0o6Y', 'ENBkebr3nJI', 'RFLGxcbYBCM', 'cbWGnUMd530', '77ZE201Hbjw', 'Fq8X-k08A5Y', '0yhKLLlv5ww', 'U2KoTd5rDSI'] },
     { name: 'nazar', label: 'Nazar (gaze)', re: /\bgaze\b|eyes are hunters|nazar|نظر/i, ids: ['oLbjVJ22CrU', '-Icei0dP5ag'] },
     { name: 'taqwa', label: 'Taqwa', re: /taqwa|eat less|sleep less|speak less|tawakkul|تقوی/i, ids: ['oWZt1YfJ3io', 'le1EA7cNRAA', 'EIcNQnQ_TkQ', 'KCmXwBTioD4', 'B-NjNa3UUJ4', 'SHyAucT3ojs', 'Vz_I-E521r8', 'iYb70KSdYD4', 'ta6pdvvmJBQ'] },
-    { name: 'tawheed', label: 'Tawheed', re: /tawh?eed|tauh?eed|توحید/i, ids: ['iZVgwvJvp1Y', 'z698TQzQjQg', 'Rk6u-LffRrg', '2yjNqJo659g', 'g8-0WIXYjcM'] },
-    { name: 'love', label: 'Love', re: /\blove\b|\bishq|mahabb|عشق|محبت/i, ids: ['EQbitUdOKqQ', 'cl0bggXGqRk', 'eNHL-OsPxgQ', 'z698TQzQjQg'] }
+    { name: 'tawheed', label: 'Tawheed', re: /tawh?eed|tauh?eed|توحید/i, ids: ['iZVgwvJvp1Y', 'EzydokzUOyg', 'Rk6u-LffRrg', '2yjNqJo659g', 'g8-0WIXYjcM'] },
+    { name: 'love', label: 'Love', re: /\blove\b|\bishq|mahabb|عشق|محبت/i, ids: ['EQbitUdOKqQ', 'cl0bggXGqRk', 'eNHL-OsPxgQ', 'EzydokzUOyg'] }
   ];
   var TOPIC_IDS = {};
   STOPICS.forEach(function (t) { t.ids.forEach(function (id) { [id, WATERMARKED[id], RW[id]].forEach(function (k) { if (k) (TOPIC_IDS[k] = TOPIC_IDS[k] || []).push(t.name); }); }); });
