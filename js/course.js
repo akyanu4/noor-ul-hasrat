@@ -74,6 +74,8 @@
       marked: m ? MARKS[m.m].ic + ' ' + W(MARKS[m.m].en, MARKS[m.m].ru) : '' }[st];
   }
 
+  function guide() { return C && C.guide ? '<div class="lb-note" style="margin:0 0 12px">🤝 <b>' + esc(t(C, 'guide')) + '</b></div>' : ''; }
+
   // ---- Home card
   var home = doc.getElementById('screen-home'), hc = null;
   function paintHome() {
@@ -88,14 +90,14 @@
     var i = 0; while (i < n - 1 && marks[C.lessons[i].id] && marks[C.lessons[i].id].m === 'ready') i++;
     var l = C.lessons[i], st = state(i), fresh = marks[l.id] && !mine['seen_' + l.id];
     hc.hidden = !ok[C.lessons[0].article] && !teacher;
-    hc.innerHTML = '<div class="ic">📘</div><div class="tx"><b>' + esc(t(C, 'title')) + ' · ' + W('Lesson', 'Sabaq') + ' ' + (i + 1) + '</b><small>' + esc(t(l, 'title')) + ' · ' + esc(fresh ? W('Your teacher replied ✓', 'Ustaad ka jawab aa gaya ✓') : stLabel(st, l)) + '</small>' +
+    hc.innerHTML = '<div class="ic">📘</div><div class="tx"><b>' + esc(t(C, 'title')) + ' · ' + W('Lesson', 'Sabaq') + ' ' + (i + 1) + '</b><small>' + W('Learn under the guidance of your Shaykh', 'Shaykh ki rehnumaai mein seekhiye') + '<br>' + esc(t(l, 'title')) + ' · ' + esc(fresh ? W('Your teacher replied ✓', 'Ustaad ka jawab aa gaya ✓') : stLabel(st, l)) + '</small>' +
       '<div class="cs-bar"><i style="width:' + Math.round(done / n * 100) + '%"></i></div></div><span class="go">' + W('Continue', 'Jaari rakhiye') + ' ›</span>';
   }
 
   // ---- Course page: list of lessons
   function paintList() {
     view = 'list'; s.querySelector('#csTitle').textContent = t(C, 'title');
-    var h = '<div class="cs-hero"><b>📘 ' + esc(t(C, 'title')) + '</b><p>' + esc(t(C, 'about')) + '</p></div>';
+    var h = '<div class="cs-hero"><b>📘 ' + esc(t(C, 'title')) + '</b><p>' + esc(t(C, 'about')) + '</p></div>' + guide();
     if (!user()) h += '<div class="cs-step"><b>' + W('Create your free account to save your progress and send lessons to your teacher.', 'Apni progress mehfooz karne aur sabaq ustaad ko bhejne ke liye muft account banaiye.') + '</b><br><button class="cs-btn" id="csJoin" type="button">' + W('Sign up / Sign in', 'Sign up / Sign in') + '</button></div>';
     if (teacher) h += '<button class="cs-btn" id="csReview" type="button" style="width:100%;margin:0 0 12px">📝 ' + W('Review students', 'Talaba ka jaiza') + '</button>';
     h += C.lessons.map(function (l, i) {
@@ -117,7 +119,7 @@
     view = 'lesson'; curL = C.lessons[i]; var l = curL, d = mine[l.id] || {}, m = marks[l.id], u = user();
     s.querySelector('#csTitle').textContent = W('Lesson', 'Sabaq') + ' ' + (i + 1);
     var h = '<div class="lb-lang" role="group"><button type="button" data-l="en"' + (!ru() ? ' class="on"' : '') + '>English</button><button type="button" data-l="ru"' + (ru() ? ' class="on"' : '') + '>Roman Urdu</button></div>' +
-      '<h2 class="section-title" style="margin-top:4px">' + esc(t(l, 'title')) + '</h2>';
+      '<h2 class="section-title" style="margin-top:4px">' + esc(t(l, 'title')) + '</h2>' + guide();
     if (m) {
       h += '<div class="cs-mark"><b>' + MARKS[m.m].ic + ' ' + esc(W(MARKS[m.m].en, MARKS[m.m].ru)) + '</b>' + (m.note ? '<p>' + esc(m.note) + '</p>' : '') + '<div class="cs-msg">— ' + esc(m.name || W('Your teacher', 'Aap ke ustaad')) + (m.at ? ', ' + esc(new Date(m.at).toLocaleDateString()) : '') + '</div>' +
         (m.m === 'ready' && C.lessons[i + 1] ? '<button class="cs-btn" type="button" data-i="' + (i + 1) + '">' + W('Next lesson', 'Agla sabaq') + ' ›</button>' : '') + '</div>';
