@@ -366,7 +366,7 @@
           ? '<p>JazakAllah khair. Your Bai\u2019at is waiting for the admin\u2019s approval. Once it is approved, this ' + what + ' opens here.</p><button type="button" class="fv-signin fv-bay">See my Bai\u2019at status</button>'
           : '<p>Have you taken Bai\u2019at with a Shaykh or his Khalifa? Mark it in My Account. After the admin approves it, this ' + what + ' opens here.</p><button type="button" class="fv-signin fv-bay">Yes, I have taken Bai\u2019at</button>') +
         '<button type="button" class="fv-how">How to take Bai\u2019at</button></div>';
-    } else viewer.querySelector('.fv-frame').innerHTML = '<iframe src="https://www.youtube.com/embed/' + it.id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
+    } else viewer.querySelector('.fv-frame').innerHTML = '<iframe src="https://www.youtube.com/embed/' + it.id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1' + (it.start ? '&start=' + (it.start | 0) : '') + '" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Short"></iframe>';
     viewer.querySelector('.fv-t').textContent = clean(it.title || '');
     viewer.querySelector('.fv-like').href = 'https://www.youtube.com/shorts/' + it.id;   // likes count only when given on YouTube itself
     viewer.querySelector('.fv-sub').href = 'https://www.youtube.com/channel/' + AZAM.id + '?sub_confirmation=1';
@@ -481,7 +481,7 @@
   });
 
   // Play any one video in the app's own player (e.g. the App Guide from Help & feedback).
-  api.playVideo = function (id, title) { playList([{ id: id, title: title || '' }], 0); };
+  api.playVideo = function (id, title, start) { playList([{ id: id, title: title || '', start: start || 0 }], 0); };
   api.ZIKR = ZIKR; api.AZAM = AZAM; api.open = function (which) { if (kalaam === null) loadKalaam(); if (pinned === null) loadPinned(); if (which === 'poetry' || which === 'dars' || which === 'zikr' || which === 'azam') { if (tab !== which) { who = 0; topic = 0; limit = SHOW; } tab = which; } if (which === 'azam') ser = null; state = stateFor(tab); paint(); N.showScreen('family'); if (state.items === null) load(false); };
   // For Azam Pasha's profile page: calls back with the Shorts list (loaded once, then cached for 30 minutes).
   api.azamShorts = function (cb) {

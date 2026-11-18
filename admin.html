@@ -40,6 +40,7 @@
 <div class="muted">Registered members and their Iman Health. Members agreed to share this with the admin when they signed up. Please keep it private.</div>
 <div id="out"><div class="card">Loading…</div></div>
 <div id="rwAdmin"></div>
+<div id="tcAdmin"></div>
 </div>
 <script src="js/config.js"></script>
 <script src="js/backend.js"></script>
@@ -63,7 +64,7 @@
       document.getElementById('cp').onclick = function () { try { navigator.clipboard.writeText(u.uid); this.textContent = 'Copied'; } catch (e) {} };
       return;
     }
-    loadRewards();
+    loadRewards(); loadTeachers();
     return Promise.all([B.admin.get('profiles'), B.admin.get('summaries'), B.admin.get('bayah_ok').catch(function () { return null; }), B.admin.get('bayah_req').catch(function () { return null; }), B.admin.get('helpreq').catch(function () { return null; }), B.admin.get('stats/total').catch(function () { return null; }), B.admin.get('stats/daily').catch(function () { return null; })]).then(function (r) {
       stats = { total: r[5] || null, daily: r[6] || null };
       var P = r[0] || {}, S = r[1] || {}, OK = r[2] || {}, RQ = r[3] || {};
@@ -118,6 +119,32 @@
       t.disabled = true;
       B.admin.del('rewards/items/' + did).then(function () { delete rw.items[did]; paintRewards(); }, function (er) { t.disabled = false; rwFail(er); });
     }
+  });
+
+
+  // ---------- 🎓 Teachers (approve Library articles; later: review students) and corrections they sent ----------
+  var tc = { t: {}, p: {}, notes: {} }, tcBox = document.getElementById('tcAdmin');
+  function loadTeachers() {
+    Promise.all([B.admin.get('teachers').catch(function () { return null; }), B.admin.get('profiles').catch(function () { return null; }), B.admin.get('library_notes').catch(function () { return null; })])
+      .then(function (r) { tc.t = r[0] || {}; tc.p = r[1] || {}; tc.notes = r[2] || {}; paintTeachers(); });
+  }
+  function pname(id) { var p = tc.p[id] || {}; return (p.name || '') + (p.email ? ' (' + p.email + ')' : '') || id; }
+  function paintTeachers() {
+    var ids = Object.keys(tc.t).filter(function (id) { return tc.t[id] === true; });
+    var others = Object.keys(tc.p).filter(function (id) { return ids.indexOf(id) < 0; }).sort(function (a, b) { return String(tc.p[a].name || '').localeCompare(String(tc.p[b].name || '')); });
+    var notes = [];
+    Object.keys(tc.notes).forEach(function (slug) { Object.keys(tc.notes[slug] || {}).forEach(function (k) { notes.push(Object.assign({ slug: slug }, tc.notes[slug][k])); }); });
+    notes.sort(function (a, b) { return b.at - a.at; });
+    tcBox.innerHTML = '<div class="card"><b>🎓 Teachers</b> <span class="muted">(can approve Library articles and send corrections)</span>' +
+      (ids.length ? ids.map(function (id) { return '<div style="display:flex;justify-content:space-between;gap:8px;align-items:center;border-top:1px solid var(--line);margin-top:8px;padding-top:8px"><span>' + esc(pname(id)) + '</span><button data-tcdel="' + esc(id) + '">Remove</button></div>'; }).join('') : '<p class="muted">No teachers yet. The teacher must first create an account in the app (More → My Account).</p>') +
+      '<div style="display:flex;gap:8px;margin-top:10px"><select id="tcSel" style="flex:1"><option value="">Choose a member…</option>' + others.map(function (id) { return '<option value="' + esc(id) + '">' + esc(pname(id)) + '</option>'; }).join('') + '</select><button class="pri" id="tcAdd">Make teacher</button></div>' +
+      (notes.length ? '<div style="margin-top:12px"><b>✏️ Corrections from teachers (' + notes.length + ')</b>' + notes.slice(0, 30).map(function (n) { return '<div style="border-top:1px solid var(--line);margin-top:8px;padding-top:8px"><span class="muted">' + esc(n.slug) + ' · ' + esc(n.name || '') + ' · ' + esc(new Date(n.at).toLocaleDateString()) + '</span><div>' + esc(n.text) + '</div></div>'; }).join('') + '</div>' : '') + '</div>';
+  }
+  tcBox.addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.id === 'tcAdd') { var id = document.getElementById('tcSel').value; if (!id) return; t.disabled = true; B.admin.put('teachers/' + id, true).then(function () { tc.t[id] = true; paintTeachers(); }, function (er) { t.disabled = false; alert('Could not save (' + (er && er.message) + '). Check the database rules include "teachers".'); }); }
+    var d = t.getAttribute && t.getAttribute('data-tcdel');
+    if (d) { if (!confirm('Remove ' + pname(d) + ' as a teacher?')) return; t.disabled = true; B.admin.del('teachers/' + d).then(function () { delete tc.t[d]; paintTeachers(); }, function (er) { t.disabled = false; alert('Could not save (' + (er && er.message) + ').'); }); }
   });
 
   function bstat(m) { return !(m.p.bayah && m.p.bayah.taken) ? 'none' : m.ok && m.ok.approved ? 'approved' : m.ok && m.ok.rejected ? 'rejected' : 'pending'; }
