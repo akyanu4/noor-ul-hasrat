@@ -3,7 +3,16 @@
  "source": "Google Drive folder 'Nizam Ul Amal E Fuqra': NAF008.mp3",
  "audio": "audio/NAF008.mp3",
  "music": "music/nasheed.mp3",
- "youtube": {},
+ "youtube": {
+  "channel_id": "UCn5J7zggR3cV4sCYlEjgZJA",
+  "published": {},
+  "drafts": {
+   "NAF8_Short4_Hazrat_Musa_Pasha_and_Hizbul_Bahr": "9aFf9o95rTY",
+   "NAF8_Short6_Four_Shops_in_One_Namaz": "aKQOErdLytw",
+   "NAF8_Short8_Where_Duas_Are_Accepted": "X-Na_rwZx7g"
+  },
+  "drafts_note": "Uploaded by the user 2026-11-17; details filled in Studio and saved as Private (not published). Move to 'published' once the user makes them public."
+ },
  "photo_crop": [
   255,
   120,

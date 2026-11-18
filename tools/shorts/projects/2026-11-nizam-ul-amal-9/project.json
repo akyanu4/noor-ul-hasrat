@@ -3,7 +3,16 @@
  "source": "Google Drive folder 'Nizam Ul Amal E Fuqra': NAF009.mp3",
  "audio": "audio/NAF009.mp3",
  "music": "music/nasheed.mp3",
- "youtube": {},
+ "youtube": {
+  "channel_id": "UCn5J7zggR3cV4sCYlEjgZJA",
+  "published": {},
+  "drafts": {
+   "NAF9_Short4_When_Aalam_e_Misaal_Opened": "S5fqkfU-53I",
+   "NAF9_Short6_The_Search_Light_Tasawwur": "J6z2WA10oq0",
+   "NAF9_Short7_In_the_Shaykhs_Form": "rMkx-YfKwDQ"
+  },
+  "drafts_note": "Uploaded by the user 2026-11-17; details filled in Studio and saved as Private (not published). Move to 'published' once the user makes them public."
+ },
  "photo_crop": [
   255,
   120,
