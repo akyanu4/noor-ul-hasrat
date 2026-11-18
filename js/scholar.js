@@ -9,7 +9,7 @@
       facts: [], sections: [], map: '', sources: [], plain: true, shorts: true, audio: true
     },
     nayeem: {
-      name: 'Hazrat Nooruddin Siddiqui', pen: 'Nayeem Baba', ar: 'حضرت نورالدین صدیقی نعیم بابا',
+      name: 'Hazrat Noor Uddin Siddiqui', pen: 'Nayeem Baba', ar: 'حضرت نورالدین صدیقی نعیم بابا',
       sub: 'Grandson of Hazrat Azam Pasha R.A. · leads our weekly Halqa-e-Zikr',
       facts: [
         ['Halqa-e-Zikr', 'Every Saturday, 8:30 to 9:30 PM (India time). Join in person or online.'],

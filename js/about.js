@@ -46,7 +46,7 @@
       '<div class="ab-btns" style="margin-top:12px"><button class="ab-btn pri" type="submit" id="hpSend">📨 Send request</button></div>' +
       '<div class="ab-note" style="margin:8px 0 0">Your phone type and browser are sent with it, to help us fix it faster.</div><div id="hpOut" role="status" aria-live="polite"></div></form></div>' +
     '<div class="ab-card"><h3>Charity, Dargah &amp; Events</h3><div class="ab-note" style="margin:0 0 4px">For any kind of charity or support to the Dargah and Events, please contact:</div>' +
-      person('🕌', 'Nooruddin (Nayeem Pasha)', '+91 96763 78351') +
+      person('🕌', 'Hazrat Noor Uddin Siddiqui (Nayeem Baba)', '+91 96763 78351') +
       '<div class="ab-btns" style="margin-top:6px"><a class="ab-btn pri" href="tel:+919676378351">📞 Call</a><a class="ab-btn" href="https://wa.me/919676378351" target="_blank" rel="noopener">💬 WhatsApp</a></div></div>' +
     '<div class="ab-card"><h3>General support</h3>' + person('🕊️', 'Alhaj Rasheed Khan (Ayub)', 'Khalifa · ' + SILSILA) + '</div>' +
     '<div class="ab-card"><h3>Technical support &amp; development</h3>' +

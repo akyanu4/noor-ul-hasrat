@@ -60,7 +60,7 @@
   var GUIDES_PAST = cfg.bayahGuidesPast || [];
   var GUIDES = GUIDES_NOW.concat(GUIDES_PAST);
   function bayahFields(p, inCard) {
-    var b = p.bayah || {}, w = b.with || '', known = GUIDES.indexOf(w) >= 0, other = !!w && !known;
+    var b = p.bayah || {}, w = (cfg.bayahGuideAliases || {})[b.with] || b.with || '', known = GUIDES.indexOf(w) >= 0, other = !!w && !known;
     return '<div id="acBayah" class="ac-bay">' + (inCard ? '<div style="height:6px"></div>' : '<div class="ac-sub" style="margin:10px 0 4px;font-weight:600">Bai’at</div>') +
       ck('acBay', b.taken, 'I have taken Bai’at', 'With a Shaykh or his Khalifa. The full dars and the dhikr practices are for murids, after approval.') +
       '<div id="acBayWithL"' + (b.taken ? '' : ' hidden') + '><label class="ac-f"><span>With (Shaykh / Khalifa)</span><select id="acBaySel" class="ac-sel">' +

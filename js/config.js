@@ -21,13 +21,15 @@
   eventPosters: { salgirah: "photos/events/salgirah-nayeem-baba-2.jpg" },
   bayahOn: true,      // "Taking Bai'at" steps (More → Bay'ah), approved 8 Nov 2026
   // Living Shaykhs / Khalifas who give Bai'at: the choices under My Account → Bai'at ("Other" stays for anyone else).
-  bayahGuides: ["Alhaj Rasheed Khan (Ayub), Khalifa", "Nooruddin (Nayeem Pasha)"],
+  bayahGuides: ["Alhaj Rasheed Khan (Ayub), Khalifa", "Hazrat Noor Uddin Siddiqui (Nayeem Baba)"],
+  // Older names of a guide, so a member who chose the old name still shows the new one.
+  bayahGuideAliases: { "Nooruddin (Nayeem Pasha)": "Hazrat Noor Uddin Siddiqui (Nayeem Baba)" },
   // Elders of the silsila, for murids who gave Bai'at at their hands in their lifetime.
   bayahGuidesPast: ["Hazrat Azam Pasha R.A.", "Hazrat Azeem Piya R.A.", "Hazrat Khaja Baba R.A.", "Hazrat Qadeer Piya R.A."],
 
   // Donate screen: paste the link to your donation page. Leave empty to show "coming soon".
   donateTitle: "Charity, Dargah & Events",
-  donateContact: { name: "Nooruddin (Nayeem Pasha)", phone: "+91 96763 78351", note: "For any kind of charity or support to the Dargah and Events, please contact:" },
+  donateContact: { name: "Hazrat Noor Uddin Siddiqui (Nayeem Baba)", phone: "+91 96763 78351", note: "For any kind of charity or support to the Dargah and Events, please contact:" },
   donateUrl: "",
   donateNote: "",
 
@@ -57,7 +59,7 @@
 
   shaykhPhotos: [
     { src: "photos/shaykh-1.jpg", name: "Azam Pasha", note: "Tap to watch zikr.", profile: "shaykh1" },
-    { src: "photos/shaykh-nayeem.jpg", name: "Hazrat Nooruddin Siddiqui (Nayeem Baba)", note: "Leads the weekly Halqa-e-Zikr, Saturdays. Tap for more.", profile: "nayeem" },
+    { src: "photos/shaykh-nayeem.jpg", name: "Hazrat Noor Uddin Siddiqui (Nayeem Baba)", note: "Leads the weekly Halqa-e-Zikr, Saturdays. Tap for more.", profile: "nayeem" },
     { src: "photos/shaykh-2.jpg", name: "Hazrat Mohammed Abdul Qadeer Siddiqui (Hasrat)", note: "Bahr ul-Uloom, Hyderabad. Tap to read more.", profile: "hasrat" },
     { src: "photos/shaykh-3.jpg", name: "", note: "" }
   ]

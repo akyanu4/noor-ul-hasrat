@@ -20,7 +20,7 @@
     { id: 'urs-azeem', kind: 'yearly', m: 4, d: 1, ic: '🌹',
       name: 'Urs Sharif: Hazrat Azeem Piya R.A.', note: '1 Rabi-ul-Thani' },
     { id: 'salgirah', kind: 'yearly', m: 6, d: 9, ic: '🎉',
-      name: 'Salgirah Mubarak: Nooruddin (Nayeem Pasha)', note: '9 Jamada-al-Thani · evening program' }
+      name: 'Salgirah Mubarak: Hazrat Noor Uddin Siddiqui (Nayeem Baba)', note: '9 Jamada-al-Thani · evening program' }
   ];
 
   // Today's date in Hyderabad, as a UTC-midnight timestamp of that civil day.
