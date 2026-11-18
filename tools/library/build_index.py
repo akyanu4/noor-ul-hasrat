@@ -14,6 +14,9 @@ for f in sorted(os.listdir(D)):
     for k in ('title', 'summary', 'blocks'):
         if not a.get(k): bad.append(f + ': missing ' + k)
     out.append({k: a.get(k) for k in ('slug', 'title', 'ur', 'cat', 'level', 'summary', 'order', 'tags') if a.get(k) is not None})
+    ru = a.get('ru') or {}
+    if ru.get('title'): out[-1]['ru_title'] = ru['title']
+    if ru.get('summary'): out[-1]['ru_summary'] = ru['summary']
 out.sort(key=lambda x: (CATS.index(x['cat']) if x.get('cat') in CATS else 99, x.get('order', 99), x['title']))
 if bad: print('\n'.join(bad)); sys.exit(1)
 json.dump(out, open(os.path.join(D, 'index.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)

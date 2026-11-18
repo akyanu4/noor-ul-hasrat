@@ -30,6 +30,7 @@
     '.lb-src{font-size:12px;color:var(--muted);line-height:1.55;margin-top:16px}.lb-teach{border:1px solid var(--gold);border-radius:14px;padding:12px;margin-top:16px;background:var(--panel)}' +
     '.lb-teach textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:9px;font:inherit;font-size:14px;background:var(--cream);color:var(--ink);margin-top:6px}' +
     '.lb-btn{border:0;border-radius:10px;background:var(--teal);color:#fff;font:inherit;font-weight:700;font-size:14px;padding:10px 14px;cursor:pointer;margin:8px 8px 0 0}.lb-btn.alt{background:var(--cream);color:var(--ink);border:1px solid var(--line)}' +
+    '.lb-lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:2px;margin:0 0 10px;background:var(--panel)}.lb-lang button{border:0;background:none;color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;cursor:pointer}.lb-lang button.on{background:var(--teal);color:#fff}' +
     '.lb-empty{text-align:center;color:var(--muted);font-size:14px;line-height:1.6;padding:26px 10px}';
   doc.head.appendChild(css);
 
@@ -38,6 +39,10 @@
   var body = s.querySelector('#lbBody');
 
   var index = null, ok = {}, isTeacher = false, cat = 'All', q = '', cur = '', from = 'more';
+  var lang = 'en'; try { lang = localStorage.getItem('noor_lib_lang') === 'ru' ? 'ru' : 'en'; } catch (e) {}
+  function setLang(l) { lang = l; try { localStorage.setItem('noor_lib_lang', l); } catch (e) {} }
+  function T(a, k) { return lang === 'ru' && a['ru_' + k] ? a['ru_' + k] : a[k]; }
+  var LANGBAR = function () { return '<div class="lb-lang" role="group" aria-label="Language"><button type="button" data-l="en"' + (lang === 'en' ? ' class="on"' : '') + '>English</button><button type="button" data-l="ru"' + (lang === 'ru' ? ' class="on"' : '') + '>Roman Urdu</button></div>'; };
   var CATS = ['All', 'Basics', "Bai'at", 'The path', 'Practices', 'Terms', 'FAQ'];
   function acct() { return root.NoorAccount; }
   function user() { var a = acct(); return a && a.user ? a.user() : null; }
@@ -58,14 +63,14 @@
     s.querySelector('#lbTitle').textContent = 'Library';
     var all = index.filter(canSee), locked = index.filter(function (a) { return approved(a.slug) && a.level === 'murid' && !murid() && !isTeacher; }).length;
     var qq = q.trim().toLowerCase();
-    var list = all.filter(function (a) { return (cat === 'All' || a.cat === cat) && (!qq || (a.title + ' ' + (a.summary || '') + ' ' + (a.tags || []).join(' ') + ' ' + (a.ur || '')).toLowerCase().indexOf(qq) >= 0); });
-    var h = '<input class="lb-search" id="lbQ" type="search" placeholder="Search the Library…" value="' + esc(q) + '">' +
+    var list = all.filter(function (a) { return (cat === 'All' || a.cat === cat) && (!qq || (a.title + ' ' + (a.ru_title || '') + ' ' + (a.summary || '') + ' ' + (a.ru_summary || '') + ' ' + (a.tags || []).join(' ') + ' ' + (a.ur || '')).toLowerCase().indexOf(qq) >= 0); });
+    var h = LANGBAR() + '<input class="lb-search" id="lbQ" type="search" placeholder="Search the Library…" value="' + esc(q) + '">' +
       '<div class="lb-cats">' + CATS.map(function (c) { return '<button type="button" data-c="' + esc(c) + '"' + (c === cat ? ' class="on"' : '') + '>' + esc(c) + '</button>'; }).join('') + '</div>';
     if (isTeacher) { var nd = index.filter(function (a) { return !approved(a.slug); }).length; h += '<div class="lb-draft"><b>Teacher view.</b> ' + nd + ' draft' + (nd === 1 ? '' : 's') + ' waiting for your approval. Members only see approved articles.</div>'; }
     if (!all.length) h += '<div class="lb-empty">📚 The Library is being prepared.<br>Articles from Hazrat’s dars are being reviewed by our teachers, in shaa Allah.</div>';
     else if (!list.length) h += '<div class="lb-empty">Nothing found.</div>';
     h += list.map(function (a) {
-      return '<button type="button" class="lb-item" data-s="' + esc(a.slug) + '"><b>' + esc(a.title) + (!approved(a.slug) ? '<span class="lb-badge d">Draft</span>' : '') + (a.level === 'murid' ? '<span class="lb-badge m">Murids</span>' : '') + '</b><small>' + esc(a.cat) + ' · ' + esc(a.summary || '') + '</small></button>';
+      return '<button type="button" class="lb-item" data-s="' + esc(a.slug) + '"><b>' + esc(T(a, 'title')) + (!approved(a.slug) ? '<span class="lb-badge d">Draft</span>' : '') + (a.level === 'murid' ? '<span class="lb-badge m">Murids</span>' : '') + '</b><small>' + esc(a.cat) + ' · ' + esc(T(a, 'summary') || '') + '</small></button>';
     }).join('');
     if (locked) h += '<div class="lb-note">🔒 ' + locked + ' more article' + (locked === 1 ? ' is' : 's are') + ' for murids whose Bai’at is approved. <a href="#" id="lbBay">How to take Bai’at ›</a></div>';
     body.innerHTML = h;
@@ -93,12 +98,15 @@
     body.innerHTML = '<div class="lb-empty">Loading…</div>';
     fetch('data/library/' + encodeURIComponent(slug) + '.json').then(function (r) { return r.json(); }).then(function (a) {
       if (cur !== slug) return;
-      var okv = ok[slug], h = '<div class="lb-art">';
+      var okv = ok[slug], h = '<div class="lb-art">' + LANGBAR();
+      var ru = lang === 'ru' && a.ru && a.ru.blocks && a.ru.blocks.length ? a.ru : null, V = ru ? { title: ru.title || a.title, summary: ru.summary || a.summary, blocks: ru.blocks } : a;
+      if (lang === 'ru' && !ru) h += '<div class="lb-note">Roman Urdu mein yeh mazmoon abhi tayyar nahi hai. English mein padhiye.</div>';
+      if (ru) h += '<div class="lb-note" style="margin-top:0">Yeh English draft ka Roman Urdu tarjuma hai. Hazrat ke asal alfaaz sunne ke liye ▶ Watch dabaiye.</div>';
       if (!okv) h += '<div class="lb-draft"><b>Draft – awaiting approval.</b> ' + esc(a.by || 'Prepared from the dars transcripts.') + ' Members cannot see it yet.</div>';
-      h += '<h1>' + esc(a.title) + '</h1>' + (a.ur ? '<div class="ur" lang="ur">' + esc(a.ur) + '</div>' : '') + '<div class="sm">' + esc(a.summary || '') + '</div>';
-      h += (a.blocks || []).map(block).join('');
+      h += '<h1>' + esc(V.title) + '</h1>' + (a.ur ? '<div class="ur" lang="ur">' + esc(a.ur) + '</div>' : '') + '<div class="sm">' + esc(V.summary || '') + '</div>';
+      h += (V.blocks || []).map(block).join('');
       var rel = (a.related || []).map(function (r) { return index.filter(function (x) { return x.slug === r && canSee(x); })[0]; }).filter(Boolean);
-      if (rel.length) h += '<h2>Read next</h2><div class="lb-rel">' + rel.map(function (x) { return '<button type="button" data-s="' + esc(x.slug) + '">' + esc(x.title) + ' ›</button>'; }).join('') + '</div>';
+      if (rel.length) h += '<h2>Read next</h2><div class="lb-rel">' + rel.map(function (x) { return '<button type="button" data-s="' + esc(x.slug) + '">' + esc(T(x, 'title')) + ' ›</button>'; }).join('') + '</div>';
       h += '<div class="lb-src">' + (okv ? '✅ Approved by ' + esc(okv.name || 'a teacher') + (okv.at ? ' · ' + esc(new Date(okv.at).toLocaleDateString()) : '') + '<br>' : '') +
         'From the dars of Hazrat Azam Pasha R.A.' + ((a.sources || []).length ? ': ' + a.sources.map(function (x) { return esc(x.label || ''); }).filter(Boolean).join(' · ') : '') +
         '. English is translated from the Urdu recordings. If anything is unclear, please ask your teacher.</div>';
@@ -115,6 +123,7 @@
   function teacherName() { var a = acct(), p = a && a.profile ? a.profile() : null; return (p && p.name) || (user() || {}).email || 'Teacher'; }
   body.addEventListener('click', function (e) {
     var t = e.target;
+    var lb = t.closest && t.closest('[data-l]'); if (lb) { setLang(lb.getAttribute('data-l')); if (cur) paintArticle(cur); else paintList(); return; }
     var it = t.closest && t.closest('[data-s]'); if (it) { cur = it.getAttribute('data-s'); paintArticle(cur); return; }
     var c = t.closest && t.closest('[data-c]'); if (c) { cat = c.getAttribute('data-c'); paintList(); return; }
     var v = t.closest && t.closest('[data-v]');
