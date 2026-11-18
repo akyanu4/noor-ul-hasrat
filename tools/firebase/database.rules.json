@@ -146,6 +146,28 @@
         }
       }
     },
+    "course": {
+      ".read": "auth != null && (root.child('teachers').child(auth.uid).val() === true || root.child('admins').child(auth.uid).val() === true)",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid && auth.token.em != null",
+        "$lesson": {
+          ".validate": "$lesson.matches(/^(seen_)?[a-z0-9_-]{1,20}$/)",
+          "ref": { ".validate": "newData.isString() && newData.val().length <= 2000" },
+          "n": { ".validate": "newData.isString() && newData.val().length <= 60" }
+        }
+      }
+    },
+    "course_marks": {
+      ".read": "auth != null && (root.child('teachers').child(auth.uid).val() === true || root.child('admins').child(auth.uid).val() === true)",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$lesson": {
+          ".write": "auth != null && auth.token.em != null && (root.child('teachers').child(auth.uid).val() === true || root.child('admins').child(auth.uid).val() === true)",
+          ".validate": "!newData.exists() || (newData.child('by').val() === auth.uid && newData.child('m').isString() && newData.child('m').val().matches(/^(started|guide|steady|ready)$/) && (!newData.child('note').exists() || (newData.child('note').isString() && newData.child('note').val().length <= 1000)))"
+        }
+      }
+    },
     "rewards": {
       ".read": "auth != null && auth.token.em != null",
       ".write": "auth != null && root.child('admins').child(auth.uid).val() === true"

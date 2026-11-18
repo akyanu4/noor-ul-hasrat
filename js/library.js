@@ -38,7 +38,7 @@
   s.id = 'screen-library'; doc.querySelector('.screens').appendChild(s);
   var body = s.querySelector('#lbBody');
 
-  var index = null, ok = {}, isTeacher = false, cat = 'All', q = '', cur = '', from = 'more';
+  var backFn = null, index = null, ok = {}, isTeacher = false, cat = 'All', q = '', cur = '', from = 'more';
   var lang = 'en'; try { lang = localStorage.getItem('noor_lib_lang') === 'ru' ? 'ru' : 'en'; } catch (e) {}
   function setLang(l) { lang = l; try { localStorage.setItem('noor_lib_lang', l); } catch (e) {} }
   function T(a, k) { return lang === 'ru' && a['ru_' + k] ? a['ru_' + k] : a[k]; }
@@ -147,17 +147,21 @@
   });
 
   s.querySelector('#lbBack').addEventListener('click', function () {
+    if (backFn) { var f = backFn; backFn = null; cur = ''; f(); return; }
     if (cur) { cur = ''; paintList(); return; }
     if (from === 'more' || from === 'home') N.route(from); else N.backTab();
   });
 
   var api = {
-    open: function (slug) {
+    open: function (slug, onBack) {
+      backFn = typeof onBack === 'function' ? onBack : null;
       var c0 = doc.querySelector('.screen.active'); from = c0 ? c0.id.replace('screen-', '') : 'more'; if (from === 'library') from = 'more';
       N.showScreen('library'); body.innerHTML = '<div class="lb-empty">Loading the Library…</div>';
       load().then(function () { cur = slug || ''; if (cur) paintArticle(cur); else paintList(); });
     },
     // for lessons: is this article visible to the current person?
+    lang: function () { return lang; }, setLang: function (l) { setLang(l === 'ru' ? 'ru' : 'en'); },
+    approvals: function () { return load().then(function () { return { ok: ok, teacher: isTeacher }; }); },
     list: function () { return load().then(function () { return index.filter(canSee); }); }
   };
   root.NoorLibrary = api;

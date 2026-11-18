@@ -1,0 +1,35 @@
+{
+ "id": "foundations",
+ "title": "Foundations",
+ "ru_title": "Buniyaadi Asbaaq",
+ "about": "The basics of the path, from the dars of Hazrat Azam Pasha R.A. One lesson at a time, at your own pace. Your teacher reviews each lesson and opens the next.",
+ "ru_about": "Hazrat Azam Pasha R.A. ke dars se is raaste ki buniyaadi baatein. Ek waqt mein ek sabaq, apni raftaar se. Aap ke ustaad har sabaq dekhte hain aur agla sabaq kholte hain.",
+ "lessons": [
+  {
+   "id": "f1",
+   "title": "What is tasawwuf?",
+   "ru_title": "Tasawwuf kya hai?",
+   "article": "what-is-tasawwuf",
+   "video": { "v": "pqjEFcL1Nlo", "t": 0, "title": "Shariat and Tariqat (Nizam-ul-Amal, part 2)", "ru_title": "Shariat aur Tariqat (Nizam-ul-Amal, hissa 2)" },
+   "questions": [
+    { "q": "According to Hazrat, what is the source of tasawwuf (ilm-e-ladunni)?",
+      "ru_q": "Hazrat ke mutabiq tasawwuf (ilm-e-ladunni) ka sarchashma kya hai?",
+      "options": ["The Qur'an and Hadith", "Something new, outside the deen", "Dreams alone"],
+      "ru_options": ["Qur'an aur Hadith", "Deen se bahar koi nayi cheez", "Sirf khwaab"],
+      "answer": 0 },
+    { "q": "The body is reformed by Shariat and Tariqat. What reforms the soul?",
+      "ru_q": "Jism ki islaah Shariat aur Tariqat se hoti hai. Rooh ki islaah kis se hoti hai?",
+      "options": ["Fasting only", "Haqiqat and Marifat", "Travelling"],
+      "ru_options": ["Sirf roza", "Haqiqat aur Marifat", "Safar"],
+      "answer": 1 },
+    { "q": "Why are there different Sufi ways (Qadri, Chishti, Naqshbandi…)?",
+      "ru_q": "Mukhtalif silsile (Qadri, Chishti, Naqshbandi…) kyun hain?",
+      "options": ["Only one is right and the others are wrong", "They all draw from the Qur'an and Hadith; people's temperaments differ", "Each has a different source"],
+      "ru_options": ["Sirf ek sahi hai, baaqi ghalat", "Sab Qur'an aur Hadith se lete hain; logon ke mizaaj alag hain", "Har ek ka sarchashma alag hai"],
+      "answer": 1 }
+   ],
+   "reflect": "In your own words: what is tasawwuf, and what does it ask of you?",
+   "ru_reflect": "Apne alfaaz mein likhiye: tasawwuf kya hai, aur yeh aap se kya chahta hai?"
+  }
+ ]
+}
