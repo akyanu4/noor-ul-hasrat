@@ -5,7 +5,9 @@ quiet between words, into clip:N6S<short>-<scene> scenes (clips/<CODE>.mp4, else
 Prompts: clips/Nizam-ul-Amal_Part6_Animated_Prompts.txt. The old picture slideshows stay in slides.py (n6_*)."""
 FULL = [
     ("title", 7.0),
-    ("voice", 0.0, 2548.0, "n6_full"),
+    ("voice", 0.0, 1256.0, "n6_full"),
+    # 1256.0-1540.8 left out (user, 2026-11-17): the story of his eye ("Chhote sahib, you see this much")
+    ("voice", 1540.8, 2548.0, "n6_full"),
     ("outro", 8.0)]
 SHORTS = {
     "NAF6_Short1_A_Passing_Thought_or_a_Resolve": ("A PASSING THOUGHT OR A RESOLVE", [
