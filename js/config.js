@@ -44,6 +44,17 @@
   // Example: familyShaykhs: [ { name: "Shaykh Name", match: "Shaykh Name|short name" } ],
   familyShaykhs: [],
 
+  // Vendors: listed on the Rewards tab ("Our vendors"). An advert with dates shows as a small "Sponsored" card on Home (js/ads.js).
+  vendors: [
+    { id: "zq-fresh-meats", name: "ZQ Fresh Meats & Seafood", area: "Mallepally, Hyderabad",
+      about: "Fresh meats and seafood. Mallepally, opposite Priya Theatre.",
+      phone: "+91 70361 56149",
+      map: "https://www.google.com/maps/search/?api=1&query=ZQ+Fresh+Meats+%26+Seafood+Mallepally+opposite+Priya+Theatre+Hyderabad",
+      ad: { img: "photos/ads/zq-fresh-meats-inauguration.jpg", title: "ZQ Fresh Meats & Seafood: grand opening",
+        sub: "Inauguration on 19 Nov · chief guest Hazrat Noor Uddin Siddiqui (Nayeem Baba) · Mallepally, opp. Priya Theatre",
+        from: "2026-11-18", until: "2026-11-19" } }
+  ],
+
   shaykhPhotos: [
     { src: "photos/shaykh-1.jpg", name: "Azam Pasha", note: "Tap to watch zikr.", profile: "shaykh1" },
     { src: "photos/shaykh-nayeem.jpg", name: "Hazrat Nooruddin Siddiqui (Nayeem Baba)", note: "Leads the weekly Halqa-e-Zikr, Saturdays. Tap for more.", profile: "nayeem" },
