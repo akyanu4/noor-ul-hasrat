@@ -451,6 +451,7 @@ h2.section-title:first-child{margin-top:2px;}
       <div class="halqa-hero">
         <div class="hname">Halqa-e-Zikr</div>
         <div class="hwhen">Every Saturday · 8:30 – 9:30 PM (India time)</div>
+        <div class="hlead" id="halqaLead" role="button" tabindex="0" style="display:flex;align-items:center;gap:10px;justify-content:center;margin:10px 0 4px;cursor:pointer"><img src="photos/shaykh-nayeem.jpg" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--gold)"><span style="text-align:left;font-size:13px;line-height:1.35">Led by<br><b>Hazrat Nooruddin Siddiqui (Nayeem Baba)</b> ›</span></div>
         <div class="hlocal" id="halqaLocal"></div>
         <div class="hcount" id="halqaCountdown"></div>
         <div class="hmeta">
@@ -945,6 +946,7 @@ if(!self.NOOR_CONFIG){
   document.getElementById('detailBack').addEventListener('click', function(){
     backTab();
   });
+  document.getElementById('halqaLead').addEventListener('click', function(){ if(window.NoorScholar) window.NoorScholar.open('nayeem', 'photos/shaykh-nayeem.jpg'); });
   document.getElementById('halqaBack').addEventListener('click', function(){
     showScreen('home'); setNav('home');
   });

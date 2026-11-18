@@ -8,6 +8,16 @@
       name: 'Azam Pasha', pen: '', ar: 'ذكر', sub: 'Zikr and teachings · tap a video to watch',
       facts: [], sections: [], map: '', sources: [], plain: true, shorts: true, audio: true
     },
+    nayeem: {
+      name: 'Hazrat Nooruddin Siddiqui', pen: 'Nayeem Baba', ar: 'حضرت نورالدین صدیقی نعیم بابا',
+      sub: 'Grandson of Hazrat Azam Pasha R.A. · leads our weekly Halqa-e-Zikr',
+      facts: [
+        ['Halqa-e-Zikr', 'Every Saturday, 8:30 to 9:30 PM (India time). Join in person or online.'],
+        ['Bai\'at', 'Gives Bai\'at. Members can send a request from the app (Bay\'ah).'],
+        ['Salgirah', '9 Jumada al-Thani, observed with an evening programme.']
+      ],
+      sections: [], map: '', sources: [], plain: true, halqa: true, full: 'photos/shaykh-nayeem-full.jpg'
+    },
     hasrat: {
       name: 'Hazrat Maulana Mohammed Abdul Qadeer Siddiqui',
       pen: 'Hasrat',
@@ -70,6 +80,8 @@
     p.sections.forEach(function (s) {
       h += '<h2 class="section-title" style="margin-top:14px">' + esc(s[0]) + '</h2><div class="sch-card"><ul>' + s[1].map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>';
     });
+    if (p.halqa) h += '<button class="sch-btn" id="schHalqa" type="button" style="width:100%;border:0;cursor:pointer">🕯️ Join the weekly Halqa-e-Zikr ›</button>' +
+      '<button class="sch-btn" id="schBay" type="button" style="width:100%;border:1px solid var(--line);cursor:pointer;background:var(--panel);color:var(--ink)">🤝 Bai\'at: how to take it ›</button>';
     h += '<div id="schWatch"></div>' + (p.shorts ? '<div id="schShorts"></div>' : '') + (p.audio ? '<div id="schAudio"></div>' : '') + '<div id="schGallery"></div>';
     if (!p.plain) {
     h += '<button class="sch-btn" id="schVideos" type="button" style="width:100%;border:0;cursor:pointer">Poetry &amp; Naat ›</button>';
@@ -178,6 +190,9 @@
     s.querySelector('#schBody').innerHTML = html(p, photo);
     var db = s.querySelector('#schDars'); if (db) db.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('dars'); };
     loadGallery(id); loadWatch(id); if (p.shorts) loadShorts(); if (p.audio) loadAudio();
+    var hb = s.querySelector('#schHalqa'); if (hb) hb.onclick = function () { N.route('halqa'); };
+    var bb = s.querySelector('#schBay'); if (bb) bb.onclick = function () { N.route('bayah'); };
+    var im = s.querySelector('.sch-img'); if (im && p.full) { im.style.cursor = 'zoom-in'; im.onclick = function () { lightbox([{ src: p.full, caption: p.name + (p.pen ? ' (' + p.pen + ')' : '') }], 0); }; }
     var zb = s.querySelector('#schZikr'); if (zb) zb.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('zikr'); };
     var vb = s.querySelector('#schVideos'); if (vb) vb.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('poetry'); };
     N.showScreen('scholar');
