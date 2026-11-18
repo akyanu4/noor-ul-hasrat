@@ -113,5 +113,81 @@
   "why-a-shaykh"
  ],
  "drafted": "2026-11-18",
- "by": "Draft prepared from the dars transcripts, awaiting teacher approval"
+ "by": "Draft prepared from the dars transcripts, awaiting teacher approval",
+ "ru": {
+  "title": "Tareeqat ka maqsad",
+  "summary": "Murshid murid ke liye kya chahte hain, aur raaste ke woh maqaamaat jo Hazrat ginwaate hain: tauba, taqwa, tawakkul, sabr, tasleem, raza, fana aur baqa.",
+  "blocks": [
+   {
+    "p": "Tasawwuf ka har tareeqa baahar se alag dikhta hai. Hazrat Azam Pasha R.A. farmate hain ke andar se sab ek hi cheez chahte hain."
+   },
+   {
+    "q": "Sab murshidon ka ek hi maqsad hai: murid ko paak rakhna, aur Huzoor ﷺ ke raaste par rakhna.",
+    "src": {
+     "v": "Rk6u-LffRrg",
+     "t": 97,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 1, 56:18"
+    }
+   },
+   {
+    "h": "Raaste ke maqaamaat"
+   },
+   {
+    "p": "Iske fauran baad Hazrat murid ke liye raaste ki tarteeb batate hain:"
+   },
+   {
+    "q": "Murid ke liye pehle Taqwa hai, phir Tawakkul, phir Sabr, phir Tasleem aur Raza. Aur nafs ke baad Fana aati hai: pehle apne aap ki fana, phir Sifaat mein, phir Zaat mein, aur aakhir mein Baqa.",
+    "src": {
+     "v": "Rk6u-LffRrg",
+     "t": 123,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 1, 56:44"
+    }
+   },
+   {
+    "p": "Kitaab Nizam-ul-Amal-e-Fuqara isi tarteeb par chalti hai, aur tauba se shuru hoti hai. Hazrat padhte hain ke jo aadmi Allah ke raaste par chalna chahta hai woh pehle apni pichhli ghaflat aur ghaltiyon par sharminda hota hai, aur Allah se maafi maangta hai. Woh yeh bhi padhte hain ke 'Taqwa tauba se shuru hota hai'."
+   },
+   {
+    "q": "Jab aadmi Allah ke raaste par chalna chahta hai to woh pehle apni pichhli ghaflat aur ghaltiyon par sharminda hota hai, aur Allah se maafi maangta hai.",
+    "src": {
+     "v": "u6BHgjCPuCo",
+     "t": 10,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 2, 3:25"
+    }
+   },
+   {
+    "h": "Asal cheez"
+   },
+   {
+    "p": "Bai'at ke dars mein Hazrat samjhaate hain ke ek sachcha rehnuma aapke liye kya karta hai:"
+   },
+   {
+    "q": "Jo aapko har doosri cheez ki ghulaami se aazaad kar de, uski sohbat zaroori hai. Agar woh aapke khayal ko Allah aur Uske Rasool ﷺ ki taraf mod de, to yahi asal cheez hai.",
+    "src": {
+     "v": "qWeLaR3N5r0",
+     "t": 1673,
+     "label": "Haqeeqat-e-Bai'at, recording 1, 27:46"
+    }
+   },
+   {
+    "h": "Nafs ki islaah"
+   },
+   {
+    "p": "Hazrat khabardaar karte hain ke koi shortcut nahin hai. Kitaab se padhte hue woh farmate hain ke jab nafs ki sahi islaah ho jaati hai to aadmi ko fana-e-af'aal ata hoti hai, yaani apne afaal ka mit jaana, aur phir usko Allah ke siwa kisi se nafa ya nuqsaan aata nazar nahin aata. Nafs ki islaah ke baghair fana ka har daawa 'be-maani alfaaz' hai."
+   },
+   {
+    "q": "Seedha raasta sirf ek hai, aur woh baaqi sab raaston se chhota hai. Jo seedhe raaste par hai woh manzil par jaldi pahunchta hai.",
+    "src": {
+     "v": "UGu8yLNox9I",
+     "t": 526,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 4, 8:39"
+    }
+   },
+   {
+    "p": "Aur imtihaan khatam nahin hota. Hazrat farmate hain: yeh mat socho ke ek baar imtihaan paas kar liya to aazaad ho gaye. Jab tak zinda ho, imtihaan chalta rehta hai. Isliye Allah se maafi maangte raho, aur nafs aur Shaitaan se bachne ki dua karte raho."
+   },
+   {
+    "note": "Hazrat Sifaat mein fana, Zaat mein fana aur baqa ka naam lete hain, lekin in dars mein inki tashreeh nahin hai. Apne ustaad se poochiye."
+   }
+  ]
+ }
 }

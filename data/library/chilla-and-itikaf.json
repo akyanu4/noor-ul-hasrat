@@ -81,5 +81,65 @@
   "terms-used-in-the-dars"
  ],
  "drafted": "2026-11-18",
- "by": "Draft prepared from the dars transcripts, awaiting teacher approval"
+ "by": "Draft prepared from the dars transcripts, awaiting teacher approval",
+ "ru": {
+  "title": "Chilla aur i'tikaf",
+  "summary": "Chilla kya hai, Hazrat isko i'tikaf se kaise jodte hain, aur ek nukte par khayal ko 'ibaadat ki jaan' kyun kaha gaya hai.",
+  "blocks": [
+   {
+    "h": "Chilla kya hai?"
+   },
+   {
+    "q": "Chilla ka matlab hai chaalees din baithna, taaki un dinon mein jo ibaadat ki jaaye woh ma'mool ban jaaye. Un chaalees dinon mein ek khaas barakat naazil hoti hai, aur hamare liye us se zaahiri aur baatini dono faayda hota hai.",
+    "src": {
+     "v": "",
+     "t": 172,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 8, 2:52"
+    }
+   },
+   {
+    "p": "Hazrat padhte hain ke wahi ki ibtida mein Huzoor ﷺ Ghaar-e-Hira jaate the aur saath mein aisa khaana le jaate the jo aath din tak kharaab na ho. Kitaab kehti hai ke aisa khaana gosht ya ghee nahin ho sakta, aur yahin se tark-e-haiwanat aaya, yaani haiwani ghizaayein chhodna."
+   },
+   {
+    "h": "Chilla i'tikaf hai"
+   },
+   {
+    "p": "'Chilla kya hai? I'tikaf hai,' Hazrat farmate hain. Huzoor ﷺ Ramzan mein i'tikaf mein baithte the, aur kuch azwaaj-e-mutahharaat bhi baithti thin. Kuch buzurg ek hafta, do hafte ya teen din i'tikaf mein baithte hain; ek din ka bhi ho sakta hai. Hazrat batate hain ke Hanafi aur Shafi'i mazhab mein iski sharton mein ikhtilaaf hai, aur phir sab ko targheeb dete hain:"
+   },
+   {
+    "q": "Masjid mein sab jaate hain. Ghanta, do ghanta ke liye i'tikaf ki niyyat kar lo, to is mein kya buraai hai? Kar lena chahiye.",
+    "src": {
+     "v": "",
+     "t": 1072,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 8, 17:52"
+    }
+   },
+   {
+    "h": "Ek nukte par khayal"
+   },
+   {
+    "q": "I'tikaf mein aadmi hama-tan ibaadat ki taraf mutawajjeh rehta hai. Uska khayal ek nukte par qaayam ho jaata hai. Kaamil tawajjoh ibaadat ki jaan hai.",
+    "src": {
+     "v": "",
+     "t": 1098,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 8, 18:18"
+    }
+   },
+   {
+    "p": "Hazrat iska ulta bhi sabaq ke taur par batate hain: ek aadmi jo paabandi se namaz padhta tha, lekin bikhre hue zehan ke saath, har rak'at mein apni chaar dukaanon mein se ek ka hisaab karta raha. Jab imam ne namaz poori ki to usne shikaayat ki ke sirf teen rak'at padhi gayin, kyunke woh abhi chauthi dukaan tak pahuncha hi nahin tha. 'Woh hisaab ki kitaab padh raha tha, dil ki kitaab nahin.' Hazrat farmate hain ke dil jama' kiye baghair namaz mein koi faayda nahin."
+   },
+   {
+    "h": "Khaamoshi: Saum-e-Maryam"
+   },
+   {
+    "p": "Kuch buzurg i'tikaf ke saath Saum-e-Maryam bhi rakhte hain: din bhar roza aur kisi se baat nahin karna, jaise Bibi Maryam ne Allah ke hukm ki ita'at mein kisi se baat nahin ki. 'Isi liye chillon mein Saum-e-Maryam ki ahmiyat hai: khaamoshi.' Hazrat padhte hain ke hamare zamaane mein bhi Allah ke khaas bande do teen mahine i'tikaf karte hain aur Saum-e-Maryam rakhte hain."
+   },
+   {
+    "p": "Woh Hizbul Bahr ka bhi zikr karte hain, jo buzurgon ke tareeqe par roze aur khaamoshi ke saath padha jaata hai, aur uski ijaazat dene ki baat karte hain."
+   },
+   {
+    "note": "Chilla, Saum-e-Maryam ya Hizbul Bahr shuru karne se pehle apne ustaad se poochiye. Part 6 se 9 abhi YouTube par public nahin hain, isliye in hisson ka video link abhi nahin hai. Part 8 ki recording ke kuch hisse transcribe nahin hue (0:56-1:44, 12:07-12:33, 15:16-17:17, 27:11-27:41, 30:23-30:55)."
+   }
+  ]
+ }
 }

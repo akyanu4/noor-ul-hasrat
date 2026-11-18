@@ -83,5 +83,67 @@
   "faq"
  ],
  "drafted": "2026-11-18",
- "by": "Draft prepared from the dars transcripts, awaiting teacher approval"
+ "by": "Draft prepared from the dars transcripts, awaiting teacher approval",
+ "ru": {
+  "title": "Is app mein Bai'at kaise lein",
+  "summary": "Taking Bai'at screen par kya dikhta hai, aur request kaise bhejein taaki Khalifa aap se raabta kar sakein. App khud bai'at nahin deti.",
+  "blocks": [
+   {
+    "p": "App mein ek screen hai jiska naam Taking Bai'at hai. Isko More, phir Bay'ah se kholiye, ya home screen par Taking Bai'at card se. App khud se bai'at nahin deti: yeh woh steps dikhaati hai jo Hazrat ne samjhaaye, aur aapki request aage bhejti hai taaki koi Khalifa aap se raabta kar sakein."
+   },
+   {
+    "h": "Screen par kya dikhta hai"
+   },
+   {
+    "p": "Sab se upar ek chhota video hai, Watch the steps: Bai'at ke saare steps Hazrat Azam Pasha R.A. ki apni aawaaz mein, taqreeban 3 minute. Phir aath tasweeri cards, is tarteeb se:"
+   },
+   {
+    "steps": [
+     "Look first, then give your hand (pehle dekho, phir haath do)",
+     "Come with tawbah and taqwa (tauba aur taqwa ke saath aao)",
+     "It begins with istighfar (shuruaat istighfar se)",
+     "Give your hand (men) (haath do: mard)",
+     "Women and children (auratein aur bachche)",
+     "The pledge (ahad)",
+     "The shaykh's du'a (shaykh ki dua)",
+     "After bai'at: hold the rope (bai'at ke baad: rassi ko thaame raho)"
+    ]
+   },
+   {
+    "p": "Unke neeche dars ke aur Shorts hain, aur ek note ke istighfar aur ahad ke alfaaz ek silsile se doosre silsile mein thode alag ho sakte hain: jo aapke shaykh ya khalifa sikhaayein, usi par chaliye."
+   },
+   {
+    "h": "Request bhejna"
+   },
+   {
+    "steps": [
+     "'Sign up and request Bai'at' dabaiye (sign up muft hai), ya agar account pehle se hai to sign in kijiye.",
+     "Agar app kahe to My Account mein apna naam daal kar account mukammal kijiye, phir waapas aaiye.",
+     "Jis Shaykh ya Khalifa ko aap chahte hain unko chuniye, ya 'Any / whoever you suggest'.",
+     "Apna mobile number daaliye (zaroori hai taaki Khalifa aap se raabta kar sakein) aur chahein to ek chhota sa message, jaise call karne ka behtar waqt.",
+     "'Submit request' dabaiye. App kehti hai: the Khalifa will contact you, in shaa Allah (Khalifa aap se raabta karenge, in shaa Allah)."
+    ]
+   },
+   {
+    "p": "Baad mein aap apni request Edit ya Withdraw kar sakte hain. Aapka naam, email aur request sirf Noor-ul-Hasrat admin aur Khalifa dekhte hain."
+   },
+   {
+    "h": "Agar aap pehle se Bai'at le chuke hain"
+   },
+   {
+    "p": "My Account mein 'I have taken Bai'at' par tick kijiye aur chuniye ke kis se bai'at li, phir save kijiye. Jab tak admin tasdeeq na kare, yeh approval ke intezaar mein dikhega. Approval ke baad poora dars aur zikr ke amal aapke liye khul jaate hain, is Library ke murid wale mazameen samet. Agar tasdeeq na ho sake to app kehti hai ke More, phir About & Support ke zariye Alhaj Rasheed Khan (Ayub) se raabta kijiye."
+   },
+   {
+    "q": "Pehle dekho aur samjho, phir haath do. Warna pachtaawa hota hai.",
+    "src": {
+     "v": "0yhKLLlv5ww",
+     "t": 20,
+     "label": "Haqeeqat-e-Bai'at, recording 1, 27:38"
+    }
+   },
+   {
+    "note": "Bai'at khud, aur uske baad sab kuch, aapke aur aapke shaykh ya khalifa ke darmiyaan hai. Jo baat yeh screen nahin batati woh unse poochiye."
+   }
+  ]
+ }
 }

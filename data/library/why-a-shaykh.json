@@ -112,5 +112,90 @@
   "faq"
  ],
  "drafted": "2026-11-18",
- "by": "Draft prepared from the dars transcripts, awaiting teacher approval"
+ "by": "Draft prepared from the dars transcripts, awaiting teacher approval",
+ "ru": {
+  "title": "Pir ya shaykh kyun?",
+  "summary": "Jab Qur'an, hadith aur fiqh ki kitaabein hamare saamne hain, to kisi ke haath par bai'at kyun karein? Hazrat ke jawaab: ustaad, ek bharose ka rehnuma, sohbat ki taaqat, aur Allah ke liye mohabbat.",
+  "blocks": [
+   {
+    "p": "Haqeeqat-e-Bai'at woh sawaal likhti hai jo log poochte hain, aur phir uska jawaab deti hai: Qur'an, hadith aur fiqh ki kitaabein sab hamare saamne hain, phir kisi ke haath par bai'at karne ki kya zaroorat hai?"
+   },
+   {
+    "h": "Hisaab ke liye bhi ustaad chahiye"
+   },
+   {
+    "q": "Zara ghaur karo: do aur do chaar hote hain. Hisaab aisa yaqeeni ilm hai ke bamushkil koi doosra ilm aisa yaqeeni o qat'i ho sakta hai. Magar pehli jamaat se le kar daswein jamaat tak hisaab ki ta'leem asaatiza se haasil ki jaati hai, tab kahin us mein mahaarat haasil hoti hai.",
+    "src": {
+     "v": "qWeLaR3N5r0",
+     "t": 457,
+     "label": "Haqeeqat-e-Bai'at, recording 1, 7:30"
+    }
+   },
+   {
+    "p": "Aadmi apni ghaltiyaan khud nahin dekh sakta; ustaad unko pakadte rehte hain. Agar aisi zaahir baaton aur duniya ke kaamon mein ustaad ki zaroorat hai, Hazrat padhte hain, to Allah ke raaste par chalne ke liye roohani ustaad, yaani shaykh, ki zaroorat kyun na hogi?"
+   },
+   {
+    "h": "Ek bharose ka rehnuma"
+   },
+   {
+    "p": "Ek hi shaykh ke saath kyun rahein? Alag alag logon ki alag alag raayein sun kar aadmi hairaan ho jaata hai, isliye kisi mu'tamad hasti ko apna peshwa banaana chahiye."
+   },
+   {
+    "q": "Zara ghaur karo ke kisi aham muqadme mein har roz ek wakeel badla jaaye to na pairwi barabar ho sakti hai, na kaamyaabi ki tawaqqo hai.",
+    "src": {
+     "v": "77ZE201Hbjw",
+     "t": 61,
+     "label": "Haqeeqat-e-Bai'at, recording 1, 10:44"
+    }
+   },
+   {
+    "h": "Jiska dil roshan ho uske saath istighfar"
+   },
+   {
+    "p": "Har Musalmaan ko istighfar karna chahiye, to istighfar ke liye murshid ki kya zaroorat? Hazrat Surah an-Nisa ki jo aayat padhte hain usse jawaab dete hain: sirf apne aap maafi maangna kaafi nahin; kisi roshan-dil ki dua bhi chahiye. 'Murid hona istighfar se shuru hota hai: murshid uske liye maafi ki dua karte hain, aur umeed hai ke qabool hogi.'"
+   },
+   {
+    "h": "Patthar aur kankar"
+   },
+   {
+    "p": "Har aadmi ke khayalaat aur sohbat uske aas-paas phailte hain, jaise paani mein lehrein. Agar ek bada patthar aur ek chhota kankar saath mein phenka jaaye to bade patthar ki lehrein kankar ki lehron ko nigal jaati hain."
+   },
+   {
+    "q": "Isi tarah, maamooli khayalaat aur kamzor imaan wala aadmi jab kisi kaamil ki sohbat mein baithta hai to uske shak wale aur nuqsaandeh khayalaat kamzor se kamzor hote jaate hain.",
+    "src": {
+     "v": "kziC4lPGmgU",
+     "t": 114,
+     "label": "Haqeeqat-e-Bai'at, recording 1, 33:31"
+    }
+   },
+   {
+    "h": "Jiska koi pir nahin"
+   },
+   {
+    "q": "Ek purani kahaawat hai: 'Jiska koi pir nahin, uska pir Shaitaan hai.' Murid ke upar uske aaqa ka haath hota hai, isliye Shaitaan usko chhoo nahin sakta.",
+    "src": {
+     "v": "Rno3f3mGjyg",
+     "t": 24,
+     "label": "Haqeeqat-e-Bai'at, recording 1, 42:08"
+    }
+   },
+   {
+    "p": "Kya yeh har ek ke liye zaroori hai? Hazrat jawaab dete hain: us ke liye jo buri cheezon se nafrat kare aur unse door rahe, achhaai ki taraf khinche, aur is raaste ke qaaidon ko ooncha darje par nibhaana zaroori samjhe. 'Agar tum isko zaroori nahin samajhte to tum mahroom ho.'"
+   },
+   {
+    "h": "Allah ke liye mohabbat"
+   },
+   {
+    "p": "Murid apne murshid se mohabbat kyun karta hai? Allah ke liye. Aadmi usi ke saath hai jis se woh mohabbat karta hai, aur murideen roohani aulaad hain."
+   },
+   {
+    "q": "Yeh murideen kaun hain? Roohani aulaad. In shaa Allah, murideen apne aaqa ke saath milaaye jaayenge; unke saath uthaaye jaayenge.",
+    "src": {
+     "v": "qWeLaR3N5r0",
+     "t": 3749,
+     "label": "Haqeeqat-e-Bai'at, recording 2, 9:28"
+    }
+   }
+  ]
+ }
 }

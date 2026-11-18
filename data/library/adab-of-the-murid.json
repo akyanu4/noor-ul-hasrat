@@ -114,5 +114,87 @@
   "taking-bayat-in-the-app"
  ],
  "drafted": "2026-11-18",
- "by": "Draft prepared from the dars transcripts, awaiting teacher approval"
+ "by": "Draft prepared from the dars transcripts, awaiting teacher approval",
+ "ru": {
+  "title": "Murid ki sharait aur aadaab",
+  "summary": "Bai'at kaun de sakta hai, murshid ko kaise chunein, unki sohbat mein kaise baithein, ghalti ho jaaye to kya karein, aur Hazrat khilafat ke baare mein kya farmate hain.",
+  "blocks": [
+   {
+    "h": "Murid ki umr"
+   },
+   {
+    "p": "Hazrat padhte hain ke kuch log kehte hain murid baaligh ho, aur kuch kehte hain ke usko samajh aur baseerat ho: achhe aur bure mein farq kar sake. Kabhi kabhi chhote bachchon se bhi barakat ke liye bai'at le li jaati hai; isko bai'at-e-barakat kehte hain. Auraton ke liye zabaani bai'at kaafi hai, aur Hazrat padhte hain ke aurat ko shaykh ke saamne parda hataane ki zaroorat nahin, chaahe shaykh kitne bhi umr-raseeda kyun na hon."
+   },
+   {
+    "h": "Pehle dekho, phir haath do"
+   },
+   {
+    "p": "Hazrat padhte hain ke shaykh mein mureedi ka maqsad poora karne ki qaabiliyat ho, woh Qur'an ke ahkaam ki aayaton aur hadith o fiqh ke zaroori masaail se waaqif ho, aur kisi tajurbekaar hasti ki sohbat ka faiz paaya ho. Khilafat dene ki ijaazat, woh farmate hain, upar se aati hai, murshidon ke silsile ke zariye."
+   },
+   {
+    "q": "Ba'z buzurgon ne achhe murshid ki yeh tameez batayi hai ke jis ki sohbat mein waswase aur fuzool khayalaat sab band ho jaayein, aur aadmi ka khayal Khuda aur Rasool ﷺ ke saath waabasta ho jaaye. Pehle dekho aur samjho, phir haath do. Warna pachtaawa hota hai.",
+    "src": {
+     "v": "qWeLaR3N5r0",
+     "t": 1651,
+     "label": "Haqeeqat-e-Bai'at, recording 1, 27:24"
+    }
+   },
+   {
+    "h": "Unki sohbat mein"
+   },
+   {
+    "q": "Jab main baat karun to meri aankhon mein dekhte raho. Meri aankhon se jo kaifiyaat nikalti hain, woh tumhari aankhon mein bhi aati hain. Isi liye aankhein khuli rakho aur murshid ko dekhte raho.",
+    "src": {
+     "v": "qWeLaR3N5r0",
+     "t": 1694,
+     "label": "Haqeeqat-e-Bai'at, recording 1, 28:07"
+    }
+   },
+   {
+    "p": "Sahaba Huzoor ﷺ ko dekhte rehte the, Hazrat farmate hain, aur adab ki wajah se nazar bhi neechi rakhte the."
+   },
+   {
+    "h": "Ghalti ho jaaye to"
+   },
+   {
+    "q": "Agar koi bai'at ke baad ghalti kare to tauba kare aur kahe: Astaghfirullah al-'Azeem alladhi la ilaha illa Huwa al-Hayy al-Qayyum wa atubu ilayh. Tauba kabhi zaaya nahin jaati.",
+    "src": {
+     "v": "qWeLaR3N5r0",
+     "t": 2333,
+     "label": "Haqeeqat-e-Bai'at, recording 1, 38:46"
+    }
+   },
+   {
+    "p": "Hazrat ek Sahabi ka waaqia bhi sunaate hain jinko Huzoor ﷺ ne dobara bai'at karne ka farmaya, haalaanke woh pehle bai'at kar chuke the. 'Ek baar bai'at kar li to uski tajdeed karo,' Hazrat farmate hain. 'Main bhi yahi karta hoon.'"
+   },
+   {
+    "h": "Khilafat mat maango"
+   },
+   {
+    "p": "Khilafat, Hazrat farmate hain, upar se aati hai. Murid ke dil mein khayal aa sakta hai ke kya main iske laayeq hoon, lekin woh maange nahin; khaamosh rahe. Khilafat is baat ki tasdeeq hai ke murid laayeq ho gaya hai, jaise padhai ke baad certificate diya jaata hai."
+   },
+   {
+    "q": "Na sirf rasmi mureedi kisi kaam ki hai, na sirf rasmi khilafat.",
+    "src": {
+     "v": "qWeLaR3N5r0",
+     "t": 3959,
+     "label": "Haqeeqat-e-Bai'at, recording 2, 12:58"
+    }
+   },
+   {
+    "h": "Padhte rahiye"
+   },
+   {
+    "q": "Isi liye main baar baar kehta hoon: yeh kitaab padho. Yeh sirf murid ko nahin, shaykh ko bhi sikhaati hai.",
+    "src": {
+     "v": "Vz_I-E521r8",
+     "t": 36,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 3, 3:33"
+    }
+   },
+   {
+    "note": "Hazrat yeh bhi farmate hain ke woh Sarkar ki ijaazat ke baghair kisi ko murid nahin karte, aur kabhi kabhi kisi ko waapas bhej dete hain (Nizam-ul-Amal part 3, 27:44). Recording se yeh saaf nahin hota ke yahaan Sarkar se muraad Huzoor ﷺ hain ya unke shaykh: apne ustaad se poochiye."
+   }
+  ]
+ }
 }

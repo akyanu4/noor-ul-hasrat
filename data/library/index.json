@@ -14,7 +14,9 @@
    "tariqat",
    "haqiqat",
    "marifat"
-  ]
+  ],
+  "ru_title": "Tasawwuf kya hai?",
+  "ru_summary": "Tasawwuf, jaisa Hazrat Azam Pasha R.A. Nizam-ul-Amal-e-Fuqara padhte hue samjhaate hain: ek baatini ilm jiska sarchashma Qur'an aur Hadith hai, jism aur rooh dono ki islaah ke liye."
  },
  {
   "slug": "purpose-of-the-path",
@@ -30,7 +32,9 @@
    "taqwa",
    "fana",
    "nafs"
-  ]
+  ],
+  "ru_title": "Tareeqat ka maqsad",
+  "ru_summary": "Murshid murid ke liye kya chahte hain, aur raaste ke woh maqaamaat jo Hazrat ginwaate hain: tauba, taqwa, tawakkul, sabr, tasleem, raza, fana aur baqa."
  },
  {
   "slug": "the-scale-islam-and-iman",
@@ -46,7 +50,9 @@
    "iman",
    "love",
    "hashr"
-  ]
+  ],
+  "ru_title": "Meezaan, Islam aur Imaan",
+  "ru_summary": "Hazrat Hashr ke din aamaal ke tole jaane ko, jis se mohabbat ho uske saath hone ko, aur Islam aur Imaan ke farq ko kaise bayaan karte hain."
  },
  {
   "slug": "what-is-bayat",
@@ -61,7 +67,9 @@
    "iradat",
    "covenant",
    "murid"
-  ]
+  ],
+  "ru_title": "Bai'at kya hai?",
+  "ru_summary": "Bai'at ek ahad hai: kisi aham cheez par ahad lena, murshid ke haath par. Hazrat isko kitaab Haqeeqat-e-Bai'at se samjhaate hain."
  },
  {
   "slug": "why-a-shaykh",
@@ -77,7 +85,9 @@
    "murshid",
    "company",
    "suhbat"
-  ]
+  ],
+  "ru_title": "Pir ya shaykh kyun?",
+  "ru_summary": "Jab Qur'an, hadith aur fiqh ki kitaabein hamare saamne hain, to kisi ke haath par bai'at kyun karein? Hazrat ke jawaab: ustaad, ek bharose ka rehnuma, sohbat ki taaqat, aur Allah ke liye mohabbat."
  },
  {
   "slug": "adab-of-the-murid",
@@ -93,7 +103,9 @@
    "murshid",
    "khilafat",
    "tawbah"
-  ]
+  ],
+  "ru_title": "Murid ki sharait aur aadaab",
+  "ru_summary": "Bai'at kaun de sakta hai, murshid ko kaise chunein, unki sohbat mein kaise baithein, ghalti ho jaaye to kya karein, aur Hazrat khilafat ke baare mein kya farmate hain."
  },
  {
   "slug": "taking-bayat-in-the-app",
@@ -108,7 +120,9 @@
    "app",
    "request",
    "account"
-  ]
+  ],
+  "ru_title": "Is app mein Bai'at kaise lein",
+  "ru_summary": "Taking Bai'at screen par kya dikhta hai, aur request kaise bhejein taaki Khalifa aap se raabta kar sakein. App khud bai'at nahin deti."
  },
  {
   "slug": "nizam-ul-amal-overview",
@@ -124,7 +138,9 @@
    "taqwa",
    "tawakkul",
    "sabr"
-  ]
+  ],
+  "ru_title": "Aamaal ka nizaam: Nizam-ul-Amal-e-Fuqara",
+  "ru_summary": "Woh kitaab jo Hazrat Azam Pasha R.A. apne dars mein padhte the, 'un logon ka time-table jo Allah ke raaste mein apne aap ko faqeer samajhte hain', aur uske asbaaq ki tarteeb."
  },
  {
   "slug": "chilla-and-itikaf",
@@ -139,7 +155,9 @@
    "itikaf",
    "saum-e-maryam",
    "worship"
-  ]
+  ],
+  "ru_title": "Chilla aur i'tikaf",
+  "ru_summary": "Chilla kya hai, Hazrat isko i'tikaf se kaise jodte hain, aur ek nukte par khayal ko 'ibaadat ki jaan' kyun kaha gaya hai."
  },
  {
   "slug": "where-duas-are-accepted",
@@ -154,7 +172,9 @@
    "awliya",
    "maryam",
    "zakariya"
-  ]
+  ],
+  "ru_title": "Duaayein kahaan qabool hoti hain",
+  "ru_summary": "Hazrat Zakariya aur Bibi Maryam ke qisse se Hazrat ka sabaq: Allah ke auliya ki baargaah woh jagah hai jahaan duaayein qabool hoti hain. Aur dua ibaadat ka maghz kyun hai."
  },
  {
   "slug": "tasawwur-e-shaykh",
@@ -169,7 +189,9 @@
    "tasawwur-e-shaykh",
    "muraqaba",
    "kashf"
-  ]
+  ],
+  "ru_title": "Tasawwur-e-shaykh: iska maqsad",
+  "ru_summary": "Tasawwur-e-shaykh kya hai, kyun kiya jaata hai (taaki khayal ek nukte par jam jaaye), aur Hazrat iske samraat aur ehtiyaaton ko kaise bayaan karte hain. Sirf khaaka, tareeqa nahin."
  },
  {
   "slug": "daf-e-khatrat",
@@ -184,7 +206,9 @@
    "nazar-bar-qadam",
    "gaze",
    "thoughts"
-  ]
+  ],
+  "ru_title": "Bhatakte khayalaat ko door karna (daf'-e-khatrat)",
+  "ru_summary": "Khatra kya hai, guzarta hua khayal kyun maaf hai lekin pakka iraada nahin, aur bhatakte khayalaat door karne ke jo tareeqe kitaab mein diye gaye hain unka khaaka."
  },
  {
   "slug": "zikr-practices",
@@ -200,7 +224,9 @@
    "yaad-faramosh",
    "asma",
    "durood"
-  ]
+  ],
+  "ru_title": "Dars mein zikr",
+  "ru_summary": "Zikr ke woh amal jinka Hazrat zikr karte hain: hukm wali aayat se shuruaat, yaad-faramosh ka mu'ahida, aur Asma-e-Ilahi ke azkaar. Sirf maqsad aur khaaka."
  },
  {
   "slug": "terms-used-in-the-dars",
@@ -213,7 +239,9 @@
   "tags": [
    "glossary",
    "terms"
-  ]
+  ],
+  "ru_title": "Dars mein aane wale alfaaz",
+  "ru_summary": "Hazrat Azam Pasha R.A. jo alfaaz istemaal karte hain unki mukhtasar farhang: har lafz sirf utna jitna woh khud samjhaate hain, aur kahaan sunein."
  },
  {
   "slug": "faq",
@@ -228,6 +256,8 @@
    "shaykh",
    "bayat",
    "khilafat"
-  ]
+  ],
+  "ru_title": "Sawaal aur jawaab",
+  "ru_summary": "Paanch aam sawaal, jinke jawaab sirf Hazrat Azam Pasha R.A. ke dars se diye gaye hain. Jahaan dars mein jawaab nahin, woh sawaal apne ustaad se poochiye."
  }
 ]

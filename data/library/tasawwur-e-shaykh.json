@@ -124,5 +124,93 @@
   "terms-used-in-the-dars"
  ],
  "drafted": "2026-11-18",
- "by": "Draft prepared from the dars transcripts, awaiting teacher approval"
+ "by": "Draft prepared from the dars transcripts, awaiting teacher approval",
+ "ru": {
+  "title": "Tasawwur-e-shaykh: iska maqsad",
+  "summary": "Tasawwur-e-shaykh kya hai, kyun kiya jaata hai (taaki khayal ek nukte par jam jaaye), aur Hazrat iske samraat aur ehtiyaaton ko kaise bayaan karte hain. Sirf khaaka, tareeqa nahin.",
+  "blocks": [
+   {
+    "h": "Yeh kya hai"
+   },
+   {
+    "p": "Nizam-ul-Amal-e-Fuqara ke part 9 mein Hazrat tasawwur-e-shaykh wala hissa padhte hain. Shaykh, woh farmate hain, yaani murshid: jinse aapne bay'ah ki hai. Tasawwur yaani shaykh ko apne khayal mein rakhna, unke chehre ka khayal karna, takhayyul mein."
+   },
+   {
+    "h": "Iska maqsad"
+   },
+   {
+    "q": "Shaykh ke tasawwur se maqsood khayal ka ek nukte par qaayam hona hai.",
+    "src": {
+     "v": "",
+     "t": 49,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 9, 0:49"
+    }
+   },
+   {
+    "p": "Woh ek misaal dete hain: 'Hum Qadeer Pia ke tasawwur mein baithe hain. Ab aapka khayal kahin aur nahin ja raha: ek nukta ban gaya.' Yahi alfaaz, ek nukte par khayal, unki i'tikaf aur nazar ki hifaazat wali ta'leem mein bhi dobara aate hain."
+   },
+   {
+    "h": "Hazrat ke liye yeh kaise khula"
+   },
+   {
+    "p": "Hazrat batate hain ke unke apne pir ne unko kaise sikhaaya. Ek baar woh unke saamne baithe the to unse poocha gaya:"
+   },
+   {
+    "q": "Mera tasawwur jaante ho? Maine kaha: nahin jaanta. Farmaya: yeh karo. Meri tasveer apne zehan mein rakho. Tasveer mein mujhe dekho. Bas. Maine wahin se shuru kiya, aur kuch hi din mein meri aankhein khul gayin.",
+    "src": {
+     "v": "dyHUfOLlVTs",
+     "t": 33,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 2, 24:07"
+    }
+   },
+   {
+    "p": "Part 6 mein woh yahi waaqia sunaate hain, aur batate hain ke unke pir ne iske saath padhne ke liye unko Asma-e-Ilahi diye: Ya Khallaqu, Ya Fa''alu, Ya Musawwiru. 'Isi ne meri aankhein kholin,' woh farmate hain. 'Mujhe kitaabein padhne ki zaroorat nahin padi.'"
+   },
+   {
+    "h": "Noor"
+   },
+   {
+    "p": "Kitaab ek khayal bayaan karti hai jo tasawwur jamaate waqt rakha jaaye: ek tez roshni, search-light ki tarah, Allah ki taraf se Rasoolullah ﷺ ke qalb-e-mubarak tak aati hai, wahaan se shaykh ke dil mein, aur shaykh ke dil se apne dil mein."
+   },
+   {
+    "q": "Nire khayaalaat mat samjho. Yeh bab-e-futuh hain, yaani kholne ka darwaaza. Yeh taraqqi karaate hain, aur ajeeb-o-ghareeb tamaashe dikhaate hain.",
+    "src": {
+     "v": "",
+     "t": 1445,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 9, 24:05"
+    }
+   },
+   {
+    "h": "Iske samraat"
+   },
+   {
+    "p": "Jaise jaise khayal mazboot hota hai, Hazrat padhte hain, murid ko mehsoos hone lagta hai ke woh shaykh ki soorat mein hai. Zaahiri taur par bhi uske chehre mein shaykh ki jhalak dikhne lagti hai, aur aawaaz bhi milti-julti ho jaati hai. Phir kitaab teen qism ki sair (safar) ka naam leti hai: shaykh mein; shaykh mein Huzoor ﷺ ki taraf; aur shaykh mein Allah ki taraf."
+   },
+   {
+    "h": "Ehtiyaat"
+   },
+   {
+    "q": "Logon ke khatraat se waaqif ho jaana, aur door door ki cheezein dekhna, yeh sab to adna darje ki baatein hain.",
+    "src": {
+     "v": "",
+     "t": 582,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 9, 9:42"
+    }
+   },
+   {
+    "q": "Apne kashf ko Qur'an aur Hadith par pesh karo. Agar mutaabiq ho to amal karo; na ho to chhod do.",
+    "src": {
+     "v": "AcMca39kwHo",
+     "t": 1843,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 3, 30:36"
+    }
+   },
+   {
+    "note": "Part 9 ke kuch hisse is mazmoon mein shaamil nahin: 7:38-9:04 aur 16:40-17:12 khaandaan ke faisle ke intezaar mein hain, aur 17:12-18:46 aur 23:28-23:47 transcribe nahin hue. Part 6 se 9 abhi YouTube par public nahin hain, isliye in hisson ka video link abhi nahin hai."
+   },
+   {
+    "note": "Yeh amal karne se pehle apne ustaad/shaykh se seekhiye."
+   }
+  ]
+ }
 }

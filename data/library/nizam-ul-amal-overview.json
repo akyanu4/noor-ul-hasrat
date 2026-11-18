@@ -133,5 +133,86 @@
   "daf-e-khatrat"
  ],
  "drafted": "2026-11-18",
- "by": "Draft prepared from the dars transcripts, awaiting teacher approval"
+ "by": "Draft prepared from the dars transcripts, awaiting teacher approval",
+ "ru": {
+  "title": "Aamaal ka nizaam: Nizam-ul-Amal-e-Fuqara",
+  "summary": "Woh kitaab jo Hazrat Azam Pasha R.A. apne dars mein padhte the, 'un logon ka time-table jo Allah ke raaste mein apne aap ko faqeer samajhte hain', aur uske asbaaq ki tarteeb.",
+  "blocks": [
+   {
+    "p": "Nizam-ul-Amal-e-Fuqara, Bahr-ul-Uloom Hazrat Muhammad Abdul Qadeer Siddiqui Hasrat R.A. ki kitaab hai. Hazrat Azam Pasha R.A. ne isko apne dars mein kai nashiston mein padha aur line-ba-line samjhaaya."
+   },
+   {
+    "q": "Bahr-ul-Uloom ki yeh kitaab, Nizam-ul-Amal-e-Fuqara, un logon ka time-table hai jo Allah ke raaste mein apne aap ko faqeer samajhte hain.",
+    "src": {
+     "v": "",
+     "t": 5,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 6, 0:05"
+    }
+   },
+   {
+    "p": "Fuqara kaun hain? 'Yeh sab log jo yahaan baithe hain,' Hazrat farmate hain. 'Agar aap unki kitaab sunte hain to aap faqeer kehlaate hain.' Woh sab se kehte hain ke isko baar baar padho, kyunke yeh sirf murid ko nahin, shaykh ko bhi sikhaati hai."
+   },
+   {
+    "h": "Asbaaq, us tarteeb se jis mein Hazrat ne padhe"
+   },
+   {
+    "steps": [
+     "Part 1: murshid ki zaroorat kyun hai, bai'at, aur kitaab ka maqsad.",
+     "Part 2: tauba; insaan rooh aur jism ka majmooa; Shariat, Tariqat, Haqiqat, Marifat; imaan khauf aur umeed ke darmiyaan.",
+     "Part 3: taqwa; 'Sufi waqt ka beta hai'; tawakkul; istikhara; faraaiz aur nawaafil ke zariye qurb (Qurb-e-Faraiz aur Qurb-e-Nawafil).",
+     "Part 4: sabr, tasleem aur raza; zabaan aur dil ki buraaiyaan; nafs aur Shaitaan; fana-e-af'aal.",
+     "Part 6 aur 7: daf'-e-khatrat, bhatakte khayalaat ko door karna.",
+     "Part 8: chilla, i'tikaf, Saum-e-Maryam, Hizbul Bahr, dil jama' karke namaz, aur woh jagah jahaan duaayein qabool hoti hain.",
+     "Part 9: tasawwur-e-shaykh aur woh azkaar jo us mein madad karte hain."
+    ]
+   },
+   {
+    "note": "Part 5 ka koi transcript abhi project mein nahin hai, isliye woh yahaan shaamil nahin."
+   },
+   {
+    "h": "Kitaab ki kuch baatein"
+   },
+   {
+    "q": "Taqwa yeh hai ke kam khaana, kam sona, kam bolna, apni ghaltiyon par rona, aur doosron ke aib se nazar hata lena.",
+    "src": {
+     "v": "oWZt1YfJ3io",
+     "t": 46,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 3, 1:38"
+    }
+   },
+   {
+    "q": "Apni zarooraton ke liye Allah par bharosa karna: isko Tawakkul kehte hain. Kaam na karna tawakkul nahin hai.",
+    "src": {
+     "v": "AcMca39kwHo",
+     "t": 371,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 3, 6:04"
+    }
+   },
+   {
+    "q": "Jo bhi kaam karna ho, Allah se poochh kar karo. Yahi Istikhara hai.",
+    "src": {
+     "v": "AcMca39kwHo",
+     "t": 615,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 3, 10:08"
+    }
+   },
+   {
+    "q": "Sabr yeh hai ke takleefon aur mushkilon ko bardaasht karna, chaahe dil ko woh mushkil lagein.",
+    "src": {
+     "v": "mwPT8CFRfR0",
+     "t": 21,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 4, 5:48"
+    }
+   },
+   {
+    "p": "Jab aadmi mushkilon ko dil mein koi naaraazgi ya shikwa rakhe baghair bardaasht kare to isko tasleem kehte hain. Jab usko har dard mein mithaas mehsoos hone lage aur woh Allah ki hamd karta rahe, to woh raza tak pahunch gaya: Allah jaise bhi rakhe, us mein raazi."
+   },
+   {
+    "p": "Hazrat yeh bhi farmate hain ke kitaab sirf ek shuruaat hai: 'Sirf yahaan sun lena kaafi nahin. Isko baar baar padhna hai.'"
+   },
+   {
+    "note": "Aakhri baat part 8 (2:35) ke machine transcript se hai, jo kachcha hai; alfaaz recording se mila lijiye."
+   }
+  ]
+ }
 }

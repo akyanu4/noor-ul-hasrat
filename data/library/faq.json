@@ -102,5 +102,76 @@
   "tasawwur-e-shaykh"
  ],
  "drafted": "2026-11-18",
- "by": "Draft prepared from the dars transcripts, awaiting teacher approval"
+ "by": "Draft prepared from the dars transcripts, awaiting teacher approval",
+ "ru": {
+  "title": "Sawaal aur jawaab",
+  "summary": "Paanch aam sawaal, jinke jawaab sirf Hazrat Azam Pasha R.A. ke dars se diye gaye hain. Jahaan dars mein jawaab nahin, woh sawaal apne ustaad se poochiye.",
+  "blocks": [
+   {
+    "h": "Kya mujhe shaykh ki zaroorat hai?"
+   },
+   {
+    "p": "Hazrat kitaab se jawaab dete hain: hisaab bhi ustaad se seekha jaata hai, aur aadmi apni ghaltiyaan khud nahin dekh sakta, isliye Allah ke raaste mein ek roohani ustaad ki zaroorat hai. Kya yeh har ek ke liye zaroori hai? Us ke liye jo is raaste ke qaaidon ko ooncha darje par nibhaana chahta hai; 'agar tum isko zaroori nahin samajhte to tum mahroom ho'."
+   },
+   {
+    "q": "Jiska koi pir nahin, uska pir Shaitaan hai. Murid ke upar uske aaqa ka haath hota hai, isliye Shaitaan usko chhoo nahin sakta.",
+    "src": {
+     "v": "Rno3f3mGjyg",
+     "t": 24,
+     "label": "Haqeeqat-e-Bai'at, recording 1, 42:08"
+    }
+   },
+   {
+    "h": "Bai'at ke baad mujh se ghalti ho gayi. Ab kya karoon?"
+   },
+   {
+    "p": "Tauba kijiye aur istighfar padhiye. Begunaah aadmi bhi tauba kare to usko faayda hai; tauba kabhi zaaya nahin jaati. Hazrat ek Sahabi ka waaqia bhi sunaate hain jinse Huzoor ﷺ ne dobara bai'at karne ko kaha, aur farmate hain: 'Ek baar bai'at kar li to uski tajdeed karo.'"
+   },
+   {
+    "q": "Begunaah aadmi bhi tauba kare to uske liye achha hai. Tauba kabhi zaaya nahin jaati.",
+    "src": {
+     "v": "qWeLaR3N5r0",
+     "t": 2345,
+     "label": "Haqeeqat-e-Bai'at, recording 1, 38:58"
+    }
+   },
+   {
+    "h": "Kaunsa silsila sab se behtar hai?"
+   },
+   {
+    "p": "Hazrat farmate hain ke Qadri, Chishti, Naqshbandi aur baaqi sab Qur'an aur Hadith se hi lete hain, jaise fiqh ke chaar mazhab. Mizaaj alag alag hote hain, aur har ek ko woh milta hai jo uske mizaaj ke mutaabiq ho. Sab murshidon ka ek hi maqsad hai: murid ko paak rakhna aur Huzoor ﷺ ke raaste par rakhna."
+   },
+   {
+    "q": "Sufiya ke saare tareeqe achhe hain, sar se paaon tak achhe.",
+    "src": {
+     "v": "Rk6u-LffRrg",
+     "t": 67,
+     "label": "Nizam-ul-Amal-e-Fuqara, part 1, 55:48"
+    }
+   },
+   {
+    "h": "Kya main khilafat maang sakta hoon?"
+   },
+   {
+    "p": "Nahin. Hazrat farmate hain ke khilafat upar se aati hai. Murid apne aap se pooch sakta hai ke kya main laayeq hoon, lekin usko maangna nahin chahiye; khaamosh rehna chahiye. Allah jo chahta hai deta hai."
+   },
+   {
+    "q": "Na sirf rasmi mureedi kisi kaam ki hai, na sirf rasmi khilafat.",
+    "src": {
+     "v": "qWeLaR3N5r0",
+     "t": 3959,
+     "label": "Haqeeqat-e-Bai'at, recording 2, 12:58"
+    }
+   },
+   {
+    "h": "Kya main tasawwur ya zikr ke amal khud se shuru kar sakta hoon?"
+   },
+   {
+    "p": "Dars mein iska koi aam qaa'ida nahin diya gaya. Hazrat jitne bhi waaqiaat sunaate hain, har ek mein amal shaykh se aaya: unke apne pir ne unko tasawwur sikhaaya, aur woh Hizbul Bahr ki ijaazat dene ki baat karte hain. Yeh sawaal apne ustaad se poochiye."
+   },
+   {
+    "note": "Aapka sawaal yahaan nahin hai? Apne shaykh ya khalifa se poochiye. Yeh jawaab transcripts se tayyar kiye gaye draft hain aur ustaad ki manzoori ke intezaar mein hain."
+   }
+  ]
+ }
 }
