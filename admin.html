@@ -39,6 +39,7 @@
 <h1>Members</h1>
 <div class="muted">Registered members and their Iman Health. Members agreed to share this with the admin when they signed up. Please keep it private.</div>
 <div id="out"><div class="card">Loading…</div></div>
+<div id="rwAdmin"></div>
 </div>
 <script src="js/config.js"></script>
 <script src="js/backend.js"></script>
@@ -62,6 +63,7 @@
       document.getElementById('cp').onclick = function () { try { navigator.clipboard.writeText(u.uid); this.textContent = 'Copied'; } catch (e) {} };
       return;
     }
+    loadRewards();
     return Promise.all([B.admin.get('profiles'), B.admin.get('summaries'), B.admin.get('bayah_ok').catch(function () { return null; }), B.admin.get('bayah_req').catch(function () { return null; }), B.admin.get('helpreq').catch(function () { return null; }), B.admin.get('stats/total').catch(function () { return null; }), B.admin.get('stats/daily').catch(function () { return null; })]).then(function (r) {
       stats = { total: r[5] || null, daily: r[6] || null };
       var P = r[0] || {}, S = r[1] || {}, OK = r[2] || {}, RQ = r[3] || {};
@@ -71,6 +73,52 @@
       paint();
     });
   }).catch(function (e) { out.innerHTML = '<div class="card">Could not load members (' + esc(e && e.message) + '). Check your internet and the database rules, then reload.</div>'; });
+
+
+  // ---------- 🎁 Rewards this week (shown to signed-in members on the app's Rewards tab) ----------
+  var rw = { week: '', note: '', items: {} }, rwBox = document.getElementById('rwAdmin');
+  function loadRewards() {
+    B.admin.get('rewards').then(function (r) { rw = r || {}; rw.items = rw.items || {}; paintRewards(); },
+      function (e) { rwBox.innerHTML = '<div class="card">Could not load rewards (' + esc(e && e.message) + '). Check the database rules include "rewards".</div>'; });
+  }
+  function paintRewards() {
+    var ids = Object.keys(rw.items).sort(function (a, b) { return (rw.items[a].order || 0) - (rw.items[b].order || 0); });
+    var h = '<div class="card" style="border-color:var(--gold)"><b>🎁 Rewards this week</b> <span class="muted">(members see these on the app\'s Rewards tab)</span>' +
+      '<div style="display:grid;gap:6px;margin-top:8px"><input id="rwWeek" placeholder="Week label, e.g. 17–23 Nov" value="' + esc(rw.week || '') + '">' +
+      '<input id="rwNote" placeholder="Short note for members (optional)" value="' + esc(rw.note || '') + '"><button id="rwSaveHead">Save week and note</button></div>' +
+      (ids.length ? ids.map(function (id) { var x = rw.items[id]; return '<div style="border-top:1px solid var(--line);margin-top:10px;padding-top:8px"><b>' + esc(x.t) + '</b>' + (x.by ? ' <span class="muted">· ' + esc(x.by) + '</span>' : '') +
+        (x.d ? '<div>' + esc(x.d) + '</div>' : '') + '<div class="muted">' + (x.code ? 'Code ' + esc(x.code) + ' · ' : '') + (x.until ? 'until ' + esc(x.until) : 'no end date') + '</div>' +
+        '<button data-rwdel="' + esc(id) + '" style="margin-top:4px">Remove</button></div>'; }).join('') : '<p class="muted">No rewards posted yet. Members see "being prepared".</p>') +
+      '<div style="border-top:1px solid var(--line);margin-top:10px;padding-top:8px;display:grid;gap:6px"><b>Add a reward</b>' +
+      '<input id="rwT" placeholder="Title, e.g. 10% off dates" maxlength="80"><input id="rwBy" placeholder="From (shop or sponsor)" maxlength="60">' +
+      '<textarea id="rwD" placeholder="Details: how to claim it" maxlength="300" rows="2"></textarea><input id="rwCode" placeholder="Code (optional)" maxlength="30">' +
+      '<input id="rwLink" placeholder="Link (optional, https://…)" maxlength="300"><label class="muted">Valid until <input id="rwUntil" type="date"></label>' +
+      '<button class="pri" id="rwAdd">Add reward</button></div></div>';
+    rwBox.innerHTML = h;
+  }
+  function rwFail(e) { alert('Could not save (' + (e && e.message) + '). Check the database rules include "rewards".'); }
+  rwBox.addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.id === 'rwSaveHead') {
+      var wk = document.getElementById('rwWeek').value.trim().slice(0, 40), nt = document.getElementById('rwNote').value.trim().slice(0, 200);
+      t.disabled = true;
+      Promise.all([B.admin.put('rewards/week', wk || null), B.admin.put('rewards/note', nt || null)]).then(function () { rw.week = wk; rw.note = nt; paintRewards(); }, function (er) { t.disabled = false; rwFail(er); });
+    } else if (t.id === 'rwAdd') {
+      var v = { t: document.getElementById('rwT').value.trim().slice(0, 80), by: document.getElementById('rwBy').value.trim().slice(0, 60), d: document.getElementById('rwD').value.trim().slice(0, 300),
+        code: document.getElementById('rwCode').value.trim().slice(0, 30), link: document.getElementById('rwLink').value.trim().slice(0, 300), until: document.getElementById('rwUntil').value || '', order: Date.now(), at: Date.now(), byAdmin: u.email };
+      if (!v.t) { alert('Please enter a title.'); return; }
+      if (v.link && !/^https:\/\//.test(v.link)) { alert('The link must start with https://'); return; }
+      Object.keys(v).forEach(function (k) { if (v[k] === '') delete v[k]; });
+      var id = 'r' + Date.now().toString(36);
+      t.disabled = true;
+      B.admin.put('rewards/items/' + id, v).then(function () { rw.items[id] = v; paintRewards(); }, function (er) { t.disabled = false; rwFail(er); });
+    } else if (t.getAttribute && t.getAttribute('data-rwdel')) {
+      var did = t.getAttribute('data-rwdel');
+      if (!confirm('Remove "' + (rw.items[did] || {}).t + '"? Members will no longer see it.')) return;
+      t.disabled = true;
+      B.admin.del('rewards/items/' + did).then(function () { delete rw.items[did]; paintRewards(); }, function (er) { t.disabled = false; rwFail(er); });
+    }
+  });
 
   function bstat(m) { return !(m.p.bayah && m.p.bayah.taken) ? 'none' : m.ok && m.ok.approved ? 'approved' : m.ok && m.ok.rejected ? 'rejected' : 'pending'; }
   function decide(id, approve, btn) {
