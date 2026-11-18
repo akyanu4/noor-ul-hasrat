@@ -17,6 +17,8 @@
   // Jumada al-Akhira 1448 began on Thu 12 Nov 2026 in our region (calculation said Wed 11), so -1. Check again at each new moon.
   // A member's own +/- in the Calendar still overrides this on their phone. The reminder jobs read data/hijri-adj.json (keep both the same).
   hijriAdj: -1,
+  // Greeting poster shown on the featured Events card (tap to view full size and share). Key = gathering id from js/gatherings.js.
+  eventPosters: { salgirah: "photos/events/salgirah-nayeem-baba.jpg" },
   bayahOn: true,      // "Taking Bai'at" steps (More → Bay'ah), approved 8 Nov 2026
   // Living Shaykhs / Khalifas who give Bai'at: the choices under My Account → Bai'at ("Other" stays for anyone else).
   bayahGuides: ["Alhaj Rasheed Khan (Ayub), Khalifa", "Nooruddin (Nayeem Pasha)"],

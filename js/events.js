@@ -76,6 +76,9 @@
     '.ev-feat .ev-tx{flex:1;min-width:0;position:relative;z-index:2}.ev-k{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#e8c46b;font-weight:700}' +
     '.ev-t{font-size:20px;font-weight:800;line-height:1.25;margin:3px 0 4px}.ev-ur{font-family:"Noto Nastaliq Urdu",Amiri,serif;font-size:16px;color:#f3dfa6;line-height:1.9;direction:rtl;text-align:left}' +
     '.ev-m{font-size:13px;line-height:1.5;opacity:.93}.ev-act{display:inline-block;margin-top:10px;background:#e8c46b;color:#1c1a12;font-weight:700;font-size:13px;border-radius:999px;padding:7px 14px}.ev-act.alt{background:rgba(255,255,255,.14);color:#f5f1e2}' +
+    '.ev-poster{flex:none;width:96px;align-self:center;position:relative;z-index:2;border-radius:10px;border:2px solid #e8c46b;box-shadow:0 4px 12px rgba(0,0,0,.35);display:block;aspect-ratio:880/1196;object-fit:cover;cursor:zoom-in}' +
+    '.ev-pv{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}.ev-pv img{max-width:100%;max-height:calc(100% - 70px);border-radius:12px;object-fit:contain}' +
+    '.ev-pv .x{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer}.ev-pv .sh{margin-top:14px;background:#e8c46b;color:#1c1a12;border:0;border-radius:999px;font:inherit;font-weight:700;font-size:15px;padding:10px 22px;cursor:pointer}' +
     '.ev-art{flex:none;width:112px;align-self:center;position:relative;z-index:1}.ev-art svg{width:112px;height:112px;display:block}' +
     '.ev-photo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.35}.ev-photo+.ev-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,.15))}' +
     '.ev-bits{position:absolute;top:0;bottom:0;right:0;width:40%;pointer-events:none;z-index:1;overflow:hidden}.ev-bits span{position:absolute;top:-14%;font-size:13px;opacity:.7;animation:evfall linear infinite}' +
@@ -143,7 +146,7 @@
     data = collect();
     var f = data.feat;
     if (f) {
-      var today = f.days <= 0, w = wording(f.theme, f.g, today), photo = (cfg.eventPhotos || {})[f.id];
+      var today = f.days <= 0, w = wording(f.theme, f.g, today), photo = (cfg.eventPhotos || {})[f.id]; var poster = (cfg.eventPosters || {})[f.id];
       var kick = today ? (w.k || 'Today') : inDays(f.days) + (f.when ? ' · ' + f.when : '') + (f.hd ? ' · ' + f.hd : '');
       var bits = (today || f.theme === 'bday' || f.theme === 'urs') ? (BITS[f.theme] || []).concat(BITS[f.theme] || []).map(function (b, i) {
         return '<span style="left:' + ((i * 37 + 9) % 92) + '%;animation-duration:' + (5 + (i % 4) * 1.3) + 's;animation-delay:' + (-i * 0.9) + 's">' + b + '</span>'; }).join('') : '';
@@ -152,7 +155,7 @@
         '<div class="ev-bits">' + bits + '</div>' +
         '<div class="ev-tx"><div class="ev-k">' + esc(kick) + '</div><div class="ev-t">' + esc(w.t) + '</div>' + (w.ur ? '<div class="ev-ur" lang="ur">' + esc(w.ur) + '</div>' : '') +
         '<div class="ev-m">' + esc(w.m) + '</div><span class="ev-act' + (today ? '' : ' alt') + '">' + (today ? 'Join online ›' : 'See the calendar ›') + '</span></div>' +
-        '<div class="ev-art">' + (ART[f.theme] || ART.moon) + '</div></div>';
+        (poster ? '<img class="ev-poster" data-poster="1" alt="Birthday greeting" src="' + esc(poster) + '">' : '<div class="ev-art">' + (ART[f.theme] || ART.moon) + '</div>') + '</div>';
     } else featEl.innerHTML = '';
     if (held) return;   // do not rebuild the rolling cards under a finger
     var keep = cur;
@@ -165,8 +168,32 @@
     cur = Math.min(keep, Math.max(0, data.rows.length - 1)); mark(); listEl.scrollLeft = cur * listEl.clientWidth;
   }
 
-  featEl.addEventListener('click', function () {
+  // the greeting poster: full size, with Share (sends the picture itself where the phone allows it)
+  function openPoster(src, title) {
+    var pv = doc.createElement('div'); pv.className = 'ev-pv'; pv.setAttribute('role', 'dialog');
+    pv.innerHTML = '<button class="x" type="button" aria-label="Close">✕</button><img alt="' + esc(title) + '" src="' + esc(src) + '"><button class="sh" type="button">Share wishes ↗</button>';
+    function close() { pv.remove(); }
+    pv.querySelector('.x').addEventListener('click', close);
+    pv.addEventListener('click', function (e) { if (e.target === pv) close(); });
+    pv.querySelector('.sh').addEventListener('click', function () {
+      var url = new URL(src, root.location.href).href, text = title + ' 🎉 Send your du’as and wishes. ' + root.location.origin;
+      var nav = root.navigator;
+      fetch(url).then(function (r) { return r.blob(); }).then(function (b) {
+        var file = new File([b], 'salgirah-mubarak.jpg', { type: b.type || 'image/jpeg' });
+        if (nav.canShare && nav.canShare({ files: [file] })) return nav.share({ files: [file], text: text });
+        throw new Error('no file share');
+      }).catch(function (e) {
+        if (e && e.name === 'AbortError') return;
+        if (nav.share) nav.share({ title: title, text: text, url: url }).catch(function () {});
+        else root.open('https://wa.me/?text=' + encodeURIComponent(text + ' ' + url), '_blank');
+      });
+    });
+    doc.body.appendChild(pv);
+  }
+  featEl.addEventListener('click', function (e) {
     var f = data.feat; if (!f) return;
+    var p = e.target.closest && e.target.closest('[data-poster]');
+    if (p) { e.stopPropagation(); openPoster(p.getAttribute('src'), 'Salgirah Mubarak'); return; }
     if (f.days <= 0 && N.openMeet) N.openMeet(); else N.route(f.id === 'halqa' ? 'halqa' : 'calendar');
   });
   listEl.addEventListener('click', function (e) {
