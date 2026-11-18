@@ -52,7 +52,7 @@
       map: "https://www.google.com/maps/search/?api=1&query=ZQ+Fresh+Meats+%26+Seafood+Mallepally+opposite+Priya+Theatre+Hyderabad",
       ad: { img: "photos/ads/zq-fresh-meats-inauguration.jpg", title: "ZQ Fresh Meats & Seafood: grand opening",
         sub: "Inauguration on 19 Nov · chief guest Hazrat Noor Uddin Siddiqui (Nayeem Baba) · Mallepally, opp. Priya Theatre",
-        from: "2026-11-18", until: "2026-11-19" } }
+        from: "2026-11-18", until: "2026-11-24" } }
   ],
 
   shaykhPhotos: [
