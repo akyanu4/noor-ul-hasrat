@@ -1,0 +1,87 @@
+{
+ "slug": "taking-bayat-in-the-app",
+ "title": "How to take Bai'at in this app",
+ "ur": "ایپ میں بیعت کیسے لیں",
+ "cat": "Bai'at",
+ "level": "open",
+ "order": 4,
+ "summary": "What the Taking Bai'at screen shows, and how to send a request so the Khalifa can contact you. The app does not give bai'at itself.",
+ "tags": [
+  "bayat",
+  "app",
+  "request",
+  "account"
+ ],
+ "blocks": [
+  {
+   "p": "The app has a screen called Taking Bai'at. Open it from More, then Bay'ah, or from the Taking Bai'at card on the home screen. The app does not give bai'at by itself: it shows the steps as Hazrat explained them, and it passes your request on so that a Khalifa can contact you."
+  },
+  {
+   "h": "What the screen shows"
+  },
+  {
+   "p": "At the top is a short video, Watch the steps: all the steps of Bai'at in Hazrat Azam Pasha R.A.'s own voice, about 3 minutes. Then eight illustrated cards, in this order:"
+  },
+  {
+   "steps": [
+    "Look first, then give your hand",
+    "Come with tawbah and taqwa",
+    "It begins with istighfar",
+    "Give your hand (men)",
+    "Women and children",
+    "The pledge",
+    "The shaykh's du'a",
+    "After bai'at: hold the rope"
+   ]
+  },
+  {
+   "p": "Below them are more Shorts from the dars, and a note that the words of the istighfar and the pledge may differ a little from one silsila to another: follow what your shaykh or khalifa teaches."
+  },
+  {
+   "h": "Sending a request"
+  },
+  {
+   "steps": [
+    "Tap 'Sign up and request Bai'at' (signing up is free), or sign in if you already have an account.",
+    "If the app asks, add your name in My Account to finish your account, then come back.",
+    "Choose the Shaykh or Khalifa you would like, or 'Any / whoever you suggest'.",
+    "Enter your mobile number (needed so the Khalifa can contact you) and, if you like, a short message such as the best time to call.",
+    "Tap 'Submit request'. The app says: the Khalifa will contact you, in shaa Allah."
+   ]
+  },
+  {
+   "p": "You can Edit or Withdraw your request later. Your name, email and request are seen only by the Noor-ul-Hasrat admin and the Khalifa."
+  },
+  {
+   "h": "If you have already taken Bai'at"
+  },
+  {
+   "p": "In My Account, tick 'I have taken Bai'at' and choose who you took it with, then save. It shows as waiting for approval until the admin confirms it. After approval, the full dars and the dhikr practices open for you, including the murid articles in this Library. If it cannot be confirmed, the app asks you to contact Alhaj Rasheed Khan (Ayub) through More, then About & Support."
+  },
+  {
+   "q": "Look first and understand, then give your hand. Otherwise regret follows.",
+   "src": {
+    "v": "0yhKLLlv5ww",
+    "t": 20,
+    "label": "Haqeeqat-e-Bai'at, recording 1, 27:38"
+   }
+  },
+  {
+   "note": "The bai'at itself, and everything after it, is between you and your shaykh or khalifa. Ask them anything this screen does not answer."
+  }
+ ],
+ "sources": [
+  {
+   "v": "qWeLaR3N5r0",
+   "t": 0,
+   "label": "Haqeeqat-e-Bai'at, recording 1"
+  }
+ ],
+ "related": [
+  "what-is-bayat",
+  "adab-of-the-murid",
+  "faq"
+ ],
+ "drafted": "2026-11-18",
+ "by": "Draft prepared from the dars transcripts, awaiting teacher approval"
+}

@@ -1,0 +1,106 @@
+{
+ "slug": "faq",
+ "title": "Questions and answers",
+ "ur": "سوال و جواب",
+ "cat": "FAQ",
+ "level": "open",
+ "order": 1,
+ "summary": "Five common questions, answered only from Hazrat Azam Pasha R.A.'s dars. Where the dars gives no answer, the question is for your teacher.",
+ "tags": [
+  "faq",
+  "shaykh",
+  "bayat",
+  "khilafat"
+ ],
+ "blocks": [
+  {
+   "h": "Do I need a shaykh?"
+  },
+  {
+   "p": "Hazrat answers with the book: even arithmetic is learned from a teacher, and a person cannot see his own mistakes, so on the path of Allah a spiritual teacher is needed. Is it necessary for everyone? For whoever wants to keep the rules of the path at a high level; 'if you do not consider it necessary, you are deprived'."
+  },
+  {
+   "q": "Whoever has no pir, his pir is Shaytan. The murid has his master's hand over him, so Shaytan cannot touch him.",
+   "src": {
+    "v": "Rno3f3mGjyg",
+    "t": 24,
+    "label": "Haqeeqat-e-Bai'at, recording 1, 42:08"
+   }
+  },
+  {
+   "h": "I slipped after taking bai'at. What now?"
+  },
+  {
+   "p": "Repent and recite the istighfar. Even a sinless person who repents gains by it; repentance never goes to waste. Hazrat also tells of a Companion whom the Prophet ﷺ asked to give bai'at again, and says: 'Once you have given bai'at, renew it.'"
+  },
+  {
+   "q": "Even if a sinless person repents, it is good for him. Repentance never goes to waste.",
+   "src": {
+    "v": "qWeLaR3N5r0",
+    "t": 2345,
+    "label": "Haqeeqat-e-Bai'at, recording 1, 38:58"
+   }
+  },
+  {
+   "h": "Which silsila is best?"
+  },
+  {
+   "p": "Hazrat says Qadri, Chishti, Naqshbandi and the others all draw from the Qur'an and Hadith, as the four schools of fiqh do. Temperaments differ, and each person finds what suits him. All the murshids have one goal: to keep the murid pure and on the way of the Prophet ﷺ."
+  },
+  {
+   "q": "All the Sufi ways are good, good from head to toe.",
+   "src": {
+    "v": "Rk6u-LffRrg",
+    "t": 67,
+    "label": "Nizam-ul-Amal-e-Fuqara, part 1, 55:48"
+   }
+  },
+  {
+   "h": "Can I ask for khilafat?"
+  },
+  {
+   "p": "No. Hazrat says khilafat comes from above. A murid may ask himself whether he is worthy, but he should not ask for it; he should stay silent. Allah gives what He wills."
+  },
+  {
+   "q": "Neither a merely formal discipleship is of any use, nor a merely formal khilafat.",
+   "src": {
+    "v": "qWeLaR3N5r0",
+    "t": 3959,
+    "label": "Haqeeqat-e-Bai'at, recording 2, 12:58"
+   }
+  },
+  {
+   "h": "Can I start tasawwur or the zikr practices on my own?"
+  },
+  {
+   "p": "The dars does not give a general rule. In every case Hazrat describes, the practice came from the shaykh: his own pir taught him tasawwur, and he speaks of giving permission for Hizbul Bahr. This question is for your teacher."
+  },
+  {
+   "note": "Have a question that is not here? Ask your shaykh or khalifa. These answers are drafts from the transcripts and await a teacher's approval."
+  }
+ ],
+ "sources": [
+  {
+   "v": "qWeLaR3N5r0",
+   "t": 0,
+   "label": "Haqeeqat-e-Bai'at, recording 1"
+  },
+  {
+   "v": "qWeLaR3N5r0",
+   "t": 3181,
+   "label": "Haqeeqat-e-Bai'at, recording 2"
+  },
+  {
+   "v": "",
+   "t": 0,
+   "label": "Nizam-ul-Amal-e-Fuqara, part 1"
+  }
+ ],
+ "related": [
+  "why-a-shaykh",
+  "adab-of-the-murid",
+  "tasawwur-e-shaykh"
+ ],
+ "drafted": "2026-11-18",
+ "by": "Draft prepared from the dars transcripts, awaiting teacher approval"
+}

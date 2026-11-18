@@ -1,0 +1,233 @@
+[
+ {
+  "slug": "what-is-tasawwuf",
+  "title": "What is tasawwuf?",
+  "ur": "تصوف کیا ہے؟",
+  "cat": "Basics",
+  "level": "open",
+  "summary": "Tasawwuf as Hazrat Azam Pasha R.A. explains it while reading Nizam-ul-Amal-e-Fuqara: an inner knowledge whose source is the Qur'an and the Hadith, for the reform of both body and soul.",
+  "order": 1,
+  "tags": [
+   "tasawwuf",
+   "sufism",
+   "shariat",
+   "tariqat",
+   "haqiqat",
+   "marifat"
+  ]
+ },
+ {
+  "slug": "purpose-of-the-path",
+  "title": "The purpose of the path",
+  "ur": "طریقت کا مقصد",
+  "cat": "Basics",
+  "level": "open",
+  "summary": "What the murshids want for the murid, and the stations Hazrat names along the way: tawbah, taqwa, tawakkul, sabr, tasleem, raza, fana and baqa.",
+  "order": 2,
+  "tags": [
+   "path",
+   "tawbah",
+   "taqwa",
+   "fana",
+   "nafs"
+  ]
+ },
+ {
+  "slug": "the-scale-islam-and-iman",
+  "title": "The scale, Islam and Iman",
+  "ur": "میزان، اسلام اور ایمان",
+  "cat": "Basics",
+  "level": "open",
+  "summary": "How Hazrat describes the weighing of deeds on the Day of Gathering, being with the one you love, and the difference between Islam and Iman.",
+  "order": 3,
+  "tags": [
+   "mizan",
+   "islam",
+   "iman",
+   "love",
+   "hashr"
+  ]
+ },
+ {
+  "slug": "what-is-bayat",
+  "title": "What is Bai'at?",
+  "ur": "بیعت کیا ہے؟",
+  "cat": "Bai'at",
+  "level": "open",
+  "summary": "Bai'at is a covenant: a pledge on something important, taken at the hand of a murshid. Hazrat explains it from the book Haqeeqat-e-Bai'at.",
+  "order": 1,
+  "tags": [
+   "bayat",
+   "iradat",
+   "covenant",
+   "murid"
+  ]
+ },
+ {
+  "slug": "why-a-shaykh",
+  "title": "Why a pir or shaykh?",
+  "ur": "پیر یا شیخ کی ضرورت کیوں؟",
+  "cat": "Bai'at",
+  "level": "open",
+  "summary": "If the Qur'an, the hadith and the books of fiqh are in front of us, why give bai'at at anyone's hand? Hazrat's answers: the teacher, the one trusted guide, the power of company, and love for Allah's sake.",
+  "order": 2,
+  "tags": [
+   "pir",
+   "shaykh",
+   "murshid",
+   "company",
+   "suhbat"
+  ]
+ },
+ {
+  "slug": "adab-of-the-murid",
+  "title": "Conditions and adab of the murid",
+  "ur": "مرید کی شرائط اور آداب",
+  "cat": "Bai'at",
+  "level": "open",
+  "summary": "Who can give bai'at, how to choose a murshid, how to sit in his company, what to do after a slip, and how Hazrat speaks of khilafat.",
+  "order": 3,
+  "tags": [
+   "murid",
+   "adab",
+   "murshid",
+   "khilafat",
+   "tawbah"
+  ]
+ },
+ {
+  "slug": "taking-bayat-in-the-app",
+  "title": "How to take Bai'at in this app",
+  "ur": "ایپ میں بیعت کیسے لیں",
+  "cat": "Bai'at",
+  "level": "open",
+  "summary": "What the Taking Bai'at screen shows, and how to send a request so the Khalifa can contact you. The app does not give bai'at itself.",
+  "order": 4,
+  "tags": [
+   "bayat",
+   "app",
+   "request",
+   "account"
+  ]
+ },
+ {
+  "slug": "nizam-ul-amal-overview",
+  "title": "The schedule of deeds: Nizam-ul-Amal-e-Fuqara",
+  "ur": "نظام العمل فقراء",
+  "cat": "The path",
+  "level": "open",
+  "summary": "The book Hazrat Azam Pasha R.A. read in his dars, 'the timetable of those who count themselves poor in the way of Allah', and the order of its lessons.",
+  "order": 1,
+  "tags": [
+   "nizam-ul-amal",
+   "fuqara",
+   "taqwa",
+   "tawakkul",
+   "sabr"
+  ]
+ },
+ {
+  "slug": "chilla-and-itikaf",
+  "title": "Chilla and i'tikaf",
+  "ur": "چلہ اور اعتکاف",
+  "cat": "The path",
+  "level": "open",
+  "summary": "What a chilla is, how Hazrat links it to i'tikaf, and why the thought on one point is 'the soul of worship'.",
+  "order": 2,
+  "tags": [
+   "chilla",
+   "itikaf",
+   "saum-e-maryam",
+   "worship"
+  ]
+ },
+ {
+  "slug": "where-duas-are-accepted",
+  "title": "Where du'as are accepted",
+  "ur": "دعا کہاں قبول ہوتی ہے",
+  "cat": "The path",
+  "level": "open",
+  "summary": "Hazrat's lesson from the story of Hazrat Zakariya and Bibi Maryam: the court of the awliya of Allah is a place where du'as are accepted. And why du'a is the core of worship.",
+  "order": 3,
+  "tags": [
+   "dua",
+   "awliya",
+   "maryam",
+   "zakariya"
+  ]
+ },
+ {
+  "slug": "tasawwur-e-shaykh",
+  "title": "Tasawwur-e-shaykh: its purpose",
+  "ur": "تصورِ شیخ کا مقصد",
+  "cat": "Practices",
+  "level": "murid",
+  "summary": "What tasawwur-e-shaykh is, why it is done (so that the thought becomes fixed on one point), and how Hazrat describes its fruits and its cautions. An outline, not instructions.",
+  "order": 1,
+  "tags": [
+   "tasawwur",
+   "tasawwur-e-shaykh",
+   "muraqaba",
+   "kashf"
+  ]
+ },
+ {
+  "slug": "daf-e-khatrat",
+  "title": "Driving away stray thoughts (daf'-e-khatrat)",
+  "ur": "دفعِ خطرات",
+  "cat": "Practices",
+  "level": "murid",
+  "summary": "What a khatra is, why a passing thought is forgiven but a resolve is not, and the outline of the methods the book gives for driving stray thoughts away.",
+  "order": 2,
+  "tags": [
+   "khatrat",
+   "nazar-bar-qadam",
+   "gaze",
+   "thoughts"
+  ]
+ },
+ {
+  "slug": "zikr-practices",
+  "title": "Zikr in the dars",
+  "ur": "ذکر",
+  "cat": "Practices",
+  "level": "murid",
+  "summary": "The remembrance practices Hazrat speaks of: beginning with the verse that commands it, the pact of yaad-faramosh, and the adhkar of the Divine Names. Purpose and outline only.",
+  "order": 3,
+  "tags": [
+   "zikr",
+   "dhikr",
+   "yaad-faramosh",
+   "asma",
+   "durood"
+  ]
+ },
+ {
+  "slug": "terms-used-in-the-dars",
+  "title": "Terms used in the dars",
+  "ur": "درس کی اصطلاحات",
+  "cat": "Terms",
+  "level": "open",
+  "summary": "A short glossary of the words Hazrat Azam Pasha R.A. uses, each explained only as he explains it, with where to hear it.",
+  "order": 1,
+  "tags": [
+   "glossary",
+   "terms"
+  ]
+ },
+ {
+  "slug": "faq",
+  "title": "Questions and answers",
+  "ur": "سوال و جواب",
+  "cat": "FAQ",
+  "level": "open",
+  "summary": "Five common questions, answered only from Hazrat Azam Pasha R.A.'s dars. Where the dars gives no answer, the question is for your teacher.",
+  "order": 1,
+  "tags": [
+   "faq",
+   "shaykh",
+   "bayat",
+   "khilafat"
+  ]
+ }
+]

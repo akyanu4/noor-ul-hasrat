@@ -1,0 +1,137 @@
+{
+ "slug": "nizam-ul-amal-overview",
+ "title": "The schedule of deeds: Nizam-ul-Amal-e-Fuqara",
+ "ur": "نظام العمل فقراء",
+ "cat": "The path",
+ "level": "open",
+ "order": 1,
+ "summary": "The book Hazrat Azam Pasha R.A. read in his dars, 'the timetable of those who count themselves poor in the way of Allah', and the order of its lessons.",
+ "tags": [
+  "nizam-ul-amal",
+  "fuqara",
+  "taqwa",
+  "tawakkul",
+  "sabr"
+ ],
+ "blocks": [
+  {
+   "p": "Nizam-ul-Amal-e-Fuqara is a book by Bahr-ul-Uloom, Hazrat Muhammad Abdul Qadeer Siddiqui Hasrat R.A. Hazrat Azam Pasha R.A. read it in his dars over many sessions and explained it line by line."
+  },
+  {
+   "q": "This book of Bahr-ul-Uloom, Nizam-ul-Amal-e-Fuqara, is the timetable of those who count themselves poor in the way of Allah.",
+   "src": {
+    "v": "",
+    "t": 5,
+    "label": "Nizam-ul-Amal-e-Fuqara, part 6, 0:05"
+   }
+  },
+  {
+   "p": "Who are the fuqara? 'All these people sitting here,' Hazrat says. 'If you listen to their book, you are called a faqir.' He asks everyone to read it again and again, because it teaches not only the murid but the shaykh too."
+  },
+  {
+   "h": "The lessons, in the order he read them"
+  },
+  {
+   "steps": [
+    "Part 1: why a murshid is needed, bai'at, and the aim of the book.",
+    "Part 2: tawbah (repentance); the human being as soul and body; Shariat, Tariqat, Haqiqat, Marifat; faith between fear and hope.",
+    "Part 3: taqwa; 'the Sufi is the son of time'; tawakkul; istikhara; nearness through the obligatory and the voluntary (Qurb-e-Faraiz and Qurb-e-Nawafil).",
+    "Part 4: sabr, tasleem and raza; the vices of the tongue and the heart; the nafs and Shaytan; fana-e-af'aal.",
+    "Parts 6 and 7: daf'-e-khatrat, driving away stray thoughts.",
+    "Part 8: chilla, i'tikaf, Saum-e-Maryam, Hizbul Bahr, prayer with a gathered heart, and where du'as are accepted.",
+    "Part 9: tasawwur-e-shaykh and the adhkar that help it."
+   ]
+  },
+  {
+   "note": "There is no transcript of part 5 in the project yet, so it is not covered here."
+  },
+  {
+   "h": "A few lines from the book"
+  },
+  {
+   "q": "Taqwa is to eat less, sleep less, speak less, to weep over one's own wrongs, and to overlook the faults of others.",
+   "src": {
+    "v": "oWZt1YfJ3io",
+    "t": 46,
+    "label": "Nizam-ul-Amal-e-Fuqara, part 3, 1:38"
+   }
+  },
+  {
+   "q": "To rely on Allah for your needs: this is called Tawakkul. Not working is not tawakkul.",
+   "src": {
+    "v": "AcMca39kwHo",
+    "t": 371,
+    "label": "Nizam-ul-Amal-e-Fuqara, part 3, 6:04"
+   }
+  },
+  {
+   "q": "Whatever work you have to do, do it by asking Allah. This is Istikhara.",
+   "src": {
+    "v": "AcMca39kwHo",
+    "t": 615,
+    "label": "Nizam-ul-Amal-e-Fuqara, part 3, 10:08"
+   }
+  },
+  {
+   "q": "Sabr is to bear hardships and difficulties, even while the heart finds them hard.",
+   "src": {
+    "v": "mwPT8CFRfR0",
+    "t": 21,
+    "label": "Nizam-ul-Amal-e-Fuqara, part 4, 5:48"
+   }
+  },
+  {
+   "p": "When a person bears difficulties with no resentment or complaint in his heart, it is called tasleem. When he begins to find sweetness in every pain and keeps praising Allah, he has reached raza: pleased however Allah keeps him."
+  },
+  {
+   "p": "Hazrat also says the book is only a beginning: 'It is not enough to just listen to it here. You have to read it again and again.'"
+  },
+  {
+   "note": "The last line is from the machine transcript of part 8 (2:35), which is rough; check the wording against the recording."
+  }
+ ],
+ "sources": [
+  {
+   "v": "",
+   "t": 0,
+   "label": "Nizam-ul-Amal-e-Fuqara, part 1"
+  },
+  {
+   "v": "rmv6tg6puio",
+   "t": 0,
+   "label": "Nizam-ul-Amal-e-Fuqara, part 2"
+  },
+  {
+   "v": "AcMca39kwHo",
+   "t": 0,
+   "label": "Nizam-ul-Amal-e-Fuqara, part 3"
+  },
+  {
+   "v": "UGu8yLNox9I",
+   "t": 0,
+   "label": "Nizam-ul-Amal-e-Fuqara, part 4"
+  },
+  {
+   "v": "",
+   "t": 0,
+   "label": "Nizam-ul-Amal-e-Fuqara, part 6"
+  },
+  {
+   "v": "",
+   "t": 0,
+   "label": "Nizam-ul-Amal-e-Fuqara, part 8"
+  },
+  {
+   "v": "",
+   "t": 0,
+   "label": "Nizam-ul-Amal-e-Fuqara, part 9"
+  }
+ ],
+ "related": [
+  "purpose-of-the-path",
+  "chilla-and-itikaf",
+  "daf-e-khatrat"
+ ],
+ "drafted": "2026-11-18",
+ "by": "Draft prepared from the dars transcripts, awaiting teacher approval"
+}
