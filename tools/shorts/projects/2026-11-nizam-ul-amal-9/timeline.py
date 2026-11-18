@@ -59,7 +59,7 @@ SHORTS = {
         ("voice", 1210.20, 1217.70, "clip:N9S5-03"),
         ("voice", 1217.70, 1226.00, "clip:N9S5-04"),
         ("voice", 1226.00, 1236.00, "clip:N9S5-05"),
-        ("voice", 1236.00, 1246.50, "clip:N9S5-06"),
+        ("voice", 1236.00, 1246.50, "clip:N9S5-06", {"dip": True}),   # dip to dark from the feet: no shoe or foot over the Ka'bah
         ("voice", 1249.70, 1257.80, "clip:N9S5-07"),
         ("voice", 1257.80, 1267.40, "clip:N9S5-08"),
         ("voice", 1267.40, 1278.60, "clip:N9S5-09"),

@@ -32,7 +32,8 @@ import scenes_i as I; SCENES.update(I.SCENES)   # step-by-step teaching cards (s
 def build(tl):
     segs, T = [], 0.0
     for e in tl:
-        if e[0] == "voice": d = e[2] - e[1]; segs.append(dict(kind="voice", a=e[1], b=e[2], scene=e[3], T=T, d=d))
+        if e[0] == "voice":   # optional 5th item: options, e.g. {"dip": True} = dip to dark into this scene instead of a crossfade
+            d = e[2] - e[1]; segs.append(dict(kind="voice", a=e[1], b=e[2], scene=e[3], T=T, d=d, **(e[4] if len(e) > 4 else {})))
         elif e[0] == "pause": d = e[1]; segs.append(dict(kind="pause", scene=e[2], args=e[3], T=T, d=d))
         else: d = e[1]; segs.append(dict(kind=e[0], T=T, d=d))
         T += d
@@ -121,7 +122,10 @@ class Renderer:
         X = 0.45
         if i > 0 and tl < X:
             pv = self.segs[i - 1]
-            img = Image.blend(seg_frame(pv, pv["d"] + tl), img, tl / X)
+            if sg.get("dip"):   # dip to dark: the old picture fades out, then the new one fades in (no double exposure)
+                blk = Image.new("RGB", img.size, (0, 0, 0))
+                img = Image.blend(seg_frame(pv, pv["d"] + tl), blk, tl / (X / 2)) if tl < X / 2 else Image.blend(blk, img, (tl - X / 2) / (X / 2))
+            else: img = Image.blend(seg_frame(pv, pv["d"] + tl), img, tl / X)
         if i == 0 and sg["kind"] in ("voice",) and tl < 0.4: img = Image.blend(Image.new("RGB", img.size, (0, 0, 0)), img, tl / 0.4)
         last = self.segs[-1]
         if T > self.total - 0.5 and last["kind"] == "endcard": img = Image.blend(img, Image.new("RGB", img.size, (0, 0, 0)), (T - (self.total - 0.5)) / 0.5)

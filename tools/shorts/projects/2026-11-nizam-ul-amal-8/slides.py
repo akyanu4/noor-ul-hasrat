@@ -17,7 +17,7 @@ SLIDES = {
         (650.10, "N8S1-05", "all"),                                                             # NEW
         (659.00, "N8S1-06", "all"),                                                             # N6S5-03
         (698.80, "N8S1-07", "all"),                                                             # N6S5-01
-        (709.70, "N8S1-08", "all", {'text': 'ترک حیوانات'}),                                    # NEW: tark-e-haiwanat: no meat, no ghee
+        (708.90, "N8S1-08", "all", {'text': 'ترک حیوانات'}),                                    # NEW: tark-e-haiwanat: no meat, no ghee
         (771.00, "N8S1-09", "all", {'text': 'اعتکاف'}),                                         # N7S1-11: a chilla is i'tikaf
         (777.60, "N8S1-10", "all"),                                                             # NEW
     ],

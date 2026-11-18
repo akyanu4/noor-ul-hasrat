@@ -13,8 +13,8 @@ SHORTS = {
         ("voice", 641.30, 650.10, "clip:N8S1-04"),
         ("voice", 650.10, 659.00, "clip:N8S1-05"),
         ("voice", 659.00, 669.60, "clip:N8S1-06"),
-        ("voice", 698.80, 709.70, "clip:N8S1-07"),
-        ("voice", 709.70, 718.90, "clip:N8S1-08"),
+        ("voice", 698.80, 708.90, "clip:N8S1-07"),
+        ("voice", 708.90, 718.90, "clip:N8S1-08"),   # starts in the quiet before "So the Prophet ﷺ took neither meat nor ghee", so the feast is gone under it
         ("voice", 771.00, 777.60, "clip:N8S1-09"),
         ("voice", 777.60, 791.50, "clip:N8S1-10"),
         ("endcard", 5.5)]),
