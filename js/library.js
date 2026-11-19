@@ -39,8 +39,9 @@
   var body = s.querySelector('#lbBody');
 
   var backFn = null, index = null, ok = {}, isTeacher = false, cat = 'All', q = '', cur = '', from = 'more';
-  var lang = 'en'; try { lang = localStorage.getItem('noor_lib_lang') === 'ru' ? 'ru' : 'en'; } catch (e) {}
-  function setLang(l) { lang = l; try { localStorage.setItem('noor_lib_lang', l); } catch (e) {} }
+  var lang = N.lang ? N.lang() : 'en';
+  function setLang(l) { lang = l; if (N.setLang) N.setLang(l); }
+  root.addEventListener('noorlang', function (e) { lang = e.detail; if (s.classList.contains('active')) { if (cur) paintArticle(cur); else paintList(); } });
   function T(a, k) { return lang === 'ru' && a['ru_' + k] ? a['ru_' + k] : a[k]; }
   var LANGBAR = function () { return '<div class="lb-lang" role="group" aria-label="Language"><button type="button" data-l="en"' + (lang === 'en' ? ' class="on"' : '') + '>English</button><button type="button" data-l="ru"' + (lang === 'ru' ? ' class="on"' : '') + '>Roman Urdu</button></div>'; };
   var CATS = ['All', 'Basics', "Bai'at", 'The path', 'Practices', 'Terms', 'FAQ'];
