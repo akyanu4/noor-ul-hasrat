@@ -51,7 +51,7 @@
     { id: "zq-fresh-meats", name: "ZQ Fresh Meats & Seafood", area: "Mallepally, Hyderabad",
       about: "Fresh meats and seafood. Mallepally, opposite Priya Theatre.",
       phone: "+91 70361 56149",
-      map: "https://www.google.com/maps/search/?api=1&query=ZQ+Fresh+Meats+%26+Seafood+Mallepally+opposite+Priya+Theatre+Hyderabad",
+      map: "https://www.google.com/maps/search/?api=1&query=17.3903675%2C78.455307",
       ad: { img: "photos/ads/zq-fresh-meats-inauguration.jpg", tag: "News", title: "New shop opens: ZQ Fresh Meats & Seafood",
         sub: "Inaugurated on 19 Nov by Hazrat Noor Uddin Siddiqui (Nayeem Baba) · Mallepally, opp. Priya Theatre",
         from: "2026-11-18", until: "2026-11-24" } }
