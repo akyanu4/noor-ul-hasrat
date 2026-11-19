@@ -447,16 +447,17 @@ h2.section-title:first-child{margin-top:2px;}
         <div class="backbtn" id="halqaBack">←</div>
         <div class="subtitle">Halqa &amp; Community</div>
       </div>
+      <div id="halqaLang"></div>
 
       <div class="halqa-hero">
         <div class="hname">Halqa-e-Zikr</div>
-        <div class="hwhen">Every Saturday · 8:30 – 9:30 PM (India time)</div>
-        <div class="hlead" id="halqaLead" role="button" tabindex="0" style="display:flex;align-items:center;gap:10px;justify-content:center;margin:10px 0 4px;cursor:pointer"><img src="photos/shaykh-nayeem.jpg" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--gold)"><span style="text-align:left;font-size:13px;line-height:1.35">Led by<br><b>Hazrat Noor Uddin Siddiqui (Nayeem Baba)</b> ›</span></div>
+        <div class="hwhen" data-ru="Har Saturday · raat 8:30 – 9:30 (India ka waqt)">Every Saturday · 8:30 – 9:30 PM (India time)</div>
+        <div class="hlead" id="halqaLead" role="button" tabindex="0" style="display:flex;align-items:center;gap:10px;justify-content:center;margin:10px 0 4px;cursor:pointer"><img src="photos/shaykh-nayeem.jpg" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--gold)"><span style="text-align:left;font-size:13px;line-height:1.35"><span data-ru="Halqa karwaate hain">Led by</span><br><b>Hazrat Noor Uddin Siddiqui (Nayeem Baba)</b> ›</span></div>
         <div class="hlocal" id="halqaLocal"></div>
         <div class="hcount" id="halqaCountdown"></div>
         <div class="hmeta">
-          <div class="hchip">📍 Offline circle</div>
-          <div class="hchip">💻 Online via video call</div>
+          <div class="hchip" data-ru="📍 Offline halqa">📍 Offline circle</div>
+          <div class="hchip" data-ru="💻 Online, video call se">💻 Online via video call</div>
         </div>
         <div class="rsvp-row">
           <div class="rsvp-btn primary" id="rsvpOnline">I'll join online</div>
@@ -475,11 +476,11 @@ h2.section-title:first-child{margin-top:2px;}
       <div class="notice-box" id="halqaNotice" hidden></div>
 
       <div class="etiquette-box">
-        <b>Before you join</b>
-        Please keep your audio and video off during the circle. The room opens 15 minutes before the start — latecomers are welcome to join quietly.
+        <b data-ru="Join karne se pehle">Before you join</b>
+        <span data-ru="Halqa ke dauraan apna audio aur video band rakhiye. Room shuru hone se 15 minute pehle khulta hai — der se aane wale khaamoshi se join kar sakte hain.">Please keep your audio and video off during the circle. The room opens 15 minutes before the start — latecomers are welcome to join quietly.</span>
       </div>
 
-      <h2 class="section-title">Collective dhikr</h2>
+      <h2 class="section-title" data-ru="Mil kar zikr">Collective dhikr</h2>
       <div class="campaign-card">
         <div class="ctitle" id="campaignTitle">Collective dhikr</div>
         <div class="carabic" id="campaignArabic" hidden></div>
@@ -494,10 +495,10 @@ h2.section-title:first-child{margin-top:2px;}
         <div class="csub" id="myTally" style="margin-top:10px"></div>
       </div>
 
-      <h2 class="section-title">Recent updates</h2>
+      <h2 class="section-title" data-ru="Taaza updates">Recent updates</h2>
       <div class="rowlist">
-        <div class="rowitem"><div class="ic">✅</div><div class="tx">Previous dua completed<div class="sub">Alhamdulillah — accepted, in sha Allah</div></div></div>
-        <div class="rowitem"><div class="ic">🕯️</div><div class="tx">This week's circle confirmed<div class="sub">Offline + online, as usual</div></div></div>
+        <div class="rowitem"><div class="ic">✅</div><div class="tx"><span data-ru="Pichhli dua mukammal hui">Previous dua completed</span><div class="sub" data-ru="Alhamdulillah — qabool, in sha Allah">Alhamdulillah — accepted, in sha Allah</div></div></div>
+        <div class="rowitem"><div class="ic">🕯️</div><div class="tx"><span data-ru="Is hafte ka halqa pakka hai">This week's circle confirmed</span><div class="sub" data-ru="Offline + online, hamesha ki tarah">Offline + online, as usual</div></div></div>
       </div>
     </div>
 
@@ -1170,6 +1171,21 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
 }
 </script>
 <script src="js/lang.js"></script>
+<script>
+/* Halqa screen: the instruction lines in English or Roman Urdu (elements with data-ru; the English stays in the markup). */
+(function(){
+  var N = window.Noor, scr = document.getElementById('screen-halqa'); if(!N || !N.T || !scr) return;
+  function paintHalqaLang(){
+    document.getElementById('halqaLang').innerHTML = N.langSwitch();
+    scr.querySelectorAll('[data-ru]').forEach(function(e){
+      if(!e.hasAttribute('data-en')) e.setAttribute('data-en', e.textContent);
+      e.textContent = N.T(e.getAttribute('data-en'), e.getAttribute('data-ru'));
+    });
+  }
+  paintHalqaLang();
+  window.addEventListener('noorlang', paintHalqaLang);
+})();
+</script>
 <script src="js/features.js"></script>
 <script src="js/account.js"></script>
 <script src="js/rewards.js"></script>

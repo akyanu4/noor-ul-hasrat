@@ -11,6 +11,7 @@
   } catch (e) {}
   if (!cfg.bayahOn && !preview) return;
   var esc = N.esc;
+  function LT(en, ru) { return N.T ? N.T(en, ru) : en; }   // English or Roman Urdu (js/lang.js)
 
   // ---- drawings (no faces): gold lines on a soft teal card
   var G = '#c9a24b', T = '#0f3d3e', S = '#e7d4a3';
@@ -44,25 +45,39 @@
   var ISTIGHFAR_AR = 'أَسْتَغْفِرُ اللّٰهَ الْعَظِيمَ الَّذِي لَا إِلٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ وَأَتُوبُ إِلَيْهِ';
   var STEPS = [
     { art: 'look', t: 'Look first, then give your hand', b: 'Choose a murshid: a shaykh, or a khalifa he has authorised, who follows the Shari’ah and the Sunnah. Hazrat said: “Look first and understand, then give your hand. Otherwise regret follows.”',
-      q: 'A sign of a good murshid: in his company the whisperings and idle thoughts stop, and the heart becomes bound to Allah and His Messenger ﷺ.' },
-    { art: 'heart', t: 'Come with tawbah and taqwa', b: 'Bai’at is a covenant. In the time of the Prophet ﷺ bai’at was taken on becoming Muslim, on repenting, and to stay firm in the love of Allah and His Messenger ﷺ. In bai’at there is both taqwa and tawbah: come with a sincere intention to turn back to Allah.' },
+      q: 'A sign of a good murshid: in his company the whisperings and idle thoughts stop, and the heart becomes bound to Allah and His Messenger ﷺ.',
+      ru_t: 'Pehle dekho, phir haath do', ru_b: 'Murshid chuniye: koi shaykh, ya unke ijazat-yaafta khalifa, jo Shari’ah aur Sunnah par chalte hon. Hazrat ne farmaya: “Pehle dekho aur samjho, phir haath do. Warna pachtaawa hota hai.”',
+      ru_q: 'Achhe murshid ki tameez: jis ki sohbat mein waswase aur fuzool khayalaat sab band ho jaayein, aur dil Allah aur Uske Rasool ﷺ ke saath waabasta ho jaaye.' },
+    { art: 'heart', t: 'Come with tawbah and taqwa', b: 'Bai’at is a covenant. In the time of the Prophet ﷺ bai’at was taken on becoming Muslim, on repenting, and to stay firm in the love of Allah and His Messenger ﷺ. In bai’at there is both taqwa and tawbah: come with a sincere intention to turn back to Allah.',
+      ru_t: 'Tawbah aur taqwa ke saath aaiye', ru_b: 'Bai’at ek ahad hai. Huzoor ﷺ ke zamaane mein bai’at Musalmaan hone par li jaati thi, tawbah karne par, aur Allah aur Uske Rasool ﷺ ki mohabbat mein saabit-qadam rehne ke liye. Bai’at mein dono hain, taqwa aur tawbah: Allah ki taraf lautne ki sachchi niyyat le kar aaiye.' },
     { art: 'tasbeeh', t: 'It begins with istighfar', b: 'Becoming a murid begins with istighfar. Recite with the shaykh:', ar: ISTIGHFAR_AR,
-      tr: 'Astaghfirullah al-‘Azeem alladhi la ilaha illa Huwa al-Hayy al-Qayyum wa atubu ilayh.', mn: 'I ask forgiveness of Allah the Almighty, besides whom there is no god, the Ever-Living, the Self-Sustaining, and I turn to Him in repentance.' },
+      tr: 'Astaghfirullah al-‘Azeem alladhi la ilaha illa Huwa al-Hayy al-Qayyum wa atubu ilayh.', mn: 'I ask forgiveness of Allah the Almighty, besides whom there is no god, the Ever-Living, the Self-Sustaining, and I turn to Him in repentance.',
+      ru_t: 'Shuruaat istighfar se', ru_b: 'Murid hona istighfar se shuru hota hai. Shaykh ke saath padhiye:',
+      ru_mn: 'Main Allah se maafi maangta hoon jo bahut azmat wala hai, jis ke siwa koi ma’bood nahin, jo hamesha zinda hai aur sab ko qaayam rakhne wala hai, aur main Usi ki taraf tawbah karta hoon.' },
     { art: 'hands', t: 'Give your hand (men)', b: 'The shaykh takes the man’s hand in his, as the Companions placed their hands in the blessed hand of the Prophet ﷺ.',
-      ar: 'إِنَّ الَّذِينَ يُبَايِعُونَكَ إِنَّمَا يُبَايِعُونَ اللّٰهَ يَدُ اللّٰهِ فَوْقَ أَيْدِيهِمْ', mn: 'Indeed, those who pledge allegiance to you are pledging allegiance to Allah. The Hand of Allah is over their hands. (Surah al-Fath 48:10)' },
+      ar: 'إِنَّ الَّذِينَ يُبَايِعُونَكَ إِنَّمَا يُبَايِعُونَ اللّٰهَ يَدُ اللّٰهِ فَوْقَ أَيْدِيهِمْ', mn: 'Indeed, those who pledge allegiance to you are pledging allegiance to Allah. The Hand of Allah is over their hands. (Surah al-Fath 48:10)',
+      ru_t: 'Haath dijiye (mard)', ru_b: 'Shaykh mard ka haath apne haath mein lete hain, jaise Sahaba ne apne haath Huzoor ﷺ ke mubarak haath mein diye the.',
+      ru_mn: 'Beshak jo log aap se bai’at karte hain, woh Allah hi se bai’at karte hain. Allah ka haath unke haathon ke upar hai. (Surah al-Fath 48:10)' },
     { art: 'cloth', t: 'Women and children', b: 'For women, bai’at by word of mouth alone is enough: the murshid says “I take this bai’at from you; be steadfast on it,” and she answers “I am steadfast.” The elders also hold one corner of a handkerchief or shawl and give the other corner to her, or keep water in a basin with the shaykh’s hand on one side and hers on the other. She does not need to unveil before the shaykh.',
-      q: 'Small children are sometimes given bai’at for blessing: this is called bai’at-e-barakat.' },
-    { art: 'pledge', t: 'The pledge', b: 'After the istighfar comes the promise. In Hazrat’s words:', q: '“I promise that, as far as I can, I will walk according to the commands of Allah and of His Messenger ﷺ, keep away from what is bad, and hold fast to what is good.”' },
+      q: 'Small children are sometimes given bai’at for blessing: this is called bai’at-e-barakat.',
+      ru_t: 'Auratein aur bachche', ru_b: 'Auraton ki bai’at mein khaali zabaan se bai’at kar lena kaafi hota hai: murshid kehte hain “Main tum se yeh bai’at leta hoon, tum is par qaayam ho jao,” aur woh kehti hai “Main qaayam ho gayi.” Buzurg apne rumaal ya chaadar ka ek gosha khud pakadte hain aur doosra gosha aurat ko dete hain, ya lagan mein paani rakhte hain: ek jaanib shaykh ka haath hota hai aur doosri jaanib murid hone wali aurat ka. Shaykh ke saamne be-parda hona koi zaroori cheez nahin hai.',
+      ru_q: 'Ba’z dafa chhote kam-samajh bachchon se bhi bai’at le li jaati hai; isko bai’at-e-barakat kehte hain.' },
+    { art: 'pledge', t: 'The pledge', b: 'After the istighfar comes the promise. In Hazrat’s words:', q: '“I promise that, as far as I can, I will walk according to the commands of Allah and of His Messenger ﷺ, keep away from what is bad, and hold fast to what is good.”',
+      ru_t: 'Ahad', ru_b: 'Istighfar ke baad waada hota hai. Hazrat ke alfaaz mein:',
+      ru_q: '“Main waada karta hoon ke mujh se jis qadar ho sakega, Allah ke aur Allah ke Rasool ﷺ ke hukmon ke mutaabiq chaloonga, razaail (buraaiyon) se ijtinaab karunga aur fazaail (achhaaiyon) par kaarband rahoonga.”' },
     { art: 'dua', t: 'The shaykh’s du’a', b: 'The murshid asks Allah to forgive the new murid, and there is hope that it is accepted.',
       ar: NISA_AR,
-      mn: '“If, when they had wronged themselves, they had come to you and asked Allah’s forgiveness, and the Messenger had asked forgiveness for them, they would have found Allah Accepting of repentance, Most Merciful.” (Surah an-Nisa 4:64)' },
-    { art: 'rope', t: 'After bai’at: hold the rope', b: 'Through bai’at the murid holds the rope that reaches from the Prophet ﷺ through the chain of masters. Follow your shaykh’s guidance: practices of dhikr are learnt from him, so that you reach the right station. If you slip, do not despair: repent and recite the istighfar again. Repentance never goes to waste, and bai’at can be renewed: the Prophet ﷺ told a Companion who had already given it, “Give bai’at again.”' }
+      mn: '“If, when they had wronged themselves, they had come to you and asked Allah’s forgiveness, and the Messenger had asked forgiveness for them, they would have found Allah Accepting of repentance, Most Merciful.” (Surah an-Nisa 4:64)',
+      ru_t: 'Shaykh ki dua', ru_b: 'Murshid naye murid ke liye Allah se maafi ki dua karte hain, aur umeed hai ke qabool hogi.',
+      ru_mn: '“Aur agar woh log, jab unhon ne apni jaanon par zulm kiya tha, aap ke paas aate, aur Allah se maafi maangte, aur Rasool bhi unke liye maafi maangte, to woh Allah ko bahut tawbah qabool karne wala, nihaayat meherbaan paate.” (Surah an-Nisa 4:64)' },
+    { art: 'rope', t: 'After bai’at: hold the rope', b: 'Through bai’at the murid holds the rope that reaches from the Prophet ﷺ through the chain of masters. Follow your shaykh’s guidance: practices of dhikr are learnt from him, so that you reach the right station. If you slip, do not despair: repent and recite the istighfar again. Repentance never goes to waste, and bai’at can be renewed: the Prophet ﷺ told a Companion who had already given it, “Give bai’at again.”',
+      ru_t: 'Bai’at ke baad: rassi ko thaame rakhiye', ru_b: 'Bai’at ke zariye murid us rassi ko thaam leta hai jo Huzoor ﷺ se buzurgon ke silsile ke zariye pahunchti hai. Apne shaykh ki rehnumai par chaliye: zikr ke amal unhi se seekhe jaate hain, taaki aap sahi maqaam tak pahunchein. Agar ghalti ho jaaye to maayoos na hoiye: tawbah kijiye aur phir se istighfar padhiye. Tauba kabhi zaaya nahin jaati, aur bai’at ki tajdeed ho sakti hai: Huzoor ﷺ ne ek Sahabi se, jo pehle bai’at kar chuke the, farmaya: “Phir se bai’at karo.”' }
   ];
-  var STEPS_SHORT = { id: '0yhKLLlv5ww', title: 'How to Take Bai’at: Step by Step' };   // the steps in Hazrat's voice, shown at the top
+  var STEPS_SHORT = { id: '0yhKLLlv5ww', title: 'How to Take Bai’at: Step by Step', ru_title: 'Bai’at kaise lein: step by step' };   // the steps in Hazrat's voice, shown at the top
   var SHORTS = [
-    { id: 'TkSFt5BlMzs', title: 'What Is Bai’at? Hand Upon Hand' }, { id: 'VlU4EcJGVgQ', title: 'The Hand of Allah' },
-    { id: 'ufZ_iEByRmI', title: 'Why One Trusted Guide? The Lawyer and the Shaykh' }, { id: '883RmkRT9mE', title: 'Whoever Has No Pir, His Pir Is Shaytan' },
-    { id: '56xW_CnWB0w', title: 'The Big Stone and the Small Pebble: The Power of Company' }
+    { id: 'TkSFt5BlMzs', title: 'What Is Bai’at? Hand Upon Hand', ru_title: 'Bai’at kya hai? Haath par haath' }, { id: 'VlU4EcJGVgQ', title: 'The Hand of Allah', ru_title: 'Allah ka haath' },
+    { id: 'ufZ_iEByRmI', title: 'Why One Trusted Guide? The Lawyer and the Shaykh', ru_title: 'Ek hi bharose ka rehnuma kyun? Wakeel aur shaykh' }, { id: '883RmkRT9mE', title: 'Whoever Has No Pir, His Pir Is Shaytan', ru_title: 'Jiska koi pir nahin, uska pir Shaitaan hai' },
+    { id: '56xW_CnWB0w', title: 'The Big Stone and the Small Pebble: The Power of Company', ru_title: 'Bada patthar aur chhota kankar: sohbat ki taaqat' }
   ];
 
   var css = doc.createElement('style');
@@ -88,63 +103,66 @@
   var body = s.querySelector('#byBody');
 
   function paint() {
-    var F = root.NoorFamily, h = '';
-    if (!cfg.bayahOn) h += '<div class="by-draft"><b>Draft for review.</b> Only phones opened with ?bayah=1 see this page. Members still see “coming soon” until it is approved.</div>';
-    h += '<div class="by-hero"><b>Taking Bai’at</b><p>Bai’at (iradat) is a covenant with Allah at the hand of a murshid. These are the steps as Hazrat Azam Pasha R.A. explained them in the dars Haqeeqat-e-Bai’at. Your shaykh or his khalifa will guide you through them.</p>' +
+    var F = root.NoorFamily, h = N.langSwitch ? N.langSwitch() : '';
+    if (!cfg.bayahOn) h += '<div class="by-draft">' + LT('<b>Draft for review.</b> Only phones opened with ?bayah=1 see this page. Members still see “coming soon” until it is approved.', '<b>Review ke liye draft.</b> Yeh page sirf un phones par dikhta hai jo ?bayah=1 se khole gaye. Approve hone tak members ko abhi “coming soon” hi dikhta hai.') + '</div>';
+    h += '<div class="by-hero"><b>Taking Bai’at</b><p>' + LT('Bai’at (iradat) is a covenant with Allah at the hand of a murshid. These are the steps as Hazrat Azam Pasha R.A. explained them in the dars Haqeeqat-e-Bai’at. Your shaykh or his khalifa will guide you through them.',
+      'Bai’at (iradat) murshid ke haath par Allah se ek ahad hai. Yeh woh steps hain jo Hazrat Azam Pasha R.A. ne dars Haqeeqat-e-Bai’at mein samjhaaye. Aapke shaykh ya unke khalifa in mein aapki rehnumai karenge.') + '</p>' +
       '<div class="ur">' + esc(F && F.BAYAH_UR || '') + '</div></div>';
     h += reqCard(false);
     var v = STEPS_SHORT;
-    h += '<div class="by-vid"><div class="fm-sth" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(v.title) + '"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg\'"><div class="fm-play">▶</div></div>' +
-      '<div><b>Watch the steps</b><p>All the steps of Bai’at in Hazrat Azam Pasha R.A.’s own voice, with pictures (about 3 minutes).</p><span class="go by-play">▶ Play the video</span></div></div>';
+    h += '<div class="by-vid"><div class="fm-sth" data-id="' + v.id + '" role="button" aria-label="Play ' + esc(LT(v.title, v.ru_title)) + '"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg\'"><div class="fm-play">▶</div></div>' +
+      '<div><b>' + LT('Watch the steps', 'Steps dekhiye') + '</b><p>' + LT('All the steps of Bai’at in Hazrat Azam Pasha R.A.’s own voice, with pictures (about 3 minutes).', 'Bai’at ke saare steps Hazrat Azam Pasha R.A. ki apni aawaaz mein, tasweeron ke saath (taqreeban 3 minute).') + '</p><span class="go by-play">' + LT('▶ Play the video', '▶ Video chalaaiye') + '</span></div></div>';
     STEPS.forEach(function (st, i) {
-      h += '<div class="by-step"><div class="by-art"><span class="by-n">' + (i + 1) + '</span>' + ART[st.art] + '</div><div class="by-tx"><h3>' + esc(st.t) + '</h3><p>' + esc(st.b) + '</p>' +
-        (st.ar ? '<div class="by-ar" lang="ar">' + esc(st.ar) + '</div>' : '') + (st.tr ? '<div class="by-tr">' + esc(st.tr) + '</div>' : '') + (st.mn ? '<div class="by-mn">' + esc(st.mn) + '</div>' : '') +
-        (st.q ? '<p class="q" style="margin-top:8px">' + esc(st.q) + '</p>' : '') + '</div></div>';
+      var mn = LT(st.mn, st.ru_mn), q = LT(st.q, st.ru_q);
+      h += '<div class="by-step"><div class="by-art"><span class="by-n">' + (i + 1) + '</span>' + ART[st.art] + '</div><div class="by-tx"><h3>' + esc(LT(st.t, st.ru_t)) + '</h3><p>' + esc(LT(st.b, st.ru_b)) + '</p>' +
+        (st.ar ? '<div class="by-ar" lang="ar">' + esc(st.ar) + '</div>' : '') + (st.tr ? '<div class="by-tr">' + esc(st.tr) + '</div>' : '') + (mn ? '<div class="by-mn">' + esc(mn) + '</div>' : '') +
+        (q ? '<p class="q" style="margin-top:8px">' + esc(q) + '</p>' : '') + '</div></div>';
     });
-    if (F && F.shortsGrid) h += '<h2 class="section-title" style="margin-top:6px">Hear it from Hazrat Azam Pasha R.A.</h2>' + F.shortsGrid(SHORTS);
+    if (F && F.shortsGrid) h += '<h2 class="section-title" style="margin-top:6px">' + LT('Hear it from Hazrat Azam Pasha R.A.', 'Hazrat Azam Pasha R.A. se suniye') + '</h2>' + F.shortsGrid(SHORTS.map(function (x) { return { id: x.id, title: LT(x.title, x.ru_title) }; }));
     h += reqCard(true);
-    h += '<div class="by-src">From the dars Haqeeqat-e-Bai’at of Hazrat Azam Pasha R.A. The words of the istighfar and the pledge may differ a little from one silsila to another: follow what your shaykh or khalifa teaches.</div>';
+    h += '<div class="by-src">' + LT('From the dars Haqeeqat-e-Bai’at of Hazrat Azam Pasha R.A. The words of the istighfar and the pledge may differ a little from one silsila to another: follow what your shaykh or khalifa teaches.',
+      'Hazrat Azam Pasha R.A. ke dars Haqeeqat-e-Bai’at se. Istighfar aur ahad ke alfaaz ek silsile se doosre silsile mein thode alag ho sakte hain: jo aapke shaykh ya khalifa sikhaayein, usi par chaliye.') + '</div>';
     body.innerHTML = h;
   }
   // ---- "Request to take Bai'at": sign up (free), then a short request saved to the member's own profile (profiles/<uid>/bayah_request)
   var editing = false, rmsg = '';
   function fmtDay(t) { try { return new Date(t).toLocaleDateString([], { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } }
   function reqCard(bottom) {
-    var A = root.NoorAccount, st = A && A.on ? A.bayahStatus() : 'signin', head = '<b>🤝 Request to take Bai’at</b><p>Sign up (free) and submit a request; the Khalifa will contact you, in shaa Allah.</p>';
+    var A = root.NoorAccount, st = A && A.on ? A.bayahStatus() : 'signin', head = '<b>' + LT('🤝 Request to take Bai’at', '🤝 Bai’at lene ki request') + '</b><p>' + LT('Sign up (free) and submit a request; the Khalifa will contact you, in shaa Allah.', 'Sign up kijiye (muft hai) aur request bhejiye; Khalifa aap se raabta karenge, in shaa Allah.') + '</p>';
     if (bottom) {   // a short repeat at the end of the page
-      if (st === 'signin') return '<div class="by-req">' + head + '<button class="ac-btn by-signup" type="button">Sign up and request Bai’at</button></div>';
-      if (st === 'none' && !(A.bayahRequest())) return '<div class="by-req">' + head + '<button class="ac-btn alt by-totop" type="button">↑ Submit your request</button></div>';
+      if (st === 'signin') return '<div class="by-req">' + head + '<button class="ac-btn by-signup" type="button">' + LT('Sign up and request Bai’at', 'Sign up kar ke Bai’at ki request bhejiye') + '</button></div>';
+      if (st === 'none' && !(A.bayahRequest())) return '<div class="by-req">' + head + '<button class="ac-btn alt by-totop" type="button">' + LT('↑ Submit your request', '↑ Apni request bhejiye') + '</button></div>';
       return '';
     }
     var h = '<div class="by-req" id="byReq">';
-    if (st === 'signin') return h + head + '<button class="ac-btn by-signup" type="button">Sign up and request Bai’at</button><div class="ac-sub" style="margin-top:8px">Already have an account? <a href="#" class="by-signin">Sign in</a></div></div>';
+    if (st === 'signin') return h + head + '<button class="ac-btn by-signup" type="button">' + LT('Sign up and request Bai’at', 'Sign up kar ke Bai’at ki request bhejiye') + '</button><div class="ac-sub" style="margin-top:8px">' + LT('Already have an account? <a href="#" class="by-signin">Sign in</a>', 'Pehle se account hai? <a href="#" class="by-signin">Sign in kijiye</a>') + '</div></div>';
     if (st === 'pending' || st === 'approved' || st === 'rejected') {
       var p = A.profile() || {}, w = p.bayah && p.bayah.with;
-      var t = st === 'approved' ? ['✅', 'Your Bai’at' + (w ? ' with ' + esc(w) : '') + ' is approved. The full dars and the dhikr practices are open for you.']
-        : st === 'pending' ? ['⏳', 'You have marked that you took Bai’at' + (w ? ' with ' + esc(w) : '') + '. Waiting for the admin’s approval.']
-        : ['ℹ️', 'Your Bai’at could not be confirmed yet. Please contact Alhaj Rasheed Khan (Ayub) (More → About &amp; Support).'];
-      return h + '<b>🤝 Your Bai’at</b><div class="st" style="margin-top:8px"><i>' + t[0] + '</i><div>' + t[1] + '</div></div><button class="ac-btn alt sm by-acct" type="button">Open My Account</button></div>';
+      var t = st === 'approved' ? ['✅', LT('Your Bai’at' + (w ? ' with ' + esc(w) : '') + ' is approved. The full dars and the dhikr practices are open for you.', 'Aapki Bai’at' + (w ? ' (' + esc(w) + ' se)' : '') + ' approve ho gayi hai. Poora dars aur zikr ke amal aapke liye khul gaye hain.')]
+        : st === 'pending' ? ['⏳', LT('You have marked that you took Bai’at' + (w ? ' with ' + esc(w) : '') + '. Waiting for the admin’s approval.', 'Aapne mark kiya hai ke aapne' + (w ? ' ' + esc(w) + ' se' : '') + ' Bai’at li hai. Admin ke approval ka intezaar hai.')]
+        : ['ℹ️', LT('Your Bai’at could not be confirmed yet. Please contact Alhaj Rasheed Khan (Ayub) (More → About &amp; Support).', 'Aapki Bai’at abhi tasdeeq nahin ho saki. Meharbaani karke Alhaj Rasheed Khan (Ayub) se raabta kijiye (More → About &amp; Support).')];
+      return h + '<b>' + LT('🤝 Your Bai’at', '🤝 Aapki Bai’at') + '</b><div class="st" style="margin-top:8px"><i>' + t[0] + '</i><div>' + t[1] + '</div></div><button class="ac-btn alt sm by-acct" type="button">' + LT('Open My Account', 'My Account kholiye') + '</button></div>';
     }
     var pr = A.profile() || {}, rq = A.bayahRequest();
-    head = '<b>🤝 Request to take Bai’at</b><p>Submit a request; the Khalifa will contact you, in shaa Allah.</p>';
-    if (!pr.name) return h + head + '<div class="st"><i>✍️</i><div>One more step: add your name in My Account to finish your account, then come back here.</div></div><button class="ac-btn by-acct" type="button">Finish my account</button></div>';
+    head = '<b>' + LT('🤝 Request to take Bai’at', '🤝 Bai’at lene ki request') + '</b><p>' + LT('Submit a request; the Khalifa will contact you, in shaa Allah.', 'Request bhejiye; Khalifa aap se raabta karenge, in shaa Allah.') + '</p>';
+    if (!pr.name) return h + head + '<div class="st"><i>✍️</i><div>' + LT('One more step: add your name in My Account to finish your account, then come back here.', 'Bas ek step aur: My Account mein apna naam daal kar account mukammal kijiye, phir yahaan waapas aaiye.') + '</div></div><button class="ac-btn by-acct" type="button">' + LT('Finish my account', 'Apna account mukammal kijiye') + '</button></div>';
     if (rq && !editing) {
-      return h + '<b>🤝 Request to take Bai’at</b><div class="st" style="margin-top:8px"><i>📨</i><div><b>Request sent on ' + esc(fmtDay(rq.at)) + '.</b> ' +
-        (A.bayahContacted() ? 'The Khalifa’s side has been in touch with you.' : 'The Khalifa will contact you, in shaa Allah.') +
-        '<div class="ac-sub" style="margin-top:4px">With: ' + esc(rq.with === 'Any' ? 'Whoever you suggest' : rq.with) + ' · Mobile: ' + esc(rq.phone || '–') + (rq.note ? '<br>“' + esc(rq.note) + '”' : '') + '</div></div></div>' +
-        '<div class="row"><button class="ac-btn alt sm by-edit" type="button">Edit</button><button class="ac-btn alt sm by-withdraw" type="button">Withdraw</button></div>' +
+      return h + '<b>' + LT('🤝 Request to take Bai’at', '🤝 Bai’at lene ki request') + '</b><div class="st" style="margin-top:8px"><i>📨</i><div><b>' + LT('Request sent on ' + esc(fmtDay(rq.at)) + '.', 'Request ' + esc(fmtDay(rq.at)) + ' ko bheji gayi.') + '</b> ' +
+        (A.bayahContacted() ? LT('The Khalifa’s side has been in touch with you.', 'Khalifa ki taraf se aap se raabta ho chuka hai.') : LT('The Khalifa will contact you, in shaa Allah.', 'Khalifa aap se raabta karenge, in shaa Allah.')) +
+        '<div class="ac-sub" style="margin-top:4px">' + LT('With: ', 'Kis se: ') + esc(rq.with === 'Any' ? LT('Whoever you suggest', 'Jinko aap munasib samjhein') : rq.with) + ' · Mobile: ' + esc(rq.phone || '–') + (rq.note ? '<br>“' + esc(rq.note) + '”' : '') + '</div></div></div>' +
+        '<div class="row"><button class="ac-btn alt sm by-edit" type="button">' + LT('Edit', 'Badliye') + '</button><button class="ac-btn alt sm by-withdraw" type="button">' + LT('Withdraw', 'Waapas lijiye') + '</button></div>' +
         '<div class="ac-msg' + (/^!/.test(rmsg) ? ' err' : '') + '" id="byMsg">' + esc(rmsg.replace(/^!/, '')) + '</div>' +
-        '<div class="ac-sub" style="margin-top:4px">Already taken it? Mark it in <a href="#" class="by-acct">My Account</a>.</div></div>';
+        '<div class="ac-sub" style="margin-top:4px">' + LT('Already taken it? Mark it in <a href="#" class="by-acct">My Account</a>.', 'Pehle se le chuke hain? <a href="#" class="by-acct">My Account</a> mein mark kijiye.') + '</div></div>';
     }
     var cur = rq ? rq.with : '', gs = (A.guides || []).slice();
-    var opts = gs.map(function (g) { return '<option' + (g === cur ? ' selected' : '') + '>' + esc(g) + '</option>'; }).join('') + '<option value="Any"' + (!cur || cur === 'Any' ? ' selected' : '') + '>Any / whoever you suggest</option>';
+    var opts = gs.map(function (g) { return '<option' + (g === cur ? ' selected' : '') + '>' + esc(g) + '</option>'; }).join('') + '<option value="Any"' + (!cur || cur === 'Any' ? ' selected' : '') + '>' + LT('Any / whoever you suggest', 'Koi bhi / jinko aap munasib samjhein') + '</option>';
     return h + head +
       '<label class="ac-f"><span>Shaykh / Khalifa</span><select id="byWith" class="ac-sel">' + opts + '</select></label>' +
       '<label class="ac-f"><span>Mobile number</span><input id="byPhone" type="tel" autocomplete="tel" maxlength="20" placeholder="+91 …" value="' + esc((rq && rq.phone) || pr.phone || '') + '"></label>' +
-      '<label class="ac-f"><span>Message (optional)</span><textarea id="byNote" maxlength="300" placeholder="e.g. best time to call, your city">' + esc((rq && rq.note) || '') + '</textarea></label>' +
-      '<button class="ac-btn by-send" type="button">' + (rq ? 'Save changes' : 'Submit request') + '</button>' + (rq ? '<button class="ac-link by-cancel" type="button">Cancel</button>' : '') +
+      '<label class="ac-f"><span>' + LT('Message (optional)', 'Message (zaroori nahin)') + '</span><textarea id="byNote" maxlength="300" placeholder="' + LT('e.g. best time to call, your city', 'jaise call karne ka behtar waqt, aapka shehar') + '">' + esc((rq && rq.note) || '') + '</textarea></label>' +
+      '<button class="ac-btn by-send" type="button">' + (rq ? LT('Save changes', 'Tabdeeli save kijiye') : LT('Submit request', 'Request bhejiye')) + '</button>' + (rq ? '<button class="ac-link by-cancel" type="button">' + LT('Cancel', 'Rehne dijiye') + '</button>' : '') +
       '<div class="ac-msg' + (/^!/.test(rmsg) ? ' err' : '') + '" id="byMsg">' + esc(rmsg.replace(/^!/, '')) + '</div>' +
-      '<div class="ac-sub">Your name, email and this request are seen only by the Noor-ul-Hasrat admin and the Khalifa. Already taken Bai’at? Mark it in <a href="#" class="by-acct">My Account</a>.</div></div>';
+      '<div class="ac-sub">' + LT('Your name, email and this request are seen only by the Noor-ul-Hasrat admin and the Khalifa. Already taken Bai’at? Mark it in <a href="#" class="by-acct">My Account</a>.', 'Aapka naam, email aur yeh request sirf Noor-ul-Hasrat admin aur Khalifa dekhte hain. Pehle se Bai’at le chuke hain? <a href="#" class="by-acct">My Account</a> mein mark kijiye.') + '</div></div>';
   }
   function rsay(t) { rmsg = t; var m = body.querySelector('#byMsg'); if (m) { m.textContent = t.replace(/^!/, ''); m.className = 'ac-msg' + (/^!/.test(t) ? ' err' : ''); } }
   body.addEventListener('click', function (e) {
@@ -159,17 +177,17 @@
     if (k.contains('by-edit')) { editing = true; rmsg = ''; paint(); scrollTo(); return; }
     if (k.contains('by-cancel')) { editing = false; rmsg = ''; paint(); scrollTo(); return; }
     if (k.contains('by-withdraw')) {
-      if (!root.confirm('Withdraw your request to take Bai’at?')) return;
-      c.disabled = true; rsay('Withdrawing…');
-      A.withdrawBayahRequest().then(function () { editing = false; rmsg = 'Your request was withdrawn.'; paint(); scrollTo(); }, function () { c.disabled = false; rsay('!Could not withdraw. Check your internet and try again.'); });
+      if (!root.confirm(LT('Withdraw your request to take Bai’at?', 'Bai’at lene ki apni request waapas lena chaahte hain?'))) return;
+      c.disabled = true; rsay(LT('Withdrawing…', 'Waapas li ja rahi hai…'));
+      A.withdrawBayahRequest().then(function () { editing = false; rmsg = LT('Your request was withdrawn.', 'Aapki request waapas le li gayi.'); paint(); scrollTo(); }, function () { c.disabled = false; rsay(LT('!Could not withdraw. Check your internet and try again.', '!Waapas nahin ho saki. Internet check kar ke dobara koshish kijiye.')); });
       return;
     }
     if (k.contains('by-send')) {
       var w = (body.querySelector('#byWith') || {}).value || 'Any', ph = ((body.querySelector('#byPhone') || {}).value || '').trim(), nt = ((body.querySelector('#byNote') || {}).value || '').trim();
-      if (ph.replace(/\D/g, '').length < 7) { rsay('!Please add your mobile number so the Khalifa can contact you.'); return; }
-      c.disabled = true; rsay('Sending…');
-      A.saveBayahRequest({ with: w, phone: ph, note: nt }).then(function () { editing = false; rmsg = 'JazakAllah khair. Your request was sent.'; paint(); scrollTo(); },
-        function () { c.disabled = false; rsay('!Could not send. Check your internet and try again.'); });
+      if (ph.replace(/\D/g, '').length < 7) { rsay(LT('!Please add your mobile number so the Khalifa can contact you.', '!Meharbaani karke apna mobile number daaliye taaki Khalifa aap se raabta kar sakein.')); return; }
+      c.disabled = true; rsay(LT('Sending…', 'Bheji ja rahi hai…'));
+      A.saveBayahRequest({ with: w, phone: ph, note: nt }).then(function () { editing = false; rmsg = LT('JazakAllah khair. Your request was sent.', 'JazakAllah khair. Aapki request bhej di gayi.'); paint(); scrollTo(); },
+        function () { c.disabled = false; rsay(LT('!Could not send. Check your internet and try again.', '!Request nahin bheji ja saki. Internet check kar ke dobara koshish kijiye.')); });
     }
   });
   function scrollTo() { var r = body.querySelector('#byReq'); if (r && r.scrollIntoView) r.scrollIntoView({ block: 'start' }); }
@@ -187,5 +205,12 @@
 
   body.addEventListener('click', function (e) { var th = e.target.closest && (e.target.closest('.fm-sth') || (e.target.closest('.by-play') && body.querySelector('.by-vid .fm-sth'))); if (th && root.NoorFamily) root.NoorFamily.playShort(th); });
   N.onScreen(function (id) { if (id === 'bayah') { editing = false; rmsg = ''; paint(); } });
+  // language switched (js/lang.js): repaint if open, keeping anything typed in the request form
+  root.addEventListener('noorlang', function () {
+    if (!s.classList.contains('active')) return;
+    var keep = {}; ['byWith', 'byPhone', 'byNote'].forEach(function (k) { var e = body.querySelector('#' + k); if (e) keep[k] = e.value; });
+    paint();
+    Object.keys(keep).forEach(function (k) { var e = body.querySelector('#' + k); if (e) e.value = keep[k]; });
+  });
   root.NoorBayah = { ready: true, NISA_AR: NISA_AR, ISTIGHFAR_AR: ISTIGHFAR_AR };
 })(typeof self !== 'undefined' ? self : this);

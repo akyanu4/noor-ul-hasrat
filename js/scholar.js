@@ -5,16 +5,22 @@
 
   var PROFILES = {
     shaykh1: {
-      name: 'Azam Pasha', pen: '', ar: 'ذكر', sub: 'Zikr and teachings · tap a video to watch',
+      name: 'Azam Pasha', pen: '', ar: 'ذكر', sub: 'Zikr and teachings · tap a video to watch', ru_sub: 'Zikr aur ta\'leemaat · dekhne ke liye kisi video par tap kijiye',
       facts: [], sections: [], map: '', sources: [], plain: true, shorts: true, audio: true
     },
     nayeem: {
       name: 'Hazrat Noor Uddin Siddiqui', pen: 'Nayeem Baba', ar: 'حضرت نورالدین صدیقی نعیم بابا',
       sub: 'Grandson of Hazrat Azam Pasha R.A. · leads our weekly Halqa-e-Zikr',
+      ru_sub: 'Hazrat Azam Pasha R.A. ke pote · hamara haftawaar Halqa-e-Zikr karwaate hain',
       facts: [
         ['Halqa-e-Zikr', 'Every Saturday, 8:30 to 9:30 PM (India time). Join in person or online.'],
         ['Bai\'at', 'Gives Bai\'at. Members can send a request from the app (Bay\'ah).'],
         ['Salgirah', '9 Jumada al-Thani, observed with an evening programme.']
+      ],
+      ru_facts: [
+        ['Halqa-e-Zikr', 'Har Saturday, raat 8:30 se 9:30 (India ka waqt). Khud aa kar ya online shaamil hoiye.'],
+        ['Bai\'at', 'Bai\'at dete hain. Members app se request bhej sakte hain (Bay\'ah).'],
+        ['Salgirah', '9 Jumada al-Thani, shaam ke programme ke saath manaayi jaati hai.']
       ],
       sections: [], map: '', sources: [], plain: true, halqa: true, full: 'photos/shaykh-nayeem-full.jpg'
     },
@@ -23,11 +29,18 @@
       pen: 'Hasrat',
       ar: 'بحر العلوم',
       sub: 'Bahr ul-Uloom, "Ocean of Knowledge" · Hyderabad',
+      ru_sub: 'Bahr ul-Uloom, "Ilm ka Samandar" · Hyderabad',
       facts: [
         ['Born', '12 October 1871 (27 Rajab 1288 AH), Hyderabad'],
         ['Passed away', '24 March 1962 (17 Shawwal 1381 AH), Hyderabad'],
         ['Known as', 'Hasrat (his pen name), Bahr ul-Uloom. His followers called him "Qadeer Piya".'],
         ['Lineage', 'Described as a descendant of Hadhrat Abu Bakr as-Siddiq (28th generation on his father\'s side) and, through his mother, of Imam Hussain. Hence "Siddiqui al-Hussaini". His family came originally from Cheenak, near Ahmedabad, Gujarat.']
+      ],
+      ru_facts: [
+        ['Wiladat', '12 October 1871 (27 Rajab 1288 Hijri), Hyderabad'],
+        ['Wisaal', '24 March 1962 (17 Shawwal 1381 Hijri), Hyderabad'],
+        ['Mashhoor naam', 'Hasrat (unka takhallus), Bahr ul-Uloom. Unke chaahne wale unhein "Qadeer Piya" kehte the.'],
+        ['Nasab', 'Bayaan kiya jaata hai ke woh baap ki taraf se Hazrat Abu Bakr as-Siddiq ki aulaad mein (28vi peedhi) aur maa ki taraf se Imam Hussain ki aulaad mein the. Isi liye "Siddiqui al-Hussaini". Unka khaandaan asal mein Cheenak se tha, jo Ahmedabad, Gujarat ke qareeb hai.']
       ],
       sections: [
         ['His life and learning', [
@@ -61,6 +74,38 @@
           'Biographies in Urdu: Toor-e-Tajalli; Yaad-e-Hasrat Ayaat (compiled by his son, Dr. Moosa Abdur Rehman Siddiqui); Abdullah (compiled by his grandson, Muhammad Anwaruddin Siddiqui).'
         ]]
       ],
+      ru_sections: [
+        ['Unki zindagi aur ilm', [
+          'Unhon ne pehle roohani asaatiza se ta\'leem haasil ki, phir Punjab University se Maulvi Fazil aur Munshi Fazil ki sanad li.',
+          'Unke murshid unke maamu, Hazrat Syed Khawaja Muhammad Siddiq Mahboobullah the. Apne shaykh ke wisaal ke baad unhon ne mazeed ilm ke liye Musalmaan mulkon ka safar kiya.',
+          'Woh mufassir (Qur\'an ke shaarih), muhaddith aur Sufi the, aur Urdu, Arabi aur Farsi mein shaayari karte the.'
+        ]],
+        ['Kaarnaame', [
+          'Woh Osmania University mein, jo 7ve Nizam ne qaayam ki thi, Theology faculty ke pehle sarbaraah the. Sources mein yeh ohda thode alag alfaaz mein likha hai (Dean of the Faculty, ya Head of the Department of Theology / Islamic Studies). Retire hone ke baad bhi woh apne ghar par padhaate rahe.',
+          'Unhon ne pachaas se zyaada kitaabein likhin, zyaadatar Urdu mein. Unka sab se aham kaam Tafseer-e-Siddiqui hai, Qur\'an ki chhe jildon wali tafseer. Unhon ne Surah al-Fatihah aur Juz\' Amma ki tafseer bhi likhi.',
+          'Unki Hanafi fiqh ki kitaab Ad-Din Osmania University ke nisaab mein shaamil ki gayi, aur Ibn Arabi ki Fusus al-Hikam ka unka tashreehi Urdu tarjuma Punjab University ke nisaab mein padhaaya gaya.',
+          'Unki shaayari Kulliyyat-e-Hasrat mein jama hai (hamd, na\'at aur manqabat).',
+          'Makkah Masjid, Hyderabad mein unki namaaz-e-janaaza mein hazaaron log shareek hue.'
+        ]],
+        ['Unki tasaaneef aur ta\'leemaat', [
+          'Humne unki ta\'leemaat ka khulaasa apne alfaaz mein nahin likha, taaki koi baat ghalat naql na ho. Unki kitaabon ke naam batate hain ke unhon ne kin mauzoo\'aat par ta\'leem di, aur behtar hai ke woh kitaabon se hi padhi jaayein, ya kisi aise ustaad ke saath jo unhein jaante hon.',
+          'Tauheed aur aqeeda: Hikmat-e-Islamiyyah (Islami tauheed par ek risaala), Al-Tawhid, Usool-e-Islam.',
+          'Qur\'an: Tafseer-e-Siddiqui, aur Surah al-Fatihah aur Juz\' Amma ki tafseer.',
+          'Tasawwuf ka raasta: Haqiqat-e-Bay\'at (bai\'at ki haqeeqat), Nizamul Amal-e-Fuqara (fuqara ke a\'maal ka nizaam), Sama\'.',
+          'Me\'raj: Haqiqat-e-Mi\'raj.',
+          'Rozmarra zindagi ke masaail: sood ke masaail (Sud ka Mas\'alah), talaaq, wasiyat aur wiraasat, aur Islam mein shaayari padhna.',
+          'Unke kalaam aur naat ke videos app mein "Poetry & Naat" mein hain (neeche button).',
+          'Unke kuch kaamon ka English mein tarjuma aur sharah Shaikh Mir Asedullah Quadri ne kiya hai, maslan "Islamic Wisdom" (Hikmat-e-Islamiyyah).'
+        ]],
+        ['Unki aakhri aaramgaah aur Urs', [
+          'Woh Siddiq Gulshan, Bahadurpura, Hyderabad mein madfoon hain.',
+          'Unka Urs har saal 16, 17 aur 18 Shawwal ko manaaya jaata hai.',
+          'Ziyaarat ke auqaat aur Urs ki sahi taareekhein har saal khaandaan ya jamaat se tasdeeq kar lijiye, kyunki Hijri taareekhein chaand dekhne par munhasir hain.'
+        ]],
+        ['Unke baare mein mazeed padhiye', [
+          'Urdu mein sawaaneh: Toor-e-Tajalli; Yaad-e-Hasrat Ayaat (unke bete Dr. Moosa Abdur Rehman Siddiqui ne murattab ki); Abdullah (unke pote Muhammad Anwaruddin Siddiqui ne murattab ki).'
+        ]]
+      ],
       map: 'https://www.google.com/maps/place/Dargah+Hazrat+Muhammad+Abdul+Qadeer+Siddiqui+Quadri/@17.3596579,78.4543992,17z/data=!3m1!4b1!4m6!3m5!1s0x3bcb9794617efeab:0xc49331e24aa305c5!8m2!3d17.3596528!4d78.4569741!16s%2Fg%2F11r9zq827',
       sources: [
         ['Siddiq Gulshan (family site)', 'https://siddiqgulshan.com/index.php/family-members/prof-mohammed-abdul-qadeer-siddiqui/'],
@@ -72,23 +117,28 @@
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function safeUrl(u) { return /^https:\/\//i.test(u) ? u : '#'; }
+  // English or Roman Urdu (js/lang.js); plain English when loaded in node
+  function T(en, ru) { var N = root.Noor; return N && N.T ? N.T(en, ru) : en; }
+  function isRu() { var N = root.Noor; return !!(N && N.lang && N.lang() === 'ru'); }
 
   function html(p, photo) {
-    var h = '<div class="sch-hero">' + (photo ? '<img class="sch-img" alt="' + esc(p.name) + '" src="' + esc(photo) + '">' : '') +
-      '<div class="sch-ar">' + esc(p.ar) + '</div><div class="sch-nm">' + esc(p.name) + '</div>' + (p.pen ? '<div class="sch-pen">"' + esc(p.pen) + '"</div>' : '') + '<div class="sch-sub">' + esc(p.sub) + '</div></div>';
-    if (p.facts.length) h += '<div class="sch-card">' + p.facts.map(function (f) { return '<div class="sch-row"><b>' + esc(f[0]) + '</b><span>' + esc(f[1]) + '</span></div>'; }).join('') + '</div>';
-    p.sections.forEach(function (s) {
+    var N = root.Noor, ru = isRu(), facts = ru && p.ru_facts ? p.ru_facts : p.facts, sections = ru && p.ru_sections ? p.ru_sections : p.sections;
+    var h = (N && N.langSwitch ? N.langSwitch() : '') + '<div class="sch-hero">' + (photo ? '<img class="sch-img" alt="' + esc(p.name) + '" src="' + esc(photo) + '">' : '') +
+      '<div class="sch-ar">' + esc(p.ar) + '</div><div class="sch-nm">' + esc(p.name) + '</div>' + (p.pen ? '<div class="sch-pen">"' + esc(p.pen) + '"</div>' : '') + '<div class="sch-sub">' + esc(T(p.sub, p.ru_sub)) + '</div></div>';
+    if (facts.length) h += '<div class="sch-card">' + facts.map(function (f) { return '<div class="sch-row"><b>' + esc(f[0]) + '</b><span>' + esc(f[1]) + '</span></div>'; }).join('') + '</div>';
+    sections.forEach(function (s) {
       h += '<h2 class="section-title" style="margin-top:14px">' + esc(s[0]) + '</h2><div class="sch-card"><ul>' + s[1].map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>';
     });
-    if (p.halqa) h += '<button class="sch-btn" id="schHalqa" type="button" style="width:100%;border:0;cursor:pointer">🕯️ Join the weekly Halqa-e-Zikr ›</button>' +
-      '<button class="sch-btn" id="schBay" type="button" style="width:100%;border:1px solid var(--line);cursor:pointer;background:var(--panel);color:var(--ink)">🤝 Bai\'at: how to take it ›</button>';
+    if (p.halqa) h += '<button class="sch-btn" id="schHalqa" type="button" style="width:100%;border:0;cursor:pointer">' + T('🕯️ Join the weekly Halqa-e-Zikr ›', '🕯️ Haftawaar Halqa-e-Zikr mein shaamil hoiye ›') + '</button>' +
+      '<button class="sch-btn" id="schBay" type="button" style="width:100%;border:1px solid var(--line);cursor:pointer;background:var(--panel);color:var(--ink)">' + T('🤝 Bai\'at: how to take it ›', '🤝 Bai\'at: kaise lein ›') + '</button>';
     h += '<div id="schWatch"></div>' + (p.shorts ? '<div id="schShorts"></div>' : '') + (p.audio ? '<div id="schAudio"></div>' : '') + '<div id="schGallery"></div>';
     if (!p.plain) {
     h += '<button class="sch-btn" id="schVideos" type="button" style="width:100%;border:0;cursor:pointer">Poetry &amp; Naat ›</button>';
     h += '<button class="sch-btn" id="schDars" type="button" style="width:100%;border:1px solid var(--line);cursor:pointer;background:var(--panel);color:var(--ink)">Dars &amp; Tafseer videos ›</button>';
     h += '<button class="sch-btn" id="schZikr" type="button" style="width:100%;border:1px solid var(--line);cursor:pointer;background:var(--panel);color:var(--ink)">Zikr &amp; Sama videos ›</button>';
-    h += '<a class="sch-btn" style="background:var(--panel);color:var(--ink);border:1px solid var(--line)" target="_blank" rel="noopener" href="' + esc(safeUrl(p.map)) + '">Open the Dargah on Google Maps ›</a>';
-    h += '<div class="sch-note">Compiled from the pages below. Where sources differ (for example on his exact title or his age at passing) we have left the detail out. Please check anything important with the family, the khanqah or your teachers.</div>';
+    h += '<a class="sch-btn" style="background:var(--panel);color:var(--ink);border:1px solid var(--line)" target="_blank" rel="noopener" href="' + esc(safeUrl(p.map)) + '">' + T('Open the Dargah on Google Maps ›', 'Dargah ko Google Maps par kholiye ›') + '</a>';
+    h += '<div class="sch-note">' + T('Compiled from the pages below. Where sources differ (for example on his exact title or his age at passing) we have left the detail out. Please check anything important with the family, the khanqah or your teachers.',
+      'Neeche diye gaye pages se jama kiya gaya. Jahaan sources mein farq hai (maslan unke sahi ohde ya wisaal ke waqt unki umar par) wahaan humne woh tafseel chhod di hai. Koi bhi aham baat khaandaan, khanqah ya apne asaatiza se tasdeeq kar lijiye.') + '</div>';
     h += '<div class="sch-src">Sources: ' + p.sources.map(function (s) { return '<a target="_blank" rel="noopener" href="' + esc(safeUrl(s[1])) + '">' + esc(s[0]) + '</a>'; }).join(' · ') + '</div>';
     }
     return h;
@@ -185,8 +235,10 @@
     lb.addEventListener('touchend', function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 50 && list.length > 1) { i = (i + (dx < 0 ? 1 : -1) + list.length) % list.length; show(); } }, { passive: true });
     doc.addEventListener('keydown', key); doc.body.appendChild(lb); show();
   }
-  api.open = function (id, photo) {
+  var curId = '', curPhoto = '';
+  function render(id, photo) {
     var p = PROFILES[id]; if (!p) return false;
+    curId = id; curPhoto = photo;
     s.querySelector('#schBody').innerHTML = html(p, photo);
     var db = s.querySelector('#schDars'); if (db) db.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('dars'); };
     loadGallery(id); loadWatch(id); if (p.shorts) loadShorts(); if (p.audio) loadAudio();
@@ -195,7 +247,13 @@
     var im = s.querySelector('.sch-img'); if (im && p.full) { im.style.cursor = 'zoom-in'; im.onclick = function () { lightbox([{ src: p.full, caption: p.name + (p.pen ? ' (' + p.pen + ')' : '') }], 0); }; }
     var zb = s.querySelector('#schZikr'); if (zb) zb.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('zikr'); };
     var vb = s.querySelector('#schVideos'); if (vb) vb.onclick = function () { if (root.NoorFamily && root.NoorFamily.open) root.NoorFamily.open('poetry'); };
+    return true;
+  }
+  api.open = function (id, photo) {
+    if (!render(id, photo)) return false;
     N.showScreen('scholar');
     return true;
   };
+  // language switched (js/lang.js): repaint the open profile in place
+  root.addEventListener('noorlang', function () { if (curId && s.classList.contains('active')) render(curId, curPhoto); });
 })(typeof self !== 'undefined' ? self : this);
