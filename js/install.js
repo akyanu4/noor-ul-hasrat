@@ -63,9 +63,9 @@
     });
     host.appendChild(s);
   }
+  // The banner and the More tile open the install page (download button + steps for this phone); the old pop-up sheet stays as a fallback.
   function install() {
-    if (deferred && !d.android) { var p = deferred; deferred = null; try { p.prompt(); } catch (e) { sheet(); } paint(); return; }
-    sheet();
+    try { window.location.href = 'install.html'; } catch (e) { sheet(); }
   }
   function paint() {
     var home = doc.getElementById('screen-home'); if (!home) return;
