@@ -64,6 +64,8 @@
   }
   Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(t){ t.onclick = function(){ which = t.getAttribute('data-p'); render(); }; });
   render();
+  // people who came from the printed QR card: keep the tag when they open the app, so the QR visit is counted
+  if (/[?&]src=qr\b/.test(location.search)) { var ob = document.querySelector('a.btn.line[href="./"]'); if (ob) ob.href = './?src=qr'; }
   if (d.standalone) $('installed').hidden = false;
   window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferred = e; $('goInstall').hidden = false; });
   $('goInstall').onclick = function(){ if (deferred) { deferred.prompt(); deferred = null; $('goInstall').hidden = true; } };
