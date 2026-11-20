@@ -5,11 +5,13 @@
      stats/dev/<d>      { first, last, inst, plat, src }   one entry per phone
      stats/total        { visitors, installs, installs_android, installs_ios, installs_desktop, installs_other, qr }
      stats/daily/<day>  number of phones that opened the app that day (IST)
+     stats/total/f_w|f_r|f_j|f_s7|f_c7|f_ret  phones that watched, read, signed in, started / finished the 7-day welcome, came back another day
    Environment: FIREBASE_SERVICE_ACCOUNT (and optional RTDB_URL). */
 const G = require('./_google.js');
 
 const PLATS = ['android', 'ios', 'desktop', 'other'];
 const MAX_NEW_PER_DAY = 3000;
+const FLAGS = ['w', 'r', 'j', 's7', 'c7'];
 
 async function handle(env, body, nowMs, fetchFn) {
   if (!env.FIREBASE_SERVICE_ACCOUNT) return { status: 503, error: 'not configured' };
@@ -30,7 +32,12 @@ async function handle(env, body, nowMs, fetchFn) {
   }
   if (inst && !(rec && rec.inst)) ops.push(db.put('stats/total/installs', inc), db.put('stats/total/installs_' + plat, inc));
   if (!rec || rec.last !== day) ops.push(db.put('stats/daily/' + day, inc));
-  ops.push(db.put('stats/dev/' + d, { first: (rec && rec.first) || day, last: day, inst: inst || !!(rec && rec.inst), plat: plat, src: (rec && rec.src) || src }));
+  // journey steps, each counted once per phone: w watched, r read, j joined (signed in), s7/c7 the 7-day welcome; ret came back on another day
+  const had = (rec && rec.f) || {}, f = Object.assign({}, had);
+  const sent = body.f && typeof body.f === 'object' ? body.f : {};
+  FLAGS.forEach(function (k) { if (sent[k] && !had[k]) { f[k] = 1; ops.push(db.put('stats/total/f_' + k, inc)); } });
+  if (rec && rec.first && rec.first !== day && !had.ret) { f.ret = 1; ops.push(db.put('stats/total/f_ret', inc)); }
+  ops.push(db.put('stats/dev/' + d, { first: (rec && rec.first) || day, last: day, inst: inst || !!(rec && rec.inst), plat: plat, src: (rec && rec.src) || src, f: f }));
   await Promise.all(ops);
   return { status: 200, ok: true };
 }

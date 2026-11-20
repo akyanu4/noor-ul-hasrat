@@ -675,7 +675,7 @@
     if (homeWrap && !homeWrap.hidden) { var hub = homeWrap.querySelector('#homeHub'); if (hub) hub.innerHTML = homeHtml(); }
     if (state === astate) paint();
   }
-  function playList(list, pos) { if (list && list.length) vopen(list, Math.max(0, Math.min(pos || 0, list.length - 1))); }
+  function playList(list, pos) { if (list && list.length && N.mark) N.mark('w'); if (list && list.length) vopen(list, Math.max(0, Math.min(pos || 0, list.length - 1))); }
   function playSeries(key, i) {
     var sr = seriesAll().filter(function (x) { return x.key === key; })[0]; if (!sr) return;
     if (i == null) { i = nextIn(sr); if (i < 0) i = 0; }

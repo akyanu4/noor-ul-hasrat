@@ -99,6 +99,7 @@
     body.innerHTML = '<div class="lb-empty">Loading…</div>';
     fetch('data/library/' + encodeURIComponent(slug) + '.json').then(function (r) { return r.json(); }).then(function (a) {
       if (cur !== slug) return;
+      if (ok[slug] && N.mark) N.mark('r');
       var okv = ok[slug], h = '<div class="lb-art">' + LANGBAR();
       var ru = lang === 'ru' && a.ru && a.ru.blocks && a.ru.blocks.length ? a.ru : null, V = ru ? { title: ru.title || a.title, summary: ru.summary || a.summary, blocks: ru.blocks } : a;
       if (lang === 'ru' && !ru) h += '<div class="lb-note">Roman Urdu mein yeh mazmoon abhi tayyar nahi hai. English mein padhiye.</div>';

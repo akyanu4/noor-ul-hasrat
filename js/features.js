@@ -398,11 +398,23 @@
       var inst = !!((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone || /^android-app:/.test(document.referrer));
       var src = /[?&]src=qr\b/.test(location.search) ? 'qr' : '';
       setTimeout(function () {
-        fetch('/api/hello', { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true, body: JSON.stringify({ d: d, inst: inst, plat: plat, src: src }) })
+        fetch('/api/hello', { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true, body: JSON.stringify({ d: d, inst: inst, plat: plat, src: src, f: flags() }) })
           .then(function (r) { if (r.ok) localStorage.setItem('noor_hello_day', day); }, function () {});
       }, 4000);
     } catch (e) {}
   })();
+  /* Steps of the journey, counted once per phone (same anonymous id): w watched a video, r read an article, j signed in,
+     s7 started the 7-day welcome, c7 finished it. N.mark('w') etc. sends a count the first time only. */
+  function flags() { var f = {}; ['w', 'r', 'j', 's7', 'c7'].forEach(function (k) { try { if (localStorage.getItem('noor_f_' + k)) f[k] = 1; } catch (e) {} }); return f; }
+  N.mark = function (k) {
+    try {
+      if (localStorage.getItem('noor_f_' + k)) return; localStorage.setItem('noor_f_' + k, '1');
+      var d = localStorage.getItem('noor_dev'); if (!d) return;
+      var ua = navigator.userAgent, plat = /Android/.test(ua) ? 'android' : /iPad|iPhone|iPod/.test(ua) ? 'ios' : /Windows|Macintosh|Linux|CrOS/.test(ua) ? 'desktop' : 'other';
+      var inst = !!((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone || /^android-app:/.test(document.referrer));
+      fetch('/api/hello', { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true, body: JSON.stringify({ d: d, inst: inst, plat: plat, src: '', f: flags() }) }).catch(function () {});
+    } catch (e) {}
+  };
 
   /* ================= Live class list ================= */
   function checkNew(items) {
