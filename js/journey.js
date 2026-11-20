@@ -28,7 +28,7 @@
   var css = doc.createElement('style');
   css.textContent =
     '.wj-home{background:linear-gradient(135deg,#2a1f4a,#3d2c6b);color:#f3eefc;border-radius:16px;padding:14px;margin:0 0 14px;position:relative;cursor:pointer}' +
-    '.wj-home b{display:block;font-size:15.5px;padding-right:22px}.wj-home small{display:block;font-size:12.5px;opacity:.9;line-height:1.45;margin-top:3px}.wj-home .x{position:absolute;top:6px;right:8px;background:none;border:0;color:#f3eefc;opacity:.7;font-size:17px;cursor:pointer}' +
+    '.wj-home small.by{color:#e8c46b;font-weight:600;opacity:1;margin-top:1px}.wj-home b{display:block;font-size:15.5px;padding-right:22px}.wj-home small{display:block;font-size:12.5px;opacity:.9;line-height:1.45;margin-top:3px}.wj-home .x{position:absolute;top:6px;right:8px;background:none;border:0;color:#f3eefc;opacity:.7;font-size:17px;cursor:pointer}' +
     '.wj-dots{display:flex;gap:5px;margin-top:9px}.wj-dots i{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.2)}.wj-dots i.d{background:#e8c46b}.wj-dots i.o{background:rgba(232,196,107,.45)}' +
     '.wj-go{display:inline-block;margin-top:9px;background:#e8c46b;color:#1c1a12;font-weight:700;font-size:13px;border-radius:999px;padding:7px 13px}' +
     '.wj-day{display:flex;gap:12px;align-items:center;width:100%;text-align:left;font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer}' +
@@ -44,7 +44,7 @@
     view = 'list'; var S = st(), od = openDays(S);
     s.querySelector('#wjTitle').textContent = T('Welcome', 'Khush-aamdeed');
     var h = '';
-    h += '<div class="cs-hero" style="background:linear-gradient(135deg,#2a1f4a,#3d2c6b)"><b>🌙 ' + esc(t(W, 'title')) + '</b><p>' + esc(t(W, 'about')) + '</p></div>';
+    h += '<div class="cs-hero" style="background:linear-gradient(135deg,#2a1f4a,#3d2c6b)"><b>🌙 ' + esc(t(W, 'title')) + '</b><div style="color:#e8c46b;font-size:13.5px;font-weight:600;margin-top:2px">' + T('Teachings of Hazrat Azam Pasha R.A.', 'Hazrat Azam Pasha R.A. ki taleemaat') + '</div><p>' + esc(t(W, 'about')) + '</p></div>';
     if (S.start == null) h += '<button class="cs-btn" id="wjStart" type="button" style="width:100%;margin:0 0 12px">' + T('Start Day 1', 'Pehla din shuru kijiye') + '</button>';
     h += W.days.map(function (d, i) {
       var open = i < od, done = S.done && S.done[i];
@@ -130,7 +130,7 @@
     var next = 0; while (next < 6 && S.done && S.done[next]) next++;
     var line = S.start == null ? T('New here? A few minutes a day with the teachings of Hazrat Azam Pasha R.A.', 'Naye hain? Roz chand minute Hazrat Azam Pasha R.A. ki taleemaat ke saath.')
       : (next < od ? T('Day ', 'Din ') + (next + 1) + ' · ' + t(W.days[next], 'title') : T('Next day opens tomorrow, in shaa Allah.', 'Agla din kal khulega, in shaa Allah.'));
-    hc.innerHTML = '<button class="x" type="button" aria-label="Hide">✕</button><b>🌙 ' + esc(t(W, 'title')) + '</b><small>' + esc(line) + '</small>' +
+    hc.innerHTML = '<button class="x" type="button" aria-label="Hide">✕</button><b>🌙 ' + esc(t(W, 'title')) + '</b><small class="by">' + T('Teachings of Hazrat Azam Pasha R.A.', 'Hazrat Azam Pasha R.A. ki taleemaat') + '</small><small>' + esc(line) + '</small>' +
       '<div class="wj-dots">' + [0, 1, 2, 3, 4, 5, 6].map(function (i) { return '<i class="' + (S.done && S.done[i] ? 'd' : i < od ? 'o' : '') + '"></i>'; }).join('') + '</div>' +
       '<span class="wj-go">' + (S.start == null ? T('Start', 'Shuru kijiye') : T('Continue', 'Jaari rakhiye')) + ' ›</span>';
   }
