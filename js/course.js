@@ -119,7 +119,8 @@
     view = 'lesson'; curL = C.lessons[i]; var l = curL, d = mine[l.id] || {}, m = marks[l.id], u = user();
     s.querySelector('#csTitle').textContent = W('Lesson', 'Sabaq') + ' ' + (i + 1);
     var h = '<div class="lb-lang" role="group"><button type="button" data-l="en"' + (!ru() ? ' class="on"' : '') + '>English</button><button type="button" data-l="ru"' + (ru() ? ' class="on"' : '') + '>Roman Urdu</button></div>' +
-      '<h2 class="section-title" style="margin-top:4px">' + esc(t(l, 'title')) + '</h2>' + guide();
+      '<h2 class="section-title" style="margin-top:4px">' + esc(t(l, 'title')) + '</h2>' + guide() +
+      '<button class="cs-btn alt" type="button" id="csShare" style="margin:0 0 12px">↗ ' + W('Share this lesson', 'Yeh sabaq share kijiye') + '</button>';
     if (m) {
       h += '<div class="cs-mark"><b>' + MARKS[m.m].ic + ' ' + esc(W(MARKS[m.m].en, MARKS[m.m].ru)) + '</b>' + (m.note ? '<p>' + esc(m.note) + '</p>' : '') + '<div class="cs-msg">— ' + esc(m.name || W('Your teacher', 'Aap ke ustaad')) + (m.at ? ', ' + esc(new Date(m.at).toLocaleDateString()) : '') + '</div>' +
         (m.m === 'ready' && C.lessons[i + 1] ? '<button class="cs-btn" type="button" data-i="' + (i + 1) + '">' + W('Next lesson', 'Agla sabaq') + ' ›</button>' : '') + '</div>';
@@ -187,6 +188,7 @@
     var li = tg.closest && tg.closest('[data-i]'); if (li && !li.disabled) { paintLesson(+li.getAttribute('data-i')); return; }
     if (tg.id === 'csJoin') { var a = acct(); if (a && a.openAccount) a.openAccount(); return; }
     if (tg.id === 'csReview') { paintReview(); return; }
+    if (tg.id === 'csShare' && N.shareLesson) { N.shareLesson(curL.id, t(curL, 'title')); return; }
     if (tg.closest && tg.closest('#csVid')) { var v = curL.video; if (root.NoorFamily) root.NoorFamily.playVideo(v.v, t(v, 'title') || '', v.t || 0); save({ w: 1 }); setTimeout(function () { if (view === 'lesson') paintLesson(C.lessons.indexOf(curL)); }, 400); return; }
     if (tg.id === 'csRead') { var back = function () { N.showScreen('course'); paintLesson(C.lessons.indexOf(curL)); }; save({ r: 1 }); if (L()) L().open(curL.article, back); return; }
     if (tg.id === 'csCk') { var ck = Object.assign({}, (mine[curL.id] || {}).ck || {}); ck[today()] = 1; save({ ck: ck }).then(function () { paintLesson(C.lessons.indexOf(curL)); }); return; }
@@ -225,7 +227,7 @@
   s.querySelector('#csBack').addEventListener('click', function () { if (view === 'lesson' || view === 'review') { paintList(); return; } N.route('home'); });
 
   var api = {
-    open: function () { N.showScreen('course'); body.innerHTML = '<div class="cs-msg">…</div>'; load().then(function () { paintList(); paintHome(); }); }
+    open: function (lessonId) { N.showScreen('course'); body.innerHTML = '<div class="cs-msg">…</div>'; load().then(function () { paintHome(); var i = -1; C.lessons.forEach(function (l, k) { if (l.id === lessonId) i = k; }); if (i >= 0 && state(i) !== 'soon' && state(i) !== 'locked') paintLesson(i); else paintList(); }); }
   };
   root.NoorCourse = api;
   function refresh() { load().then(function () { paintHome(); if (s.classList.contains('active')) { if (view === 'lesson' && curL) paintLesson(C.lessons.indexOf(curL)); else if (view === 'list') paintList(); } }).catch(function () {}); }

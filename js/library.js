@@ -111,6 +111,7 @@
       h += '<div class="lb-src">' + (okv ? '✅ Approved by ' + esc(okv.name || 'a teacher') + (okv.at ? ' · ' + esc(new Date(okv.at).toLocaleDateString()) : '') + '<br>' : '') +
         'From the dars of Hazrat Azam Pasha R.A.' + ((a.sources || []).length ? ': ' + a.sources.map(function (x) { return esc(x.label || ''); }).filter(Boolean).join(' · ') : '') +
         '. English is translated from the Urdu recordings. If anything is unclear, please ask your teacher.</div>';
+      if (okv) h += '<button class="lb-btn" type="button" id="lbShare">↗ ' + (lang === 'ru' ? 'Share kijiye' : 'Share this article') + '</button>';
       if (isTeacher) h += '<div class="lb-teach"><b>For teachers</b>' +
         (okv ? '<div class="sm" style="margin:4px 0">Approved. You can withdraw approval to hide it from members.</div><button class="lb-btn alt" type="button" id="lbUn">Withdraw approval</button>'
              : '<div class="sm" style="margin:4px 0">Read it fully. Approve it if it is faithful to Hazrat’s teaching; otherwise suggest a correction below.</div><button class="lb-btn" type="button" id="lbOk">✅ Approve for members</button>') +
@@ -129,6 +130,7 @@
     var c = t.closest && t.closest('[data-c]'); if (c) { cat = c.getAttribute('data-c'); paintList(); return; }
     var v = t.closest && t.closest('[data-v]');
     if (v) { if (root.NoorFamily && root.NoorFamily.playVideo) root.NoorFamily.playVideo(v.getAttribute('data-v'), '', +v.getAttribute('data-t') || 0); return; }
+    if (t.id === 'lbShare' && N.shareArticle) { var mt = index.filter(function (a) { return a.slug === cur; })[0] || {}; N.shareArticle(cur, (lang === 'ru' && mt.ru_title) || mt.title || ''); return; }
     if (t.id === 'lbBay') { e.preventDefault(); N.route('bayah'); return; }
     var u = user(), msg = body.querySelector('#lbMsg');
     if (t.id === 'lbOk' && u) {
