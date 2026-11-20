@@ -103,7 +103,7 @@
   var body = s.querySelector('#byBody');
 
   function paint() {
-    var F = root.NoorFamily, h = N.langSwitch ? N.langSwitch() : '';
+    var F = root.NoorFamily, h = N.langChip ? N.langChip() : '';
     if (!cfg.bayahOn) h += '<div class="by-draft">' + LT('<b>Draft for review.</b> Only phones opened with ?bayah=1 see this page. Members still see “coming soon” until it is approved.', '<b>Review ke liye draft.</b> Yeh page sirf un phones par dikhta hai jo ?bayah=1 se khole gaye. Approve hone tak members ko abhi “coming soon” hi dikhta hai.') + '</div>';
     h += '<div class="by-hero"><b>Taking Bai’at</b><p>' + LT('Bai’at (iradat) is a covenant with Allah at the hand of a murshid. These are the steps as Hazrat Azam Pasha R.A. explained them in the dars Haqeeqat-e-Bai’at. Your shaykh or his khalifa will guide you through them.',
       'Bai’at (iradat) murshid ke haath par Allah se ek ahad hai. Yeh woh steps hain jo Hazrat Azam Pasha R.A. ne dars Haqeeqat-e-Bai’at mein samjhaaye. Aapke shaykh ya unke khalifa in mein aapki rehnumai karenge.') + '</p>' +

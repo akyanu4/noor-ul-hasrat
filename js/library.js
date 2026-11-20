@@ -65,7 +65,7 @@
     var all = index.filter(canSee), locked = index.filter(function (a) { return approved(a.slug) && a.level === 'murid' && !murid() && !isTeacher; }).length;
     var qq = q.trim().toLowerCase();
     var list = all.filter(function (a) { return (cat === 'All' || a.cat === cat) && (!qq || (a.title + ' ' + (a.ru_title || '') + ' ' + (a.summary || '') + ' ' + (a.ru_summary || '') + ' ' + (a.tags || []).join(' ') + ' ' + (a.ur || '')).toLowerCase().indexOf(qq) >= 0); });
-    var h = LANGBAR() + '<input class="lb-search" id="lbQ" type="search" placeholder="Search the Library…" value="' + esc(q) + '">' +
+    var h = '<input class="lb-search" id="lbQ" type="search" placeholder="Search the Library…" value="' + esc(q) + '">' +
       '<div class="lb-cats">' + CATS.map(function (c) { return '<button type="button" data-c="' + esc(c) + '"' + (c === cat ? ' class="on"' : '') + '>' + esc(c) + '</button>'; }).join('') + '</div>';
     if (isTeacher) { var nd = index.filter(function (a) { return !approved(a.slug); }).length; h += '<div class="lb-draft"><b>Teacher view.</b> ' + nd + ' draft' + (nd === 1 ? '' : 's') + ' waiting for your approval. Members only see approved articles.</div>'; }
     if (!all.length) h += '<div class="lb-empty">📚 The Library is being prepared.<br>Articles from Hazrat’s dars are being reviewed by our teachers, in shaa Allah.</div>';
@@ -100,7 +100,7 @@
     fetch('data/library/' + encodeURIComponent(slug) + '.json').then(function (r) { return r.json(); }).then(function (a) {
       if (cur !== slug) return;
       if (ok[slug] && N.mark) N.mark('r');
-      var okv = ok[slug], h = '<div class="lb-art">' + LANGBAR();
+      var okv = ok[slug], h = '<div class="lb-art">' + (N.langChip ? N.langChip() : LANGBAR());
       var ru = lang === 'ru' && a.ru && a.ru.blocks && a.ru.blocks.length ? a.ru : null, V = ru ? { title: ru.title || a.title, summary: ru.summary || a.summary, blocks: ru.blocks } : a;
       if (lang === 'ru' && !ru) h += '<div class="lb-note">Roman Urdu mein yeh mazmoon abhi tayyar nahi hai. English mein padhiye.</div>';
       if (ru) h += '<div class="lb-note" style="margin-top:0">Yeh English draft ka Roman Urdu tarjuma hai. Hazrat ke asal alfaaz sunne ke liye ▶ Watch dabaiye.</div>';

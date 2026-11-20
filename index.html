@@ -1177,7 +1177,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
 (function(){
   var N = window.Noor, scr = document.getElementById('screen-halqa'); if(!N || !N.T || !scr) return;
   function paintHalqaLang(){
-    document.getElementById('halqaLang').innerHTML = N.langSwitch();
+    document.getElementById('halqaLang').innerHTML = '';
     scr.querySelectorAll('[data-ru]').forEach(function(e){
       if(!e.hasAttribute('data-en')) e.setAttribute('data-en', e.textContent);
       e.textContent = N.T(e.getAttribute('data-en'), e.getAttribute('data-ru'));

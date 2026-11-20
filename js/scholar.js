@@ -123,7 +123,7 @@
 
   function html(p, photo) {
     var N = root.Noor, ru = isRu(), facts = ru && p.ru_facts ? p.ru_facts : p.facts, sections = ru && p.ru_sections ? p.ru_sections : p.sections;
-    var h = (N && N.langSwitch ? N.langSwitch() : '') + '<div class="sch-hero">' + (photo ? '<img class="sch-img" alt="' + esc(p.name) + '" src="' + esc(photo) + '">' : '') +
+    var h = '<div class="sch-hero">' + (photo ? '<img class="sch-img" alt="' + esc(p.name) + '" src="' + esc(photo) + '">' : '') +
       '<div class="sch-ar">' + esc(p.ar) + '</div><div class="sch-nm">' + esc(p.name) + '</div>' + (p.pen ? '<div class="sch-pen">"' + esc(p.pen) + '"</div>' : '') + '<div class="sch-sub">' + esc(T(p.sub, p.ru_sub)) + '</div></div>';
     if (facts.length) h += '<div class="sch-card">' + facts.map(function (f) { return '<div class="sch-row"><b>' + esc(f[0]) + '</b><span>' + esc(f[1]) + '</span></div>'; }).join('') + '</div>';
     sections.forEach(function (s) {

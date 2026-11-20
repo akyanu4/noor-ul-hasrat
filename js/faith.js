@@ -228,7 +228,7 @@
     var duaCat = 0;
     function T(en, ru) { return N.T ? N.T(en, ru) : en; }   // English or Roman Urdu (js/lang.js)
     function paintDuas() {
-      var h = (N.langSwitch ? N.langSwitch() : '') + '<div class="ftabs">' + DUAS.map(function (c, i) { return '<div class="ftab' + (i === duaCat ? ' on' : '') + '" data-i="' + i + '">' + esc(T(c[0], c[2])) + '</div>'; }).join('') + '</div>';
+      var h = '<div class="ftabs">' + DUAS.map(function (c, i) { return '<div class="ftab' + (i === duaCat ? ' on' : '') + '" data-i="' + i + '">' + esc(T(c[0], c[2])) + '</div>'; }).join('') + '</div>';
       DUAS[duaCat][1].forEach(function (d, j) {
         h += '<div class="fcard dua"><div class="ar">' + esc(d[0]) + '</div><div class="tr">' + esc(d[1]) + '</div><div class="mn">' + esc(T(d[2], d[4])) + '</div><div class="src"><span>' + esc(d[3]) + '</span><button data-j="' + j + '">Copy</button></div></div>';
       });

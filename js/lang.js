@@ -16,11 +16,16 @@
     try { root.dispatchEvent(new CustomEvent('noorlang', { detail: l })); } catch (e) {}
   };
   N.T = function (en, ru) { return lang === 'ru' && ru ? ru : en; };
+  // the small chip in the corner of a reading page (articles, lessons, a day, Bai'at, meditations)
+  N.langChip = function () {
+    return '<div class="lg-chip" role="group" aria-label="Language"><button type="button" data-lang="en"' + (lang === 'en' ? ' class="on"' : '') + '>EN</button><button type="button" data-lang="ru"' + (lang === 'ru' ? ' class="on"' : '') + '>Roman Urdu</button></div>';
+  };
   N.langSwitch = function (extraStyle) {
     return '<div class="lb-lang" role="group" aria-label="Language"' + (extraStyle ? ' style="' + extraStyle + '"' : '') + '><button type="button" data-lang="en"' + (lang === 'en' ? ' class="on"' : '') + '>English</button><button type="button" data-lang="ru"' + (lang === 'ru' ? ' class="on"' : '') + '>Roman Urdu</button></div>';
   };
   var css = doc.createElement('style');
-  css.textContent = '.lb-lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:2px;margin:0 0 10px;background:var(--panel)}.lb-lang button{border:0;background:none;color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;cursor:pointer}.lb-lang button.on{background:var(--teal);color:#fff}';
+  css.textContent = '.lb-lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:2px;margin:0 0 10px;background:var(--panel)}.lb-lang button{border:0;background:none;color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;cursor:pointer}.lb-lang button.on{background:var(--teal);color:#fff}' +
+    '.lg-chip{display:flex;width:max-content;margin:0 0 6px auto;border:1px solid var(--line);border-radius:999px;padding:1px;background:var(--panel)}.lg-chip button{border:0;background:none;color:var(--muted);font:inherit;font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;cursor:pointer}.lg-chip button.on{background:var(--teal);color:#fff}';
   doc.head.appendChild(css);
   // Home: the switch at the top, so people choose once for the whole app
   function homeBar() {

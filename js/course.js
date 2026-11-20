@@ -118,7 +118,7 @@
   function paintLesson(i) {
     view = 'lesson'; curL = C.lessons[i]; var l = curL, d = mine[l.id] || {}, m = marks[l.id], u = user();
     s.querySelector('#csTitle').textContent = W('Lesson', 'Sabaq') + ' ' + (i + 1);
-    var h = '<div class="lb-lang" role="group"><button type="button" data-l="en"' + (!ru() ? ' class="on"' : '') + '>English</button><button type="button" data-l="ru"' + (ru() ? ' class="on"' : '') + '>Roman Urdu</button></div>' +
+    var h = (N.langChip ? N.langChip() : '') +
       '<h2 class="section-title" style="margin-top:4px">' + esc(t(l, 'title')) + '</h2>' + guide() +
       '<button class="cs-btn alt" type="button" id="csShare" style="margin:0 0 12px">↗ ' + W('Share this lesson', 'Yeh sabaq share kijiye') + '</button>';
     if (m) {

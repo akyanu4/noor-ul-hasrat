@@ -43,7 +43,7 @@
   function paintList() {
     view = 'list'; var S = st(), od = openDays(S);
     s.querySelector('#wjTitle').textContent = T('Welcome', 'Khush-aamdeed');
-    var h = N.langSwitch ? N.langSwitch() : '';
+    var h = '';
     h += '<div class="cs-hero" style="background:linear-gradient(135deg,#2a1f4a,#3d2c6b)"><b>🌙 ' + esc(t(W, 'title')) + '</b><p>' + esc(t(W, 'about')) + '</p></div>';
     if (S.start == null) h += '<button class="cs-btn" id="wjStart" type="button" style="width:100%;margin:0 0 12px">' + T('Start Day 1', 'Pehla din shuru kijiye') + '</button>';
     h += W.days.map(function (d, i) {
@@ -62,7 +62,7 @@
   function paintDay(i) {
     view = 'day'; cur = i; var d = W.days[i], S = st();
     s.querySelector('#wjTitle').textContent = T('Day ', 'Din ') + (i + 1);
-    var h = (N.langSwitch ? N.langSwitch() : '') + '<h2 class="section-title" style="margin-top:4px">' + esc(t(d, 'title')) + '</h2>';
+    var h = (N.langChip ? N.langChip() : '') + '<h2 class="section-title" style="margin-top:4px">' + esc(t(d, 'title')) + '</h2>';
     if (d.final) {
       if (!(S.done && S.done[i])) setTimeout(function () { markDone(i); }, 0);
       h += '<div class="cs-step"><p style="margin:0;font-size:15px;line-height:1.6">' + T('JazakAllah khair for these seven days. Here is how to continue:', 'In saat dinon ke liye JazakAllah khair. Aage aise jaari rakhiye:') + '</p>' +

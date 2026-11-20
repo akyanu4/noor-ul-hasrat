@@ -11,7 +11,7 @@
   } catch (e) {}
   var esc = N.esc;
   function T(en, ru) { return N.T ? N.T(en, ru) : en; }   // English or Roman Urdu (js/lang.js)
-  function sw() { return N.langSwitch ? N.langSwitch() : ''; }
+  function sw() { return N.langChip ? N.langChip() : ''; }
 
   // shorts: [] stays empty while the Shorts are private drafts. After publishing, fill in { id, title } (YouTube id) for:
   //   khatrat             NAF6_Short1_A_Passing_Thought_or_a_Resolve
