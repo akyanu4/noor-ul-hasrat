@@ -302,7 +302,7 @@
 
   /* ---------- on Home: a header button (👤, or your initial once signed in) and a sign-up card for signed-out visitors ---------- */
   var hcss = doc.createElement('style');
-  hcss.textContent = '.acc-hbtn{font-size:17px!important;font-weight:700}.acc-home[hidden]{display:none!important}.acc-home{display:flex;align-items:center;gap:12px;margin:10px 0 2px;padding:11px 14px;border-radius:14px;cursor:pointer;background:var(--panel);border:1px solid var(--gold)}' +
+  hcss.textContent = '.acc-hbtn{font-size:17px!important;font-weight:700}.acc-hbtn.out{width:auto!important;padding:0 12px!important;font-size:13px!important;background:#e8c46b!important;color:#1c1a12!important;border-color:#e8c46b!important;border-radius:999px!important;white-space:nowrap}.acc-home[hidden]{display:none!important}.acc-home{display:flex;align-items:center;gap:12px;margin:10px 0 2px;padding:11px 14px;border-radius:14px;cursor:pointer;background:var(--panel);border:1px solid var(--gold)}' +
     '.acc-home .ic{flex:none;width:40px;height:40px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:20px}.acc-home .tx{flex:1;min-width:0}.acc-home b{display:block;font-size:15px;color:var(--ink)}.acc-home small{display:block;font-size:12px;color:var(--muted);margin-top:1px}' +
     '.acc-home .bt{flex:none;background:var(--teal);color:#fff;font-weight:700;font-size:13px;border-radius:999px;padding:8px 14px}';
   doc.head.appendChild(hcss);
@@ -317,7 +317,8 @@
     }
     if (hbtn) {
       var nm = profile && profile.name ? profile.name.trim() : '';
-      hbtn.textContent = u ? (nm ? nm.charAt(0).toUpperCase() : '✓') : '👤';
+      hbtn.textContent = u ? (nm ? nm.charAt(0).toUpperCase() : '✓') : (N.T ? N.T('Sign in', 'Sign in') : 'Sign in');
+      hbtn.classList.toggle('out', !u);
       hbtn.setAttribute('aria-label', u ? 'My Account (signed in as ' + u.email + ')' : 'Sign in or create an account');
       hbtn.title = u ? 'My Account' : 'Sign in / Sign up';
     }
@@ -328,7 +329,7 @@
       hcard.addEventListener('click', function () { N.showScreen('account'); });
       if (after && after.nextSibling) home.insertBefore(hcard, after.nextSibling); else if (after) home.appendChild(hcard); else home.insertBefore(hcard, home.firstChild);
     }
-    if (hcard) hcard.hidden = !!u;
+    if (hcard) hcard.hidden = true;   // signing up is the header button now
   }
   listeners.push(function () { paintHome(); });
   setTimeout(paintHome, 0);
