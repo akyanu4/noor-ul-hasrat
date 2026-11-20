@@ -22,6 +22,17 @@
   var css = doc.createElement('style');
   css.textContent = '.lb-lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:2px;margin:0 0 10px;background:var(--panel)}.lb-lang button{border:0;background:none;color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;cursor:pointer}.lb-lang button.on{background:var(--teal);color:#fff}';
   doc.head.appendChild(css);
+  // Home: the switch at the top, so people choose once for the whole app
+  function homeBar() {
+    var home = doc.getElementById('screen-home'); if (!home) return;
+    var bar = doc.getElementById('langHome');
+    if (!bar) { bar = doc.createElement('div'); bar.id = 'langHome'; bar.style.cssText = 'display:flex;justify-content:flex-end;align-items:center;gap:8px;margin:0 0 8px'; home.insertBefore(bar, home.firstChild); }
+    else if (bar !== home.firstElementChild) home.insertBefore(bar, home.firstChild);
+    bar.innerHTML = '<span style="font-size:12px;color:var(--muted)">' + (lang === 'ru' ? 'Zabaan' : 'Language') + '</span>' + N.langSwitch('margin:0');
+  }
+  setTimeout(homeBar, 0); setTimeout(homeBar, 1500);
+  root.addEventListener('noorlang', homeBar);
+  if (N.onScreen) N.onScreen(function (id) { if (id === 'home') homeBar(); });
   doc.addEventListener('click', function (e) {
     var b = e.target.closest && e.target.closest('[data-lang]'); if (!b) return;
     N.setLang(b.getAttribute('data-lang'));

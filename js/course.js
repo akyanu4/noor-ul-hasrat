@@ -233,4 +233,5 @@
   function refresh() { load().then(function () { paintHome(); if (s.classList.contains('active')) { if (view === 'lesson' && curL) paintLesson(C.lessons.indexOf(curL)); else if (view === 'list') paintList(); } }).catch(function () {}); }
   setTimeout(function () { refresh(); var a = acct(); if (a && a.onChange) a.onChange(refresh); }, 50);
   N.onScreen(function (id) { if (id === 'home' && C) paintHome(); });
+  root.addEventListener('noorlang', function () { if (C) paintHome(); if (s.classList.contains('active') && C) { if (view === 'lesson' && curL) paintLesson(C.lessons.indexOf(curL)); else if (view === 'list') paintList(); } });
 })(typeof self !== 'undefined' ? self : this);
