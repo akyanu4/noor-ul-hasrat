@@ -113,7 +113,7 @@
     if (G) {
       try {
         var seen = {};
-        G.upcoming(now, adj(), 400).forEach(function (x) {
+        G.upcoming(now, adj(), 400, true).forEach(function (x) {
           if (seen[x.g.id]) return; seen[x.g.id] = 1;
           var dd = localDays(x.day), hd = x.h && F ? x.h.d + ' ' + F.MONTHS[x.h.m - 1].n : '';
           items.push({ id: x.g.id, g: x.g, days: dd, theme: themeOf(x.g.id), when: new Date(x.day).toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }), hd: hd });
@@ -146,7 +146,7 @@
     data = collect();
     var f = data.feat;
     if (f) {
-      var today = f.days <= 0, w = wording(f.theme, f.g, today), photo = (cfg.eventPhotos || {})[f.id]; var poster = (cfg.eventPosters || {})[f.id];
+      var today = f.days <= 0, w = wording(f.theme, f.g, today); if (f.days < 0) w = Object.assign({}, w, { k: f.when }); var photo = (cfg.eventPhotos || {})[f.id]; var poster = (cfg.eventPosters || {})[f.id];
       var kick = today ? (w.k || 'Today') : inDays(f.days) + (f.when ? ' · ' + f.when : '') + (f.hd ? ' · ' + f.hd : '');
       var bits = (today || f.theme === 'bday' || f.theme === 'urs') ? (BITS[f.theme] || []).concat(BITS[f.theme] || []).map(function (b, i) {
         return '<span style="left:' + ((i * 37 + 9) % 92) + '%;animation-duration:' + (5 + (i % 4) * 1.3) + 's;animation-delay:' + (-i * 0.9) + 's">' + b + '</span>'; }).join('') : '';
@@ -194,7 +194,7 @@
     var f = data.feat; if (!f) return;
     var p = e.target.closest && e.target.closest('[data-poster]');
     if (p) { e.stopPropagation(); openPoster(p.getAttribute('src'), 'Salgirah Mubarak'); return; }
-    if (f.days <= 0 && N.openMeet) N.openMeet(); else N.route(f.id === 'halqa' ? 'halqa' : 'calendar');
+    if (f.days === 0 && N.openMeet) N.openMeet(); else N.route(f.id === 'halqa' ? 'halqa' : 'calendar');
   });
   listEl.addEventListener('click', function (e) {
     var b = e.target.closest && e.target.closest('[data-r]'); if (!b) return;

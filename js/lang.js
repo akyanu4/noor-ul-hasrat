@@ -33,6 +33,8 @@
     var bar = doc.getElementById('langHome');
     if (!bar) { bar = doc.createElement('div'); bar.id = 'langHome'; bar.style.cssText = 'display:flex;justify-content:flex-end;align-items:center;gap:8px;margin:0 0 8px'; home.insertBefore(bar, home.firstChild); }
     else if (bar !== home.firstElementChild) home.insertBefore(bar, home.firstChild);
+    // Events (with Donate) right under the language bar, at the top of Home
+    var ev = doc.getElementById('eventsBox'); if (ev && ev.parentNode === home && bar.nextElementSibling !== ev) home.insertBefore(ev, bar.nextSibling);
     bar.innerHTML = '<span style="font-size:12px;color:var(--muted)">' + (lang === 'ru' ? 'Zabaan' : 'Language') + '</span>' + N.langSwitch('margin:0');
   }
   setTimeout(homeBar, 0); setTimeout(homeBar, 1500);

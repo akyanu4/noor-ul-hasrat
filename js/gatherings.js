@@ -20,7 +20,7 @@
     { id: 'urs-azeem', kind: 'yearly', m: 4, d: 1, ic: '🌹',
       name: 'Urs Sharif: Hazrat Azeem Piya R.A.', note: '1 Rabi-ul-Thani' },
     { id: 'salgirah', kind: 'yearly', m: 6, d: 9, ic: '🎉',
-      name: 'Salgirah Mubarak: Hazrat Noor Uddin Siddiqui (Nayeem Baba)', note: '9 Jamada-al-Thani · evening program' }
+      name: 'Salgirah Mubarak: Hazrat Noor Uddin Siddiqui (Nayeem Baba)', note: '9 Jamada-al-Thani · evening program', linger: 2 }
   ];
 
   // Today's date in Hyderabad, as a UTC-midnight timestamp of that civil day.
@@ -28,13 +28,15 @@
 
   // Every gathering in the next `days` civil days (Hyderabad dates), soonest first.
   // Each: { g, day (UTC midnight of the civil day), days (0 = today), at (start time, ms) or null, h (Hijri date) }.
-  function upcoming(nowMs, adj, days) {
+  // withPast: also return occasions of the last few days that have `linger: N` (shown N days after the day; days is then negative).
+  function upcoming(nowMs, adj, days, withPast) {
     var out = [], d0 = istDay(nowMs), i;
-    for (i = 0; i <= (days == null ? 400 : days); i++) {
+    for (i = withPast ? -3 : 0; i <= (days == null ? 400 : days); i++) {
       var day = d0 + i * DAY, h = F && F.hijriAt ? F.hijriAt(day, adj || 0) : null, wd = new Date(day).getUTCDay();
       LIST.forEach(function (g) {
         var hit = g.kind === 'weekly' ? wd === g.weekday : !h ? false : g.kind === 'monthly' ? h.d === g.d : (h.m === g.m && h.d === g.d);
         if (!hit) return;
+        if (i < 0 && !((g.linger || 0) >= -i)) return;
         var at = g.start ? day + (g.start[0] * 60 + g.start[1] - IST) * 60000 : null, end = g.end ? day + (g.end[0] * 60 + g.end[1] - IST) * 60000 : null;
         if (end && nowMs >= end) return;          // this week's halqa is already over
         out.push({ g: g, day: day, days: i, at: at, h: h });
