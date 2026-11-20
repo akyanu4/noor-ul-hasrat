@@ -40,7 +40,7 @@ async function describe(k, id) {
 module.exports = async function (req, res) {
   const k = String((req.query && req.query.k) || ''), id = String((req.query && req.query.id) || '').trim();
   const site = (process.env.SITE_URL || 'https://' + (req.headers['x-forwarded-host'] || req.headers.host || 'noor-ul-hasrat.vercel.app')).replace(/\/$/, '');
-  const d = (await describe(k, id).catch(() => null)) || { title: 'Noor-ul-Hasrat', desc: 'Sayings and teachings of Hazrat Azam Pasha R.A.: dars, Library, lessons, prayer times and the weekly halqa.', to: '/' };
+  const d = (await describe(k, id).catch(() => null)) || { title: 'Noor-ul-Hasrat', desc: 'Stay connected with the teachings, wisdom and spiritual guidance of Hazrat Azam Pasha R.A.', to: '/' };
   const app = site + d.to, img = site + '/photos/share-card.jpg', self = site + '/' + k + '/' + id;
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(d.title)}</title><meta name="description" content="${esc(d.desc)}"><link rel="canonical" href="${esc(self)}">

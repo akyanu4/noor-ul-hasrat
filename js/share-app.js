@@ -25,8 +25,8 @@
   function open() {
     var s = doc.createElement('div'); s.className = 'qa-sheet'; s.setAttribute('role', 'dialog');
     s.innerHTML = '<div class="in"><button class="x" type="button" aria-label="Close">✕</button>' +
-      '<h3>📲 ' + T('Get the Noor-ul-Hasrat app', 'Noor-ul-Hasrat app hasil kijiye') + '</h3>' +
-      '<p>' + T('Scan this QR code with a phone camera. It opens the install page with simple steps.', 'Phone ke camera se yeh QR code scan kijiye. Install ka safha khulega, aasaan steps ke saath.') + '</p>' +
+      '<h3>📲 ' + T('Stay connected with Hazrat\'s teachings', 'Hazrat ki taleemaat se jude rahiye') + '</h3>' +
+      '<p>' + T('A saying every morning, his dars, Sufi practices and the weekly halqa. Scan with a phone camera to open.', 'Har subah ek qaul, unka dars, Sufi amaal aur haftawar halqa. Phone ke camera se scan karke kholiye.') + '</p>' +
       '<img src="icons/install-qr.svg" alt="QR code for the install page"><div class="u">' + SHOW + '</div>' +
       '<a class="b g" href="install.html">' + T('Install on this phone', 'Is phone par install kijiye') + '</a>' +
       '<button class="b l" type="button" data-share>' + T('Share the link', 'Link share kijiye') + '</button></div>';
@@ -34,7 +34,7 @@
       var t = e.target;
       if (t === s || t.classList.contains('x')) { s.remove(); return; }
       if (t.hasAttribute('data-share')) {
-        var text = T('Install the Noor-ul-Hasrat app: prayer times, Qur\'an, duas, the weekly halqa and Hazrat Azam Pasha R.A.\'s dars.', 'Noor-ul-Hasrat app install kijiye: namaz ke auqaat, Qur\'an, duaayein, haftawar halqa aur Hazrat Azam Pasha R.A. ka dars.');
+        var text = T('Stay connected with the teachings of Hazrat Azam Pasha R.A.: a saying every morning, his dars, Sufi practices and the weekly halqa. Free.', 'Hazrat Azam Pasha R.A. ki taleemaat se jude rahiye: har subah ek qaul, unka dars, Sufi amaal aur haftawar halqa. Muft.');
         if (root.navigator.share) root.navigator.share({ title: 'Noor-ul-Hasrat', text: text, url: URL_ }).catch(function () {});
         else root.open('https://wa.me/?text=' + encodeURIComponent(text + ' ' + URL_), '_blank');
       }
@@ -50,7 +50,7 @@
     var r = doc.getElementById('qaHome');
     if (!r) { r = doc.createElement('button'); r.type = 'button'; r.id = 'qaHome'; r.className = 'qa-home'; r.onclick = open; home.appendChild(r); }
     else if (r !== home.lastElementChild) home.appendChild(r);
-    r.innerHTML = '<span class="i">📲</span><span><b>' + T('Get the app · show QR code', 'App hasil kijiye · QR code dikhaiye') + '</b><small>' + T('Install it, or let a friend scan it', 'Install kijiye, ya kisi dost ko scan karwaiye') + '</small></span><span class="c">›</span>';
+    r.innerHTML = '<span class="i">📲</span><span><b>' + T('Share Hazrat\'s teachings · QR code', 'Hazrat ki taleemaat share kijiye · QR code') + '</b><small>' + T('Invite a friend, or add it to your phone', 'Kisi dost ko bulaiye, ya apne phone mein shamil kijiye') + '</small></span><span class="c">›</span>';
   }
   // More menu: a tile
   function paintMore() {

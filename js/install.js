@@ -75,7 +75,7 @@
     if (!d.mobile || hidden) { if (card) card.remove(); }
     else if (!card) {
       card = doc.createElement('div'); card.id = 'installCard'; card.className = 'icard';
-      card.innerHTML = '<div class="ic" style="font-size:22px">📲</div><div class="t">' + (d.android ? '<b>Get the Noor-ul-Hasrat Android app</b>Full-screen app with its own icon. Free download.' : '<b>Install Noor on your phone</b>Opens like an app, with its own icon.') + '</div><button class="go" type="button">' + (d.ios ? 'How' : d.android ? 'Get app' : 'Install') + '</button><button class="x" type="button" aria-label="Hide for now">✕</button>';
+      card.innerHTML = '<div class="ic" style="font-size:22px">📲</div><div class="t">' + (d.android ? '<b>Keep Hazrat\'s teachings with you</b>A saying every morning, his dars, Sufi practices and halqa reminders. Get the free app.' : '<b>Keep Hazrat\'s teachings with you</b>A saying every morning, his dars and halqa reminders, one tap from your home screen.') + '</div><button class="go" type="button">' + (d.ios ? 'How' : d.android ? 'Get app' : 'Install') + '</button><button class="x" type="button" aria-label="Hide for now">✕</button>';
       card.querySelector('.go').onclick = install;
       card.querySelector('.x').onclick = function () { try { store && store.setItem(d.android ? 'noor_apk_dismissed' : 'noor_install_dismissed', String(Date.now())); } catch (e) {} card.remove(); };
       home.insertBefore(card, home.firstChild);
