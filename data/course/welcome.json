@@ -1,15 +1,69 @@
 {
- "title": "7 Days with Hazrat Azam Pasha R.A.",
- "ru_title": "Hazrat Azam Pasha R.A. ke saath 7 din",
- "about": "A short welcome: one video and one reading a day, a few minutes each, from the dars of Hazrat Azam Pasha R.A.",
- "ru_about": "Ek mukhtasar khush-aamdeed: roz ek video aur ek mazmoon, chand minute ka, Hazrat Azam Pasha R.A. ke dars se.",
+ "title": "7 Days with Noor-ul-Hasrat",
+ "ru_title": "Noor-ul-Hasrat ke saath 7 din",
+ "about": "Seven days of light on the spiritual path: one video and one reading a day, a few minutes each, from the teachings of Hazrat Azam Pasha R.A.",
+ "ru_about": "Roohani raaste par noor ke saat din: roz ek video aur ek mazmoon, chand minute ka, Hazrat Azam Pasha R.A. ki taleemaat se.",
  "days": [
-  { "title": "What is tasawwuf?", "ru_title": "Tasawwuf kya hai?", "article": "what-is-tasawwuf", "video": { "v": "pqjEFcL1Nlo", "t": 0 } },
-  { "title": "The purpose of the path", "ru_title": "Tareeqat ka maqsad", "article": "purpose-of-the-path", "video": { "v": "u6BHgjCPuCo", "t": 0 } },
-  { "title": "The scale, Islam and Iman", "ru_title": "Meezaan, Islam aur Imaan", "article": "the-scale-islam-and-iman", "video": { "v": "NSWYCYR-Tlo", "t": 0 }, "nudge": "join" },
-  { "title": "What is Bai'at?", "ru_title": "Bai'at kya hai?", "article": "what-is-bayat", "video": { "v": "g8-0WIXYjcM", "t": 0 } },
-  { "title": "Why a pir or shaykh?", "ru_title": "Pir ya shaykh kyun?", "article": "why-a-shaykh", "video": { "v": "77ZE201Hbjw", "t": 0 }, "nudge": "install" },
-  { "title": "Adab of the murid", "ru_title": "Murid ke aadaab", "article": "adab-of-the-murid", "video": { "v": "qWeLaR3N5r0", "t": 1651 } },
-  { "title": "Continue your journey", "ru_title": "Apna safar jaari rakhiye", "final": true }
+  {
+   "title": "What is tasawwuf?",
+   "ru_title": "Tasawwuf kya hai?",
+   "article": "what-is-tasawwuf",
+   "video": {
+    "v": "pqjEFcL1Nlo",
+    "t": 0
+   }
+  },
+  {
+   "title": "The purpose of the path",
+   "ru_title": "Tareeqat ka maqsad",
+   "article": "purpose-of-the-path",
+   "video": {
+    "v": "u6BHgjCPuCo",
+    "t": 0
+   }
+  },
+  {
+   "title": "The scale, Islam and Iman",
+   "ru_title": "Meezaan, Islam aur Imaan",
+   "article": "the-scale-islam-and-iman",
+   "video": {
+    "v": "NSWYCYR-Tlo",
+    "t": 0
+   },
+   "nudge": "join"
+  },
+  {
+   "title": "What is Bai'at?",
+   "ru_title": "Bai'at kya hai?",
+   "article": "what-is-bayat",
+   "video": {
+    "v": "g8-0WIXYjcM",
+    "t": 0
+   }
+  },
+  {
+   "title": "Why a pir or shaykh?",
+   "ru_title": "Pir ya shaykh kyun?",
+   "article": "why-a-shaykh",
+   "video": {
+    "v": "77ZE201Hbjw",
+    "t": 0
+   },
+   "nudge": "install"
+  },
+  {
+   "title": "Adab of the murid",
+   "ru_title": "Murid ke aadaab",
+   "article": "adab-of-the-murid",
+   "video": {
+    "v": "qWeLaR3N5r0",
+    "t": 1651
+   }
+  },
+  {
+   "title": "Continue your journey",
+   "ru_title": "Apna safar jaari rakhiye",
+   "final": true
+  }
  ]
 }

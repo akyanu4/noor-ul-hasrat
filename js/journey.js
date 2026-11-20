@@ -70,7 +70,7 @@
         '<button class="cs-btn alt" type="button" data-wj="lessons">📘 ' + T('Learn Sufi Practices', 'Sufi Amaal Seekhiye') + '</button>' +
         '<button class="cs-btn alt" type="button" data-wj="library">📚 ' + T('Explore the Library', 'Library dekhiye') + '</button>' +
         '<button class="cs-btn alt" type="button" data-wj="bayah">🤝 ' + T('About Bai\'at', 'Bai\'at ke baare mein') + '</button>' +
-        '<button class="cs-btn alt" type="button" data-wj="share">↗ ' + T('Invite a friend to these 7 days', 'Kisi dost ko in 7 dinon ki dawat dijiye') + '</button></div>';
+        '<button class="cs-btn alt" type="button" data-wj="share">↗ ' + T('Invite a friend to 7 Days with Noor-ul-Hasrat', 'Kisi dost ko Noor-ul-Hasrat ke saath 7 din ki dawat dijiye') + '</button></div>';
     } else {
       if (d.video) h += '<div class="cs-step"><h3>▶ ' + T('Watch', 'Dekhiye') + '</h3><div class="cs-vid" data-wj="play"><img alt="" src="https://i.ytimg.com/vi/' + esc(d.video.v) + '/hqdefault.jpg"><div class="pl">▶</div></div></div>';
       if (d.article && ok[d.article]) h += '<div class="cs-step"><h3>📖 ' + T('Read', 'Padhiye') + '</h3><button class="cs-btn alt" type="button" data-wj="read">' + T('Open today\'s reading', 'Aaj ka mazmoon kholiye') + ' ›</button></div>';
@@ -86,7 +86,7 @@
     paintHome();
   }
   function share() {
-    var url = 'https://noor-ul-hasrat.vercel.app/?welcome=1', text = T('7 Days with Hazrat Azam Pasha R.A.: a few minutes a day of his dars, free in the Noor-ul-Hasrat app.', 'Hazrat Azam Pasha R.A. ke saath 7 din: roz chand minute unka dars, Noor-ul-Hasrat app mein muft.');
+    var url = 'https://noor-ul-hasrat.vercel.app/?welcome=1', text = T('7 Days with Noor-ul-Hasrat: seven days of light on the spiritual path, from the teachings of Hazrat Azam Pasha R.A. A few minutes a day, free.', 'Noor-ul-Hasrat ke saath 7 din: roohani raaste par noor ke saat din, Hazrat Azam Pasha R.A. ki taleemaat se. Roz chand minute, muft.');
     if (root.navigator.share) root.navigator.share({ title: 'Noor-ul-Hasrat', text: text, url: url }).catch(function () {}); else root.open('https://wa.me/?text=' + encodeURIComponent(text + '\n' + url), '_blank');
   }
 
@@ -128,7 +128,7 @@
     }
     hc.hidden = false;
     var next = 0; while (next < 6 && S.done && S.done[next]) next++;
-    var line = S.start == null ? T('New here? A few minutes a day of Hazrat\'s dars.', 'Naye hain? Roz chand minute Hazrat ka dars.')
+    var line = S.start == null ? T('New here? A few minutes a day with the teachings of Hazrat Azam Pasha R.A.', 'Naye hain? Roz chand minute Hazrat Azam Pasha R.A. ki taleemaat ke saath.')
       : (next < od ? T('Day ', 'Din ') + (next + 1) + ' · ' + t(W.days[next], 'title') : T('Next day opens tomorrow, in shaa Allah.', 'Agla din kal khulega, in shaa Allah.'));
     hc.innerHTML = '<button class="x" type="button" aria-label="Hide">✕</button><b>🌙 ' + esc(t(W, 'title')) + '</b><small>' + esc(line) + '</small>' +
       '<div class="wj-dots">' + [0, 1, 2, 3, 4, 5, 6].map(function (i) { return '<i class="' + (S.done && S.done[i] ? 'd' : i < od ? 'o' : '') + '"></i>'; }).join('') + '</div>' +
