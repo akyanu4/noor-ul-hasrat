@@ -38,6 +38,10 @@
     bar.innerHTML = '<span style="font-size:12px;color:var(--muted)">' + (lang === 'ru' ? 'Zabaan' : 'Language') + '</span>' + N.langSwitch('margin:0');
   }
   setTimeout(homeBar, 0); setTimeout(homeBar, 1500);
+  // keep the language bar and Events at the top while other cards are added to Home
+  (function () { var home = doc.getElementById('screen-home'); if (!home || !root.MutationObserver) return; var busy = false;
+    new MutationObserver(function () { if (busy) return; var bar = doc.getElementById('langHome'), ev = doc.getElementById('eventsBox'); if (!bar) return;
+      if (home.firstElementChild !== bar || (ev && bar.nextElementSibling !== ev)) { busy = true; home.insertBefore(bar, home.firstChild); if (ev) home.insertBefore(ev, bar.nextSibling); busy = false; } }).observe(home, { childList: true }); })();
   root.addEventListener('noorlang', homeBar);
   if (N.onScreen) N.onScreen(function (id) { if (id === 'home') homeBar(); });
   doc.addEventListener('click', function (e) {
