@@ -44,7 +44,7 @@
     view = 'list'; var S = st(), od = openDays(S);
     s.querySelector('#wjTitle').textContent = T('Welcome', 'Khush-aamdeed');
     var h = '';
-    h += '<div class="cs-hero" style="background:linear-gradient(135deg,#2a1f4a,#3d2c6b)"><b>🌙 ' + esc(t(W, 'title')) + '</b><div style="color:#e8c46b;font-size:13.5px;font-weight:600;margin-top:2px">' + T('Teachings of Hazrat Azam Pasha R.A.', 'Hazrat Azam Pasha R.A. ki taleemaat') + '</div><p>' + esc(t(W, 'about')) + '</p></div>';
+    h += '<div class="cs-hero" style="background:linear-gradient(135deg,#2a1f4a,#3d2c6b)"><b>🌙 ' + esc(t(W, 'title')) + '</b><div style="color:#e8c46b;font-size:13.5px;font-weight:600;margin-top:2px">' + T('Teachings of Qadeer Piya Sarkar, by Hazrat Azam Pasha R.A.', 'Qadeer Piya Sarkar ki taleemaat, Hazrat Azam Pasha R.A. ki zabaani') + '</div><p>' + esc(t(W, 'about')) + '</p></div>';
     if (S.start == null) h += '<button class="cs-btn" id="wjStart" type="button" style="width:100%;margin:0 0 12px">' + T('Start Day 1', 'Pehla din shuru kijiye') + '</button>';
     h += W.days.map(function (d, i) {
       var open = i < od, done = S.done && S.done[i];
@@ -130,7 +130,7 @@
     var next = 0; while (next < 6 && S.done && S.done[next]) next++;
     var line = S.start == null ? T('New here? A few minutes a day with the teachings of Hazrat Azam Pasha R.A.', 'Naye hain? Roz chand minute Hazrat Azam Pasha R.A. ki taleemaat ke saath.')
       : (next < od ? T('Day ', 'Din ') + (next + 1) + ' · ' + t(W.days[next], 'title') : T('Next day opens tomorrow, in shaa Allah.', 'Agla din kal khulega, in shaa Allah.'));
-    hc.innerHTML = '<button class="x" type="button" aria-label="Hide">✕</button><b>🌙 ' + esc(t(W, 'title')) + '</b><small class="by">' + T('Teachings of Hazrat Azam Pasha R.A.', 'Hazrat Azam Pasha R.A. ki taleemaat') + '</small><small>' + esc(line) + '</small>' +
+    hc.innerHTML = '<button class="x" type="button" aria-label="Hide">✕</button><b>🌙 ' + esc(t(W, 'title')) + '</b><small class="by">' + T('Teachings of Qadeer Piya Sarkar, by Hazrat Azam Pasha R.A.', 'Qadeer Piya Sarkar ki taleemaat, Hazrat Azam Pasha R.A. ki zabaani') + '</small><small>' + esc(line) + '</small>' +
       '<div class="wj-dots">' + [0, 1, 2, 3, 4, 5, 6].map(function (i) { return '<i class="' + (S.done && S.done[i] ? 'd' : i < od ? 'o' : '') + '"></i>'; }).join('') + '</div>' +
       '<span class="wj-go">' + (S.start == null ? T('Start', 'Shuru kijiye') : T('Continue', 'Jaari rakhiye')) + ' ›</span>';
   }
