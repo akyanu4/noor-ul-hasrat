@@ -8,7 +8,7 @@
 const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
 const M = require('./mocks.js');
-const SB = require('./storyboard.js');
+const SB = (process.argv[2]||'').toUpperCase()==='UR' ? require('./storyboard_ur.js') : require('./storyboard.js');
 
 const SEC = (process.argv[2] || 'A').toUpperCase();
 const BASE = process.env.NOOR_BASE || 'http://localhost:8765';
@@ -60,7 +60,7 @@ const OVERLAY = () => {
   // Version 3: a Collective dhikr campaign in the (in-memory) database. Illustrative figures, not the live count.
   // Recitation audio: a silent stand-in, 3.2 s in the Short and 6 s in the walkthrough, so the pages visibly turn with it.
   const mock = await M.install(ctx, { reciteSecs: SEC === 'A' ? 3.2 : 6,
-    seed: { 'collective/current': { title: 'Collective dhikr', arabic: 'سُبْحَانَ اللّٰه', target: 100000, endsOn: '', count: 41286 } } });
+    seed: { library_ok: Object.fromEntries(JSON.parse(fs.readFileSync(path.join(HERE,'../../../../data/library/index.json'))).map(a=>[a.slug,{by:'teacher',name:'Teacher',at:Date.now()}])), 'collective/current': { title: 'Collective dhikr', arabic: 'سُبْحَانَ اللّٰه', target: 100000, endsOn: '', count: 41286 } } });
   await ctx.addInitScript(OVERLAY);
   await ctx.addInitScript(() => { localStorage.setItem('noor_apk_dismissed', String(Date.now())); });   // the "Get the Android app" banner was closed before
   await ctx.addInitScript(() => {   // a returning reader: three Shorts of Haqeeqat-e-Bai'at already watched

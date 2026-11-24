@@ -13,8 +13,27 @@ sys.path.insert(0, os.path.abspath(os.path.join(HERE, '../../engine')))
 import cfg, lib as L
 from PIL import Image, ImageDraw, ImageFilter
 import numpy as np
-from captions import CAPTIONS
-from align import wav_path, V
+try: from captions import CAPTIONS
+except Exception: CAPTIONS = {}
+try: from align import wav_path, V
+except Exception: wav_path, V = None, '4'
+
+def ur_captions():
+    """Roman Urdu captions of the Urdu walkthrough (script_v4.md, W01-W13), cut into chunks of at most ~62 characters."""
+    t = open(os.path.join(HERE, 'script_v4.md'), encoding='utf-8').read(); t = t[t.index('Roman Urdu captions'):]
+    lines = re.findall(r'^W\d+\s+(.+)$', t, re.M); out = []
+    for ln in lines:
+        parts = [p.strip() for p in re.split(r'(?<=[.?!])\s+', ln) if p.strip()]; chunks = []
+        for p in parts:
+            if len(p) <= 62: chunks.append(p); continue
+            seg, cur = re.split(r'(?<=,)\s+', p), ''
+            for q in seg:
+                if cur and len(cur) + len(q) + 1 > 62: chunks.append(cur); cur = q
+                else: cur = (cur + ' ' + q).strip()
+            if cur: chunks.append(cur)
+        out.append([('', c) for c in chunks])
+    return out
+CAPTIONS['UR'] = ur_captions()
 
 REPO = os.path.abspath(os.path.join(HERE, '../../../..'))
 W, H, FPS = 1080, 1920, 30
@@ -27,7 +46,7 @@ PX, PY = (W - PW) // 2, 176; SX, SY = PX + PB, PY + PB
 CAP_Y, CAP_H = 1722, 194
 MONT6 = L.FD + 'montserrat/package/files/montserrat-latin-600-normal.woff'
 MONT7 = L.FD + 'montserrat/package/files/montserrat-latin-700-normal.woff'
-TITLE_EN, TITLE_UR = 'How to use Noor-ul-Hasrat', 'نورالحسرت ایپ کیسے استعمال کریں'
+TITLE_EN, TITLE_UR = 'Noor-ul-Hasrat app ka tareeqa' if (len(sys.argv) > 1 and sys.argv[1].upper() == 'UR') else 'How to use Noor-ul-Hasrat', 'نورالحسرت ایپ کیسے استعمال کریں'
 L.setup(W, H)
 
 def run(cmd, **kw): return subprocess.run(cmd, check=True, **kw)
@@ -148,8 +167,8 @@ def caption_times(sec, wav, times):
     return out
 
 def main(sec):
-    name = ('App_Guide_Short' if sec == 'A' else 'App_Guide_Walkthrough') + ('_v3' if V == '3' else '')
-    wav = wav_path(sec)
+    name = 'App_Guide_Walkthrough_v4_UR' if sec == 'UR' else ('App_Guide_Short' if sec == 'A' else 'App_Guide_Walkthrough') + ('_v3' if V == '3' else '')
+    wav = os.path.join(HERE, 'audio', 'voice_ur_walkthrough_daro.wav') if sec == 'UR' else wav_path(sec)
     times = json.load(open(os.path.join(HERE, 'work', f'times_{sec}.json')))
     D = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', wav], capture_output=True, text=True).stdout)
     T = OPEN + D + CLOSE
@@ -188,17 +207,21 @@ def main(sec):
 
     # --- audio. Narration: 70 Hz high-pass, gentle compression (-22 dB, 3:1, +4 dB). Nasheed: set from measured loudness
     # so it sits 30 LU under the processed voice (20 LU on the opening/closing cards), faded. Then two-pass loudnorm.
-    music = cfg.MUSIC or os.path.join(HERE, '../2026-11-nizam-ul-amal-6/music/nasheed.mp3')
+    music = cfg.MUSIC if cfg.MUSIC and os.path.exists(cfg.MUSIC) else None
     def lufs(path, pre=''):
         err = subprocess.run(['ffmpeg', '-hide_banner', '-i', path, '-af', (pre + ',' if pre else '') + 'ebur128', '-f', 'null', '-'], capture_output=True, text=True).stderr
         return float(re.findall(r'I:\s+(-?[\d.]+) LUFS', err)[-1])
     vchain = 'aresample=48000,highpass=f=70,acompressor=threshold=-22dB:ratio=3:attack=15:release=250:makeup=4dB'
     voice = f'{wk}/voice.wav'
     run(['ffmpeg', '-v', 'error', '-y', '-i', wav, '-af', vchain + ',pan=stereo|c0=c0|c1=c0', voice])
-    Lv, Lm = lufs(voice), lufs(music, f'atrim=0:{T}')
+    Lv = lufs(voice)
+    if music is None:   # no nasheed file in this session: a silent bed, so only the narration is heard
+        music = f'{wk}/silence.wav'; run(['ffmpeg', '-v', 'error', '-y', '-f', 'lavfi', '-i', 'anullsrc=r=48000:cl=stereo', '-t', '30', music]); Lm = Lv - 30
+        print('NO MUSIC FILE: narration only')
+    else: Lm = lufs(music, f'atrim=0:{T}')
     g = lambda under: 10 ** ((Lv - under - Lm) / 20)
     lo, hi, r = g(30), g(20), 0.8
-    print(f'voice {Lv:.1f} LUFS, music {Lm:.1f} LUFS -> nasheed gain {20 * math.log10(lo):.1f} dB (30 LU under the voice), {20 * math.log10(hi):.1f} dB on the cards (20 LU)')
+    print(f'voice {Lv:.1f} LUFS, music {Lm:.1f} LUFS')
     vol = f"{lo}+({hi}-{lo})*max(clip(({OPEN + 0.2}-t)/{r}+0.5,0,1),clip((t-{OPEN + D - 0.2})/{r}+0.5,0,1))"
     mix = f'{wk}/mix.wav'
     af = (f"[0:a]adelay={int(OPEN * 1000)}:all=1,apad,atrim=0:{T}[v];"
