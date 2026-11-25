@@ -88,6 +88,7 @@
   }
   s.querySelector('#abGuide').addEventListener('click', function () { if (root.NoorFamily && root.NoorFamily.playVideo) root.NoorFamily.playVideo('ukIe78h3lHM', 'How to use the Noor-ul-Hasrat app'); else root.open('https://youtube.com/shorts/ukIe78h3lHM', '_blank'); });
   s.querySelector('#abGuideUr').addEventListener('click', function () { if (root.NoorFamily && root.NoorFamily.playVideo) root.NoorFamily.playVideo('s8Uf-_G18SQ', 'Noor-ul-Hasrat app ka tareeqa (Roman Urdu)'); else root.open('https://youtube.com/shorts/s8Uf-_G18SQ', '_blank'); });
+  s.querySelector('#abGuideUrFull').addEventListener('click', function () { if (root.NoorFamily && root.NoorFamily.playVideo) root.NoorFamily.playVideo('622FIoUeMZg', 'Noor-ul-Hasrat app ka tareeqa: full walkthrough (Roman Urdu)'); else root.open('https://www.youtube.com/watch?v=622FIoUeMZg', '_blank'); });
   var hf = s.querySelector('#hpForm'), hOut = s.querySelector('#hpOut'), hSend = s.querySelector('#hpSend');
   function hMsg(t, cls) { hOut.innerHTML = t ? '<div class="hp-msg ' + (cls || '') + '">' + t + '</div>' : ''; }
   function prefill() {
