@@ -147,7 +147,7 @@
       body.innerHTML = '<div class="tl-note" style="text-align:center">' + esc(sr.name) + ' · ' + T('Ayah', 'Ayat') + ' ' + n + ' / ' + sr.v.length + '</div>' +
         '<div class="tl-card"><div class="tl-ar" id="tlAr">' + wordsHtml(result, v.a) + '</div><div class="tl-tr">' + esc(v.t) + '</div><div class="tl-en">' + esc(v.e) + '</div>' +
         '<div class="tl-btns"><button class="tl-b" id="tlListen">🔊 ' + T('Listen', 'Suniye') + '</button><button class="tl-b pri" id="tlRec"' + (Rec ? '' : ' disabled') + '>🎤 ' + T('Recite', 'Padhiye') + '</button></div>' +
-        '<div id="tlMsg">' + msg + '</div>' +
+        '<div id="tlMsg">' + (msg || (Rec ? '' : '<div class="tl-msg info">' + T('This browser cannot listen to Arabic, so checking is off. Open Noor in Chrome on Android (or Safari on iPhone, not the home-screen app) to recite.', 'Yeh browser Arabic nahin sun sakta, isliye check band hai. Android par Chrome ya iPhone par Safari (home-screen app nahin) mein Noor kholiye.') + '</div>')) + '</div>' +
         '<div class="tl-btns"><button class="tl-b" id="tlPrev"' + (ai === 0 ? ' disabled' : '') + '>‹ ' + T('Back', 'Peeche') + '</button><button class="tl-b" id="tlNext"' + (ai >= sr.v.length - 1 ? ' disabled' : '') + '>' + T('Next', 'Aage') + ' ›</button></div></div>' +
         '<div class="tl-dots">' + dots + '</div>';
       body.querySelector('#tlListen').onclick = function () { play(sr.n, n); };
@@ -156,7 +156,7 @@
       body.querySelector('#tlNext').onclick = function () { stopAll(); ai++; ayah(); };
     }
     function verdict(r, v) {
-      if (!r.heard) return '<div class="tl-msg info">' + T('I could not hear you. Tap Recite, wait a moment, then read the ayah clearly.', 'Awaaz sunai nahin di. Padhiye dabaiye, zara ruk kar saaf padhiye.') + '</div>';
+      if (!r.heard) return '<div class="tl-msg info">' + T('I could not hear you. Tap Recite, wait a moment, then read the ayah clearly.', 'Awaaz sunai nahin di. Padhiye dabaiye, zara ruk kar saaf padhiye.') + ' <small style="opacity:.7">[' + esc((r.err_ || 'no-result') + ', ' + (r.ms_ || 0) + 'ms') + ']</small></div>';
       if (r.ok) return '<div class="tl-msg good"><b>✅ ' + T('Correct, MashaAllah!', 'Bilkul sahi, MashaAllah!') + '</b></div>';
       var real = String(v.a).split(/\s+/).filter(Boolean), lines = [];
       r.words.forEach(function (w, i) {
@@ -176,7 +176,7 @@
     function startRec() {
       if (!Rec) return;
       try { audio && audio.pause(); } catch (e) {}
-      var btn = body.querySelector('#tlRec'), msg = body.querySelector('#tlMsg'), v = cur.v[ai], alts = [], gotFinal = false;
+      var btn = body.querySelector('#tlRec'), msg = body.querySelector('#tlMsg'), v = cur.v[ai], alts = [], gotFinal = false, errCode = '', t0 = Date.now();
       rec = new Rec(); rec.lang = 'ar-SA'; rec.interimResults = true; rec.maxAlternatives = 5; rec.continuous = false;
       listening = true; btn.classList.add('rec'); btn.innerHTML = '⏹ ' + T('Stop', 'Ruk jaiye');
       msg.innerHTML = '<div class="tl-msg info">🎧 ' + T('Listening… read the ayah.', 'Sun rahi hoon… ayat padhiye.') + '</div>';
@@ -186,14 +186,14 @@
         if (res.isFinal) gotFinal = true;
       };
       rec.onerror = function (e) {
-        listening = false; var er = e && e.error;
-        if (er === 'not-allowed' || er === 'service-not-allowed') { var m = body.querySelector('#tlMsg'); if (m) m.innerHTML = '<div class="tl-msg info">' + T('Microphone is blocked. Allow the microphone for Noor in your browser settings.', 'Microphone band hai. Browser settings mein Noor ke liye microphone allow kijiye.') + '</div>'; rec = null; }
+        listening = false; var er = e && e.error; errCode = er || 'error';
+        if (er === 'not-allowed' || er === 'service-not-allowed') { var m = body.querySelector('#tlMsg'); if (m) m.innerHTML = '<div class="tl-msg info">' + T('Microphone or speech recognition is blocked. Allow the microphone for Noor (and, on iPhone, turn on Dictation in Settings → General → Keyboard). If Noor is installed on the home screen, try opening it in the browser instead.', 'Microphone ya speech recognition band hai. Noor ke liye microphone allow kijiye (iPhone par Settings → General → Keyboard mein Dictation on kijiye). Agar Noor home screen par install hai to browser mein kholkar dekhiye.') + ' <small>[' + esc(er) + ']</small></div>'; rec = null; }
       };
       rec.onend = function () {
         if (!rec) return; rec = null;
         var wasListening = listening; listening = false;
         if (!doc.getElementById('tlRec')) return;
-        var r = check(v.a, alts); ayah(r);
+        var r = check(v.a, alts); r.err_ = errCode; r.ms_ = Date.now() - t0; r.n_ = alts.length; ayah(r);
         if (r.ok) { var p = prog[cur.n] = prog[cur.n] || {}; p[ai + 1] = 1; saveProg(); var d = body.querySelectorAll('.tl-dots i')[ai]; if (d) d.classList.add('on'); }
       };
       try { rec.start(); } catch (e) { listening = false; rec = null; }
