@@ -174,40 +174,57 @@
       audio.play().catch(function () { var m = body.querySelector('#tlMsg'); if (m) m.innerHTML = '<div class="tl-msg info">' + T('Could not play the recitation. Check your connection.', 'Tilawat nahin chal saki. Internet check kijiye.') + '</div>'; });
     }
     var lastEnd = 0;
+    function recBtn(on) { var bb = body.querySelector('#tlRec'); if (!bb) return; bb.classList.toggle('rec', !!on); bb.innerHTML = on ? '⏹ ' + T('Stop', 'Ruk jaiye') : '🎤 ' + T('Recite', 'Padhiye'); }
+    function say(html) { var m = body.querySelector('#tlMsg'); if (m) m.innerHTML = html; }
     function startRec(attempt) {
       if (!Rec) return;
       attempt = attempt || 0;
       try { audio && audio.pause(); } catch (e) {}
       // Chrome on Android can refuse a recognizer started right after the previous one ended: give it a moment.
-      var wait = Math.max(0, 500 - (Date.now() - lastEnd));
-      var btn = body.querySelector('#tlRec'), msg = body.querySelector('#tlMsg'), v = cur.v[ai], parts = [], errCode = '', t0 = Date.now(), silence = null, hard = null, me;
-      listening = true; btn.classList.add('rec'); btn.innerHTML = '⏹ ' + T('Stop', 'Ruk jaiye');
-      msg.innerHTML = '<div class="tl-msg info">🎧 ' + T('Listening… read the ayah, then tap Stop.', 'Sun rahi hoon… ayat padhiye, phir Ruk jaiye dabaiye.') + '</div>';
+      var wait = Math.max(attempt ? 700 : 0, 600 - (Date.now() - lastEnd));
+      var v = cur.v[ai], parts = [], errCode = '', t0 = Date.now(), silence = null, hard = null, watch = null, micOn = false, me;
+      listening = true; recBtn(true);
+      say('<div class="tl-msg info">⏳ ' + T('Starting the microphone…', 'Microphone shuru ho raha hai…') + '</div>');
+      function clearAll() { clearTimeout(silence); clearTimeout(hard); clearTimeout(watch); }
+      function giveUp(code) {   // the microphone never switched on: say so and bring the Recite button back
+        clearAll(); try { me && me.abort(); } catch (x) {} if (rec === me) rec = null; listening = false; lastEnd = Date.now();
+        recBtn(false);
+        say('<div class="tl-msg info">🎙 ' + T('The microphone did not start. Tap Recite to try again. If it keeps happening, close Noor fully and open it again.', 'Microphone shuru nahin hua. Dobara Padhiye dabaiye. Phir bhi na ho to Noor poori tarah band karke dobara kholiye.') + ' <small style="opacity:.7">[' + esc(code) + ']</small></div>');
+      }
       function finish() {
-        clearTimeout(silence); clearTimeout(hard);
+        clearAll();
         if (rec !== me) return; rec = null; listening = false; lastEnd = Date.now();
         if (!doc.getElementById('tlRec')) return;
+        if (!micOn && !parts.length) { if (attempt < 1) { startRec(attempt + 1); return; } giveUp(errCode || 'no-audio-start'); return; }
         // candidate transcripts: the recognizer's first choice for every phrase, and the same with its second choice
-        var alts = [], k, j;
+        var alts = [], k;
         for (k = 0; k < 3; k++) { var t = parts.map(function (pr) { return pr[Math.min(k, pr.length - 1)] || ''; }).join(' ').trim(); if (t && alts.indexOf(t) < 0) alts.push(t); }
         if (!alts.length && !errCode && attempt < 1 && Date.now() - t0 < 3000) { startRec(attempt + 1); return; }   // ended at once with nothing: try one more time quietly
         var r = check(v.a, alts); r.err_ = errCode; r.ms_ = Date.now() - t0; r.n_ = parts.length; ayah(r);
+        try { var rb = body.querySelector('#tlRec'); rb && rb.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (x) {}
         if (r.ok) { var p = prog[cur.n] = prog[cur.n] || {}; p[ai + 1] = 1; saveProg(); var d = body.querySelectorAll('.tl-dots i')[ai]; if (d) d.classList.add('on'); }
       }
       setTimeout(function () {
         if (!listening) return;
         me = rec = new Rec(); me.lang = 'ar-SA'; me.interimResults = true; me.maxAlternatives = 5; me.continuous = true;
+        me.onaudiostart = function () { micOn = true; clearTimeout(watch); say('<div class="tl-msg info">🎙 <b>' + T('Microphone is on. Read the ayah now.', 'Microphone on hai. Ab ayat padhiye.') + '</b><br><small>' + T('Pause when done, or tap Stop.', 'Phir ruk jaiye, ya Ruk jaiye dabaiye.') + '</small></div>'); };
         me.onresult = function (e) {
-          parts = [];
+          micOn = true; parts = [];
           for (var i = 0; i < e.results.length; i++) { var res = e.results[i], a = []; for (var j = 0; j < res.length; j++) a.push(res[j].transcript); parts.push(a); }
           clearTimeout(silence); silence = setTimeout(function () { try { me.stop(); } catch (x) {} }, 2200);   // done when the child pauses
         };
         me.onerror = function (e) {
           var er = e && e.error; errCode = er || 'error';
-          if (er === 'not-allowed' || er === 'service-not-allowed') { listening = false; rec = null; var m = body.querySelector('#tlMsg'); if (m) m.innerHTML = '<div class="tl-msg info">' + T('Microphone or speech recognition is blocked. Allow the microphone for Noor (and, on iPhone, turn on Dictation in Settings → General → Keyboard). If Noor is installed on the home screen, try opening it in the browser instead.', 'Microphone ya speech recognition band hai. Noor ke liye microphone allow kijiye (iPhone par Settings → General → Keyboard mein Dictation on kijiye). Agar Noor home screen par install hai to browser mein kholkar dekhiye.') + ' <small>[' + esc(er) + ']</small></div>'; var bb = body.querySelector('#tlRec'); if (bb) { bb.classList.remove('rec'); bb.innerHTML = '🎤 ' + T('Recite', 'Padhiye'); } }
+          if (er === 'not-allowed' || er === 'service-not-allowed') { clearAll(); listening = false; rec = null; recBtn(false); say('<div class="tl-msg info">' + T('Microphone or speech recognition is blocked. Allow the microphone for Noor (and, on iPhone, turn on Dictation in Settings → General → Keyboard). If Noor is installed on the home screen, try opening it in the browser instead.', 'Microphone ya speech recognition band hai. Noor ke liye microphone allow kijiye (iPhone par Settings → General → Keyboard mein Dictation on kijiye). Agar Noor home screen par install hai to browser mein kholkar dekhiye.') + ' <small>[' + esc(er) + ']</small></div>'); }
         };
         me.onend = finish;
         hard = setTimeout(function () { try { me.stop(); } catch (x) {} }, 25000);
+        watch = setTimeout(function () {   // no "audio started" within 3.5 s: the recognizer is stuck
+          if (micOn || rec !== me) return;
+          try { me.abort(); } catch (x) {}
+          clearAll(); if (rec === me) rec = null; listening = false;
+          if (attempt < 1) { lastEnd = Date.now(); startRec(attempt + 1); } else giveUp('stuck');
+        }, 3500);
         try { me.start(); } catch (e) { errCode = 'start-failed'; finish(); }
       }, wait);
     }
