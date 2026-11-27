@@ -173,7 +173,7 @@
       audio = new win.Audio('https://everyayah.com/data/Alafasy_128kbps/' + pad3(sn) + pad3(an) + '.mp3');
       audio.play().catch(function () { var m = body.querySelector('#tlMsg'); if (m) m.innerHTML = '<div class="tl-msg info">' + T('Could not play the recitation. Check your connection.', 'Tilawat nahin chal saki. Internet check kijiye.') + '</div>'; });
     }
-    var lastEnd = 0;
+    var lastEnd = 0, shared = null;
     function recBtn(on) { var bb = body.querySelector('#tlRec'); if (!bb) return; bb.classList.toggle('rec', !!on); bb.innerHTML = on ? '⏹ ' + T('Stop', 'Ruk jaiye') : '🎤 ' + T('Recite', 'Padhiye'); }
     function say(html) { var m = body.querySelector('#tlMsg'); if (m) m.innerHTML = html; }
     function startRec(attempt) {
@@ -181,7 +181,7 @@
       attempt = attempt || 0;
       try { audio && audio.pause(); } catch (e) {}
       // Chrome on Android can refuse a recognizer started right after the previous one ended: give it a moment.
-      var wait = Math.max(attempt ? 700 : 0, 600 - (Date.now() - lastEnd));
+      var wait = Math.max(attempt ? 1000 : 0, 900 - (Date.now() - lastEnd));
       var v = cur.v[ai], parts = [], errCode = '', t0 = Date.now(), silence = null, hard = null, watch = null, micOn = false, me;
       listening = true; recBtn(true);
       say('<div class="tl-msg info">⏳ ' + T('Starting the microphone…', 'Microphone shuru ho raha hai…') + '</div>');
@@ -189,13 +189,14 @@
       function giveUp(code) {   // the microphone never switched on: say so and bring the Recite button back
         clearAll(); try { me && me.abort(); } catch (x) {} if (rec === me) rec = null; listening = false; lastEnd = Date.now();
         recBtn(false);
-        say('<div class="tl-msg info">🎙 ' + T('The microphone did not start. Tap Recite to try again. If it keeps happening, close Noor fully and open it again.', 'Microphone shuru nahin hua. Dobara Padhiye dabaiye. Phir bhi na ho to Noor poori tarah band karke dobara kholiye.') + ' <small style="opacity:.7">[' + esc(code) + ']</small></div>');
+        say('<div class="tl-msg info">🎙 ' + T('The microphone did not start. Tap Recite to try again. If it keeps happening, close Noor fully and open it again.', 'Microphone shuru nahin hua. Dobara Padhiye dabaiye. Phir bhi na ho to Noor poori tarah band karke dobara kholiye.') + ' <small style="opacity:.7">[' + esc(code) + ']</small><br><button class="tl-b pri" id="tlReload" style="margin-top:8px">🔄 ' + T('Restart microphone', 'Microphone dobara shuru kijiye') + '</button></div>');
+        var rb = body.querySelector('#tlReload'); if (rb) rb.onclick = function () { try { win.location.href = win.location.pathname + '?tilawat=1'; } catch (x) { win.location.reload(); } };
       }
       function finish() {
         clearAll();
         if (rec !== me) return; rec = null; listening = false; lastEnd = Date.now();
         if (!doc.getElementById('tlRec')) return;
-        if (!micOn && !parts.length) { if (attempt < 1) { startRec(attempt + 1); return; } giveUp(errCode || 'no-audio-start'); return; }
+        if (!micOn && !parts.length) { if (attempt < 1) { shared = null; startRec(attempt + 1); return; } giveUp(errCode || 'no-audio-start'); return; }
         // candidate transcripts: the recognizer's first choice for every phrase, and the same with its second choice
         var alts = [], k;
         for (k = 0; k < 3; k++) { var t = parts.map(function (pr) { return pr[Math.min(k, pr.length - 1)] || ''; }).join(' ').trim(); if (t && alts.indexOf(t) < 0) alts.push(t); }
@@ -206,7 +207,7 @@
       }
       setTimeout(function () {
         if (!listening) return;
-        me = rec = new Rec(); me.lang = 'ar-SA'; me.interimResults = true; me.maxAlternatives = 5; me.continuous = true;
+        me = rec = (attempt === 0 && shared) ? shared : (shared = new Rec()); me.lang = 'ar-SA'; me.interimResults = true; me.maxAlternatives = 5; me.continuous = true;   // Android Chrome copes better when the same recognizer is reused
         me.onaudiostart = function () { micOn = true; clearTimeout(watch); say('<div class="tl-msg info">🎙 <b>' + T('Microphone is on. Read the ayah now.', 'Microphone on hai. Ab ayat padhiye.') + '</b><br><small>' + T('Pause when done, or tap Stop.', 'Phir ruk jaiye, ya Ruk jaiye dabaiye.') + '</small></div>'); };
         me.onresult = function (e) {
           micOn = true; parts = [];
