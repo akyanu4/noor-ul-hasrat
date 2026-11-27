@@ -173,30 +173,43 @@
       audio = new win.Audio('https://everyayah.com/data/Alafasy_128kbps/' + pad3(sn) + pad3(an) + '.mp3');
       audio.play().catch(function () { var m = body.querySelector('#tlMsg'); if (m) m.innerHTML = '<div class="tl-msg info">' + T('Could not play the recitation. Check your connection.', 'Tilawat nahin chal saki. Internet check kijiye.') + '</div>'; });
     }
-    function startRec() {
+    var lastEnd = 0;
+    function startRec(attempt) {
       if (!Rec) return;
+      attempt = attempt || 0;
       try { audio && audio.pause(); } catch (e) {}
-      var btn = body.querySelector('#tlRec'), msg = body.querySelector('#tlMsg'), v = cur.v[ai], alts = [], gotFinal = false, errCode = '', t0 = Date.now();
-      rec = new Rec(); rec.lang = 'ar-SA'; rec.interimResults = true; rec.maxAlternatives = 5; rec.continuous = false;
+      // Chrome on Android can refuse a recognizer started right after the previous one ended: give it a moment.
+      var wait = Math.max(0, 500 - (Date.now() - lastEnd));
+      var btn = body.querySelector('#tlRec'), msg = body.querySelector('#tlMsg'), v = cur.v[ai], parts = [], errCode = '', t0 = Date.now(), silence = null, hard = null, me;
       listening = true; btn.classList.add('rec'); btn.innerHTML = '⏹ ' + T('Stop', 'Ruk jaiye');
-      msg.innerHTML = '<div class="tl-msg info">🎧 ' + T('Listening… read the ayah.', 'Sun rahi hoon… ayat padhiye.') + '</div>';
-      rec.onresult = function (e) {
-        var res = e.results[e.results.length - 1]; alts = [];
-        for (var i = 0; i < res.length; i++) alts.push(res[i].transcript);
-        if (res.isFinal) gotFinal = true;
-      };
-      rec.onerror = function (e) {
-        listening = false; var er = e && e.error; errCode = er || 'error';
-        if (er === 'not-allowed' || er === 'service-not-allowed') { var m = body.querySelector('#tlMsg'); if (m) m.innerHTML = '<div class="tl-msg info">' + T('Microphone or speech recognition is blocked. Allow the microphone for Noor (and, on iPhone, turn on Dictation in Settings → General → Keyboard). If Noor is installed on the home screen, try opening it in the browser instead.', 'Microphone ya speech recognition band hai. Noor ke liye microphone allow kijiye (iPhone par Settings → General → Keyboard mein Dictation on kijiye). Agar Noor home screen par install hai to browser mein kholkar dekhiye.') + ' <small>[' + esc(er) + ']</small></div>'; rec = null; }
-      };
-      rec.onend = function () {
-        if (!rec) return; rec = null;
-        var wasListening = listening; listening = false;
+      msg.innerHTML = '<div class="tl-msg info">🎧 ' + T('Listening… read the ayah, then tap Stop.', 'Sun rahi hoon… ayat padhiye, phir Ruk jaiye dabaiye.') + '</div>';
+      function finish() {
+        clearTimeout(silence); clearTimeout(hard);
+        if (rec !== me) return; rec = null; listening = false; lastEnd = Date.now();
         if (!doc.getElementById('tlRec')) return;
-        var r = check(v.a, alts); r.err_ = errCode; r.ms_ = Date.now() - t0; r.n_ = alts.length; ayah(r);
+        // candidate transcripts: the recognizer's first choice for every phrase, and the same with its second choice
+        var alts = [], k, j;
+        for (k = 0; k < 3; k++) { var t = parts.map(function (pr) { return pr[Math.min(k, pr.length - 1)] || ''; }).join(' ').trim(); if (t && alts.indexOf(t) < 0) alts.push(t); }
+        if (!alts.length && !errCode && attempt < 1 && Date.now() - t0 < 3000) { startRec(attempt + 1); return; }   // ended at once with nothing: try one more time quietly
+        var r = check(v.a, alts); r.err_ = errCode; r.ms_ = Date.now() - t0; r.n_ = parts.length; ayah(r);
         if (r.ok) { var p = prog[cur.n] = prog[cur.n] || {}; p[ai + 1] = 1; saveProg(); var d = body.querySelectorAll('.tl-dots i')[ai]; if (d) d.classList.add('on'); }
-      };
-      try { rec.start(); } catch (e) { listening = false; rec = null; }
+      }
+      setTimeout(function () {
+        if (!listening) return;
+        me = rec = new Rec(); me.lang = 'ar-SA'; me.interimResults = true; me.maxAlternatives = 5; me.continuous = true;
+        me.onresult = function (e) {
+          parts = [];
+          for (var i = 0; i < e.results.length; i++) { var res = e.results[i], a = []; for (var j = 0; j < res.length; j++) a.push(res[j].transcript); parts.push(a); }
+          clearTimeout(silence); silence = setTimeout(function () { try { me.stop(); } catch (x) {} }, 2200);   // done when the child pauses
+        };
+        me.onerror = function (e) {
+          var er = e && e.error; errCode = er || 'error';
+          if (er === 'not-allowed' || er === 'service-not-allowed') { listening = false; rec = null; var m = body.querySelector('#tlMsg'); if (m) m.innerHTML = '<div class="tl-msg info">' + T('Microphone or speech recognition is blocked. Allow the microphone for Noor (and, on iPhone, turn on Dictation in Settings → General → Keyboard). If Noor is installed on the home screen, try opening it in the browser instead.', 'Microphone ya speech recognition band hai. Noor ke liye microphone allow kijiye (iPhone par Settings → General → Keyboard mein Dictation on kijiye). Agar Noor home screen par install hai to browser mein kholkar dekhiye.') + ' <small>[' + esc(er) + ']</small></div>'; var bb = body.querySelector('#tlRec'); if (bb) { bb.classList.remove('rec'); bb.innerHTML = '🎤 ' + T('Recite', 'Padhiye'); } }
+        };
+        me.onend = finish;
+        hard = setTimeout(function () { try { me.stop(); } catch (x) {} }, 25000);
+        try { me.start(); } catch (e) { errCode = 'start-failed'; finish(); }
+      }, wait);
     }
     function stopRec() { try { rec && rec.stop(); } catch (e) {} }
 
