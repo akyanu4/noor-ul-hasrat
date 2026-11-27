@@ -35,7 +35,7 @@
       '<a class="ab-btn" href="https://wa.me/' + PHONE.replace('+', '') + '" target="_blank" rel="noopener">💬 WhatsApp</a>' +
       '<button class="ab-btn" type="button" id="abCopy">📋 Copy number</button></div>' +
       '</div>' +
-    '<div class="ab-card"><h3>How to use the app</h3><div class="ab-note" style="margin:0 0 10px">A 2-minute guide: prayer times, Qibla, halqa, Quran, Tasbeeh, Dars Highlights and your account.</div><div class="ab-btns"><button class="ab-btn pri" type="button" id="abGuide">▶ Watch the App Guide</button> <button class="ab-btn" type="button" id="abGuideUr">▶ Roman Urdu guide</button></div></div>' +
+    '<div class="ab-card"><h3>How to use the app</h3><div class="ab-note" style="margin:0 0 10px">A 2-minute guide: prayer times, Qibla, halqa, Quran, Tasbeeh, Dars Highlights and your account.</div><div class="ab-btns"><button class="ab-btn pri" type="button" id="abGuide">▶ Watch the App Guide</button> <button class="ab-btn" type="button" id="abGuideUr">▶ Roman Urdu guide</button> <button class="ab-btn" type="button" id="abGuideUrFull">🎬 Full walkthrough (Roman Urdu)</button></div></div>' +
     '<div class="ab-card" id="abHelp"><h3>Technical help &amp; feedback</h3><div class="ab-note" style="margin:0"><b>🌱 Soft launch:</b> the app is new and still growing. Something not working, or an idea to make it better? Tell us and we will reply on WhatsApp or email, in shaa Allah. No sign-in needed.</div>' +
       '<form class="hp-f" id="hpForm" novalidate>' +
       '<label for="hpName">Your name</label><input id="hpName" maxlength="60" autocomplete="name" required>' +
