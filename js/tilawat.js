@@ -156,7 +156,7 @@
       body.querySelector('#tlNext').onclick = function () { stopAll(); ai++; ayah(); };
     }
     function verdict(r, v) {
-      if (!r.heard) return '<div class="tl-msg info">' + T('I could not hear you. Tap Recite, wait a moment, then read the ayah clearly.', 'Awaaz sunai nahin di. Padhiye dabaiye, zara ruk kar saaf padhiye.') + ' <small style="opacity:.7">[' + esc((r.err_ || 'no-result') + ', ' + (r.ms_ || 0) + 'ms') + ']</small></div>';
+      if (!r.heard) return '<div class="tl-msg info">' + T('I could not hear you. Tap Recite, wait a moment, then read the ayah clearly.', 'Awaaz sunai nahin di. Padhiye dabaiye, zara ruk kar saaf padhiye.') + ' <small style="opacity:.7">[' + esc((r.err_ || 'no-result') + ', ' + (r.ms_ || 0) + 'ms, ' + (r.ev_ || '')) + ']</small></div>';
       if (r.ok) return '<div class="tl-msg good"><b>✅ ' + T('Correct, MashaAllah!', 'Bilkul sahi, MashaAllah!') + '</b></div>';
       var real = String(v.a).split(/\s+/).filter(Boolean), lines = [];
       r.words.forEach(function (w, i) {
@@ -182,7 +182,8 @@
       try { audio && audio.pause(); } catch (e) {}
       // Chrome on Android can refuse a recognizer started right after the previous one ended: give it a moment.
       var wait = Math.max(attempt ? 1000 : 0, 900 - (Date.now() - lastEnd));
-      var v = cur.v[ai], parts = [], errCode = '', t0 = Date.now(), silence = null, hard = null, watch = null, micOn = false, me;
+      var v = cur.v[ai], parts = [], errCode = '', t0 = Date.now(), silence = null, hard = null, watch = null, micOn = false, ev = '', me;
+      userStop = false;
       listening = true; recBtn(true);
       say('<div class="tl-msg info">⏳ ' + T('Starting the microphone…', 'Microphone shuru ho raha hai…') + '</div>');
       function clearAll() { clearTimeout(silence); clearTimeout(hard); clearTimeout(watch); }
@@ -200,15 +201,16 @@
         // candidate transcripts: the recognizer's first choice for every phrase, and the same with its second choice
         var alts = [], k;
         for (k = 0; k < 3; k++) { var t = parts.map(function (pr) { return pr[Math.min(k, pr.length - 1)] || ''; }).join(' ').trim(); if (t && alts.indexOf(t) < 0) alts.push(t); }
-        if (!alts.length && !errCode && attempt < 1 && Date.now() - t0 < 3000) { startRec(attempt + 1); return; }   // ended at once with nothing: try one more time quietly
-        var r = check(v.a, alts); r.err_ = errCode; r.ms_ = Date.now() - t0; r.n_ = parts.length; ayah(r);
+        if (!alts.length && !errCode && !userStop && attempt < 1) { shared = null; startRec(attempt + 1); return; }   // ended at once with nothing: try one more time quietly
+        var r = check(v.a, alts); r.err_ = errCode; r.ms_ = Date.now() - t0; r.n_ = parts.length; r.ev_ = ev + (attempt ? 'retry' : ''); ayah(r);
         try { var rb = body.querySelector('#tlRec'); rb && rb.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (x) {}
         if (r.ok) { var p = prog[cur.n] = prog[cur.n] || {}; p[ai + 1] = 1; saveProg(); var d = body.querySelectorAll('.tl-dots i')[ai]; if (d) d.classList.add('on'); }
       }
       setTimeout(function () {
         if (!listening) return;
         me = rec = (attempt === 0 && shared) ? shared : (shared = new Rec()); me.lang = 'ar-SA'; me.interimResults = true; me.maxAlternatives = 5; me.continuous = true;   // Android Chrome copes better when the same recognizer is reused
-        me.onaudiostart = function () { micOn = true; clearTimeout(watch); say('<div class="tl-msg info">🎙 <b>' + T('Microphone is on. Read the ayah now.', 'Microphone on hai. Ab ayat padhiye.') + '</b><br><small>' + T('Pause when done, or tap Stop.', 'Phir ruk jaiye, ya Ruk jaiye dabaiye.') + '</small></div>'); };
+        me.onsoundstart = function () { ev += 'snd '; }; me.onspeechstart = function () { ev += 'sp '; };
+        me.onaudiostart = function () { ev += 'aud '; micOn = true; clearTimeout(watch); say('<div class="tl-msg info">🎙 <b>' + T('Microphone is on. Read the ayah now.', 'Microphone on hai. Ab ayat padhiye.') + '</b><br><small>' + T('Pause when done, or tap Stop.', 'Phir ruk jaiye, ya Ruk jaiye dabaiye.') + '</small></div>'); };
         me.onresult = function (e) {
           micOn = true; parts = [];
           for (var i = 0; i < e.results.length; i++) { var res = e.results[i], a = []; for (var j = 0; j < res.length; j++) a.push(res[j].transcript); parts.push(a); }
@@ -229,7 +231,8 @@
         try { me.start(); } catch (e) { errCode = 'start-failed'; finish(); }
       }, wait);
     }
-    function stopRec() { try { rec && rec.stop(); } catch (e) {} }
+    var userStop = false;
+    function stopRec() { userStop = true; try { rec && rec.stop(); } catch (e) {} }
 
     function open() { load(home); }
     s.querySelector('#tlBack').addEventListener('click', function () { if (cur) { home(); } else { stopAll(); N.backTab(); } });
